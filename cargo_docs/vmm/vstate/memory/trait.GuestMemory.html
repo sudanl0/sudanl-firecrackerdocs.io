@@ -1,0 +1,273 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="`GuestMemory` represents a container for an immutable collection of `GuestMemoryRegion` objects.  `GuestMemory` provides the `Bytes&lt;GuestAddress&gt;` trait to hide the details of accessing guest memory by physical address. Interior mutability is not allowed for implementations of `GuestMemory` so that they always provide a consistent view of the memory map."><title>GuestMemory in vmm::vstate::memory - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="sidebar-items.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc trait"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../../../vmm/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../../../vmm/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2 class="location"><a href="#">GuestMemory</a></h2><div class="sidebar-elems"><section><h3><a href="#required-associated-types">Required Associated Types</a></h3><ul class="block"><li><a href="#associatedtype.I">I</a></li><li><a href="#associatedtype.R">R</a></li></ul><h3><a href="#required-methods">Required Methods</a></h3><ul class="block"><li><a href="#tymethod.find_region">find_region</a></li><li><a href="#tymethod.iter">iter</a></li><li><a href="#tymethod.num_regions">num_regions</a></li></ul><h3><a href="#provided-methods">Provided Methods</a></h3><ul class="block"><li><a href="#method.address_in_range">address_in_range</a></li><li><a href="#method.check_address">check_address</a></li><li><a href="#method.check_range">check_range</a></li><li><a href="#method.checked_offset">checked_offset</a></li><li><a href="#method.get_host_address">get_host_address</a></li><li><a href="#method.get_slice">get_slice</a></li><li><a href="#method.last_addr">last_addr</a></li><li><a href="#method.map_and_fold">map_and_fold</a></li><li><a href="#method.read_exact_volatile_from">read_exact_volatile_from</a></li><li><a href="#method.read_volatile_from">read_volatile_from</a></li><li><a href="#method.to_region_addr">to_region_addr</a></li><li><a href="#method.try_access">try_access</a></li><li><a href="#method.with_regions">with_regions</a></li><li><a href="#method.with_regions_mut">with_regions_mut</a></li><li><a href="#method.write_all_volatile_to">write_all_volatile_to</a></li><li><a href="#method.write_volatile_to">write_volatile_to</a></li></ul><h3><a href="#implementors">Implementors</a></h3></section><h2><a href="index.html">In vmm::vstate::memory</a></h2></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Trait <a href="../../index.html">vmm</a>::<wbr><a href="../index.html">vstate</a>::<wbr><a href="index.html">memory</a>::<wbr><a class="trait" href="#">GuestMemory</a><button id="copy-path" title="Copy item path to clipboard"><img src="../../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><pre class="rust item-decl"><code>pub trait GuestMemory {
+    type <a href="#associatedtype.R" class="associatedtype">R</a>: <a class="trait" href="trait.GuestMemoryRegion.html" title="trait vmm::vstate::memory::GuestMemoryRegion">GuestMemoryRegion</a>;
+    type <a href="#associatedtype.I" class="associatedtype">I</a>: for&lt;'a&gt; GuestMemoryIterator&lt;'a, Self::<a class="associatedtype" href="trait.GuestMemory.html#associatedtype.R" title="type vmm::vstate::memory::GuestMemory::R">R</a>&gt;;
+
+<details class="toggle type-contents-toggle"><summary class="hideme"><span>Show 19 methods</span></summary>    // Required methods
+    fn <a href="#tymethod.num_regions" class="fn">num_regions</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>;
+<span class="item-spacer"></span>    fn <a href="#tymethod.find_region" class="fn">find_region</a>(&amp;self, addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;Self::<a class="associatedtype" href="trait.GuestMemory.html#associatedtype.R" title="type vmm::vstate::memory::GuestMemory::R">R</a>&gt;;
+<span class="item-spacer"></span>    fn <a href="#tymethod.iter" class="fn">iter</a>(&amp;self) -&gt; &lt;Self::<a class="associatedtype" href="trait.GuestMemory.html#associatedtype.I" title="type vmm::vstate::memory::GuestMemory::I">I</a> as GuestMemoryIterator&lt;'_, Self::<a class="associatedtype" href="trait.GuestMemory.html#associatedtype.R" title="type vmm::vstate::memory::GuestMemory::R">R</a>&gt;&gt;::Iter;
+
+    // Provided methods
+    fn <a href="#method.with_regions" class="fn">with_regions</a>&lt;F, E&gt;(&amp;self, cb: F) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.unit.html">()</a>, E&gt;
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/1.73.0/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>, &amp;Self::<a class="associatedtype" href="trait.GuestMemory.html#associatedtype.R" title="type vmm::vstate::memory::GuestMemory::R">R</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.unit.html">()</a>, E&gt;</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.with_regions_mut" class="fn">with_regions_mut</a>&lt;F, E&gt;(&amp;self, cb: F) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.unit.html">()</a>, E&gt;
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/1.73.0/core/ops/function/trait.FnMut.html" title="trait core::ops::function::FnMut">FnMut</a>(<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>, &amp;Self::<a class="associatedtype" href="trait.GuestMemory.html#associatedtype.R" title="type vmm::vstate::memory::GuestMemory::R">R</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.unit.html">()</a>, E&gt;</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.map_and_fold" class="fn">map_and_fold</a>&lt;F, G, T&gt;(&amp;self, init: T, mapf: F, foldf: G) -&gt; T
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/1.73.0/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>((<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>, &amp;Self::<a class="associatedtype" href="trait.GuestMemory.html#associatedtype.R" title="type vmm::vstate::memory::GuestMemory::R">R</a>)) -&gt; T,
+             G: <a class="trait" href="https://doc.rust-lang.org/1.73.0/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(T, T) -&gt; T</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.last_addr" class="fn">last_addr</a>(&amp;self) -&gt; <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.to_region_addr" class="fn">to_region_addr</a>(
+        &amp;self,
+        addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;(&amp;Self::<a class="associatedtype" href="trait.GuestMemory.html#associatedtype.R" title="type vmm::vstate::memory::GuestMemory::R">R</a>, <a class="struct" href="struct.MemoryRegionAddress.html" title="struct vmm::vstate::memory::MemoryRegionAddress">MemoryRegionAddress</a>)&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.address_in_range" class="fn">address_in_range</a>(&amp;self, addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.check_address" class="fn">check_address</a>(&amp;self, addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.check_range" class="fn">check_range</a>(&amp;self, base: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>, len: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.bool.html">bool</a> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.checked_offset" class="fn">checked_offset</a>(
+        &amp;self,
+        base: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>,
+        offset: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.try_access" class="fn">try_access</a>&lt;F&gt;(
+        &amp;self,
+        count: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>,
+        addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>,
+        f: F
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>, Error&gt;
+       <span class="where">where F: <a class="trait" href="https://doc.rust-lang.org/1.73.0/core/ops/function/trait.FnMut.html" title="trait core::ops::function::FnMut">FnMut</a>(<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>, <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>, <a class="struct" href="struct.MemoryRegionAddress.html" title="struct vmm::vstate::memory::MemoryRegionAddress">MemoryRegionAddress</a>, &amp;Self::<a class="associatedtype" href="trait.GuestMemory.html#associatedtype.R" title="type vmm::vstate::memory::GuestMemory::R">R</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>, Error&gt;</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.read_volatile_from" class="fn">read_volatile_from</a>&lt;F&gt;(
+        &amp;self,
+        addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>,
+        src: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.reference.html">&amp;mut F</a>,
+        count: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>, Error&gt;
+       <span class="where">where F: ReadVolatile</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.write_volatile_to" class="fn">write_volatile_to</a>&lt;F&gt;(
+        &amp;self,
+        addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>,
+        dst: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.reference.html">&amp;mut F</a>,
+        count: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>, Error&gt;
+       <span class="where">where F: WriteVolatile</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.read_exact_volatile_from" class="fn">read_exact_volatile_from</a>&lt;F&gt;(
+        &amp;self,
+        addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>,
+        src: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.reference.html">&amp;mut F</a>,
+        count: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.unit.html">()</a>, Error&gt;
+       <span class="where">where F: ReadVolatile</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.write_all_volatile_to" class="fn">write_all_volatile_to</a>&lt;F&gt;(
+        &amp;self,
+        addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>,
+        dst: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.reference.html">&amp;mut F</a>,
+        count: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.unit.html">()</a>, Error&gt;
+       <span class="where">where F: WriteVolatile</span> { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_host_address" class="fn">get_host_address</a>(&amp;self, addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.pointer.html">*mut </a><a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.u8.html">u8</a>, Error&gt; { ... }
+<span class="item-spacer"></span>    fn <a href="#method.get_slice" class="fn">get_slice</a>(
+        &amp;self,
+        addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>,
+        count: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>
+    ) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;VolatileSlice&lt;'_, &lt;&lt;Self::<a class="associatedtype" href="trait.GuestMemory.html#associatedtype.R" title="type vmm::vstate::memory::GuestMemory::R">R</a> as <a class="trait" href="trait.GuestMemoryRegion.html" title="trait vmm::vstate::memory::GuestMemoryRegion">GuestMemoryRegion</a>&gt;::<a class="associatedtype" href="trait.GuestMemoryRegion.html#associatedtype.B" title="type vmm::vstate::memory::GuestMemoryRegion::B">B</a> as WithBitmapSlice&lt;'_&gt;&gt;::S&gt;, Error&gt; { ... }
+</details>}</code></pre><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p><code>GuestMemory</code> represents a container for an <em>immutable</em> collection of
+<code>GuestMemoryRegion</code> objects.  <code>GuestMemory</code> provides the <code>Bytes&lt;GuestAddress&gt;</code>
+trait to hide the details of accessing guest memory by physical address.
+Interior mutability is not allowed for implementations of <code>GuestMemory</code> so
+that they always provide a consistent view of the memory map.</p>
+<p>The task of the <code>GuestMemory</code> trait are:</p>
+<ul>
+<li>map a request address to a <code>GuestMemoryRegion</code> object and relay the request to it.</li>
+<li>handle cases where an access request spanning two or more <code>GuestMemoryRegion</code> objects.</li>
+</ul>
+</div></details><h2 id="required-associated-types" class="small-section-header">Required Associated Types<a href="#required-associated-types" class="anchor">§</a></h2><div class="methods"><details class="toggle" open><summary><section id="associatedtype.R" class="method"><h4 class="code-header">type <a href="#associatedtype.R" class="associatedtype">R</a>: <a class="trait" href="trait.GuestMemoryRegion.html" title="trait vmm::vstate::memory::GuestMemoryRegion">GuestMemoryRegion</a></h4></section></summary><div class="docblock"><p>Type of objects hosted by the address space.</p>
+</div></details><details class="toggle" open><summary><section id="associatedtype.I" class="method"><h4 class="code-header">type <a href="#associatedtype.I" class="associatedtype">I</a>: for&lt;'a&gt; GuestMemoryIterator&lt;'a, Self::<a class="associatedtype" href="trait.GuestMemory.html#associatedtype.R" title="type vmm::vstate::memory::GuestMemory::R">R</a>&gt;</h4></section></summary><div class="docblock"><p>Lifetime generic associated iterators. Usually this is just <code>Self</code>.</p>
+</div></details></div><h2 id="required-methods" class="small-section-header">Required Methods<a href="#required-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="tymethod.num_regions" class="method"><h4 class="code-header">fn <a href="#tymethod.num_regions" class="fn">num_regions</a>(&amp;self) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a></h4></section></summary><div class="docblock"><p>Returns the number of regions in the collection.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.find_region" class="method"><h4 class="code-header">fn <a href="#tymethod.find_region" class="fn">find_region</a>(&amp;self, addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;&amp;Self::<a class="associatedtype" href="trait.GuestMemory.html#associatedtype.R" title="type vmm::vstate::memory::GuestMemory::R">R</a>&gt;</h4></section></summary><div class="docblock"><p>Returns the region containing the specified address or <code>None</code>.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="tymethod.iter" class="method"><h4 class="code-header">fn <a href="#tymethod.iter" class="fn">iter</a>(&amp;self) -&gt; &lt;Self::<a class="associatedtype" href="trait.GuestMemory.html#associatedtype.I" title="type vmm::vstate::memory::GuestMemory::I">I</a> as GuestMemoryIterator&lt;'_, Self::<a class="associatedtype" href="trait.GuestMemory.html#associatedtype.R" title="type vmm::vstate::memory::GuestMemory::R">R</a>&gt;&gt;::Iter</h4></section></summary><div class="docblock"><p>Gets an iterator over the entries in the collection.</p>
+<h5 id="examples"><a href="#examples">Examples</a></h5>
+<ul>
+<li>Compute the total size of all memory mappings in KB by iterating over the memory regions
+and dividing their sizes to 1024, then summing up the values in an accumulator. (uses the
+<code>backend-mmap</code> feature)</li>
+</ul>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>start_addr1 = GuestAddress(<span class="number">0x0</span>);
+<span class="kw">let </span>start_addr2 = GuestAddress(<span class="number">0x400</span>);
+<span class="kw">let </span>gm = GuestMemoryMmap::&lt;()&gt;::from_ranges(<span class="kw-2">&amp;</span><span class="macro">vec!</span>[(start_addr1, <span class="number">1024</span>), (start_addr2, <span class="number">2048</span>)])
+    .expect(<span class="string">&quot;Could not create guest memory&quot;</span>);
+
+<span class="kw">let </span>total_size = gm
+    .iter()
+    .map(|region| region.len() / <span class="number">1024</span>)
+    .fold(<span class="number">0</span>, |acc, size| acc + size);
+<span class="macro">assert_eq!</span>(<span class="number">3</span>, total_size)</code></pre></div>
+</div></details></div><h2 id="provided-methods" class="small-section-header">Provided Methods<a href="#provided-methods" class="anchor">§</a></h2><div class="methods"><details class="toggle method-toggle" open><summary><section id="method.with_regions" class="method"><h4 class="code-header">fn <a href="#method.with_regions" class="fn">with_regions</a>&lt;F, E&gt;(&amp;self, cb: F) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.unit.html">()</a>, E&gt;<span class="where fmt-newline">where
+    F: <a class="trait" href="https://doc.rust-lang.org/1.73.0/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>, &amp;Self::<a class="associatedtype" href="trait.GuestMemory.html#associatedtype.R" title="type vmm::vstate::memory::GuestMemory::R">R</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.unit.html">()</a>, E&gt;,</span></h4></section></summary><span class="item-info"><div class="stab deprecated"><span class="emoji">👎</span><span>Deprecated since 0.6.0: Use <code>.iter()</code> instead</span></div></span><div class="docblock"><p>Perform the specified action on each region.</p>
+<p>It only walks children of current region and does not step into sub regions.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.with_regions_mut" class="method"><h4 class="code-header">fn <a href="#method.with_regions_mut" class="fn">with_regions_mut</a>&lt;F, E&gt;(&amp;self, cb: F) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.unit.html">()</a>, E&gt;<span class="where fmt-newline">where
+    F: <a class="trait" href="https://doc.rust-lang.org/1.73.0/core/ops/function/trait.FnMut.html" title="trait core::ops::function::FnMut">FnMut</a>(<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>, &amp;Self::<a class="associatedtype" href="trait.GuestMemory.html#associatedtype.R" title="type vmm::vstate::memory::GuestMemory::R">R</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.unit.html">()</a>, E&gt;,</span></h4></section></summary><span class="item-info"><div class="stab deprecated"><span class="emoji">👎</span><span>Deprecated since 0.6.0: Use <code>.iter()</code> instead</span></div></span><div class="docblock"><p>Perform the specified action on each region mutably.</p>
+<p>It only walks children of current region and does not step into sub regions.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.map_and_fold" class="method"><h4 class="code-header">fn <a href="#method.map_and_fold" class="fn">map_and_fold</a>&lt;F, G, T&gt;(&amp;self, init: T, mapf: F, foldf: G) -&gt; T<span class="where fmt-newline">where
+    F: <a class="trait" href="https://doc.rust-lang.org/1.73.0/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>((<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>, &amp;Self::<a class="associatedtype" href="trait.GuestMemory.html#associatedtype.R" title="type vmm::vstate::memory::GuestMemory::R">R</a>)) -&gt; T,
+    G: <a class="trait" href="https://doc.rust-lang.org/1.73.0/core/ops/function/trait.Fn.html" title="trait core::ops::function::Fn">Fn</a>(T, T) -&gt; T,</span></h4></section></summary><span class="item-info"><div class="stab deprecated"><span class="emoji">👎</span><span>Deprecated since 0.6.0: Use <code>.iter()</code> instead</span></div></span><div class="docblock"><p>Applies two functions, specified as callbacks, on the inner memory regions.</p>
+<h5 id="arguments"><a href="#arguments">Arguments</a></h5>
+<ul>
+<li><code>init</code> - Starting value of the accumulator for the <code>foldf</code> function.</li>
+<li><code>mapf</code> - “Map” function, applied to all the inner memory regions. It returns an array of
+the same size as the memory regions array, containing the function’s results
+for each region.</li>
+<li><code>foldf</code> - “Fold” function, applied to the array returned by <code>mapf</code>. It acts as an
+operator, applying itself to the <code>init</code> value and to each subsequent elemnent
+in the array returned by <code>mapf</code>.</li>
+</ul>
+<h5 id="examples-1"><a href="#examples-1">Examples</a></h5>
+<ul>
+<li>Compute the total size of all memory mappings in KB by iterating over the memory regions
+and dividing their sizes to 1024, then summing up the values in an accumulator. (uses the
+<code>backend-mmap</code> feature)</li>
+</ul>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>start_addr1 = GuestAddress(<span class="number">0x0</span>);
+<span class="kw">let </span>start_addr2 = GuestAddress(<span class="number">0x400</span>);
+<span class="kw">let </span>gm = GuestMemoryMmap::&lt;()&gt;::from_ranges(<span class="kw-2">&amp;</span><span class="macro">vec!</span>[(start_addr1, <span class="number">1024</span>), (start_addr2, <span class="number">2048</span>)])
+    .expect(<span class="string">&quot;Could not create guest memory&quot;</span>);
+
+<span class="kw">let </span>total_size = gm.map_and_fold(<span class="number">0</span>, |(<span class="kw">_</span>, region)| region.len() / <span class="number">1024</span>, |acc, size| acc + size);
+<span class="macro">assert_eq!</span>(<span class="number">3</span>, total_size)</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.last_addr" class="method"><h4 class="code-header">fn <a href="#method.last_addr" class="fn">last_addr</a>(&amp;self) -&gt; <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a></h4></section></summary><div class="docblock"><p>Returns the maximum (inclusive) address managed by the
+<a href="trait.GuestMemory.html"><code>GuestMemory</code></a>.</p>
+<h5 id="examples-uses-the-backend-mmap-feature"><a href="#examples-uses-the-backend-mmap-feature">Examples (uses the <code>backend-mmap</code> feature)</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>start_addr = GuestAddress(<span class="number">0x1000</span>);
+<span class="kw">let </span><span class="kw-2">mut </span>gm = GuestMemoryMmap::&lt;()&gt;::from_ranges(<span class="kw-2">&amp;</span><span class="macro">vec!</span>[(start_addr, <span class="number">0x400</span>)])
+    .expect(<span class="string">&quot;Could not create guest memory&quot;</span>);
+
+<span class="macro">assert_eq!</span>(start_addr.checked_add(<span class="number">0x3ff</span>), <span class="prelude-val">Some</span>(gm.last_addr()));</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.to_region_addr" class="method"><h4 class="code-header">fn <a href="#method.to_region_addr" class="fn">to_region_addr</a>(
+    &amp;self,
+    addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;(&amp;Self::<a class="associatedtype" href="trait.GuestMemory.html#associatedtype.R" title="type vmm::vstate::memory::GuestMemory::R">R</a>, <a class="struct" href="struct.MemoryRegionAddress.html" title="struct vmm::vstate::memory::MemoryRegionAddress">MemoryRegionAddress</a>)&gt;</h4></section></summary><div class="docblock"><p>Tries to convert an absolute address to a relative address within the corresponding region.</p>
+<p>Returns <code>None</code> if <code>addr</code> isn’t present within the memory of the guest.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.address_in_range" class="method"><h4 class="code-header">fn <a href="#method.address_in_range" class="fn">address_in_range</a>(&amp;self, addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Returns <code>true</code> if the given address is present within the memory of the guest.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.check_address" class="method"><h4 class="code-header">fn <a href="#method.check_address" class="fn">check_address</a>(&amp;self, addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>&gt;</h4></section></summary><div class="docblock"><p>Returns the given address if it is present within the memory of the guest.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.check_range" class="method"><h4 class="code-header">fn <a href="#method.check_range" class="fn">check_range</a>(&amp;self, base: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>, len: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>) -&gt; <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.bool.html">bool</a></h4></section></summary><div class="docblock"><p>Check whether the range [base, base + len) is valid.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.checked_offset" class="method"><h4 class="code-header">fn <a href="#method.checked_offset" class="fn">checked_offset</a>(
+    &amp;self,
+    base: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>,
+    offset: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/option/enum.Option.html" title="enum core::option::Option">Option</a>&lt;<a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>&gt;</h4></section></summary><div class="docblock"><p>Returns the address plus the offset if it is present within the memory of the guest.</p>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.try_access" class="method"><h4 class="code-header">fn <a href="#method.try_access" class="fn">try_access</a>&lt;F&gt;(
+    &amp;self,
+    count: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>,
+    addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>,
+    f: F
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>, Error&gt;<span class="where fmt-newline">where
+    F: <a class="trait" href="https://doc.rust-lang.org/1.73.0/core/ops/function/trait.FnMut.html" title="trait core::ops::function::FnMut">FnMut</a>(<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>, <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>, <a class="struct" href="struct.MemoryRegionAddress.html" title="struct vmm::vstate::memory::MemoryRegionAddress">MemoryRegionAddress</a>, &amp;Self::<a class="associatedtype" href="trait.GuestMemory.html#associatedtype.R" title="type vmm::vstate::memory::GuestMemory::R">R</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>, Error&gt;,</span></h4></section></summary><div class="docblock"><p>Invokes callback <code>f</code> to handle data in the address range <code>[addr, addr + count)</code>.</p>
+<p>The address range <code>[addr, addr + count)</code> may span more than one
+<a href="trait.GuestMemoryRegion.html"><code>GuestMemoryRegion</code></a> object, or even have holes in it.
+So <a href="trait.GuestMemory.html#method.try_access"><code>try_access()</code></a> invokes the callback ‘f’
+for each <a href="trait.GuestMemoryRegion.html"><code>GuestMemoryRegion</code></a> object involved and returns:</p>
+<ul>
+<li>the error code returned by the callback ‘f’</li>
+<li>the size of the already handled data when encountering the first hole</li>
+<li>the size of the already handled data when the whole range has been handled</li>
+</ul>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.read_volatile_from" class="method"><h4 class="code-header">fn <a href="#method.read_volatile_from" class="fn">read_volatile_from</a>&lt;F&gt;(
+    &amp;self,
+    addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>,
+    src: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.reference.html">&amp;mut F</a>,
+    count: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>, Error&gt;<span class="where fmt-newline">where
+    F: ReadVolatile,</span></h4></section></summary><div class="docblock"><p>Reads up to <code>count</code> bytes from an object and writes them into guest memory at <code>addr</code>.</p>
+<p>Returns the number of bytes written into guest memory.</p>
+<h5 id="arguments-1"><a href="#arguments-1">Arguments</a></h5>
+<ul>
+<li><code>addr</code> - Begin writing at this address.</li>
+<li><code>src</code> - Copy from <code>src</code> into the container.</li>
+<li><code>count</code> - Copy <code>count</code> bytes from <code>src</code> into the container.</li>
+</ul>
+<h5 id="examples-2"><a href="#examples-2">Examples</a></h5>
+<ul>
+<li>Read bytes from /dev/urandom (uses the <code>backend-mmap</code> feature)</li>
+</ul>
+
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span><span class="kw-2">mut </span>file = File::open(Path::new(<span class="string">&quot;/dev/urandom&quot;</span>)).expect(<span class="string">&quot;Could not open /dev/urandom&quot;</span>);
+
+gm.read_volatile_from(addr, <span class="kw-2">&amp;mut </span>file, <span class="number">128</span>)
+    .expect(<span class="string">&quot;Could not read from /dev/urandom into guest memory&quot;</span>);
+
+<span class="kw">let </span>read_addr = addr.checked_add(<span class="number">8</span>).expect(<span class="string">&quot;Could not compute read address&quot;</span>);
+<span class="kw">let </span>rand_val: u32 = gm
+    .read_obj(read_addr)
+    .expect(<span class="string">&quot;Could not read u32 val from /dev/urandom&quot;</span>);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.write_volatile_to" class="method"><h4 class="code-header">fn <a href="#method.write_volatile_to" class="fn">write_volatile_to</a>&lt;F&gt;(
+    &amp;self,
+    addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>,
+    dst: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.reference.html">&amp;mut F</a>,
+    count: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>, Error&gt;<span class="where fmt-newline">where
+    F: WriteVolatile,</span></h4></section></summary><div class="docblock"><p>Reads up to <code>count</code> bytes from the container at <code>addr</code> and writes them it into guest memory.</p>
+<p>Returns the number of bytes written into guest memory.</p>
+<h5 id="arguments-2"><a href="#arguments-2">Arguments</a></h5>
+<ul>
+<li><code>addr</code> - Begin reading from this address.</li>
+<li><code>dst</code> - Copy from guest memory to <code>dst</code>.</li>
+<li><code>count</code> - Copy <code>count</code> bytes from guest memory to <code>dst</code>.</li>
+</ul>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.read_exact_volatile_from" class="method"><h4 class="code-header">fn <a href="#method.read_exact_volatile_from" class="fn">read_exact_volatile_from</a>&lt;F&gt;(
+    &amp;self,
+    addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>,
+    src: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.reference.html">&amp;mut F</a>,
+    count: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.unit.html">()</a>, Error&gt;<span class="where fmt-newline">where
+    F: ReadVolatile,</span></h4></section></summary><div class="docblock"><p>Reads exactly <code>count</code> bytes from an object and writes them into guest memory at <code>addr</code>.</p>
+<h5 id="errors"><a href="#errors">Errors</a></h5>
+<p>Returns an error if <code>count</code> bytes couldn’t have been copied from <code>src</code> to guest memory.
+Part of the data may have been copied nevertheless.</p>
+<h5 id="arguments-3"><a href="#arguments-3">Arguments</a></h5>
+<ul>
+<li><code>addr</code> - Begin writing at this address.</li>
+<li><code>src</code> - Copy from <code>src</code> into guest memory.</li>
+<li><code>count</code> - Copy exactly <code>count</code> bytes from <code>src</code> into guest memory.</li>
+</ul>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.write_all_volatile_to" class="method"><h4 class="code-header">fn <a href="#method.write_all_volatile_to" class="fn">write_all_volatile_to</a>&lt;F&gt;(
+    &amp;self,
+    addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>,
+    dst: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.reference.html">&amp;mut F</a>,
+    count: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.unit.html">()</a>, Error&gt;<span class="where fmt-newline">where
+    F: WriteVolatile,</span></h4></section></summary><div class="docblock"><p>Reads exactly <code>count</code> bytes from the container at <code>addr</code> and writes them into guest memory.</p>
+<h5 id="errors-1"><a href="#errors-1">Errors</a></h5>
+<p>Returns an error if <code>count</code> bytes couldn’t have been copied from guest memory to <code>dst</code>.
+Part of the data may have been copied nevertheless.</p>
+<h5 id="arguments-4"><a href="#arguments-4">Arguments</a></h5>
+<ul>
+<li><code>addr</code> - Begin reading from this address.</li>
+<li><code>dst</code> - Copy from guest memory to <code>dst</code>.</li>
+<li><code>count</code> - Copy exactly <code>count</code> bytes from guest memory to <code>dst</code>.</li>
+</ul>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_host_address" class="method"><h4 class="code-header">fn <a href="#method.get_host_address" class="fn">get_host_address</a>(&amp;self, addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;<a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.pointer.html">*mut </a><a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.u8.html">u8</a>, Error&gt;</h4></section></summary><div class="docblock"><p>Get the host virtual address corresponding to the guest address.</p>
+<p>Some <a href="trait.GuestMemory.html"><code>GuestMemory</code></a> implementations, like <code>GuestMemoryMmap</code>,
+have the capability to mmap the guest address range into virtual address space of the host
+for direct access, so the corresponding host virtual address may be passed to other
+subsystems.</p>
+<h5 id="note"><a href="#note">Note</a></h5>
+<p>The underlying guest memory is not protected from memory aliasing, which breaks the
+Rust memory safety model. It’s the caller’s responsibility to ensure that there’s no
+concurrent accesses to the underlying guest memory.</p>
+<h5 id="arguments-5"><a href="#arguments-5">Arguments</a></h5>
+<ul>
+<li><code>addr</code> - Guest address to convert.</li>
+</ul>
+<h5 id="examples-uses-the-backend-mmap-feature-1"><a href="#examples-uses-the-backend-mmap-feature-1">Examples (uses the <code>backend-mmap</code> feature)</a></h5>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">let </span>addr = gm
+    .get_host_address(GuestAddress(<span class="number">0x1200</span>))
+    .expect(<span class="string">&quot;Could not get host address&quot;</span>);
+<span class="macro">println!</span>(<span class="string">&quot;Host address is {:p}&quot;</span>, addr);</code></pre></div>
+</div></details><details class="toggle method-toggle" open><summary><section id="method.get_slice" class="method"><h4 class="code-header">fn <a href="#method.get_slice" class="fn">get_slice</a>(
+    &amp;self,
+    addr: <a class="struct" href="struct.GuestAddress.html" title="struct vmm::vstate::memory::GuestAddress">GuestAddress</a>,
+    count: <a class="primitive" href="https://doc.rust-lang.org/1.73.0/std/primitive.usize.html">usize</a>
+) -&gt; <a class="enum" href="https://doc.rust-lang.org/1.73.0/core/result/enum.Result.html" title="enum core::result::Result">Result</a>&lt;VolatileSlice&lt;'_, &lt;&lt;Self::<a class="associatedtype" href="trait.GuestMemory.html#associatedtype.R" title="type vmm::vstate::memory::GuestMemory::R">R</a> as <a class="trait" href="trait.GuestMemoryRegion.html" title="trait vmm::vstate::memory::GuestMemoryRegion">GuestMemoryRegion</a>&gt;::<a class="associatedtype" href="trait.GuestMemoryRegion.html#associatedtype.B" title="type vmm::vstate::memory::GuestMemoryRegion::B">B</a> as WithBitmapSlice&lt;'_&gt;&gt;::S&gt;, Error&gt;</h4></section></summary><div class="docblock"><p>Returns a <a href="struct.VolatileSlice.html"><code>VolatileSlice</code></a> of <code>count</code> bytes starting at
+<code>addr</code>.</p>
+</div></details></div><h2 id="implementors" class="small-section-header">Implementors<a href="#implementors" class="anchor">§</a></h2><div id="implementors-list"><details class="toggle implementors-toggle"><summary><section id="impl-GuestMemory-for-GuestMemoryMmap%3CB%3E" class="impl"><a href="#impl-GuestMemory-for-GuestMemoryMmap%3CB%3E" class="anchor">§</a><h3 class="code-header">impl&lt;B&gt; <a class="trait" href="trait.GuestMemory.html" title="trait vmm::vstate::memory::GuestMemory">GuestMemory</a> for GuestMemoryMmap&lt;B&gt;<span class="where fmt-newline">where
+    B: <a class="trait" href="trait.Bitmap.html" title="trait vmm::vstate::memory::Bitmap">Bitmap</a> + 'static,</span></h3></section></summary><div class="impl-items"><section id="associatedtype.R-1" class="associatedtype trait-impl"><a href="#associatedtype.R-1" class="anchor">§</a><h4 class="code-header">type <a href="#associatedtype.R" class="associatedtype">R</a> = GuestRegionMmap&lt;B&gt;</h4></section><section id="associatedtype.I-1" class="associatedtype trait-impl"><a href="#associatedtype.I-1" class="anchor">§</a><h4 class="code-header">type <a href="#associatedtype.I" class="associatedtype">I</a> = GuestMemoryMmap&lt;B&gt;</h4></section></div></details></div><script src="../../../implementors/vm_memory/guest_memory/trait.GuestMemory.js" data-ignore-extern-crates="vm_memory" async></script></section></div></main></body></html>

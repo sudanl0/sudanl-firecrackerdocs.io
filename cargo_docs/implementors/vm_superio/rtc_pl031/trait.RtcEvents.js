@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"vmm":[["impl RtcEvents for &amp;'static <a class=\"struct\" href=\"vmm/devices/legacy/rtc_pl031/struct.RTCDeviceMetrics.html\" title=\"struct vmm::devices::legacy::rtc_pl031::RTCDeviceMetrics\">RTCDeviceMetrics</a>"],["impl RtcEvents for <a class=\"struct\" href=\"vmm/devices/legacy/rtc_pl031/struct.RTCDeviceMetrics.html\" title=\"struct vmm::devices::legacy::rtc_pl031::RTCDeviceMetrics\">RTCDeviceMetrics</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -1,0 +1,1241 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/io_uring/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../vmm/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<a href="#2" id="2">2</a>
+<a href="#3" id="3">3</a>
+<a href="#4" id="4">4</a>
+<a href="#5" id="5">5</a>
+<a href="#6" id="6">6</a>
+<a href="#7" id="7">7</a>
+<a href="#8" id="8">8</a>
+<a href="#9" id="9">9</a>
+<a href="#10" id="10">10</a>
+<a href="#11" id="11">11</a>
+<a href="#12" id="12">12</a>
+<a href="#13" id="13">13</a>
+<a href="#14" id="14">14</a>
+<a href="#15" id="15">15</a>
+<a href="#16" id="16">16</a>
+<a href="#17" id="17">17</a>
+<a href="#18" id="18">18</a>
+<a href="#19" id="19">19</a>
+<a href="#20" id="20">20</a>
+<a href="#21" id="21">21</a>
+<a href="#22" id="22">22</a>
+<a href="#23" id="23">23</a>
+<a href="#24" id="24">24</a>
+<a href="#25" id="25">25</a>
+<a href="#26" id="26">26</a>
+<a href="#27" id="27">27</a>
+<a href="#28" id="28">28</a>
+<a href="#29" id="29">29</a>
+<a href="#30" id="30">30</a>
+<a href="#31" id="31">31</a>
+<a href="#32" id="32">32</a>
+<a href="#33" id="33">33</a>
+<a href="#34" id="34">34</a>
+<a href="#35" id="35">35</a>
+<a href="#36" id="36">36</a>
+<a href="#37" id="37">37</a>
+<a href="#38" id="38">38</a>
+<a href="#39" id="39">39</a>
+<a href="#40" id="40">40</a>
+<a href="#41" id="41">41</a>
+<a href="#42" id="42">42</a>
+<a href="#43" id="43">43</a>
+<a href="#44" id="44">44</a>
+<a href="#45" id="45">45</a>
+<a href="#46" id="46">46</a>
+<a href="#47" id="47">47</a>
+<a href="#48" id="48">48</a>
+<a href="#49" id="49">49</a>
+<a href="#50" id="50">50</a>
+<a href="#51" id="51">51</a>
+<a href="#52" id="52">52</a>
+<a href="#53" id="53">53</a>
+<a href="#54" id="54">54</a>
+<a href="#55" id="55">55</a>
+<a href="#56" id="56">56</a>
+<a href="#57" id="57">57</a>
+<a href="#58" id="58">58</a>
+<a href="#59" id="59">59</a>
+<a href="#60" id="60">60</a>
+<a href="#61" id="61">61</a>
+<a href="#62" id="62">62</a>
+<a href="#63" id="63">63</a>
+<a href="#64" id="64">64</a>
+<a href="#65" id="65">65</a>
+<a href="#66" id="66">66</a>
+<a href="#67" id="67">67</a>
+<a href="#68" id="68">68</a>
+<a href="#69" id="69">69</a>
+<a href="#70" id="70">70</a>
+<a href="#71" id="71">71</a>
+<a href="#72" id="72">72</a>
+<a href="#73" id="73">73</a>
+<a href="#74" id="74">74</a>
+<a href="#75" id="75">75</a>
+<a href="#76" id="76">76</a>
+<a href="#77" id="77">77</a>
+<a href="#78" id="78">78</a>
+<a href="#79" id="79">79</a>
+<a href="#80" id="80">80</a>
+<a href="#81" id="81">81</a>
+<a href="#82" id="82">82</a>
+<a href="#83" id="83">83</a>
+<a href="#84" id="84">84</a>
+<a href="#85" id="85">85</a>
+<a href="#86" id="86">86</a>
+<a href="#87" id="87">87</a>
+<a href="#88" id="88">88</a>
+<a href="#89" id="89">89</a>
+<a href="#90" id="90">90</a>
+<a href="#91" id="91">91</a>
+<a href="#92" id="92">92</a>
+<a href="#93" id="93">93</a>
+<a href="#94" id="94">94</a>
+<a href="#95" id="95">95</a>
+<a href="#96" id="96">96</a>
+<a href="#97" id="97">97</a>
+<a href="#98" id="98">98</a>
+<a href="#99" id="99">99</a>
+<a href="#100" id="100">100</a>
+<a href="#101" id="101">101</a>
+<a href="#102" id="102">102</a>
+<a href="#103" id="103">103</a>
+<a href="#104" id="104">104</a>
+<a href="#105" id="105">105</a>
+<a href="#106" id="106">106</a>
+<a href="#107" id="107">107</a>
+<a href="#108" id="108">108</a>
+<a href="#109" id="109">109</a>
+<a href="#110" id="110">110</a>
+<a href="#111" id="111">111</a>
+<a href="#112" id="112">112</a>
+<a href="#113" id="113">113</a>
+<a href="#114" id="114">114</a>
+<a href="#115" id="115">115</a>
+<a href="#116" id="116">116</a>
+<a href="#117" id="117">117</a>
+<a href="#118" id="118">118</a>
+<a href="#119" id="119">119</a>
+<a href="#120" id="120">120</a>
+<a href="#121" id="121">121</a>
+<a href="#122" id="122">122</a>
+<a href="#123" id="123">123</a>
+<a href="#124" id="124">124</a>
+<a href="#125" id="125">125</a>
+<a href="#126" id="126">126</a>
+<a href="#127" id="127">127</a>
+<a href="#128" id="128">128</a>
+<a href="#129" id="129">129</a>
+<a href="#130" id="130">130</a>
+<a href="#131" id="131">131</a>
+<a href="#132" id="132">132</a>
+<a href="#133" id="133">133</a>
+<a href="#134" id="134">134</a>
+<a href="#135" id="135">135</a>
+<a href="#136" id="136">136</a>
+<a href="#137" id="137">137</a>
+<a href="#138" id="138">138</a>
+<a href="#139" id="139">139</a>
+<a href="#140" id="140">140</a>
+<a href="#141" id="141">141</a>
+<a href="#142" id="142">142</a>
+<a href="#143" id="143">143</a>
+<a href="#144" id="144">144</a>
+<a href="#145" id="145">145</a>
+<a href="#146" id="146">146</a>
+<a href="#147" id="147">147</a>
+<a href="#148" id="148">148</a>
+<a href="#149" id="149">149</a>
+<a href="#150" id="150">150</a>
+<a href="#151" id="151">151</a>
+<a href="#152" id="152">152</a>
+<a href="#153" id="153">153</a>
+<a href="#154" id="154">154</a>
+<a href="#155" id="155">155</a>
+<a href="#156" id="156">156</a>
+<a href="#157" id="157">157</a>
+<a href="#158" id="158">158</a>
+<a href="#159" id="159">159</a>
+<a href="#160" id="160">160</a>
+<a href="#161" id="161">161</a>
+<a href="#162" id="162">162</a>
+<a href="#163" id="163">163</a>
+<a href="#164" id="164">164</a>
+<a href="#165" id="165">165</a>
+<a href="#166" id="166">166</a>
+<a href="#167" id="167">167</a>
+<a href="#168" id="168">168</a>
+<a href="#169" id="169">169</a>
+<a href="#170" id="170">170</a>
+<a href="#171" id="171">171</a>
+<a href="#172" id="172">172</a>
+<a href="#173" id="173">173</a>
+<a href="#174" id="174">174</a>
+<a href="#175" id="175">175</a>
+<a href="#176" id="176">176</a>
+<a href="#177" id="177">177</a>
+<a href="#178" id="178">178</a>
+<a href="#179" id="179">179</a>
+<a href="#180" id="180">180</a>
+<a href="#181" id="181">181</a>
+<a href="#182" id="182">182</a>
+<a href="#183" id="183">183</a>
+<a href="#184" id="184">184</a>
+<a href="#185" id="185">185</a>
+<a href="#186" id="186">186</a>
+<a href="#187" id="187">187</a>
+<a href="#188" id="188">188</a>
+<a href="#189" id="189">189</a>
+<a href="#190" id="190">190</a>
+<a href="#191" id="191">191</a>
+<a href="#192" id="192">192</a>
+<a href="#193" id="193">193</a>
+<a href="#194" id="194">194</a>
+<a href="#195" id="195">195</a>
+<a href="#196" id="196">196</a>
+<a href="#197" id="197">197</a>
+<a href="#198" id="198">198</a>
+<a href="#199" id="199">199</a>
+<a href="#200" id="200">200</a>
+<a href="#201" id="201">201</a>
+<a href="#202" id="202">202</a>
+<a href="#203" id="203">203</a>
+<a href="#204" id="204">204</a>
+<a href="#205" id="205">205</a>
+<a href="#206" id="206">206</a>
+<a href="#207" id="207">207</a>
+<a href="#208" id="208">208</a>
+<a href="#209" id="209">209</a>
+<a href="#210" id="210">210</a>
+<a href="#211" id="211">211</a>
+<a href="#212" id="212">212</a>
+<a href="#213" id="213">213</a>
+<a href="#214" id="214">214</a>
+<a href="#215" id="215">215</a>
+<a href="#216" id="216">216</a>
+<a href="#217" id="217">217</a>
+<a href="#218" id="218">218</a>
+<a href="#219" id="219">219</a>
+<a href="#220" id="220">220</a>
+<a href="#221" id="221">221</a>
+<a href="#222" id="222">222</a>
+<a href="#223" id="223">223</a>
+<a href="#224" id="224">224</a>
+<a href="#225" id="225">225</a>
+<a href="#226" id="226">226</a>
+<a href="#227" id="227">227</a>
+<a href="#228" id="228">228</a>
+<a href="#229" id="229">229</a>
+<a href="#230" id="230">230</a>
+<a href="#231" id="231">231</a>
+<a href="#232" id="232">232</a>
+<a href="#233" id="233">233</a>
+<a href="#234" id="234">234</a>
+<a href="#235" id="235">235</a>
+<a href="#236" id="236">236</a>
+<a href="#237" id="237">237</a>
+<a href="#238" id="238">238</a>
+<a href="#239" id="239">239</a>
+<a href="#240" id="240">240</a>
+<a href="#241" id="241">241</a>
+<a href="#242" id="242">242</a>
+<a href="#243" id="243">243</a>
+<a href="#244" id="244">244</a>
+<a href="#245" id="245">245</a>
+<a href="#246" id="246">246</a>
+<a href="#247" id="247">247</a>
+<a href="#248" id="248">248</a>
+<a href="#249" id="249">249</a>
+<a href="#250" id="250">250</a>
+<a href="#251" id="251">251</a>
+<a href="#252" id="252">252</a>
+<a href="#253" id="253">253</a>
+<a href="#254" id="254">254</a>
+<a href="#255" id="255">255</a>
+<a href="#256" id="256">256</a>
+<a href="#257" id="257">257</a>
+<a href="#258" id="258">258</a>
+<a href="#259" id="259">259</a>
+<a href="#260" id="260">260</a>
+<a href="#261" id="261">261</a>
+<a href="#262" id="262">262</a>
+<a href="#263" id="263">263</a>
+<a href="#264" id="264">264</a>
+<a href="#265" id="265">265</a>
+<a href="#266" id="266">266</a>
+<a href="#267" id="267">267</a>
+<a href="#268" id="268">268</a>
+<a href="#269" id="269">269</a>
+<a href="#270" id="270">270</a>
+<a href="#271" id="271">271</a>
+<a href="#272" id="272">272</a>
+<a href="#273" id="273">273</a>
+<a href="#274" id="274">274</a>
+<a href="#275" id="275">275</a>
+<a href="#276" id="276">276</a>
+<a href="#277" id="277">277</a>
+<a href="#278" id="278">278</a>
+<a href="#279" id="279">279</a>
+<a href="#280" id="280">280</a>
+<a href="#281" id="281">281</a>
+<a href="#282" id="282">282</a>
+<a href="#283" id="283">283</a>
+<a href="#284" id="284">284</a>
+<a href="#285" id="285">285</a>
+<a href="#286" id="286">286</a>
+<a href="#287" id="287">287</a>
+<a href="#288" id="288">288</a>
+<a href="#289" id="289">289</a>
+<a href="#290" id="290">290</a>
+<a href="#291" id="291">291</a>
+<a href="#292" id="292">292</a>
+<a href="#293" id="293">293</a>
+<a href="#294" id="294">294</a>
+<a href="#295" id="295">295</a>
+<a href="#296" id="296">296</a>
+<a href="#297" id="297">297</a>
+<a href="#298" id="298">298</a>
+<a href="#299" id="299">299</a>
+<a href="#300" id="300">300</a>
+<a href="#301" id="301">301</a>
+<a href="#302" id="302">302</a>
+<a href="#303" id="303">303</a>
+<a href="#304" id="304">304</a>
+<a href="#305" id="305">305</a>
+<a href="#306" id="306">306</a>
+<a href="#307" id="307">307</a>
+<a href="#308" id="308">308</a>
+<a href="#309" id="309">309</a>
+<a href="#310" id="310">310</a>
+<a href="#311" id="311">311</a>
+<a href="#312" id="312">312</a>
+<a href="#313" id="313">313</a>
+<a href="#314" id="314">314</a>
+<a href="#315" id="315">315</a>
+<a href="#316" id="316">316</a>
+<a href="#317" id="317">317</a>
+<a href="#318" id="318">318</a>
+<a href="#319" id="319">319</a>
+<a href="#320" id="320">320</a>
+<a href="#321" id="321">321</a>
+<a href="#322" id="322">322</a>
+<a href="#323" id="323">323</a>
+<a href="#324" id="324">324</a>
+<a href="#325" id="325">325</a>
+<a href="#326" id="326">326</a>
+<a href="#327" id="327">327</a>
+<a href="#328" id="328">328</a>
+<a href="#329" id="329">329</a>
+<a href="#330" id="330">330</a>
+<a href="#331" id="331">331</a>
+<a href="#332" id="332">332</a>
+<a href="#333" id="333">333</a>
+<a href="#334" id="334">334</a>
+<a href="#335" id="335">335</a>
+<a href="#336" id="336">336</a>
+<a href="#337" id="337">337</a>
+<a href="#338" id="338">338</a>
+<a href="#339" id="339">339</a>
+<a href="#340" id="340">340</a>
+<a href="#341" id="341">341</a>
+<a href="#342" id="342">342</a>
+<a href="#343" id="343">343</a>
+<a href="#344" id="344">344</a>
+<a href="#345" id="345">345</a>
+<a href="#346" id="346">346</a>
+<a href="#347" id="347">347</a>
+<a href="#348" id="348">348</a>
+<a href="#349" id="349">349</a>
+<a href="#350" id="350">350</a>
+<a href="#351" id="351">351</a>
+<a href="#352" id="352">352</a>
+<a href="#353" id="353">353</a>
+<a href="#354" id="354">354</a>
+<a href="#355" id="355">355</a>
+<a href="#356" id="356">356</a>
+<a href="#357" id="357">357</a>
+<a href="#358" id="358">358</a>
+<a href="#359" id="359">359</a>
+<a href="#360" id="360">360</a>
+<a href="#361" id="361">361</a>
+<a href="#362" id="362">362</a>
+<a href="#363" id="363">363</a>
+<a href="#364" id="364">364</a>
+<a href="#365" id="365">365</a>
+<a href="#366" id="366">366</a>
+<a href="#367" id="367">367</a>
+<a href="#368" id="368">368</a>
+<a href="#369" id="369">369</a>
+<a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
+<a href="#374" id="374">374</a>
+<a href="#375" id="375">375</a>
+<a href="#376" id="376">376</a>
+<a href="#377" id="377">377</a>
+<a href="#378" id="378">378</a>
+<a href="#379" id="379">379</a>
+<a href="#380" id="380">380</a>
+<a href="#381" id="381">381</a>
+<a href="#382" id="382">382</a>
+<a href="#383" id="383">383</a>
+<a href="#384" id="384">384</a>
+<a href="#385" id="385">385</a>
+<a href="#386" id="386">386</a>
+<a href="#387" id="387">387</a>
+<a href="#388" id="388">388</a>
+<a href="#389" id="389">389</a>
+<a href="#390" id="390">390</a>
+<a href="#391" id="391">391</a>
+<a href="#392" id="392">392</a>
+<a href="#393" id="393">393</a>
+<a href="#394" id="394">394</a>
+<a href="#395" id="395">395</a>
+<a href="#396" id="396">396</a>
+<a href="#397" id="397">397</a>
+<a href="#398" id="398">398</a>
+<a href="#399" id="399">399</a>
+<a href="#400" id="400">400</a>
+<a href="#401" id="401">401</a>
+<a href="#402" id="402">402</a>
+<a href="#403" id="403">403</a>
+<a href="#404" id="404">404</a>
+<a href="#405" id="405">405</a>
+<a href="#406" id="406">406</a>
+<a href="#407" id="407">407</a>
+<a href="#408" id="408">408</a>
+<a href="#409" id="409">409</a>
+<a href="#410" id="410">410</a>
+<a href="#411" id="411">411</a>
+<a href="#412" id="412">412</a>
+<a href="#413" id="413">413</a>
+<a href="#414" id="414">414</a>
+<a href="#415" id="415">415</a>
+<a href="#416" id="416">416</a>
+<a href="#417" id="417">417</a>
+<a href="#418" id="418">418</a>
+<a href="#419" id="419">419</a>
+<a href="#420" id="420">420</a>
+<a href="#421" id="421">421</a>
+<a href="#422" id="422">422</a>
+<a href="#423" id="423">423</a>
+<a href="#424" id="424">424</a>
+<a href="#425" id="425">425</a>
+<a href="#426" id="426">426</a>
+<a href="#427" id="427">427</a>
+<a href="#428" id="428">428</a>
+<a href="#429" id="429">429</a>
+<a href="#430" id="430">430</a>
+<a href="#431" id="431">431</a>
+<a href="#432" id="432">432</a>
+<a href="#433" id="433">433</a>
+<a href="#434" id="434">434</a>
+<a href="#435" id="435">435</a>
+<a href="#436" id="436">436</a>
+<a href="#437" id="437">437</a>
+<a href="#438" id="438">438</a>
+<a href="#439" id="439">439</a>
+<a href="#440" id="440">440</a>
+<a href="#441" id="441">441</a>
+<a href="#442" id="442">442</a>
+<a href="#443" id="443">443</a>
+<a href="#444" id="444">444</a>
+<a href="#445" id="445">445</a>
+<a href="#446" id="446">446</a>
+<a href="#447" id="447">447</a>
+<a href="#448" id="448">448</a>
+<a href="#449" id="449">449</a>
+<a href="#450" id="450">450</a>
+<a href="#451" id="451">451</a>
+<a href="#452" id="452">452</a>
+<a href="#453" id="453">453</a>
+<a href="#454" id="454">454</a>
+<a href="#455" id="455">455</a>
+<a href="#456" id="456">456</a>
+<a href="#457" id="457">457</a>
+<a href="#458" id="458">458</a>
+<a href="#459" id="459">459</a>
+<a href="#460" id="460">460</a>
+<a href="#461" id="461">461</a>
+<a href="#462" id="462">462</a>
+<a href="#463" id="463">463</a>
+<a href="#464" id="464">464</a>
+<a href="#465" id="465">465</a>
+<a href="#466" id="466">466</a>
+<a href="#467" id="467">467</a>
+<a href="#468" id="468">468</a>
+<a href="#469" id="469">469</a>
+<a href="#470" id="470">470</a>
+<a href="#471" id="471">471</a>
+<a href="#472" id="472">472</a>
+<a href="#473" id="473">473</a>
+<a href="#474" id="474">474</a>
+<a href="#475" id="475">475</a>
+<a href="#476" id="476">476</a>
+<a href="#477" id="477">477</a>
+<a href="#478" id="478">478</a>
+<a href="#479" id="479">479</a>
+<a href="#480" id="480">480</a>
+<a href="#481" id="481">481</a>
+<a href="#482" id="482">482</a>
+<a href="#483" id="483">483</a>
+<a href="#484" id="484">484</a>
+<a href="#485" id="485">485</a>
+<a href="#486" id="486">486</a>
+<a href="#487" id="487">487</a>
+<a href="#488" id="488">488</a>
+<a href="#489" id="489">489</a>
+<a href="#490" id="490">490</a>
+<a href="#491" id="491">491</a>
+<a href="#492" id="492">492</a>
+<a href="#493" id="493">493</a>
+<a href="#494" id="494">494</a>
+<a href="#495" id="495">495</a>
+<a href="#496" id="496">496</a>
+<a href="#497" id="497">497</a>
+<a href="#498" id="498">498</a>
+<a href="#499" id="499">499</a>
+<a href="#500" id="500">500</a>
+<a href="#501" id="501">501</a>
+<a href="#502" id="502">502</a>
+<a href="#503" id="503">503</a>
+<a href="#504" id="504">504</a>
+<a href="#505" id="505">505</a>
+<a href="#506" id="506">506</a>
+<a href="#507" id="507">507</a>
+<a href="#508" id="508">508</a>
+<a href="#509" id="509">509</a>
+<a href="#510" id="510">510</a>
+<a href="#511" id="511">511</a>
+<a href="#512" id="512">512</a>
+<a href="#513" id="513">513</a>
+<a href="#514" id="514">514</a>
+<a href="#515" id="515">515</a>
+<a href="#516" id="516">516</a>
+<a href="#517" id="517">517</a>
+<a href="#518" id="518">518</a>
+<a href="#519" id="519">519</a>
+<a href="#520" id="520">520</a>
+<a href="#521" id="521">521</a>
+<a href="#522" id="522">522</a>
+<a href="#523" id="523">523</a>
+<a href="#524" id="524">524</a>
+<a href="#525" id="525">525</a>
+<a href="#526" id="526">526</a>
+<a href="#527" id="527">527</a>
+<a href="#528" id="528">528</a>
+<a href="#529" id="529">529</a>
+<a href="#530" id="530">530</a>
+<a href="#531" id="531">531</a>
+<a href="#532" id="532">532</a>
+<a href="#533" id="533">533</a>
+<a href="#534" id="534">534</a>
+<a href="#535" id="535">535</a>
+<a href="#536" id="536">536</a>
+<a href="#537" id="537">537</a>
+<a href="#538" id="538">538</a>
+<a href="#539" id="539">539</a>
+<a href="#540" id="540">540</a>
+<a href="#541" id="541">541</a>
+<a href="#542" id="542">542</a>
+<a href="#543" id="543">543</a>
+<a href="#544" id="544">544</a>
+<a href="#545" id="545">545</a>
+<a href="#546" id="546">546</a>
+<a href="#547" id="547">547</a>
+<a href="#548" id="548">548</a>
+<a href="#549" id="549">549</a>
+<a href="#550" id="550">550</a>
+<a href="#551" id="551">551</a>
+<a href="#552" id="552">552</a>
+<a href="#553" id="553">553</a>
+<a href="#554" id="554">554</a>
+<a href="#555" id="555">555</a>
+<a href="#556" id="556">556</a>
+<a href="#557" id="557">557</a>
+<a href="#558" id="558">558</a>
+<a href="#559" id="559">559</a>
+<a href="#560" id="560">560</a>
+<a href="#561" id="561">561</a>
+<a href="#562" id="562">562</a>
+<a href="#563" id="563">563</a>
+<a href="#564" id="564">564</a>
+<a href="#565" id="565">565</a>
+<a href="#566" id="566">566</a>
+<a href="#567" id="567">567</a>
+<a href="#568" id="568">568</a>
+<a href="#569" id="569">569</a>
+<a href="#570" id="570">570</a>
+<a href="#571" id="571">571</a>
+<a href="#572" id="572">572</a>
+<a href="#573" id="573">573</a>
+<a href="#574" id="574">574</a>
+<a href="#575" id="575">575</a>
+<a href="#576" id="576">576</a>
+<a href="#577" id="577">577</a>
+<a href="#578" id="578">578</a>
+<a href="#579" id="579">579</a>
+<a href="#580" id="580">580</a>
+<a href="#581" id="581">581</a>
+<a href="#582" id="582">582</a>
+<a href="#583" id="583">583</a>
+<a href="#584" id="584">584</a>
+<a href="#585" id="585">585</a>
+<a href="#586" id="586">586</a>
+<a href="#587" id="587">587</a>
+<a href="#588" id="588">588</a>
+<a href="#589" id="589">589</a>
+<a href="#590" id="590">590</a>
+<a href="#591" id="591">591</a>
+<a href="#592" id="592">592</a>
+<a href="#593" id="593">593</a>
+<a href="#594" id="594">594</a>
+<a href="#595" id="595">595</a>
+<a href="#596" id="596">596</a>
+<a href="#597" id="597">597</a>
+<a href="#598" id="598">598</a>
+<a href="#599" id="599">599</a>
+<a href="#600" id="600">600</a>
+<a href="#601" id="601">601</a>
+<a href="#602" id="602">602</a>
+<a href="#603" id="603">603</a>
+<a href="#604" id="604">604</a>
+<a href="#605" id="605">605</a>
+<a href="#606" id="606">606</a>
+<a href="#607" id="607">607</a>
+<a href="#608" id="608">608</a>
+<a href="#609" id="609">609</a>
+<a href="#610" id="610">610</a>
+<a href="#611" id="611">611</a>
+<a href="#612" id="612">612</a>
+<a href="#613" id="613">613</a>
+<a href="#614" id="614">614</a>
+<a href="#615" id="615">615</a>
+<a href="#616" id="616">616</a>
+<a href="#617" id="617">617</a>
+<a href="#618" id="618">618</a>
+<a href="#619" id="619">619</a>
+<a href="#620" id="620">620</a>
+</pre></div><pre class="rust"><code><span class="comment">// Copyright 2021 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+</span><span class="attr">#![warn(missing_docs)]
+
+#[allow(clippy::undocumented_unsafe_blocks)]
+</span><span class="kw">mod </span>bindings;
+<span class="kw">pub mod </span>operation;
+<span class="kw">mod </span>probe;
+<span class="kw">mod </span>queue;
+<span class="kw">pub mod </span>restriction;
+
+<span class="kw">use </span>std::collections::HashSet;
+<span class="kw">use </span>std::fmt::Debug;
+<span class="kw">use </span>std::fs::File;
+<span class="kw">use </span>std::io::Error <span class="kw">as </span>IOError;
+<span class="kw">use </span>std::os::unix::io::{AsRawFd, FromRawFd, RawFd};
+
+<span class="kw">use </span>bindings::io_uring_params;
+<span class="kw">use </span>operation::{Cqe, FixedFd, OpCode, Operation};
+<span class="kw">use </span>probe::{ProbeWrapper, PROBE_LEN};
+<span class="kw">pub use </span>queue::completion::CQueueError;
+<span class="kw">use </span>queue::completion::CompletionQueue;
+<span class="kw">pub use </span>queue::submission::SQueueError;
+<span class="kw">use </span>queue::submission::SubmissionQueue;
+<span class="kw">use </span>restriction::Restriction;
+<span class="kw">use </span>utils::syscall::SyscallReturnCode;
+
+<span class="comment">// IO_uring operations that we require to be supported by the host kernel.
+</span><span class="kw">const </span>REQUIRED_OPS: [OpCode; <span class="number">2</span>] = [OpCode::Read, OpCode::Write];
+<span class="comment">// Taken from linux/fs/io_uring.c
+</span><span class="kw">const </span>IORING_MAX_FIXED_FILES: usize = <span class="number">1 </span>&lt;&lt; <span class="number">15</span>;
+
+<span class="attr">#[derive(Debug, thiserror::Error, displaydoc::Display)]
+</span><span class="doccomment">/// IoUring Error.
+</span><span class="kw">pub enum </span>IoUringError {
+    <span class="doccomment">/// Error originating in the completion queue: {0}
+    </span>CQueue(CQueueError),
+    <span class="doccomment">/// Could not enable the ring: {0}
+    </span>Enable(IOError),
+    <span class="doccomment">/// A FamStructWrapper operation has failed: {0}
+    </span>Fam(utils::fam::Error),
+    <span class="doccomment">/// The number of ops in the ring is &gt;= CQ::count
+    </span>FullCQueue,
+    <span class="doccomment">/// Fd was not registered: {0}
+    </span>InvalidFixedFd(FixedFd),
+    <span class="doccomment">/// There are no registered fds.
+    </span>NoRegisteredFds,
+    <span class="doccomment">/// Error probing the io_uring subsystem: {0}
+    </span>Probe(IOError),
+    <span class="doccomment">/// Could not register eventfd: {0}
+    </span>RegisterEventfd(IOError),
+    <span class="doccomment">/// Could not register file: {0}
+    </span>RegisterFile(IOError),
+    <span class="doccomment">/// Attempted to register too many files.
+    </span>RegisterFileLimitExceeded,
+    <span class="doccomment">/// Could not register restrictions: {0}
+    </span>RegisterRestrictions(IOError),
+    <span class="doccomment">/// Error calling io_uring_setup: {0}
+    </span>Setup(IOError),
+    <span class="doccomment">/// Error originating in the submission queue: {0}
+    </span>SQueue(SQueueError),
+    <span class="doccomment">/// Required feature is not supported on the host kernel: {0}
+    </span>UnsupportedFeature(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str),
+    <span class="doccomment">/// Required operation is not supported on the host kernel: {0}
+    </span>UnsupportedOperation(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str),
+}
+
+<span class="kw">impl </span>IoUringError {
+    <span class="doccomment">/// Return true if this error is caused by a full submission or completion queue.
+    </span><span class="kw">pub fn </span>is_throttling_err(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="macro">matches!</span>(
+            <span class="self">self</span>,
+            <span class="self">Self</span>::FullCQueue | <span class="self">Self</span>::SQueue(SQueueError::FullQueue)
+        )
+    }
+}
+
+<span class="doccomment">/// Main object representing an io_uring instance.
+</span><span class="attr">#[derive(Debug)]
+</span><span class="kw">pub struct </span>IoUring {
+    registered_fds_count: u32,
+    squeue: SubmissionQueue,
+    cqueue: CompletionQueue,
+    <span class="comment">// Make sure the fd is declared after the queues, so that it isn&#39;t dropped before them.
+    // If we drop the queues after the File, the associated kernel mem will never be freed.
+    // The correct cleanup order is munmap(rings) -&gt; close(fd).
+    // We don&#39;t need to manually drop the fields in order,since Rust has a well defined drop order.
+    </span>fd: File,
+
+    <span class="comment">// The total number of ops. These includes the ops on the submission queue, the in-flight ops
+    // and the ops that are in the CQ, but haven&#39;t been popped yet.
+    </span>num_ops: u32,
+}
+
+<span class="kw">impl </span>IoUring {
+    <span class="doccomment">/// Create a new instance.
+    ///
+    /// # Arguments
+    ///
+    /// * `num_entries` - Requested number of entries in the ring. Will be rounded up to the
+    /// nearest power of two.
+    /// * `files` - Files to be registered for IO.
+    /// * `restrictions` - Vector of [`Restriction`](restriction/enum.Restriction.html)s
+    /// * `eventfd` - Optional eventfd for receiving completion notifications.
+    </span><span class="kw">pub fn </span>new(
+        num_entries: u32,
+        files: Vec&lt;<span class="kw-2">&amp;</span>File&gt;,
+        restrictions: Vec&lt;Restriction&gt;,
+        eventfd: <span class="prelude-ty">Option</span>&lt;RawFd&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, IoUringError&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>params = io_uring_params {
+            <span class="comment">// Create the ring as disabled, so that we may register restrictions.
+            </span>flags: bindings::IORING_SETUP_R_DISABLED,
+
+            ..Default::default()
+        };
+
+        <span class="comment">// SAFETY: Safe because values are valid and we check the return value.
+        </span><span class="kw">let </span>fd = SyscallReturnCode(<span class="kw">unsafe </span>{
+            libc::syscall(
+                libc::SYS_io_uring_setup,
+                num_entries,
+                <span class="kw-2">&amp;mut </span>params <span class="kw">as </span><span class="kw-2">*mut </span>io_uring_params,
+            )
+        })
+        .into_result()
+        .map_err(IoUringError::Setup)<span class="question-mark">?</span>;
+        <span class="comment">// Safe to unwrap because the fd is valid.
+        </span><span class="kw">let </span>fd = RawFd::try_from(fd).unwrap();
+
+        <span class="comment">// SAFETY: Safe because the fd is valid and because this struct owns the fd.
+        </span><span class="kw">let </span>file = <span class="kw">unsafe </span>{ File::from_raw_fd(fd) };
+
+        <span class="self">Self</span>::check_features(params)<span class="question-mark">?</span>;
+
+        <span class="kw">let </span>squeue = SubmissionQueue::new(fd, <span class="kw-2">&amp;</span>params).map_err(IoUringError::SQueue)<span class="question-mark">?</span>;
+        <span class="kw">let </span>cqueue = CompletionQueue::new(fd, <span class="kw-2">&amp;</span>params).map_err(IoUringError::CQueue)<span class="question-mark">?</span>;
+
+        <span class="kw">let </span><span class="kw-2">mut </span>instance = <span class="self">Self </span>{
+            squeue,
+            cqueue,
+            fd: file,
+            registered_fds_count: <span class="number">0</span>,
+            num_ops: <span class="number">0</span>,
+        };
+
+        instance.check_operations()<span class="question-mark">?</span>;
+
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(eventfd) = eventfd {
+            instance.register_eventfd(eventfd)<span class="question-mark">?</span>;
+        }
+
+        instance.register_restrictions(restrictions)<span class="question-mark">?</span>;
+
+        instance.register_files(files)<span class="question-mark">?</span>;
+
+        instance.enable()<span class="question-mark">?</span>;
+
+        <span class="prelude-val">Ok</span>(instance)
+    }
+
+    <span class="doccomment">/// Push an [`Operation`](operation/struct.Operation.html) onto the submission queue.
+    ///
+    /// # Safety
+    /// Unsafe because we pass a raw user_data pointer to the kernel.
+    /// It&#39;s up to the caller to make sure that this value is ever freed (not leaked).
+    </span><span class="kw">pub unsafe fn </span>push&lt;T: Debug&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, op: Operation&lt;T&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), (IoUringError, T)&gt; {
+        <span class="comment">// validate that we actually did register fds
+        </span><span class="kw">let </span>fd = op.fd();
+        <span class="kw">match </span><span class="self">self</span>.registered_fds_count {
+            <span class="number">0 </span>=&gt; <span class="prelude-val">Err</span>((IoUringError::NoRegisteredFds, op.user_data())),
+            len <span class="kw">if </span>fd &gt;= len =&gt; <span class="prelude-val">Err</span>((IoUringError::InvalidFixedFd(fd), op.user_data())),
+            <span class="kw">_ </span>=&gt; {
+                <span class="kw">if </span><span class="self">self</span>.num_ops &gt;= <span class="self">self</span>.cqueue.count() {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>((IoUringError::FullCQueue, op.user_data()));
+                }
+                <span class="self">self</span>.squeue
+                    .push(op.into_sqe())
+                    .map(|res| {
+                        <span class="comment">// This is safe since self.num_ops &lt; IORING_MAX_CQ_ENTRIES (65536)
+                        </span><span class="self">self</span>.num_ops += <span class="number">1</span>;
+                        res
+                    })
+                    .map_err(|err_tuple: (SQueueError, T)| -&gt; (IoUringError, T) {
+                        (IoUringError::SQueue(err_tuple.<span class="number">0</span>), err_tuple.<span class="number">1</span>)
+                    })
+            }
+        }
+    }
+
+    <span class="doccomment">/// Pop a completed entry off the completion queue. Returns `Ok(None)` if there are no entries.
+    /// The type `T` must be the same as the `user_data` type used for `push`-ing the operation.
+    ///
+    /// # Safety
+    /// Unsafe because we reconstruct the `user_data` from a raw pointer passed by the kernel.
+    /// It&#39;s up to the caller to make sure that `T` is the correct type of the `user_data`, that
+    /// the raw pointer is valid and that we have full ownership of that address.
+    </span><span class="kw">pub unsafe fn </span>pop&lt;T: Debug&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Cqe&lt;T&gt;&gt;, IoUringError&gt; {
+        <span class="self">self</span>.cqueue
+            .pop()
+            .map(|maybe_cqe| {
+                maybe_cqe.map(|cqe| {
+                    <span class="comment">// This is safe since the pop-ed CQEs have been previously pushed. However
+                    // we use a saturating_sub for extra safety.
+                    </span><span class="self">self</span>.num_ops = <span class="self">self</span>.num_ops.saturating_sub(<span class="number">1</span>);
+                    cqe
+                })
+            })
+            .map_err(IoUringError::CQueue)
+    }
+
+    <span class="kw">fn </span>do_submit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, min_complete: u32) -&gt; <span class="prelude-ty">Result</span>&lt;u32, IoUringError&gt; {
+        <span class="self">self</span>.squeue
+            .submit(min_complete)
+            .map_err(IoUringError::SQueue)
+    }
+
+    <span class="doccomment">/// Submit all operations but don&#39;t wait for any completions.
+    </span><span class="kw">pub fn </span>submit(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;u32, IoUringError&gt; {
+        <span class="self">self</span>.do_submit(<span class="number">0</span>)
+    }
+
+    <span class="doccomment">/// Submit all operations and wait for their completion.
+    </span><span class="kw">pub fn </span>submit_and_wait_all(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;u32, IoUringError&gt; {
+        <span class="self">self</span>.do_submit(<span class="self">self</span>.num_ops)
+    }
+
+    <span class="doccomment">/// Return the number of operations currently on the submission queue.
+    </span><span class="kw">pub fn </span>pending_sqes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;u32, IoUringError&gt; {
+        <span class="self">self</span>.squeue.pending().map_err(IoUringError::SQueue)
+    }
+
+    <span class="doccomment">/// A total of the number of ops in the submission and completion queues, as well as the
+    /// in-flight ops.
+    </span><span class="kw">pub fn </span>num_ops(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
+        <span class="self">self</span>.num_ops
+    }
+
+    <span class="kw">fn </span>enable(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), IoUringError&gt; {
+        <span class="comment">// SAFETY: Safe because values are valid and we check the return value.
+        </span>SyscallReturnCode(<span class="kw">unsafe </span>{
+            libc::syscall(
+                libc::SYS_io_uring_register,
+                <span class="self">self</span>.fd.as_raw_fd(),
+                bindings::IORING_REGISTER_ENABLE_RINGS,
+                std::ptr::null::&lt;libc::c_void&gt;(),
+                <span class="number">0</span>,
+            )
+        })
+        .into_empty_result()
+        .map_err(IoUringError::Enable)
+    }
+
+    <span class="kw">fn </span>register_files(<span class="kw-2">&amp;mut </span><span class="self">self</span>, files: Vec&lt;<span class="kw-2">&amp;</span>File&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), IoUringError&gt; {
+        <span class="kw">if </span>files.is_empty() {
+            <span class="comment">// No-op.
+            </span><span class="kw">return </span><span class="prelude-val">Ok</span>(());
+        }
+
+        <span class="kw">if </span>(<span class="self">self</span>.registered_fds_count <span class="kw">as </span>usize).saturating_add(files.len()) &gt; IORING_MAX_FIXED_FILES
+        {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(IoUringError::RegisterFileLimitExceeded);
+        }
+
+        <span class="comment">// SAFETY: Safe because values are valid and we check the return value.
+        </span>SyscallReturnCode(<span class="kw">unsafe </span>{
+            libc::syscall(
+                libc::SYS_io_uring_register,
+                <span class="self">self</span>.fd.as_raw_fd(),
+                bindings::IORING_REGISTER_FILES,
+                files
+                    .iter()
+                    .map(|f| f.as_raw_fd())
+                    .collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;()
+                    .as_mut_slice()
+                    .as_mut_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                files.len(),
+            )
+        })
+        .into_empty_result()
+        .map_err(IoUringError::RegisterFile)<span class="question-mark">?</span>;
+
+        <span class="comment">// Safe to truncate since files.len() &lt; IORING_MAX_FIXED_FILES
+        </span><span class="self">self</span>.registered_fds_count += u32::try_from(files.len()).unwrap();
+        <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="kw">fn </span>register_eventfd(<span class="kw-2">&amp;</span><span class="self">self</span>, fd: RawFd) -&gt; <span class="prelude-ty">Result</span>&lt;(), IoUringError&gt; {
+        <span class="comment">// SAFETY: Safe because values are valid and we check the return value.
+        </span>SyscallReturnCode(<span class="kw">unsafe </span>{
+            libc::syscall(
+                libc::SYS_io_uring_register,
+                <span class="self">self</span>.fd.as_raw_fd(),
+                bindings::IORING_REGISTER_EVENTFD,
+                (<span class="kw-2">&amp;</span>fd) <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="number">1</span>,
+            )
+        })
+        .into_empty_result()
+        .map_err(IoUringError::RegisterEventfd)
+    }
+
+    <span class="kw">fn </span>register_restrictions(<span class="kw-2">&amp;</span><span class="self">self</span>, restrictions: Vec&lt;Restriction&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), IoUringError&gt; {
+        <span class="kw">if </span>restrictions.is_empty() {
+            <span class="comment">// No-op.
+            </span><span class="kw">return </span><span class="prelude-val">Ok</span>(());
+        }
+        <span class="comment">// SAFETY: Safe because values are valid and we check the return value.
+        </span>SyscallReturnCode(<span class="kw">unsafe </span>{
+            libc::syscall(
+                libc::SYS_io_uring_register,
+                <span class="self">self</span>.fd.as_raw_fd(),
+                bindings::IORING_REGISTER_RESTRICTIONS,
+                restrictions
+                    .iter()
+                    .map(bindings::io_uring_restriction::from)
+                    .collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;()
+                    .as_mut_slice()
+                    .as_mut_ptr(),
+                restrictions.len(),
+            )
+        })
+        .into_empty_result()
+        .map_err(IoUringError::RegisterRestrictions)
+    }
+
+    <span class="kw">fn </span>check_features(params: io_uring_params) -&gt; <span class="prelude-ty">Result</span>&lt;(), IoUringError&gt; {
+        <span class="comment">// We require that the host kernel will never drop completed entries due to an (unlikely)
+        // overflow in the completion queue.
+        // This feature is supported for kernels greater than 5.7.
+        // An alternative fix would be to keep an internal counter that tracks the number of
+        // submitted entries that haven&#39;t been completed and makes sure it doesn&#39;t exceed
+        // (2 * num_entries).
+        </span><span class="kw">if </span>(params.features &amp; bindings::IORING_FEAT_NODROP) == <span class="number">0 </span>{
+            <span class="kw">return </span><span class="prelude-val">Err</span>(IoUringError::UnsupportedFeature(<span class="string">&quot;IORING_FEAT_NODROP&quot;</span>));
+        }
+
+        <span class="prelude-val">Ok</span>(())
+    }
+
+    <span class="kw">fn </span>check_operations(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), IoUringError&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>probes = ProbeWrapper::new(PROBE_LEN).map_err(IoUringError::Fam)<span class="question-mark">?</span>;
+
+        <span class="comment">// SAFETY: Safe because values are valid and we check the return value.
+        </span>SyscallReturnCode(<span class="kw">unsafe </span>{
+            libc::syscall(
+                libc::SYS_io_uring_register,
+                <span class="self">self</span>.fd.as_raw_fd(),
+                bindings::IORING_REGISTER_PROBE,
+                probes.as_mut_fam_struct_ptr(),
+                PROBE_LEN,
+            )
+        })
+        .into_empty_result()
+        .map_err(IoUringError::Probe)<span class="question-mark">?</span>;
+
+        <span class="kw">let </span>supported_opcodes: HashSet&lt;u8&gt; = probes
+            .as_slice()
+            .iter()
+            .filter(|op| ((u32::from(op.flags)) &amp; bindings::IO_URING_OP_SUPPORTED) != <span class="number">0</span>)
+            .map(|op| op.op)
+            .collect();
+
+        <span class="kw">for </span>opcode <span class="kw">in </span>REQUIRED_OPS.iter() {
+            <span class="kw">if </span>!supported_opcodes.contains(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span>opcode <span class="kw">as </span>u8)) {
+                <span class="kw">return </span><span class="prelude-val">Err</span>(IoUringError::UnsupportedOperation((<span class="kw-2">*</span>opcode).into()));
+            }
+        }
+
+        <span class="prelude-val">Ok</span>(())
+    }
+}
+
+<span class="attr">#[cfg(test)]
+</span><span class="kw">mod </span>tests {
+    <span class="attr">#![allow(clippy::undocumented_unsafe_blocks)]
+    </span><span class="kw">use </span>std::os::unix::fs::FileExt;
+
+    <span class="kw">use </span>proptest::prelude::<span class="kw-2">*</span>;
+    <span class="kw">use </span>proptest::strategy::Strategy;
+    <span class="kw">use </span>proptest::test_runner::{Config, TestRunner};
+    <span class="kw">use </span>utils::kernel_version::{min_kernel_version_for_io_uring, KernelVersion};
+    <span class="kw">use </span>utils::skip_if_io_uring_unsupported;
+    <span class="kw">use </span>utils::syscall::SyscallReturnCode;
+    <span class="kw">use </span>utils::tempfile::TempFile;
+    <span class="kw">use </span>vm_memory::VolatileMemory;
+
+    <span class="doccomment">/// -------------------------------------
+    /// BEGIN PROPERTY BASED TESTING
+    </span><span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use </span><span class="kw">crate</span>::vstate::memory::{Bytes, MmapRegion};
+
+    <span class="kw">fn </span>drain_cqueue(ring: <span class="kw-2">&amp;mut </span>IoUring) {
+        <span class="kw">while let </span><span class="prelude-val">Some</span>(entry) = <span class="kw">unsafe </span>{ ring.pop::&lt;u32&gt;().unwrap() } {
+            entry.result().unwrap();
+
+            <span class="comment">// Assert that there were no partial writes.
+            </span><span class="kw">let </span>count = entry.result().unwrap();
+            <span class="kw">let </span>user_data = entry.user_data();
+            <span class="macro">assert_eq!</span>(count, user_data);
+        }
+    }
+
+    <span class="kw">fn </span>setup_mem_region(len: usize) -&gt; MmapRegion {
+        <span class="kw">const </span>PROT: i32 = libc::PROT_READ | libc::PROT_WRITE;
+        <span class="kw">const </span>FLAGS: i32 = libc::MAP_ANONYMOUS | libc::MAP_PRIVATE;
+
+        <span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ libc::mmap(std::ptr::null_mut(), len, PROT, FLAGS, -<span class="number">1</span>, <span class="number">0</span>) };
+
+        <span class="kw">if </span>(ptr <span class="kw">as </span>isize) &lt; <span class="number">0 </span>{
+            <span class="macro">panic!</span>(<span class="string">&quot;Mmap failed with {}&quot;</span>, std::io::Error::last_os_error());
+        }
+
+        <span class="kw">unsafe </span>{
+            <span class="comment">// Use the raw version because we want to unmap memory ourselves.
+            </span>MmapRegion::build_raw(ptr.cast::&lt;u8&gt;(), len, PROT, FLAGS).unwrap()
+        }
+    }
+
+    <span class="kw">fn </span>free_mem_region(region: MmapRegion) {
+        <span class="kw">unsafe </span>{ libc::munmap(region.as_ptr().cast::&lt;libc::c_void&gt;(), region.len()) };
+    }
+
+    <span class="kw">fn </span>read_entire_mem_region(region: <span class="kw-2">&amp;</span>MmapRegion) -&gt; Vec&lt;u8&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>result = <span class="macro">vec!</span>[<span class="number">0u8</span>; region.len()];
+        <span class="kw">let </span>count = region.as_volatile_slice().read(<span class="kw-2">&amp;mut </span>result[..], <span class="number">0</span>).unwrap();
+        <span class="macro">assert_eq!</span>(count, region.len());
+        result
+    }
+
+    <span class="attr">#[allow(clippy::let_with_type_underscore)]
+    </span><span class="kw">fn </span>arbitrary_rw_operation(file_len: u32) -&gt; <span class="kw">impl </span>Strategy&lt;Value = Operation&lt;u32&gt;&gt; {
+        (
+            <span class="comment">// OpCode: 0 -&gt; Write, 1 -&gt; Read.
+            </span><span class="number">0</span>..<span class="number">2</span>,
+            <span class="comment">// Length of the operation.
+            </span><span class="number">0u32</span>..file_len,
+        )
+            .prop_flat_map(<span class="kw">move </span>|(op, len)| {
+                (
+                    <span class="comment">// op
+                    </span>Just(op),
+                    <span class="comment">// len
+                    </span>Just(len),
+                    <span class="comment">// offset
+                    </span>(<span class="number">0u32</span>..(file_len - len)),
+                    <span class="comment">// mem region offset
+                    </span>(<span class="number">0u32</span>..(file_len - len)),
+                )
+            })
+            .prop_map(<span class="kw">move </span>|(op, len, off, mem_off)| {
+                <span class="comment">// We actually use an offset instead of an address, because we later need to modify
+                // the memory region on which the operation is performed, based on the opcode.
+                </span><span class="kw">let </span><span class="kw-2">mut </span>operation = <span class="kw">match </span>op {
+                    <span class="number">0 </span>=&gt; Operation::write(<span class="number">0</span>, mem_off <span class="kw">as </span>usize, len, off.into(), len),
+                    <span class="kw">_ </span>=&gt; Operation::read(<span class="number">0</span>, mem_off <span class="kw">as </span>usize, len, off.into(), len),
+                };
+
+                <span class="comment">// Make sure the operations are executed in-order, so that they are equivalent to
+                // their sync counterparts.
+                </span>operation.set_linked();
+                operation
+            })
+    }
+
+    <span class="attr">#[test]
+    </span><span class="kw">fn </span>proptest_read_write_correctness() {
+        <span class="macro">skip_if_io_uring_unsupported!</span>();
+        <span class="comment">// Performs a sequence of random read and write operations on two files, with sync and
+        // async IO, respectively.
+        // Verifies that the files are identical afterwards and that the read operations returned
+        // the same values.
+
+        </span><span class="kw">const </span>FILE_LEN: u32 = <span class="number">1024</span>;
+        <span class="comment">// The number of arbitrary operations in a testrun.
+        </span><span class="kw">const </span>OPS_COUNT: usize = <span class="number">2000</span>;
+        <span class="kw">const </span>RING_SIZE: u32 = <span class="number">128</span>;
+
+        <span class="comment">// Allocate and init memory for holding the data that will be written into the file.
+        </span><span class="kw">let </span>write_mem_region = setup_mem_region(FILE_LEN <span class="kw">as </span>usize);
+
+        <span class="kw">let </span>sync_read_mem_region = setup_mem_region(FILE_LEN <span class="kw">as </span>usize);
+
+        <span class="kw">let </span>async_read_mem_region = setup_mem_region(FILE_LEN <span class="kw">as </span>usize);
+
+        <span class="comment">// Init the write buffers with 0,1,2,...
+        </span><span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..FILE_LEN {
+            write_mem_region
+                .as_volatile_slice()
+                .write_obj(u8::try_from(i % u32::from(u8::MAX)).unwrap(), i <span class="kw">as </span>usize)
+                .unwrap();
+        }
+
+        <span class="comment">// Create two files and init their contents to zeros.
+        </span><span class="kw">let </span>init_contents = [<span class="number">0u8</span>; FILE_LEN <span class="kw">as </span>usize];
+        <span class="kw">let </span>file_async = TempFile::new().unwrap().into_file();
+        file_async.write_all_at(<span class="kw-2">&amp;</span>init_contents, <span class="number">0</span>).unwrap();
+
+        <span class="kw">let </span>file_sync = TempFile::new().unwrap().into_file();
+        file_sync.write_all_at(<span class="kw-2">&amp;</span>init_contents, <span class="number">0</span>).unwrap();
+
+        <span class="comment">// Create a custom test runner since we had to add some state buildup to the test.
+        // (Referring to the the above initializations).
+        </span><span class="kw">let </span><span class="kw-2">mut </span>runner = TestRunner::new(Config {
+            <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+            </span>cases: <span class="number">1000</span>, <span class="comment">// Should run for about a minute.
+            // Lower the cases on ARM since they take longer and cause coverage test timeouts.
+            </span><span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+            </span>cases: <span class="number">500</span>,
+            ..Config::default()
+        });
+
+        runner
+            .run(
+                <span class="kw-2">&amp;</span>proptest::collection::vec(arbitrary_rw_operation(FILE_LEN), OPS_COUNT),
+                |set| {
+                    <span class="kw">let </span><span class="kw-2">mut </span>ring =
+                        IoUring::new(RING_SIZE, <span class="macro">vec!</span>[<span class="kw-2">&amp;</span>file_async], <span class="macro">vec!</span>[], <span class="prelude-val">None</span>).unwrap();
+
+                    <span class="kw">for </span><span class="kw-2">mut </span>operation <span class="kw">in </span>set {
+                        <span class="comment">// Perform the sync op.
+                        </span><span class="kw">let </span>count = <span class="kw">match </span>operation.opcode {
+                            OpCode::Write =&gt; u32::try_from(
+                                SyscallReturnCode(<span class="kw">unsafe </span>{
+                                    libc::pwrite(
+                                        file_sync.as_raw_fd(),
+                                        write_mem_region.as_ptr().add(operation.addr.unwrap())
+                                            <span class="kw">as </span><span class="kw-2">*const </span>libc::c_void,
+                                        operation.len.unwrap() <span class="kw">as </span>usize,
+                                        i64::try_from(operation.offset.unwrap()).unwrap(),
+                                    )
+                                })
+                                .into_result()
+                                .unwrap(),
+                            )
+                            .unwrap(),
+                            OpCode::Read =&gt; u32::try_from(
+                                SyscallReturnCode(<span class="kw">unsafe </span>{
+                                    libc::pread(
+                                        file_sync.as_raw_fd(),
+                                        sync_read_mem_region
+                                            .as_ptr()
+                                            .add(operation.addr.unwrap())
+                                            .cast::&lt;libc::c_void&gt;(),
+                                        operation.len.unwrap() <span class="kw">as </span>usize,
+                                        i64::try_from(operation.offset.unwrap()).unwrap(),
+                                    )
+                                })
+                                .into_result()
+                                .unwrap(),
+                            )
+                            .unwrap(),
+                            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+                        };
+
+                        <span class="kw">if </span>count &lt; operation.len.unwrap() {
+                            <span class="macro">panic!</span>(<span class="string">&quot;Synchronous partial operation: {:?}&quot;</span>, operation);
+                        }
+
+                        <span class="comment">// Perform the async op.
+
+                        // Modify the operation address based on the opcode.
+                        </span><span class="kw">match </span>operation.opcode {
+                            OpCode::Write =&gt; {
+                                operation.addr = <span class="prelude-val">Some</span>(<span class="kw">unsafe </span>{
+                                    write_mem_region.as_ptr().add(operation.addr.unwrap()) <span class="kw">as </span>usize
+                                })
+                            }
+                            OpCode::Read =&gt; {
+                                operation.addr = <span class="prelude-val">Some</span>(<span class="kw">unsafe </span>{
+                                    async_read_mem_region.as_ptr().add(operation.addr.unwrap())
+                                        <span class="kw">as </span>usize
+                                })
+                            }
+                            <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
+                        };
+
+                        <span class="comment">// If the ring is full, submit and wait.
+                        </span><span class="kw">if </span>ring.pending_sqes().unwrap() == RING_SIZE {
+                            ring.submit_and_wait_all().unwrap();
+                            drain_cqueue(<span class="kw-2">&amp;mut </span>ring);
+                        }
+                        <span class="kw">unsafe </span>{
+                            ring.push(operation).unwrap();
+                        }
+                    }
+
+                    <span class="comment">// Submit any left async ops and wait.
+                    </span>ring.submit_and_wait_all().unwrap();
+                    drain_cqueue(<span class="kw-2">&amp;mut </span>ring);
+
+                    <span class="comment">// Get the write result for async IO.
+                    </span><span class="kw">let </span><span class="kw-2">mut </span>async_result = [<span class="number">0u8</span>; FILE_LEN <span class="kw">as </span>usize];
+                    file_async.read_exact_at(<span class="kw-2">&amp;mut </span>async_result, <span class="number">0</span>).unwrap();
+
+                    <span class="comment">// Get the write result for sync IO.
+                    </span><span class="kw">let </span><span class="kw-2">mut </span>sync_result = [<span class="number">0u8</span>; FILE_LEN <span class="kw">as </span>usize];
+                    file_sync.read_exact_at(<span class="kw-2">&amp;mut </span>sync_result, <span class="number">0</span>).unwrap();
+
+                    <span class="comment">// Now compare the write results.
+                    </span><span class="macro">assert_eq!</span>(sync_result, async_result);
+
+                    <span class="comment">// Now compare the read results for sync and async IO.
+                    </span><span class="macro">assert_eq!</span>(
+                        read_entire_mem_region(<span class="kw-2">&amp;</span>sync_read_mem_region),
+                        read_entire_mem_region(<span class="kw-2">&amp;</span>async_read_mem_region)
+                    );
+
+                    <span class="prelude-val">Ok</span>(())
+                },
+            )
+            .unwrap();
+
+        <span class="comment">// Clean up the memory.
+        </span>free_mem_region(write_mem_region);
+        free_mem_region(sync_read_mem_region);
+        free_mem_region(async_read_mem_region);
+    }
+}
+</code></pre></div></section></main></body></html>

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["ETHERTYPE_ARP","ETHERTYPE_IPV4","PAYLOAD_OFFSET"],"enum":["Error"],"struct":["EthernetFrame"]};

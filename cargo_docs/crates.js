@@ -1,0 +1,1 @@
+window.ALL_CRATES = ["api_server","clippy_tracing","cpu_template_helper","firecracker","jailer","log_instrument","log_instrument_macros","rebase_snap","seccompiler","seccompiler_bin","snapshot","snapshot_editor","utils","vmm"];

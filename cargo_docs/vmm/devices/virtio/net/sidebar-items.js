@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["MAX_BUFFER_SIZE","NET_NUM_QUEUES","NET_QUEUE_SIZES","RX_INDEX","TX_INDEX"],"enum":["NetError","NetQueue","TapError"],"mod":["device","metrics","persist"],"struct":["Tap"]};

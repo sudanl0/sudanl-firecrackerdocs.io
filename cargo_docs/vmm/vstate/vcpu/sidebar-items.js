@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["VCPU_RTSIG_OFFSET"],"enum":["VcpuEmulation","VcpuError","VcpuEvent","VcpuResponse"],"mod":["aarch64"],"struct":["StartThreadedError","Vcpu","VcpuConfig","VcpuHandle","VcpuSendEventError"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["PassiveOpenError","RecvError","WriteNextError"],"struct":["Connection","RecvStatusFlags"],"type":["PayloadSource"]};

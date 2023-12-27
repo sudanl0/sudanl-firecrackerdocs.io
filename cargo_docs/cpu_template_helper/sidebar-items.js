@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_HelperError"],"enum":["Command","FingerprintOperation","HelperError","TemplateOperation"],"fn":["main","run"],"mod":["fingerprint","template","utils"],"struct":["Cli"]};

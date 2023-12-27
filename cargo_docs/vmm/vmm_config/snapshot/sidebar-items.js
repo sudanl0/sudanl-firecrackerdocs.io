@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["MemBackendType","SnapshotType","VmState"],"struct":["CreateSnapshotParams","LoadSnapshotConfig","LoadSnapshotParams","MemBackendConfig","Version","Vm"]};

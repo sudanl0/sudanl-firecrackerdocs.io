@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["NOTIFY_REG_OFFSET","TYPE_BALLOON","TYPE_BLOCK","TYPE_NET","TYPE_RNG"],"enum":["ActivateError"],"mod":["balloon","block_common","device","gen","iovec","mmio","net","persist","queue","rng","vhost_user","vhost_user_block","vhost_user_metrics","virtio_block","vsock"],"trait":["AsAny"]};

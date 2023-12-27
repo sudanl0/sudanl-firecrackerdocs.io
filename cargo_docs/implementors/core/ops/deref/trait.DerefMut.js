@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"vmm":[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.73.0/core/ops/deref/trait.DerefMut.html\" title=\"trait core::ops::deref::DerefMut\">DerefMut</a> for <a class=\"struct\" href=\"vmm/devices/legacy/rtc_pl031/struct.RTCDevice.html\" title=\"struct vmm::devices::legacy::rtc_pl031::RTCDevice\">RTCDevice</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

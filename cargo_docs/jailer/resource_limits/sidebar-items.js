@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["FSIZE_ARG","NO_FILE","NO_FILE_ARG"],"enum":["Resource"],"struct":["ResourceLimits"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["VhostUserError"],"struct":["VhostUserHandleImpl"],"trait":["VhostUserHandleBackend"],"type":["VhostUserHandle"]};

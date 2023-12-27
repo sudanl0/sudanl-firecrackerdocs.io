@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["TYPE_VSOCK","VSOCK_DEV_ID"],"enum":["VsockError","VsockUnixBackendError"],"mod":["metrics","persist"],"struct":["Vsock","VsockUnixBackend"],"trait":["VsockBackend","VsockChannel","VsockEpollListener"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["NetworkInterfaceError"],"struct":["NetBuilder","NetworkInterfaceConfig","NetworkInterfaceUpdateConfig"]};

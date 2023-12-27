@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["QueueError"],"struct":["DescriptorChain","DescriptorIterator","Queue"]};

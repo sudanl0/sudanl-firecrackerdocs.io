@@ -1,0 +1,3 @@
+(function() {var implementors = {
+"vmm":[["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.73.0/std/io/trait.Write.html\" title=\"trait std::io::Write\">Write</a> for <a class=\"enum\" href=\"vmm/devices/legacy/serial/enum.SerialOut.html\" title=\"enum vmm::devices::legacy::serial::SerialOut\">SerialOut</a>"],["impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.73.0/std/io/trait.Write.html\" title=\"trait std::io::Write\">Write</a> for <a class=\"struct\" href=\"vmm/devices/virtio/net/struct.Tap.html\" title=\"struct vmm::devices::virtio::net::Tap\">Tap</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

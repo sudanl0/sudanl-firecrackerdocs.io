@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["NUM_QUEUES","QUEUE_SIZE"],"enum":["VhostUserBlockError"],"mod":["device","event_handler","persist"]};

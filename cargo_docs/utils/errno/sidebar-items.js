@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["errno_result"],"struct":["Error"],"type":["Result"]};

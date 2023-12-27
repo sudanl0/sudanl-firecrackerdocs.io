@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["DESERIALIZATION_BYTES_LIMIT","THREAD_CATEGORIES","_DERIVE_Display_FOR_FilterError"],"enum":["FilterError","SeccompConfig"],"fn":["filter_thread_categories","get_custom_filters","get_default_filters","get_filters"]};

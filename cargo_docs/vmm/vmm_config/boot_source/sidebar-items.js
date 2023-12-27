@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["DEFAULT_KERNEL_CMDLINE"],"enum":["BootSourceConfigError"],"struct":["BootConfig","BootSource","BootSourceConfig"]};

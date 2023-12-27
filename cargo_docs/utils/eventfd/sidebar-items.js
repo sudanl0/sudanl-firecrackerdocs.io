@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["EFD_CLOEXEC","EFD_NONBLOCK","EFD_SEMAPHORE"],"struct":["EventFd"]};

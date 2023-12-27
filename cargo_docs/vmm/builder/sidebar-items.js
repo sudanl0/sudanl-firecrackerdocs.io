@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["BuildMicrovmFromSnapshotError","StartMicrovmError"],"fn":["build_and_boot_microvm","build_microvm_for_boot","build_microvm_from_snapshot","configure_system_for_boot","setup_interrupt_controller","setup_serial_device"]};

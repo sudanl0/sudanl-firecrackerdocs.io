@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["balloon","boot_source","drive","entropy","instance_info","machine_config","metrics","mmds","net","snapshot","vsock"],"struct":["RateLimiterConfig","RateLimiterUpdate","TokenBucketConfig"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["StaticCpuTemplate"],"mod":["v1n1"]};

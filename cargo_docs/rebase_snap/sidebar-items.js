@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["BASE_FILE","DEPRECATION_MSG","DIFF_FILE","REBASE_SNAP_VERSION","_DERIVE_Display_FOR_FileError","_DERIVE_Display_FOR_RebaseSnapError"],"enum":["FileError","RebaseSnapError"],"fn":["build_arg_parser","get_files","main","main_exec","rebase"]};

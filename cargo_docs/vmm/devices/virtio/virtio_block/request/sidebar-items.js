@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["IoErr","ProcessingResult","RequestType"],"struct":["FinishedRequest","PendingRequest","Request","RequestHeader"]};

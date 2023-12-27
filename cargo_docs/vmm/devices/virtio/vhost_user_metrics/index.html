@@ -1,0 +1,81 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Defines the metrics system for vhost-user devices."><title>vmm::devices::virtio::vhost_user_metrics - Rust</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="logo-container" href="../../../../vmm/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2></h2></nav><nav class="sidebar"><a class="logo-container" href="../../../../vmm/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><h2 class="location"><a href="#">Module vhost_user_metrics</a></h2><div class="sidebar-elems"><section><ul class="block"><li><a href="#structs">Structs</a></li><li><a href="#functions">Functions</a></li></ul></section></div></nav><main><div class="width-limiter"><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="main-heading"><h1>Module <a href="../../../index.html">vmm</a>::<wbr><a href="../../index.html">devices</a>::<wbr><a href="../index.html">virtio</a>::<wbr><a class="mod" href="#">vhost_user_metrics</a><button id="copy-path" title="Copy item path to clipboard"><img src="../../../../static.files/clipboard-7571035ce49a181d.svg" width="19" height="18" alt="Copy item path"></button></h1><span class="out-of-band"><a class="src" href="../../../../src/vmm/devices/virtio/vhost_user_metrics.rs.html#4-191">source</a> · <button id="toggle-all-docs" title="collapse all docs">[<span>&#x2212;</span>]</button></span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p>Defines the metrics system for vhost-user devices.</p>
+<h2 id="metrics-format"><a href="#metrics-format">Metrics format</a></h2>
+<p>The metrics are flushed in JSON when requested by vmm::logger::metrics::METRICS.write().</p>
+<h3 id="json-example-with-metrics"><a href="#json-example-with-metrics">JSON example with metrics:</a></h3><div class="example-wrap"><pre class="language-json"><code>{
+ &quot;vhost_user_{mod}_id0&quot;: {
+    &quot;activate_fails&quot;: &quot;SharedIncMetric&quot;,
+    &quot;cfg_fails&quot;: &quot;SharedIncMetric&quot;,
+    &quot;init_time_us&quot;: SharedStoreMetric,
+    &quot;activate_time_us&quot;: SharedStoreMetric,
+    &quot;config_change_time_us&quot;: SharedStoreMetric,
+ }
+ &quot;vhost_user_{mod}_id1&quot;: {
+    &quot;activate_fails&quot;: &quot;SharedIncMetric&quot;,
+    &quot;cfg_fails&quot;: &quot;SharedIncMetric&quot;,
+    &quot;init_time_us&quot;: SharedStoreMetric,
+    &quot;activate_time_us&quot;: SharedStoreMetric,
+    &quot;config_change_time_us&quot;: SharedStoreMetric,
+ }
+ ...
+ &quot;vhost_user_{mod}_idN&quot;: {
+    &quot;activate_fails&quot;: &quot;SharedIncMetric&quot;,
+    &quot;cfg_fails&quot;: &quot;SharedIncMetric&quot;,
+    &quot;init_time_us&quot;: SharedStoreMetric,
+    &quot;activate_time_us&quot;: SharedStoreMetric,
+    &quot;config_change_time_us&quot;: SharedStoreMetric,
+ }
+}
+</code></pre></div>
+<p>Each <code>vhost_user</code> field in the example above is a serializable <code>VhostUserDeviceMetrics</code>
+structure collecting metrics such as <code>activate_fails</code>, <code>cfg_fails</code>, <code>init_time_us</code>,
+<code>activate_time_us</code> and <code>config_change_time_us</code> for the vhost_user device.
+For vhost-user block device having endpoint “/drives/drv0” the emitted metrics would be
+<code>vhost_user_block_drv0</code>.
+For vhost-user block device having endpoint “/drives/drvN” the emitted metrics would be
+<code>vhost_user_block_drvN</code>.
+Aggregate metrics for <code>vhost_user</code> if <code>not</code> emitted as it can be easily obtained in
+typical observability tools.</p>
+<h2 id="design"><a href="#design">Design</a></h2>
+<p>The main design goals of this system are:</p>
+<ul>
+<li>
+<p>To improve vhost_user device metrics by logging them at per device granularity.</p>
+</li>
+<li>
+<p><code>vhost_user</code> is a new device with no metrics emitted before so, backward compatibility doesn’t
+come into picture like it was in the case of block/net devices. And since, metrics can be
+easily aggregated using typical observability tools, we chose not to provide aggregate
+vhost_user metrics.</p>
+</li>
+<li>
+<p>Rely on <code>serde</code> to provide the actual serialization for writing the metrics.</p>
+</li>
+<li>
+<p>Since all metrics start at 0, we implement the <code>Default</code> trait via derive for all of them, to
+avoid having to initialize everything by hand.</p>
+</li>
+<li>
+<p>Follow the design of Block and Net device metrics and use a map of vhost_user device name and
+corresponding metrics.</p>
+</li>
+<li>
+<p>Metrics are flushed with key <code>vhost_user_{module_specific_name}</code> and each module sets an
+appropriate <code>module_specific_name</code> in the format <code>{mod}_{id}</code>. e.g. vhost-user block device in
+this commit set this as <code>format!(&quot;{}_{}&quot;, &quot;block_&quot;, config.drive_id.clone());</code> This way
+vhost_user_metrics stay generic while the specific vhost_user devices can have their unique
+metrics.</p>
+</li>
+</ul>
+<p>The system implements 2 type of metrics:</p>
+<ul>
+<li>Shared Incremental Metrics (SharedIncMetrics) - dedicated for the metrics which need a counter
+(i.e the number of times activating a device failed). These metrics are reset upon flush.</li>
+<li>Shared Store Metrics (SharedStoreMetrics) - are targeted at keeping a persistent value, it is
+<code>not</code> intended to act as a counter (i.e for measure the process start up time for example).
+We add VhostUserDeviceMetrics entries from vhost_user_metrics::METRICS into vhost_user device
+instead of vhost_user device having individual separate VhostUserDeviceMetrics entries because
+vhost_user device is not accessible from signal handlers to flush metrics and
+vhost_user_metrics::METRICS is.</li>
+</ul>
+</div></details><h2 id="structs" class="small-section-header"><a href="#structs">Structs</a></h2><ul class="item-table"><li><div class="item-name"><a class="struct" href="struct.VhostUserDeviceMetrics.html" title="struct vmm::devices::virtio::vhost_user_metrics::VhostUserDeviceMetrics">VhostUserDeviceMetrics</a></div><div class="desc docblock-short">vhost_user Device associated metrics.</div></li><li><div class="item-name"><a class="struct" href="struct.VhostUserMetricsPerDevice.html" title="struct vmm::devices::virtio::vhost_user_metrics::VhostUserMetricsPerDevice">VhostUserMetricsPerDevice</a></div><div class="desc docblock-short">map of vhost_user drive id and metrics
+this should be protected by a lock before accessing.</div></li></ul><h2 id="functions" class="small-section-header"><a href="#functions">Functions</a></h2><ul class="item-table"><li><div class="item-name"><a class="fn" href="fn.flush_metrics.html" title="fn vmm::devices::virtio::vhost_user_metrics::flush_metrics">flush_metrics</a></div><div class="desc docblock-short">This function facilitates serialization of vhost_user device metrics.</div></li></ul></section></div></main></body></html>

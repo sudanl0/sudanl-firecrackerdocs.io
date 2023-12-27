@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["DEFAULT_BOOT_ARGS","DEFAULT_KERNEL_IMAGE","NOISY_KERNEL_IMAGE"],"fn":["kernel_image_path"],"struct":["MockBootSourceConfig","MockVmConfig","MockVmResources"]};

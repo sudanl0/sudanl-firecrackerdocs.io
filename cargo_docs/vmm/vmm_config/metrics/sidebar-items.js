@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["MetricsConfigError"],"fn":["init_metrics"],"struct":["MetricsConfig"]};

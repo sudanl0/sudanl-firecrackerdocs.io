@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["custom_cpu_template","static_cpu_templates","test_utils"],"struct":["CpuConfiguration","CpuConfigurationError"]};

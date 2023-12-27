@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["MMIO_MEM_SIZE","MMIO_MEM_START"],"enum":["ConfigurationError"],"fn":["arch_memory_regions","configure_system","get_kernel_start","initrd_load_addr"],"mod":["gic","layout","regs","vcpu"],"trait":["DeviceInfoForFDT"]};

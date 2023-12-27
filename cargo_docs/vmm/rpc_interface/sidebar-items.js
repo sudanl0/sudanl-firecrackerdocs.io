@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["BuildMicrovmFromRequestsError","LoadSnapshotError","VmmAction","VmmActionError","VmmData"],"struct":["PrebootApiController","RuntimeApiController"],"type":["ApiRequest","ApiResponse"]};

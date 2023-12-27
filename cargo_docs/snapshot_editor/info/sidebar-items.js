@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_InfoVmStateError"],"enum":["InfoVmStateError","InfoVmStateSubCommand"],"fn":["info","info_vcpu_states","info_version","info_vmstate","info_vmstate_command"]};

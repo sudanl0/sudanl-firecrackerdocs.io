@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["config_to_template","cpuid_to_modifiers","msrs_to_modifier"]};

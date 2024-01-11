@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["PassiveOpenError","RecvError","WriteNextError"],"struct":["Connection","RecvStatusFlags"],"type":["PayloadSource"]};
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_PassiveOpenError","_DERIVE_Display_FOR_RecvError","_DERIVE_Display_FOR_WriteNextError"],"enum":["PassiveOpenError","RecvError","WriteNextError"],"fn":["is_valid_syn","parse_mss_option"],"struct":["ConnStatusFlags","Connection","RecvStatusFlags"],"type":["PayloadSource"]};

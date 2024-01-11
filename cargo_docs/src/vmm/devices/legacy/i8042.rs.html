@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/devices/legacy/i8042.rs`."><title>i8042.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../vmm/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/devices/legacy/i8042.rs`."><title>i8042.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -678,7 +680,7 @@
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>trigger_ctrl_alt_del(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), I8042Error&gt; {
         <span class="comment">// The CTRL+ALT+DEL sequence is 4 bytes in total (1 extended key + 2 normal keys).
-        // Fail if we don&#39;t have room for the whole sequence.
+        // Fail if we don't have room for the whole sequence.
         </span><span class="kw">if </span>BUF_SIZE - <span class="self">self</span>.buf_len() &lt; <span class="number">4 </span>{
             <span class="kw">return </span><span class="prelude-val">Err</span>(I8042Error::InternalBufferFull);
         }
@@ -690,7 +692,7 @@
 
     <span class="kw">fn </span>trigger_kbd_interrupt(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), I8042Error&gt; {
         <span class="kw">if </span>(<span class="self">self</span>.control &amp; CB_KBD_INT) == <span class="number">0 </span>{
-            <span class="macro">warn!</span>(<span class="string">&quot;Failed to trigger i8042 kbd interrupt (disabled by guest OS)&quot;</span>);
+            <span class="macro">warn!</span>(<span class="string">"Failed to trigger i8042 kbd interrupt (disabled by guest OS)"</span>);
             <span class="kw">return </span><span class="prelude-val">Err</span>(I8042Error::KbdInterruptDisabled);
         }
         <span class="self">self</span>.kbd_interrupt_evt
@@ -753,7 +755,7 @@
 
 <span class="kw">impl </span>I8042Device {
     <span class="kw">pub fn </span>bus_read(<span class="kw-2">&amp;mut </span><span class="self">self</span>, offset: u64, data: <span class="kw-2">&amp;mut </span>[u8]) {
-        <span class="comment">// All our ports are byte-wide. We don&#39;t know how to handle any wider data.
+        <span class="comment">// All our ports are byte-wide. We don't know how to handle any wider data.
         </span><span class="kw">if </span>data.len() != <span class="number">1 </span>{
             METRICS.missed_read_count.inc();
             <span class="kw">return</span>;
@@ -774,7 +776,7 @@
                 </span><span class="kw">if </span>(<span class="self">self</span>.status &amp; SB_OUT_DATA_AVAIL) != <span class="number">0 </span>{
                     <span class="kw">if let </span><span class="prelude-val">Err</span>(I8042Error::KbdInterruptFailure(err)) = <span class="self">self</span>.trigger_kbd_interrupt()
                     {
-                        <span class="macro">warn!</span>(<span class="string">&quot;Failed to trigger i8042 kbd interrupt {:?}&quot;</span>, err);
+                        <span class="macro">warn!</span>(<span class="string">"Failed to trigger i8042 kbd interrupt {:?}"</span>, err);
                     }
                 }
             }
@@ -788,7 +790,7 @@
     }
 
     <span class="kw">pub fn </span>bus_write(<span class="kw-2">&amp;mut </span><span class="self">self</span>, offset: u64, data: <span class="kw-2">&amp;</span>[u8]) {
-        <span class="comment">// All our ports are byte-wide. We don&#39;t know how to handle any wider data.
+        <span class="comment">// All our ports are byte-wide. We don't know how to handle any wider data.
         </span><span class="kw">if </span>data.len() != <span class="number">1 </span>{
             METRICS.missed_write_count.inc();
             <span class="kw">return</span>;
@@ -802,14 +804,14 @@
                 // our exit event fd. Meaning Firecracker will be exiting as soon as the VMM
                 // thread wakes up to handle this event.
                 </span><span class="kw">if let </span><span class="prelude-val">Err</span>(err) = <span class="self">self</span>.reset_evt.write(<span class="number">1</span>) {
-                    <span class="macro">error!</span>(<span class="string">&quot;Failed to trigger i8042 reset event: {:?}&quot;</span>, err);
+                    <span class="macro">error!</span>(<span class="string">"Failed to trigger i8042 reset event: {:?}"</span>, err);
                     METRICS.error_count.inc();
                 }
                 METRICS.reset_count.inc();
             }
             OFS_STATUS <span class="kw">if </span>data[<span class="number">0</span>] == CMD_READ_CTR =&gt; {
                 <span class="comment">// The guest wants to read the control register.
-                // Let&#39;s make sure only the control register will be available for reading from
+                // Let's make sure only the control register will be available for reading from
                 // the data port, for the next inb(0x60).
                 </span><span class="self">self</span>.flush_buf();
                 <span class="kw">let </span>control = <span class="self">self</span>.control;
@@ -820,7 +822,7 @@
                 <span class="comment">// The guest wants to write the control register. This is a two-step command:
                 // 1. port 0x64 &lt; CMD_WRITE_CTR
                 // 2. port 0x60 &lt; &lt;control reg value&gt;
-                // Make sure we&#39;ll be expecting the control reg value on port 0x60 for the next
+                // Make sure we'll be expecting the control reg value on port 0x60 for the next
                 // write.
                 </span><span class="self">self</span>.flush_buf();
                 <span class="self">self</span>.status |= SB_I8042_CMD_DATA;
@@ -857,14 +859,14 @@
             }
             OFS_DATA =&gt; {
                 <span class="comment">// The guest is sending a command straight to the keyboard (so this byte is not
-                // addressed to the 8042, but to the keyboard). Since we&#39;re emulating a pretty
+                // addressed to the 8042, but to the keyboard). Since we're emulating a pretty
                 // dumb keyboard, we can get away with blindly ack-in anything (byte 0xFA).
-                // Something along the lines of &quot;Yeah, uhm-uhm, yeah, okay, honey, that&#39;s great.&quot;
+                // Something along the lines of "Yeah, uhm-uhm, yeah, okay, honey, that's great."
                 </span><span class="self">self</span>.flush_buf();
                 <span class="comment">// Buffer is empty, push() will always succeed.
                 </span><span class="self">self</span>.push_byte(<span class="number">0xFA</span>).unwrap();
                 <span class="kw">if let </span><span class="prelude-val">Err</span>(I8042Error::KbdInterruptFailure(err)) = <span class="self">self</span>.trigger_kbd_interrupt() {
-                    <span class="macro">warn!</span>(<span class="string">&quot;Failed to trigger i8042 kbd interrupt {:?}&quot;</span>, err);
+                    <span class="macro">warn!</span>(<span class="string">"Failed to trigger i8042 kbd interrupt {:?}"</span>, err);
                 }
             }
             <span class="kw">_ </span>=&gt; {
@@ -898,7 +900,7 @@
         );
         <span class="kw">let </span>reset_evt = i8042.reset_evt.try_clone().unwrap();
 
-        <span class="comment">// Check if reading in a 2-length array doesn&#39;t have side effects.
+        <span class="comment">// Check if reading in a 2-length array doesn't have side effects.
         </span><span class="kw">let </span><span class="kw-2">mut </span>data = [<span class="number">1</span>, <span class="number">2</span>];
         i8042.bus_read(<span class="number">0</span>, <span class="kw-2">&amp;mut </span>data);
         <span class="macro">assert_eq!</span>(data, [<span class="number">1</span>, <span class="number">2</span>]);
@@ -906,14 +908,14 @@
         <span class="macro">assert_eq!</span>(data, [<span class="number">1</span>, <span class="number">2</span>]);
 
         <span class="comment">// Check if reset works.
-        // Write 1 to the reset event fd, so that read doesn&#39;t block in case the event fd
-        // counter doesn&#39;t change (for 0 it blocks).
+        // Write 1 to the reset event fd, so that read doesn't block in case the event fd
+        // counter doesn't change (for 0 it blocks).
         </span>reset_evt.write(<span class="number">1</span>).unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>data = [CMD_RESET_CPU];
         i8042.bus_write(OFS_STATUS, <span class="kw-2">&amp;</span>data);
         <span class="macro">assert_eq!</span>(reset_evt.read().unwrap(), <span class="number">2</span>);
 
-        <span class="comment">// Check if reading with offset 1 doesn&#39;t have side effects.
+        <span class="comment">// Check if reading with offset 1 doesn't have side effects.
         </span>i8042.bus_read(<span class="number">1</span>, <span class="kw-2">&amp;mut </span>data);
         <span class="macro">assert_eq!</span>(data[<span class="number">0</span>], CMD_RESET_CPU);
 
@@ -1011,7 +1013,7 @@
             </span>i8042.trigger_kbd_interrupt().unwrap();
             <span class="macro">assert!</span>(i8042.kbd_interrupt_evt.read().unwrap() &gt; <span class="number">1</span>);
 
-            <span class="comment">// The &quot;data available&quot; flag should be on.
+            <span class="comment">// The "data available" flag should be on.
             </span>i8042.bus_read(OFS_STATUS, <span class="kw-2">&amp;mut </span>data);
 
             <span class="kw">let </span><span class="kw-2">mut </span>key_byte: u8;
@@ -1026,7 +1028,7 @@
                 // The interrupt line should be on.
                 </span>i8042.trigger_kbd_interrupt().unwrap();
                 <span class="macro">assert!</span>(i8042.kbd_interrupt_evt.read().unwrap() &gt; <span class="number">1</span>);
-                <span class="comment">// The &quot;data available&quot; flag should be on.
+                <span class="comment">// The "data available" flag should be on.
                 </span>i8042.bus_read(OFS_STATUS, <span class="kw-2">&amp;mut </span>data);
             }
             key_byte = (key &amp; <span class="number">0xFF</span>) <span class="kw">as </span>u8;

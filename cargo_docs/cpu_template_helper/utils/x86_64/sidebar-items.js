@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"macro":["cpuid_leaf_modifier","cpuid_reg_modifier","msr_modifier"],"struct":["CpuidModifierMap","CpuidModifierMapKey","MsrModifierMap","MsrModifierMapKey"]};

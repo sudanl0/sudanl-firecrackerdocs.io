@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/jailer/src/cgroup.rs`."><title>cgroup.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="jailer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../jailer/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/jailer/src/cgroup.rs`."><title>cgroup.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="jailer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../jailer/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -796,9 +798,9 @@
 <span class="kw">use crate</span>::{readln_special, writeln_special, JailerError};
 
 <span class="kw">const </span>PROC_MOUNTS: <span class="kw-2">&amp;</span>str = <span class="kw">if </span><span class="macro">cfg!</span>(test) {
-    <span class="string">&quot;/tmp/firecracker/test/jailer/proc/mounts&quot;
+    <span class="string">"/tmp/firecracker/test/jailer/proc/mounts"
 </span>} <span class="kw">else </span>{
-    <span class="string">&quot;/proc/mounts&quot;
+    <span class="string">"/proc/mounts"
 </span>};
 
 <span class="comment">// Holds information on a cgroup mount point discovered on the system
@@ -844,32 +846,32 @@
         // cgroup /sys/fs/cgroup/cpu,cpuacct cgroup rw,nosuid,nodev,noexec,relatime,cpu,cpuacct 0 0
         //
         // This Regex will extract:
-        //      * &quot;/sys/fs/cgroup/unified&quot; in the &quot;dir&quot; capture group.
-        //      * &quot;2&quot; in the &quot;ver&quot; capture group as the cgroup version taken from &quot;cgroup2&quot;; for v1,
-        //        the &quot;ver&quot; capture group will be empty (len = 0).
-        //      * &quot;[...],relatime,cpu,cpuacct&quot; in the &quot;options&quot; capture group; this is used for
+        //      * "/sys/fs/cgroup/unified" in the "dir" capture group.
+        //      * "2" in the "ver" capture group as the cgroup version taken from "cgroup2"; for v1,
+        //        the "ver" capture group will be empty (len = 0).
+        //      * "[...],relatime,cpu,cpuacct" in the "options" capture group; this is used for
         //        cgroupv1 to determine what controllers are mounted at the location.
         </span><span class="kw">let </span>re = Regex::new(
-            <span class="string">r&quot;^([a-z2]*)[[:space:]](?P&lt;dir&gt;.*)[[:space:]]cgroup(?P&lt;ver&gt;2?)[[:space:]](?P&lt;options&gt;.*)[[:space:]]0[[:space:]]0$&quot;</span>,
+            <span class="string">r"^([a-z2]*)[[:space:]](?P&lt;dir&gt;.*)[[:space:]]cgroup(?P&lt;ver&gt;2?)[[:space:]](?P&lt;options&gt;.*)[[:space:]]0[[:space:]]0$"</span>,
         ).map_err(JailerError::RegEx)<span class="question-mark">?</span>;
 
         <span class="kw">for </span>l <span class="kw">in </span>BufReader::new(f).lines() {
             <span class="kw">let </span>l = l.map_err(|err| JailerError::ReadLine(PathBuf::from(PROC_MOUNTS), err))<span class="question-mark">?</span>;
             <span class="kw">if let </span><span class="prelude-val">Some</span>(capture) = re.captures(<span class="kw-2">&amp;</span>l) {
-                <span class="kw">if </span>ver == <span class="number">2 </span>&amp;&amp; capture[<span class="string">&quot;ver&quot;</span>].len() == <span class="number">1 </span>{
+                <span class="kw">if </span>ver == <span class="number">2 </span>&amp;&amp; capture[<span class="string">"ver"</span>].len() == <span class="number">1 </span>{
                     <span class="comment">// Found the cgroupv2 unified mountpoint; with cgroupsv2 there is only one
                     // hierarchy so we insert it in the hashmap to use it later when creating
                     // cgroups
                     </span>b.hierarchies
-                        .insert(<span class="string">&quot;unified&quot;</span>.to_string(), PathBuf::from(<span class="kw-2">&amp;</span>capture[<span class="string">&quot;dir&quot;</span>]));
+                        .insert(<span class="string">"unified"</span>.to_string(), PathBuf::from(<span class="kw-2">&amp;</span>capture[<span class="string">"dir"</span>]));
                     <span class="kw">break</span>;
-                } <span class="kw">else if </span>ver == <span class="number">1 </span>&amp;&amp; capture[<span class="string">&quot;ver&quot;</span>].is_empty() {
+                } <span class="kw">else if </span>ver == <span class="number">1 </span>&amp;&amp; capture[<span class="string">"ver"</span>].is_empty() {
                     <span class="comment">// Found a cgroupv1 mountpoint; with cgroupsv1 we can have multiple hierarchies.
-                    // Since we don&#39;t know which one will be used, we cache the mountpoints now,
+                    // Since we don't know which one will be used, we cache the mountpoints now,
                     // and will create the hierarchies on demand when a cgroup is built.
                     </span>b.mount_points.push(CgroupMountPoint {
-                        dir: String::from(<span class="kw-2">&amp;</span>capture[<span class="string">&quot;dir&quot;</span>]),
-                        options: String::from(<span class="kw-2">&amp;</span>capture[<span class="string">&quot;options&quot;</span>]),
+                        dir: String::from(<span class="kw-2">&amp;</span>capture[<span class="string">"dir"</span>]),
+                        options: String::from(<span class="kw-2">&amp;</span>capture[<span class="string">"options"</span>]),
                     });
                 }
             }
@@ -877,7 +879,7 @@
 
         <span class="kw">if </span>b.hierarchies.is_empty() &amp;&amp; b.mount_points.is_empty() {
             <span class="prelude-val">Err</span>(JailerError::CgroupHierarchyMissing(
-                <span class="string">&quot;No hierarchy found for this cgroup version.&quot;</span>.to_string(),
+                <span class="string">"No hierarchy found for this cgroup version."</span>.to_string(),
             ))
         } <span class="kw">else </span>{
             <span class="prelude-val">Ok</span>(b)
@@ -905,8 +907,8 @@
                 // the builder was constructed, we try and get it right away
                 </span><span class="kw">let </span>path = <span class="self">self
                     </span>.hierarchies
-                    .get(<span class="string">&quot;unified&quot;</span>)
-                    .ok_or_else(|| JailerError::CgroupHierarchyMissing(<span class="string">&quot;unified&quot;</span>.to_string()))<span class="question-mark">?</span>;
+                    .get(<span class="string">"unified"</span>)
+                    .ok_or_else(|| JailerError::CgroupHierarchyMissing(<span class="string">"unified"</span>.to_string()))<span class="question-mark">?</span>;
 
                 <span class="kw">let </span>cgroup = CgroupV2::new(file, value, id, parent_cg, path)<span class="question-mark">?</span>;
                 <span class="prelude-val">Ok</span>(Box::new(cgroup))
@@ -927,12 +929,12 @@
                 // we need to search through the mount points to find it
                 </span><span class="kw">let </span><span class="kw-2">mut </span>path = <span class="prelude-val">None</span>;
                 <span class="kw">for </span>m <span class="kw">in </span><span class="self">self</span>.mount_points.iter() {
-                    <span class="kw">if </span>m.options.split(<span class="string">&#39;,&#39;</span>).any(|x| x == controller) {
+                    <span class="kw">if </span>m.options.split(<span class="string">','</span>).any(|x| x == controller) {
                         path = <span class="prelude-val">Some</span>(PathBuf::from(<span class="kw-2">&amp;</span>m.dir));
                         <span class="kw">break</span>;
                     }
                 }
-                <span class="comment">// It&#39;s possible that the controller is not mounted or a bad controller
+                <span class="comment">// It's possible that the controller is not mounted or a bad controller
                 // name was specified. Return an error in this case
                 </span><span class="kw">match </span>path {
                     <span class="prelude-val">Some</span>(p) =&gt; <span class="prelude-val">Ok</span>(entry.insert(p)),
@@ -946,10 +948,10 @@
 
     <span class="comment">// Returns the path to the root of the hierarchy
     </span><span class="kw">pub fn </span>get_v2_hierarchy_path(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span>PathBuf, JailerError&gt; {
-        <span class="kw">match </span><span class="self">self</span>.hierarchies.entry(<span class="string">&quot;unified&quot;</span>.to_string()) {
+        <span class="kw">match </span><span class="self">self</span>.hierarchies.entry(<span class="string">"unified"</span>.to_string()) {
             Occupied(entry) =&gt; <span class="prelude-val">Ok</span>(entry.into_mut()),
             Vacant(_entry) =&gt; <span class="prelude-val">Err</span>(JailerError::CgroupHierarchyMissing(
-                <span class="string">&quot;cgroupsv2 hierarchy missing&quot;</span>.to_string(),
+                <span class="string">"cgroupsv2 hierarchy missing"</span>.to_string(),
             )),
         }
     }
@@ -992,18 +994,18 @@
 // will create a hierarchy that looks like &lt;cgroup_base&gt;/&lt;parent_cgroup&gt;/&lt;id&gt;. Depending on each
 // particular cgroup controller, &lt;cgroup_base&gt; contains a number of configuration files. These are
 // not actually present on a disk; they are special files exposed by the controller, and they
-// usually contain a single line with some configuration value(s). When the &quot;parent_cgroup&quot; and &lt;id&gt;
+// usually contain a single line with some configuration value(s). When the "parent_cgroup" and &lt;id&gt;
 // subfolders are created, configuration files with the same name appear automatically in the new
 // folders, but their contents are not always automatically populated. Moreover,
 // if &lt;cgroup_base&gt;/&lt;parent_cgroup&gt;/some_file is empty, then we cannot have a non-empty file with
 // at &lt;cgroup_base&gt;/&lt;parent_cgroup&gt;/&lt;id&gt;/some_file. The inherit_from_parent function (which is based
 // on the following helper function) helps with propagating the values.
 
-// There is also a potential race condition mentioned below. Here is what it refers to: let&#39;s say we
+// There is also a potential race condition mentioned below. Here is what it refers to: let's say we
 // start multiple jailer processes, and one of them calls
 // inherit_from_parent_aux(/A/&lt;parent_cgroup&gt;/id1, file, true), and hits case number 3) from the
 // list above, thus recursively calling inherit_from_parent_aux(/A/&lt;parent_cgroup&gt;, file, false).
-// It&#39;s entirely possible there was another process in the exact same situations, and that process
+// It's entirely possible there was another process in the exact same situations, and that process
 // gets to write something to /A/&lt;parent_cgroup&gt;/file first. In this case, the recursive call made
 // by the first process to inherit_from_parent_aux(/A/&lt;parent_cgroup&gt;, file, false) may fail when
 // writing to /A/&lt;parent_cgroup&gt;/file, but we can still continue, because step 4) only cares about
@@ -1020,14 +1022,14 @@
     <span class="kw">let </span><span class="kw-2">mut </span>line = readln_special(<span class="kw-2">&amp;</span>parent_file)<span class="question-mark">?</span>;
     <span class="kw">if </span>line.is_empty() {
         <span class="kw">if </span>retry_depth &gt; <span class="number">0 </span>{
-            <span class="comment">// We have to borrow &quot;parent&quot; from &quot;parent_file&quot; as opposed to &quot;path&quot;, because then
-            // we wouldn&#39;t be able to mutably borrow path at the end of this function (at least not
+            <span class="comment">// We have to borrow "parent" from "parent_file" as opposed to "path", because then
+            // we wouldn't be able to mutably borrow path at the end of this function (at least not
             // according to how the Rust borrow checker operates right now :-s)
             </span><span class="kw">let </span>parent = parent_file
                 .parent()
                 .ok_or_else(|| JailerError::MissingParent(parent_file.clone()))<span class="question-mark">?</span>;
 
-            <span class="comment">// Trying to avoid the race condition described above. We don&#39;t care about the result,
+            <span class="comment">// Trying to avoid the race condition described above. We don't care about the result,
             // because we check once more if line.is_empty() after the end of this block.
             </span><span class="kw">let _ </span>= inherit_from_parent_aux(<span class="kw-2">&amp;mut </span>parent.to_path_buf(), file_name, retry_depth - <span class="number">1</span>);
             line = readln_special(<span class="kw-2">&amp;</span>parent_file)<span class="question-mark">?</span>;
@@ -1057,7 +1059,7 @@
 <span class="comment">// Extract the controller name from the cgroup file. The cgroup file must follow
 // this format: &lt;cgroup_controller&gt;.&lt;cgroup_property&gt;.
 </span><span class="kw">fn </span>get_controller_from_filename(file: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span>str, JailerError&gt; {
-    <span class="kw">let </span>v: Vec&lt;<span class="kw-2">&amp;</span>str&gt; = file.split(<span class="string">&#39;.&#39;</span>).collect();
+    <span class="kw">let </span>v: Vec&lt;<span class="kw-2">&amp;</span>str&gt; = file.split(<span class="string">'.'</span>).collect();
 
     <span class="comment">// Check format &lt;cgroup_controller&gt;.&lt;cgroup_property&gt;
     </span><span class="kw">if </span>v.len() &lt; <span class="number">2 </span>{
@@ -1114,7 +1116,7 @@
 
     <span class="kw">fn </span>attach_pid(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), JailerError&gt; {
         <span class="kw">let </span>pid = process::id();
-        <span class="kw">let </span>location = <span class="kw-2">&amp;</span><span class="self">self</span>.base.location.join(<span class="string">&quot;tasks&quot;</span>);
+        <span class="kw">let </span>location = <span class="kw-2">&amp;</span><span class="self">self</span>.base.location.join(<span class="string">"tasks"</span>);
 
         writeln_special(location, pid)<span class="question-mark">?</span>;
 
@@ -1126,25 +1128,25 @@
     <span class="comment">// Enables the specified controller along the cgroup nested path.
     // To be able to use a leaf controller within a nested cgroup hierarchy,
     // the controller needs to be enabled by writing to the cgroup.subtree_control
-    // of it&#39;s parent. This rule applies recursively.
+    // of it's parent. This rule applies recursively.
     </span><span class="kw">fn </span>write_all_subtree_control&lt;P&gt;(path: P, controller: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;(), JailerError&gt;
     <span class="kw">where
         </span>P: AsRef&lt;Path&gt; + Debug,
     {
-        <span class="kw">let </span>cg_subtree_ctrl = path.as_ref().join(<span class="string">&quot;cgroup.subtree_control&quot;</span>);
+        <span class="kw">let </span>cg_subtree_ctrl = path.as_ref().join(<span class="string">"cgroup.subtree_control"</span>);
         <span class="kw">if </span>!cg_subtree_ctrl.exists() {
             <span class="kw">return </span><span class="prelude-val">Ok</span>(());
         }
         <span class="kw">let </span>parent = <span class="kw">match </span>path.as_ref().parent() {
             <span class="prelude-val">Some</span>(p) =&gt; p,
             <span class="prelude-val">None </span>=&gt; {
-                writeln_special(<span class="kw-2">&amp;</span>cg_subtree_ctrl, <span class="macro">format!</span>(<span class="string">&quot;+{}&quot;</span>, <span class="kw-2">&amp;</span>controller))<span class="question-mark">?</span>;
+                writeln_special(<span class="kw-2">&amp;</span>cg_subtree_ctrl, <span class="macro">format!</span>(<span class="string">"+{}"</span>, <span class="kw-2">&amp;</span>controller))<span class="question-mark">?</span>;
                 <span class="kw">return </span><span class="prelude-val">Ok</span>(());
             }
         };
 
         <span class="self">Self</span>::write_all_subtree_control(parent, controller)<span class="question-mark">?</span>;
-        writeln_special(<span class="kw-2">&amp;</span>cg_subtree_ctrl, <span class="macro">format!</span>(<span class="string">&quot;+{}&quot;</span>, <span class="kw-2">&amp;</span>controller))
+        writeln_special(<span class="kw-2">&amp;</span>cg_subtree_ctrl, <span class="macro">format!</span>(<span class="string">"+{}"</span>, <span class="kw-2">&amp;</span>controller))
     }
 
     <span class="comment">// Returns true if the controller is available to be enabled from a
@@ -1153,14 +1155,14 @@
     <span class="kw">where
         </span>P: AsRef&lt;Path&gt; + Debug,
     {
-        <span class="kw">let </span>controller_list_file = mount_point.as_ref().join(<span class="string">&quot;cgroup.controllers&quot;</span>);
+        <span class="kw">let </span>controller_list_file = mount_point.as_ref().join(<span class="string">"cgroup.controllers"</span>);
         <span class="kw">let </span>f = <span class="kw">match </span>File::open(controller_list_file) {
             <span class="prelude-val">Ok</span>(f) =&gt; f,
             <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="kw">return </span><span class="bool-val">false</span>,
         };
 
         <span class="kw">for </span>l <span class="kw">in </span>BufReader::new(f).lines().flatten() {
-            <span class="kw">if </span>l.split(<span class="string">&#39; &#39;</span>).any(|x| x == controller) {
+            <span class="kw">if </span>l.split(<span class="string">' '</span>).any(|x| x == controller) {
                 <span class="kw">return </span><span class="bool-val">true</span>;
             }
         }
@@ -1216,7 +1218,7 @@
 
     <span class="kw">fn </span>attach_pid(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), JailerError&gt; {
         <span class="kw">let </span>pid = process::id();
-        <span class="kw">let </span>location = <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>.location.join(<span class="string">&quot;cgroup.procs&quot;</span>);
+        <span class="kw">let </span>location = <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>.location.join(<span class="string">"cgroup.procs"</span>);
 
         writeln_special(location, pid)<span class="question-mark">?</span>;
 
@@ -1242,8 +1244,8 @@
     // This can be used for testing regardless of the availability of a particular
     // version of cgroups on the system
     </span><span class="kw">impl </span>MockCgroupFs {
-        <span class="kw">const </span>MOCK_PROCDIR: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;/tmp/firecracker/test/jailer/proc&quot;</span>;
-        <span class="kw">pub const </span>MOCK_SYS_CGROUPS_DIR: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str = <span class="string">&quot;/tmp/firecracker/test/jailer/sys_cgroup&quot;</span>;
+        <span class="kw">const </span>MOCK_PROCDIR: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"/tmp/firecracker/test/jailer/proc"</span>;
+        <span class="kw">pub const </span>MOCK_SYS_CGROUPS_DIR: <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str = <span class="string">"/tmp/firecracker/test/jailer/sys_cgroup"</span>;
 
         <span class="kw">pub fn </span>create_file_with_contents&lt;P: AsRef&lt;Path&gt; + Debug&gt;(
             filename: P,
@@ -1256,7 +1258,7 @@
                 .truncate(<span class="bool-val">true</span>)
                 .open(<span class="kw-2">&amp;</span>filename)<span class="question-mark">?</span>;
 
-            <span class="macro">writeln!</span>(file, <span class="string">&quot;{}&quot;</span>, contents)<span class="question-mark">?</span>;
+            <span class="macro">writeln!</span>(file, <span class="string">"{}"</span>, contents)<span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(())
         }
 
@@ -1278,33 +1280,33 @@
         </span><span class="kw">pub fn </span>add_v2_mounts(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; std::result::Result&lt;(), std::io::Error&gt; {
             <span class="macro">writeln!</span>(
                 <span class="self">self</span>.mounts_file,
-                <span class="string">&quot;cgroupv2 {}/unified cgroup2 rw,nosuid,nodev,noexec,relatime,nsdelegate 0 0&quot;</span>,
+                <span class="string">"cgroupv2 {}/unified cgroup2 rw,nosuid,nodev,noexec,relatime,nsdelegate 0 0"</span>,
                 <span class="self">Self</span>::MOCK_SYS_CGROUPS_DIR
             )<span class="question-mark">?</span>;
-            <span class="kw">let </span>cg_unified_path = PathBuf::from(<span class="macro">format!</span>(<span class="string">&quot;{}/unified&quot;</span>, <span class="self">Self</span>::MOCK_SYS_CGROUPS_DIR));
+            <span class="kw">let </span>cg_unified_path = PathBuf::from(<span class="macro">format!</span>(<span class="string">"{}/unified"</span>, <span class="self">Self</span>::MOCK_SYS_CGROUPS_DIR));
             fs::create_dir_all(<span class="kw-2">&amp;</span>cg_unified_path)<span class="question-mark">?</span>;
             <span class="self">Self</span>::create_file_with_contents(
-                cg_unified_path.join(<span class="string">&quot;cgroup.controllers&quot;</span>),
-                <span class="string">&quot;cpuset cpu io memory pids&quot;</span>,
+                cg_unified_path.join(<span class="string">"cgroup.controllers"</span>),
+                <span class="string">"cpuset cpu io memory pids"</span>,
             )<span class="question-mark">?</span>;
-            <span class="self">Self</span>::create_file_with_contents(cg_unified_path.join(<span class="string">&quot;cgroup.subtree_control&quot;</span>), <span class="string">&quot;&quot;</span>)<span class="question-mark">?</span>;
+            <span class="self">Self</span>::create_file_with_contents(cg_unified_path.join(<span class="string">"cgroup.subtree_control"</span>), <span class="string">""</span>)<span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(())
         }
 
         <span class="comment">// Populate the mocked proc/mounts file with cgroupv1 entries
         </span><span class="kw">pub fn </span>add_v1_mounts(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; std::result::Result&lt;(), std::io::Error&gt; {
             <span class="kw">let </span>controllers = <span class="macro">vec!</span>[
-                <span class="string">&quot;memory&quot;</span>,
-                <span class="string">&quot;net_cls,net_prio&quot;</span>,
-                <span class="string">&quot;pids&quot;</span>,
-                <span class="string">&quot;cpuset&quot;</span>,
-                <span class="string">&quot;cpu,cpuacct&quot;</span>,
+                <span class="string">"memory"</span>,
+                <span class="string">"net_cls,net_prio"</span>,
+                <span class="string">"pids"</span>,
+                <span class="string">"cpuset"</span>,
+                <span class="string">"cpu,cpuacct"</span>,
             ];
 
             <span class="kw">for </span>c <span class="kw">in </span><span class="kw-2">&amp;</span>controllers {
                 <span class="macro">writeln!</span>(
                     <span class="self">self</span>.mounts_file,
-                    <span class="string">&quot;cgroup {}/{} cgroup rw,nosuid,nodev,noexec,relatime,{} 0 0&quot;</span>,
+                    <span class="string">"cgroup {}/{} cgroup rw,nosuid,nodev,noexec,relatime,{} 0 0"</span>,
                     <span class="self">Self</span>::MOCK_SYS_CGROUPS_DIR,
                     c,
                     c,
@@ -1318,7 +1320,7 @@
     </span><span class="kw">impl </span>Drop <span class="kw">for </span>MockCgroupFs {
         <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
             <span class="kw">let _ </span>= fs::remove_file(PROC_MOUNTS);
-            <span class="kw">let _ </span>= fs::remove_dir_all(<span class="string">&quot;/tmp/firecracker/test&quot;</span>);
+            <span class="kw">let _ </span>= fs::remove_dir_all(<span class="string">"/tmp/firecracker/test"</span>);
         }
     }
 }
@@ -1396,10 +1398,10 @@
             <span class="kw">let </span><span class="kw-2">mut </span>builder = CgroupBuilder::new(<span class="kw-2">*</span>v).unwrap();
 
             <span class="kw">let </span>cg = builder.new_cgroup(
-                <span class="string">&quot;cpuset.mems&quot;</span>.to_string(),
-                <span class="string">&quot;1&quot;</span>.to_string(),
-                <span class="string">&quot;101&quot;</span>,
-                Path::new(<span class="string">&quot;fc_test_cg&quot;</span>),
+                <span class="string">"cpuset.mems"</span>.to_string(),
+                <span class="string">"1"</span>.to_string(),
+                <span class="string">"101"</span>,
+                Path::new(<span class="string">"fc_test_cg"</span>),
             );
             cg.unwrap();
         }
@@ -1414,10 +1416,10 @@
         <span class="kw">for </span>v <span class="kw">in </span><span class="kw-2">&amp;</span>[<span class="number">1</span>, <span class="number">2</span>] {
             <span class="kw">let </span><span class="kw-2">mut </span>builder = CgroupBuilder::new(<span class="kw-2">*</span>v).unwrap();
             <span class="kw">let </span>cg = builder.new_cgroup(
-                <span class="string">&quot;invalid.cg&quot;</span>.to_string(),
-                <span class="string">&quot;1&quot;</span>.to_string(),
-                <span class="string">&quot;101&quot;</span>,
-                Path::new(<span class="string">&quot;fc_test_cg&quot;</span>),
+                <span class="string">"invalid.cg"</span>.to_string(),
+                <span class="string">"1"</span>.to_string(),
+                <span class="string">"101"</span>,
+                Path::new(<span class="string">"fc_test_cg"</span>),
             );
             cg.unwrap_err();
         }
@@ -1432,51 +1434,51 @@
 
         <span class="kw">let </span><span class="kw-2">mut </span>builder = CgroupBuilder::new(<span class="number">2</span>).unwrap();
         <span class="kw">let </span>cg = builder.new_cgroup(
-            <span class="string">&quot;cpuset.mems&quot;</span>.to_string(),
-            <span class="string">&quot;1&quot;</span>.to_string(),
-            <span class="string">&quot;101&quot;</span>,
-            Path::new(<span class="string">&quot;fc_test_cgv2&quot;</span>),
+            <span class="string">"cpuset.mems"</span>.to_string(),
+            <span class="string">"1"</span>.to_string(),
+            <span class="string">"101"</span>,
+            Path::new(<span class="string">"fc_test_cgv2"</span>),
         );
         <span class="kw">let </span>cg = cg.unwrap();
 
-        <span class="kw">let </span>cg_root = PathBuf::from(<span class="macro">format!</span>(<span class="string">&quot;{}/unified&quot;</span>, MockCgroupFs::MOCK_SYS_CGROUPS_DIR));
+        <span class="kw">let </span>cg_root = PathBuf::from(<span class="macro">format!</span>(<span class="string">"{}/unified"</span>, MockCgroupFs::MOCK_SYS_CGROUPS_DIR));
 
         <span class="comment">// with real cgroups these files are created automatically
         // since the mock will not do it automatically, we create it here
-        </span>fs::create_dir_all(cg_root.join(<span class="string">&quot;fc_test_cgv2/101&quot;</span>)).unwrap();
+        </span>fs::create_dir_all(cg_root.join(<span class="string">"fc_test_cgv2/101"</span>)).unwrap();
         MockCgroupFs::create_file_with_contents(
-            cg_root.join(<span class="string">&quot;fc_test_cgv2/cgroup.subtree_control&quot;</span>),
-            <span class="string">&quot;&quot;</span>,
+            cg_root.join(<span class="string">"fc_test_cgv2/cgroup.subtree_control"</span>),
+            <span class="string">""</span>,
         )
         .unwrap();
         MockCgroupFs::create_file_with_contents(
-            cg_root.join(<span class="string">&quot;fc_test_cgv2/101/cgroup.subtree_control&quot;</span>),
-            <span class="string">&quot;&quot;</span>,
+            cg_root.join(<span class="string">"fc_test_cgv2/101/cgroup.subtree_control"</span>),
+            <span class="string">""</span>,
         )
         .unwrap();
 
         cg.write_value().unwrap();
 
         <span class="comment">// check that the value was written correctly
-        </span><span class="macro">assert!</span>(cg_root.join(<span class="string">&quot;fc_test_cgv2/101/cpuset.mems&quot;</span>).exists());
+        </span><span class="macro">assert!</span>(cg_root.join(<span class="string">"fc_test_cgv2/101/cpuset.mems"</span>).exists());
         <span class="macro">assert_eq!</span>(
-            read_first_line(cg_root.join(<span class="string">&quot;fc_test_cgv2/101/cpuset.mems&quot;</span>)).unwrap(),
-            <span class="string">&quot;1\n&quot;
+            read_first_line(cg_root.join(<span class="string">"fc_test_cgv2/101/cpuset.mems"</span>)).unwrap(),
+            <span class="string">"1\n"
         </span>);
 
         <span class="comment">// check that the controller was enabled in all parent dirs
-        </span><span class="macro">assert!</span>(read_first_line(cg_root.join(<span class="string">&quot;cgroup.subtree_control&quot;</span>))
+        </span><span class="macro">assert!</span>(read_first_line(cg_root.join(<span class="string">"cgroup.subtree_control"</span>))
             .unwrap()
-            .contains(<span class="string">&quot;cpuset&quot;</span>));
+            .contains(<span class="string">"cpuset"</span>));
         <span class="macro">assert!</span>(
-            read_first_line(cg_root.join(<span class="string">&quot;fc_test_cgv2/cgroup.subtree_control&quot;</span>))
+            read_first_line(cg_root.join(<span class="string">"fc_test_cgv2/cgroup.subtree_control"</span>))
                 .unwrap()
-                .contains(<span class="string">&quot;cpuset&quot;</span>)
+                .contains(<span class="string">"cpuset"</span>)
         );
         <span class="macro">assert!</span>(
-            !read_first_line(cg_root.join(<span class="string">&quot;fc_test_cgv2/101/cgroup.subtree_control&quot;</span>))
+            !read_first_line(cg_root.join(<span class="string">"fc_test_cgv2/101/cgroup.subtree_control"</span>))
                 .unwrap()
-                .contains(<span class="string">&quot;cpuset&quot;</span>)
+                .contains(<span class="string">"cpuset"</span>)
         );
     }
 
@@ -1485,20 +1487,20 @@
         <span class="comment">// 1. If parent file does not exist, return an error.
 
         // This is /A/B/ .
-        </span><span class="kw">let </span>dir = TempDir::new().expect(<span class="string">&quot;Cannot create temporary directory.&quot;</span>);
+        </span><span class="kw">let </span>dir = TempDir::new().expect(<span class="string">"Cannot create temporary directory."</span>);
         <span class="comment">// This is /A/B/C .
-        </span><span class="kw">let </span>dir2 = TempDir::new_in(dir.as_path()).expect(<span class="string">&quot;Cannot create temporary directory.&quot;</span>);
+        </span><span class="kw">let </span>dir2 = TempDir::new_in(dir.as_path()).expect(<span class="string">"Cannot create temporary directory."</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>path2 = PathBuf::from(dir2.as_path());
-        <span class="kw">let </span>result = inherit_from_parent(<span class="kw-2">&amp;mut </span>PathBuf::from(<span class="kw-2">&amp;</span>path2), <span class="string">&quot;inexistent&quot;</span>, <span class="number">1</span>);
+        <span class="kw">let </span>result = inherit_from_parent(<span class="kw-2">&amp;mut </span>PathBuf::from(<span class="kw-2">&amp;</span>path2), <span class="string">"inexistent"</span>, <span class="number">1</span>);
         <span class="macro">assert!</span>(
             <span class="macro">matches!</span>(result, <span class="prelude-val">Err</span>(JailerError::ReadToString(<span class="kw">_</span>, <span class="kw">_</span>))),
-            <span class="string">&quot;{:?}&quot;</span>,
+            <span class="string">"{:?}"</span>,
             result
         );
 
         <span class="comment">// 2. If parent file exists and is empty, will go one level up, and return error because
         // the grandparent file does not exist.
-        </span><span class="kw">let </span>named_file = TempFile::new_in(dir.as_path()).expect(<span class="string">&quot;Cannot create named file.&quot;</span>);
+        </span><span class="kw">let </span>named_file = TempFile::new_in(dir.as_path()).expect(<span class="string">"Cannot create named file."</span>);
         <span class="kw">let </span>result = inherit_from_parent(
             <span class="kw-2">&amp;mut </span>path2.clone(),
             named_file.as_path().to_str().unwrap(),
@@ -1506,7 +1508,7 @@
         );
         <span class="macro">assert!</span>(
             <span class="macro">matches!</span>(result, <span class="prelude-val">Err</span>(JailerError::CgroupInheritFromParent(<span class="kw">_</span>, <span class="kw">_</span>))),
-            <span class="string">&quot;{:?}&quot;</span>,
+            <span class="string">"{:?}"</span>,
             result
         );
 
@@ -1514,50 +1516,50 @@
 
         <span class="comment">// 3. If parent file exists and is not empty, will return ok and child file will have its
         // contents.
-        </span><span class="kw">let </span>some_line = <span class="string">&quot;Parent line&quot;</span>;
-        <span class="macro">writeln!</span>(named_file.as_file(), <span class="string">&quot;{}&quot;</span>, some_line).expect(<span class="string">&quot;Cannot write to file.&quot;</span>);
+        </span><span class="kw">let </span>some_line = <span class="string">"Parent line"</span>;
+        <span class="macro">writeln!</span>(named_file.as_file(), <span class="string">"{}"</span>, some_line).expect(<span class="string">"Cannot write to file."</span>);
         <span class="kw">let </span>result = inherit_from_parent(<span class="kw-2">&amp;mut </span>path2, named_file.as_path().to_str().unwrap(), <span class="number">1</span>);
         result.unwrap();
-        <span class="kw">let </span>res = readln_special(<span class="kw-2">&amp;</span>child_file).expect(<span class="string">&quot;Cannot read from file.&quot;</span>);
+        <span class="kw">let </span>res = readln_special(<span class="kw-2">&amp;</span>child_file).expect(<span class="string">"Cannot read from file."</span>);
         <span class="macro">assert!</span>(res == some_line);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_get_controller() {
-        <span class="kw">let </span><span class="kw-2">mut </span>file = <span class="string">&quot;cpuset.cpu&quot;</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>file = <span class="string">"cpuset.cpu"</span>;
 
         <span class="comment">// Check valid file.
         </span><span class="kw">let </span><span class="kw-2">mut </span>result = get_controller_from_filename(file);
         <span class="macro">assert!</span>(
-            <span class="macro">matches!</span>(result, <span class="prelude-val">Ok</span>(ctrl) <span class="kw">if </span>ctrl == <span class="string">&quot;cpuset&quot;</span>),
-            <span class="string">&quot;{:?}&quot;</span>,
+            <span class="macro">matches!</span>(result, <span class="prelude-val">Ok</span>(ctrl) <span class="kw">if </span>ctrl == <span class="string">"cpuset"</span>),
+            <span class="string">"{:?}"</span>,
             result
         );
 
-        <span class="comment">// Check valid file with multiple &#39;.&#39;.
-        </span>file = <span class="string">&quot;memory.swap.high&quot;</span>;
+        <span class="comment">// Check valid file with multiple '.'.
+        </span>file = <span class="string">"memory.swap.high"</span>;
         result = get_controller_from_filename(file);
         <span class="macro">assert!</span>(
-            <span class="macro">matches!</span>(result, <span class="prelude-val">Ok</span>(ctrl) <span class="kw">if </span>ctrl == <span class="string">&quot;memory&quot;</span>),
-            <span class="string">&quot;{:?}&quot;</span>,
+            <span class="macro">matches!</span>(result, <span class="prelude-val">Ok</span>(ctrl) <span class="kw">if </span>ctrl == <span class="string">"memory"</span>),
+            <span class="string">"{:?}"</span>,
             result
         );
 
         <span class="comment">// Check invalid file
-        </span>file = <span class="string">&quot;cpusetcpu&quot;</span>;
+        </span>file = <span class="string">"cpusetcpu"</span>;
         result = get_controller_from_filename(file);
         <span class="macro">assert!</span>(
             <span class="macro">matches!</span>(result, <span class="prelude-val">Err</span>(JailerError::CgroupInvalidFile(<span class="kw">_</span>))),
-            <span class="string">&quot;{:?}&quot;</span>,
+            <span class="string">"{:?}"</span>,
             result
         );
 
         <span class="comment">// Check empty file
-        </span>file = <span class="string">&quot;&quot;</span>;
+        </span>file = <span class="string">""</span>;
         result = get_controller_from_filename(file);
         <span class="macro">assert!</span>(
             <span class="macro">matches!</span>(result, <span class="prelude-val">Err</span>(JailerError::CgroupInvalidFile(<span class="kw">_</span>))),
-            <span class="string">&quot;{:?}&quot;</span>,
+            <span class="string">"{:?}"</span>,
             result
         );
     }

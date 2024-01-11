@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["PAGE_SIZE"],"enum":["DeviceType"],"mod":["aarch64"],"struct":["InitrdConfig"]};
+window.SIDEBAR_ITEMS = {"constant":["PAGE_SIZE"],"enum":["DeviceType"],"mod":["x86_64"],"struct":["InitrdConfig"]};

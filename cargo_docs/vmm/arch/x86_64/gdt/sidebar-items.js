@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["gdt_entry","get_avl","get_base","get_db","get_dpl","get_g","get_l","get_limit","get_p","get_s","get_type","kvm_segment_from_gdt"]};

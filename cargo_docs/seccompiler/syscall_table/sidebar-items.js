@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["SyscallTable"]};
+window.SIDEBAR_ITEMS = {"constant":["MAP_CAPACITY"],"mod":["aarch64","x86_64"],"struct":["SyscallTable"]};

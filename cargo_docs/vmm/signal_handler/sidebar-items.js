@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["register_signal_handlers"]};
+window.SIDEBAR_ITEMS = {"constant":["SI_OFF_SYSCALL","SYS_SECCOMP_CODE"],"fn":["empty_fn","exit_with_code","log_sigsys_err","register_signal_handlers","sigbus_handler","sighup_handler","sigill_handler","sigpipe_handler","sigsegv_handler","sigsys_handler","sigxcpu_handler","sigxfsz_handler"],"macro":["generate_handler"]};

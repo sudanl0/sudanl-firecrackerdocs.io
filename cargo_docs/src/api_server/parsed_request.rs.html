@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/api_server/src/parsed_request.rs`."><title>parsed_request.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="api_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../api_server/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/api_server/src/parsed_request.rs`."><title>parsed_request.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="api_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../api_server/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1066,48 +1068,48 @@
             request_uri.as_str(),
             request.body.as_ref(),
         );
-        <span class="macro">info!</span>(<span class="string">&quot;The API server received a {description}.&quot;</span>);
+        <span class="macro">info!</span>(<span class="string">"The API server received a {description}."</span>);
 
-        <span class="comment">// Split request uri by &#39;/&#39; by doing:
-        // 1. Trim starting &#39;/&#39; characters
-        // 2. Splitting by &#39;/&#39;
-        </span><span class="kw">let </span><span class="kw-2">mut </span>path_tokens = request_uri.trim_start_matches(<span class="string">&#39;/&#39;</span>).split_terminator(<span class="string">&#39;/&#39;</span>);
-        <span class="kw">let </span>path = path_tokens.next().unwrap_or(<span class="string">&quot;&quot;</span>);
+        <span class="comment">// Split request uri by '/' by doing:
+        // 1. Trim starting '/' characters
+        // 2. Splitting by '/'
+        </span><span class="kw">let </span><span class="kw-2">mut </span>path_tokens = request_uri.trim_start_matches(<span class="string">'/'</span>).split_terminator(<span class="string">'/'</span>);
+        <span class="kw">let </span>path = path_tokens.next().unwrap_or(<span class="string">""</span>);
 
         <span class="kw">match </span>(request.method(), path, request.body.as_ref()) {
-            (Method::Get, <span class="string">&quot;&quot;</span>, <span class="prelude-val">None</span>) =&gt; parse_get_instance_info(),
-            (Method::Get, <span class="string">&quot;balloon&quot;</span>, <span class="prelude-val">None</span>) =&gt; parse_get_balloon(path_tokens.next()),
-            (Method::Get, <span class="string">&quot;version&quot;</span>, <span class="prelude-val">None</span>) =&gt; parse_get_version(),
-            (Method::Get, <span class="string">&quot;vm&quot;</span>, <span class="prelude-val">None</span>) <span class="kw">if </span>path_tokens.next() == <span class="prelude-val">Some</span>(<span class="string">&quot;config&quot;</span>) =&gt; {
+            (Method::Get, <span class="string">""</span>, <span class="prelude-val">None</span>) =&gt; parse_get_instance_info(),
+            (Method::Get, <span class="string">"balloon"</span>, <span class="prelude-val">None</span>) =&gt; parse_get_balloon(path_tokens.next()),
+            (Method::Get, <span class="string">"version"</span>, <span class="prelude-val">None</span>) =&gt; parse_get_version(),
+            (Method::Get, <span class="string">"vm"</span>, <span class="prelude-val">None</span>) <span class="kw">if </span>path_tokens.next() == <span class="prelude-val">Some</span>(<span class="string">"config"</span>) =&gt; {
                 <span class="prelude-val">Ok</span>(ParsedRequest::new_sync(VmmAction::GetFullVmConfig))
             }
-            (Method::Get, <span class="string">&quot;machine-config&quot;</span>, <span class="prelude-val">None</span>) =&gt; parse_get_machine_config(),
-            (Method::Get, <span class="string">&quot;mmds&quot;</span>, <span class="prelude-val">None</span>) =&gt; parse_get_mmds(),
+            (Method::Get, <span class="string">"machine-config"</span>, <span class="prelude-val">None</span>) =&gt; parse_get_machine_config(),
+            (Method::Get, <span class="string">"mmds"</span>, <span class="prelude-val">None</span>) =&gt; parse_get_mmds(),
             (Method::Get, <span class="kw">_</span>, <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; method_to_error(Method::Get),
-            (Method::Put, <span class="string">&quot;actions&quot;</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_actions(body),
-            (Method::Put, <span class="string">&quot;balloon&quot;</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_balloon(body),
-            (Method::Put, <span class="string">&quot;boot-source&quot;</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_boot_source(body),
-            (Method::Put, <span class="string">&quot;cpu-config&quot;</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_cpu_config(body),
-            (Method::Put, <span class="string">&quot;drives&quot;</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_drive(body, path_tokens.next()),
-            (Method::Put, <span class="string">&quot;logger&quot;</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_logger(body),
-            (Method::Put, <span class="string">&quot;machine-config&quot;</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_machine_config(body),
-            (Method::Put, <span class="string">&quot;metrics&quot;</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_metrics(body),
-            (Method::Put, <span class="string">&quot;mmds&quot;</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_mmds(body, path_tokens.next()),
-            (Method::Put, <span class="string">&quot;network-interfaces&quot;</span>, <span class="prelude-val">Some</span>(body)) =&gt; {
+            (Method::Put, <span class="string">"actions"</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_actions(body),
+            (Method::Put, <span class="string">"balloon"</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_balloon(body),
+            (Method::Put, <span class="string">"boot-source"</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_boot_source(body),
+            (Method::Put, <span class="string">"cpu-config"</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_cpu_config(body),
+            (Method::Put, <span class="string">"drives"</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_drive(body, path_tokens.next()),
+            (Method::Put, <span class="string">"logger"</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_logger(body),
+            (Method::Put, <span class="string">"machine-config"</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_machine_config(body),
+            (Method::Put, <span class="string">"metrics"</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_metrics(body),
+            (Method::Put, <span class="string">"mmds"</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_mmds(body, path_tokens.next()),
+            (Method::Put, <span class="string">"network-interfaces"</span>, <span class="prelude-val">Some</span>(body)) =&gt; {
                 parse_put_net(body, path_tokens.next())
             }
-            (Method::Put, <span class="string">&quot;snapshot&quot;</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_snapshot(body, path_tokens.next()),
-            (Method::Put, <span class="string">&quot;vsock&quot;</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_vsock(body),
-            (Method::Put, <span class="string">&quot;entropy&quot;</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_entropy(body),
+            (Method::Put, <span class="string">"snapshot"</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_snapshot(body, path_tokens.next()),
+            (Method::Put, <span class="string">"vsock"</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_vsock(body),
+            (Method::Put, <span class="string">"entropy"</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_put_entropy(body),
             (Method::Put, <span class="kw">_</span>, <span class="prelude-val">None</span>) =&gt; method_to_error(Method::Put),
-            (Method::Patch, <span class="string">&quot;balloon&quot;</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_patch_balloon(body, path_tokens.next()),
-            (Method::Patch, <span class="string">&quot;drives&quot;</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_patch_drive(body, path_tokens.next()),
-            (Method::Patch, <span class="string">&quot;machine-config&quot;</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_patch_machine_config(body),
-            (Method::Patch, <span class="string">&quot;mmds&quot;</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_patch_mmds(body),
-            (Method::Patch, <span class="string">&quot;network-interfaces&quot;</span>, <span class="prelude-val">Some</span>(body)) =&gt; {
+            (Method::Patch, <span class="string">"balloon"</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_patch_balloon(body, path_tokens.next()),
+            (Method::Patch, <span class="string">"drives"</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_patch_drive(body, path_tokens.next()),
+            (Method::Patch, <span class="string">"machine-config"</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_patch_machine_config(body),
+            (Method::Patch, <span class="string">"mmds"</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_patch_mmds(body),
+            (Method::Patch, <span class="string">"network-interfaces"</span>, <span class="prelude-val">Some</span>(body)) =&gt; {
                 parse_patch_net(body, path_tokens.next())
             }
-            (Method::Patch, <span class="string">&quot;vm&quot;</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_patch_vm_state(body),
+            (Method::Patch, <span class="string">"vm"</span>, <span class="prelude-val">Some</span>(body)) =&gt; parse_patch_vm_state(body),
             (Method::Patch, <span class="kw">_</span>, <span class="prelude-val">None</span>) =&gt; method_to_error(Method::Patch),
             (method, unknown_uri, <span class="kw">_</span>) =&gt; {
                 <span class="prelude-val">Err</span>(Error::InvalidPathMethod(unknown_uri.to_string(), method))
@@ -1136,17 +1138,17 @@
     <span class="kw">where
         </span>T: <span class="question-mark">?</span>Sized + Serialize + Debug,
     {
-        <span class="macro">info!</span>(<span class="string">&quot;The request was executed successfully. Status code: 200 OK.&quot;</span>);
+        <span class="macro">info!</span>(<span class="string">"The request was executed successfully. Status code: 200 OK."</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>response = Response::new(Version::Http11, StatusCode::OK);
         response.set_body(Body::new(serde_json::to_string(body_data).unwrap()));
         response
     }
 
     <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>success_response_with_mmds_value(body_data: <span class="kw-2">&amp;</span>Value) -&gt; Response {
-        <span class="macro">info!</span>(<span class="string">&quot;The request was executed successfully. Status code: 200 OK.&quot;</span>);
+        <span class="macro">info!</span>(<span class="string">"The request was executed successfully. Status code: 200 OK."</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>response = Response::new(Version::Http11, StatusCode::OK);
         <span class="kw">let </span>body_str = <span class="kw">match </span>body_data {
-            Value::Null =&gt; <span class="string">&quot;{}&quot;</span>.to_string(),
+            Value::Null =&gt; <span class="string">"{}"</span>.to_string(),
             <span class="kw">_ </span>=&gt; serde_json::to_string(body_data).unwrap(),
         };
         response.set_body(Body::new(body_str));
@@ -1159,7 +1161,7 @@
         <span class="kw">match </span>request_outcome {
             <span class="prelude-val">Ok</span>(vmm_data) =&gt; <span class="kw">match </span>vmm_data {
                 VmmData::Empty =&gt; {
-                    <span class="macro">info!</span>(<span class="string">&quot;The request was executed successfully. Status code: 204 No Content.&quot;</span>);
+                    <span class="macro">info!</span>(<span class="string">"The request was executed successfully. Status code: 204 No Content."</span>);
                     Response::new(Version::Http11, StatusCode::NoContent)
                 }
                 VmmData::MachineConfiguration(vm_config) =&gt; {
@@ -1172,7 +1174,7 @@
                 VmmData::BalloonStats(stats) =&gt; <span class="self">Self</span>::success_response_with_data(stats),
                 VmmData::InstanceInformation(info) =&gt; <span class="self">Self</span>::success_response_with_data(info),
                 VmmData::VmmVersion(version) =&gt; <span class="self">Self</span>::success_response_with_data(
-                    <span class="kw-2">&amp;</span><span class="macro">serde_json::json!</span>({ <span class="string">&quot;firecracker_version&quot;</span>: version.as_str() }),
+                    <span class="kw-2">&amp;</span><span class="macro">serde_json::json!</span>({ <span class="string">"firecracker_version"</span>: version.as_str() }),
                 ),
                 VmmData::FullVmConfig(config) =&gt; <span class="self">Self</span>::success_response_with_data(config),
             },
@@ -1180,14 +1182,14 @@
                 <span class="kw">let </span><span class="kw-2">mut </span>response = <span class="kw">match </span>vmm_action_error {
                     VmmActionError::MmdsLimitExceeded(_err) =&gt; {
                         <span class="macro">error!</span>(
-                            <span class="string">&quot;Received Error. Status code: 413 Payload too large. Message: {}&quot;</span>,
+                            <span class="string">"Received Error. Status code: 413 Payload too large. Message: {}"</span>,
                             vmm_action_error
                         );
                         Response::new(Version::Http11, StatusCode::PayloadTooLarge)
                     }
                     <span class="kw">_ </span>=&gt; {
                         <span class="macro">error!</span>(
-                            <span class="string">&quot;Received Error. Status code: 400 Bad Request. Message: {}&quot;</span>,
+                            <span class="string">"Received Error. Status code: 400 Bad Request. Message: {}"</span>,
                             vmm_action_error
                         );
                         Response::new(Version::Http11, StatusCode::BadRequest)
@@ -1216,16 +1218,16 @@
 /// * `body` - body of the API request
 </span><span class="kw">fn </span>describe(method: Method, path: <span class="kw-2">&amp;</span>str, body: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Body&gt;) -&gt; String {
     <span class="kw">match </span>(path, body) {
-        (<span class="string">&quot;/mmds&quot;</span>, <span class="prelude-val">Some</span>(<span class="kw">_</span>)) | (<span class="kw">_</span>, <span class="prelude-val">None</span>) =&gt; <span class="macro">format!</span>(<span class="string">&quot;{:?} request on {:?}&quot;</span>, method, path),
-        (<span class="string">&quot;/cpu-config&quot;</span>, <span class="prelude-val">Some</span>(payload_value)) =&gt; {
+        (<span class="string">"/mmds"</span>, <span class="prelude-val">Some</span>(<span class="kw">_</span>)) | (<span class="kw">_</span>, <span class="prelude-val">None</span>) =&gt; <span class="macro">format!</span>(<span class="string">"{:?} request on {:?}"</span>, method, path),
+        (<span class="string">"/cpu-config"</span>, <span class="prelude-val">Some</span>(payload_value)) =&gt; {
             <span class="comment">// If the log level is at Debug or higher, include the CPU template in
             // the log line.
             </span><span class="kw">if </span><span class="macro">log_enabled!</span>(Level::Debug) {
                 describe_with_body(method, path, payload_value)
             } <span class="kw">else </span>{
                 <span class="macro">format!</span>(
-                    <span class="string">&quot;{:?} request on {:?}. To view the CPU template received by the API, \
-                     configure log-level to DEBUG&quot;</span>,
+                    <span class="string">"{:?} request on {:?}. To view the CPU template received by the API, \
+                     configure log-level to DEBUG"</span>,
                     method, path
                 )
             }
@@ -1236,11 +1238,11 @@
 
 <span class="kw">fn </span>describe_with_body(method: Method, path: <span class="kw-2">&amp;</span>str, payload_value: <span class="kw-2">&amp;</span>Body) -&gt; String {
     <span class="macro">format!</span>(
-        <span class="string">&quot;{:?} request on {:?} with body {:?}&quot;</span>,
+        <span class="string">"{:?} request on {:?} with body {:?}"</span>,
         method,
         path,
         std::str::from_utf8(payload_value.body.as_slice())
-            .unwrap_or(<span class="string">&quot;inconvertible to UTF-8&quot;</span>)
+            .unwrap_or(<span class="string">"inconvertible to UTF-8"</span>)
             .to_string()
     )
 }
@@ -1250,15 +1252,15 @@
     <span class="kw">match </span>method {
         Method::Get =&gt; <span class="prelude-val">Err</span>(Error::Generic(
             StatusCode::BadRequest,
-            <span class="string">&quot;GET request cannot have a body.&quot;</span>.to_string(),
+            <span class="string">"GET request cannot have a body."</span>.to_string(),
         )),
         Method::Put =&gt; <span class="prelude-val">Err</span>(Error::Generic(
             StatusCode::BadRequest,
-            <span class="string">&quot;Empty PUT request.&quot;</span>.to_string(),
+            <span class="string">"Empty PUT request."</span>.to_string(),
         )),
         Method::Patch =&gt; <span class="prelude-val">Err</span>(Error::Generic(
             StatusCode::BadRequest,
-            <span class="string">&quot;Empty PATCH request.&quot;</span>.to_string(),
+            <span class="string">"Empty PATCH request."</span>.to_string(),
         )),
     }
 }
@@ -1266,26 +1268,26 @@
 <span class="attr">#[derive(Debug, thiserror::Error)]
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">enum </span>Error {
     <span class="comment">// The resource ID is empty.
-    </span><span class="attr">#[error(<span class="string">&quot;The ID cannot be empty.&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"The ID cannot be empty."</span>)]
     </span>EmptyID,
     <span class="comment">// A generic error, with a given status code and message to be turned into a fault message.
-    </span><span class="attr">#[error(<span class="string">&quot;{1}&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"{1}"</span>)]
     </span>Generic(StatusCode, String),
-    <span class="comment">// The resource ID must only contain alphanumeric characters and &#39;_&#39;.
-    </span><span class="attr">#[error(<span class="string">&quot;API Resource IDs can only contain alphanumeric characters and underscores.&quot;</span>)]
+    <span class="comment">// The resource ID must only contain alphanumeric characters and '_'.
+    </span><span class="attr">#[error(<span class="string">"API Resource IDs can only contain alphanumeric characters and underscores."</span>)]
     </span>InvalidID,
     <span class="comment">// The HTTP method &amp; request path combination is not valid.
-    </span><span class="attr">#[error(<span class="string">&quot;Invalid request method and/or path: {} {0}.&quot;</span>, std::str::from_utf8(.<span class="number">1</span>.raw()).expect(<span class="string">&quot;Cannot convert from UTF-8&quot;</span>))]
+    </span><span class="attr">#[error(<span class="string">"Invalid request method and/or path: {} {0}."</span>, std::str::from_utf8(.<span class="number">1</span>.raw()).expect(<span class="string">"Cannot convert from UTF-8"</span>))]
     </span>InvalidPathMethod(String, Method),
     <span class="comment">// An error occurred when deserializing the json body of a request.
-    </span><span class="attr">#[error(<span class="string">&quot;An error occurred when deserializing the json body of a request: {0}.&quot;</span>)]
+    </span><span class="attr">#[error(<span class="string">"An error occurred when deserializing the json body of a request: {0}."</span>)]
     </span>SerdeJson(<span class="attr">#[from] </span>serde_json::Error),
 }
 
-<span class="comment">// It&#39;s convenient to turn errors into HTTP responses directly.
+<span class="comment">// It's convenient to turn errors into HTTP responses directly.
 </span><span class="kw">impl </span>From&lt;Error&gt; <span class="kw">for </span>Response {
     <span class="kw">fn </span>from(err: Error) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>msg = ApiServer::json_fault_message(<span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, err));
+        <span class="kw">let </span>msg = ApiServer::json_fault_message(<span class="macro">format!</span>(<span class="string">"{}"</span>, err));
         <span class="kw">match </span>err {
             Error::Generic(status, <span class="kw">_</span>) =&gt; ApiServer::json_response(status, msg),
             Error::EmptyID
@@ -1298,14 +1300,14 @@
 
 <span class="comment">// This function is supposed to do id validation for requests.
 </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>checked_id(id: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span>str, Error&gt; {
-    <span class="comment">// todo: are there any checks we want to do on id&#39;s?
+    <span class="comment">// todo: are there any checks we want to do on id's?
     // not allow them to be empty strings maybe?
     // check: ensure string is not empty
     </span><span class="kw">if </span>id.is_empty() {
         <span class="kw">return </span><span class="prelude-val">Err</span>(Error::EmptyID);
     }
     <span class="comment">// check: ensure string is alphanumeric
-    </span><span class="kw">if </span>!id.chars().all(|c| c == <span class="string">&#39;_&#39; </span>|| c.is_alphanumeric()) {
+    </span><span class="kw">if </span>!id.chars().all(|c| c == <span class="string">'_' </span>|| c.is_alphanumeric()) {
         <span class="kw">return </span><span class="prelude-val">Err</span>(Error::InvalidID);
     }
     <span class="prelude-val">Ok</span>(id)
@@ -1362,37 +1364,37 @@
 
     <span class="kw">fn </span>http_response(body: <span class="kw-2">&amp;</span>str, status_code: i32) -&gt; String {
         <span class="kw">let </span>header = <span class="macro">format!</span>(
-            <span class="string">&quot;HTTP/1.1 {} \r\nServer: Firecracker API\r\nConnection: keep-alive\r\n&quot;</span>,
+            <span class="string">"HTTP/1.1 {} \r\nServer: Firecracker API\r\nConnection: keep-alive\r\n"</span>,
             status_code
         );
         <span class="kw">if </span>status_code == <span class="number">204 </span>{
             <span class="comment">// No Content
-            </span><span class="macro">format!</span>(<span class="string">&quot;{}{}&quot;</span>, header, <span class="string">&quot;\r\n&quot;</span>)
+            </span><span class="macro">format!</span>(<span class="string">"{}{}"</span>, header, <span class="string">"\r\n"</span>)
         } <span class="kw">else </span>{
             <span class="kw">let </span>content = <span class="macro">format!</span>(
-                <span class="string">&quot;Content-Type: application/json\r\nContent-Length: {}\r\n\r\n{}&quot;</span>,
+                <span class="string">"Content-Type: application/json\r\nContent-Length: {}\r\n\r\n{}"</span>,
                 body.len(),
                 body,
             );
 
-            <span class="macro">format!</span>(<span class="string">&quot;{}{}&quot;</span>, header, content)
+            <span class="macro">format!</span>(<span class="string">"{}{}"</span>, header, content)
         }
     }
 
     <span class="kw">fn </span>http_request(request_type: <span class="kw-2">&amp;</span>str, endpoint: <span class="kw-2">&amp;</span>str, body: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;) -&gt; String {
         <span class="kw">let </span>req_no_body = <span class="macro">format!</span>(
-            <span class="string">&quot;{} {} HTTP/1.1\r\nContent-Type: application/json\r\n&quot;</span>,
+            <span class="string">"{} {} HTTP/1.1\r\nContent-Type: application/json\r\n"</span>,
             request_type, endpoint
         );
         <span class="kw">if </span>body.is_some() {
             <span class="kw">return </span><span class="macro">format!</span>(
-                <span class="string">&quot;{}Content-Length: {}\r\n\r\n{}&quot;</span>,
+                <span class="string">"{}Content-Length: {}\r\n\r\n{}"</span>,
                 req_no_body,
                 body.unwrap().len(),
                 body.unwrap()
             );
         }
-        <span class="macro">format!</span>(<span class="string">&quot;{}\r\n&quot;</span>, req_no_body,)
+        <span class="macro">format!</span>(<span class="string">"{}\r\n"</span>, req_no_body,)
     }
 
     <span class="attr">#[test]
@@ -1400,7 +1402,7 @@
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
         sender
-            .write_all(http_request(<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;none&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;body&quot;</span>)).as_bytes())
+            .write_all(http_request(<span class="string">"GET"</span>, <span class="string">"none"</span>, <span class="prelude-val">Some</span>(<span class="string">"body"</span>)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
 
@@ -1410,16 +1412,16 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_checked_id() {
-        checked_id(<span class="string">&quot;dummy&quot;</span>).unwrap();
-        checked_id(<span class="string">&quot;dummy_1&quot;</span>).unwrap();
+        checked_id(<span class="string">"dummy"</span>).unwrap();
+        checked_id(<span class="string">"dummy_1"</span>).unwrap();
 
         <span class="macro">assert_eq!</span>(
-            <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, checked_id(<span class="string">&quot;&quot;</span>).unwrap_err()),
-            <span class="string">&quot;The ID cannot be empty.&quot;
+            <span class="macro">format!</span>(<span class="string">"{}"</span>, checked_id(<span class="string">""</span>).unwrap_err()),
+            <span class="string">"The ID cannot be empty."
         </span>);
         <span class="macro">assert_eq!</span>(
-            <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, checked_id(<span class="string">&quot;dummy!!&quot;</span>).unwrap_err()),
-            <span class="string">&quot;API Resource IDs can only contain alphanumeric characters and underscores.&quot;
+            <span class="macro">format!</span>(<span class="string">"{}"</span>, checked_id(<span class="string">"dummy!!"</span>).unwrap_err()),
+            <span class="string">"API Resource IDs can only contain alphanumeric characters and underscores."
         </span>);
     }
 
@@ -1428,14 +1430,14 @@
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
         sender
-            .write_all(http_request(<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;/mmds&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;body&quot;</span>)).as_bytes())
+            .write_all(http_request(<span class="string">"GET"</span>, <span class="string">"/mmds"</span>, <span class="prelude-val">Some</span>(<span class="string">"body"</span>)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
         <span class="kw">let </span>parsed_request = ParsedRequest::try_from(<span class="kw-2">&amp;</span>req);
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             <span class="kw-2">&amp;</span>parsed_request,
-            <span class="prelude-val">Err</span>(Error::Generic(StatusCode::BadRequest, s)) <span class="kw">if </span>s == <span class="string">&quot;GET request cannot have a body.&quot;</span>,
+            <span class="prelude-val">Err</span>(Error::Generic(StatusCode::BadRequest, s)) <span class="kw">if </span>s == <span class="string">"GET request cannot have a body."</span>,
         ));
     }
 
@@ -1444,14 +1446,14 @@
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
         sender
-            .write_all(http_request(<span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;/mmds&quot;</span>, <span class="prelude-val">None</span>).as_bytes())
+            .write_all(http_request(<span class="string">"PUT"</span>, <span class="string">"/mmds"</span>, <span class="prelude-val">None</span>).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
         <span class="kw">let </span>parsed_request = ParsedRequest::try_from(<span class="kw-2">&amp;</span>req);
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             <span class="kw-2">&amp;</span>parsed_request,
-            <span class="prelude-val">Err</span>(Error::Generic(StatusCode::BadRequest, s)) <span class="kw">if </span>s == <span class="string">&quot;Empty PUT request.&quot;</span>,
+            <span class="prelude-val">Err</span>(Error::Generic(StatusCode::BadRequest, s)) <span class="kw">if </span>s == <span class="string">"Empty PUT request."</span>,
         ));
     }
 
@@ -1460,14 +1462,14 @@
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
         sender
-            .write_all(http_request(<span class="string">&quot;PATCH&quot;</span>, <span class="string">&quot;/mmds&quot;</span>, <span class="prelude-val">None</span>).as_bytes())
+            .write_all(http_request(<span class="string">"PATCH"</span>, <span class="string">"/mmds"</span>, <span class="prelude-val">None</span>).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
         <span class="kw">let </span>parsed_request = ParsedRequest::try_from(<span class="kw-2">&amp;</span>req);
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             <span class="kw-2">&amp;</span>parsed_request,
-            <span class="prelude-val">Err</span>(Error::Generic(StatusCode::BadRequest, s)) <span class="kw">if </span>s == <span class="string">&quot;Empty PATCH request.&quot;</span>,
+            <span class="prelude-val">Err</span>(Error::Generic(StatusCode::BadRequest, s)) <span class="kw">if </span>s == <span class="string">"Empty PATCH request."</span>,
         ));
     }
 
@@ -1476,9 +1478,9 @@
         <span class="comment">// Generic error.
         </span><span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="macro">vec!</span>[<span class="number">0</span>]);
         <span class="kw">let </span>response: Response =
-            Error::Generic(StatusCode::BadRequest, <span class="string">&quot;message&quot;</span>.to_string()).into();
+            Error::Generic(StatusCode::BadRequest, <span class="string">"message"</span>.to_string()).into();
         response.write_all(<span class="kw-2">&amp;mut </span>buf).unwrap();
-        <span class="kw">let </span>body = ApiServer::json_fault_message(<span class="string">&quot;message&quot;</span>);
+        <span class="kw">let </span>body = ApiServer::json_fault_message(<span class="string">"message"</span>);
         <span class="kw">let </span>expected_response = http_response(<span class="kw-2">&amp;</span>body, <span class="number">400</span>);
         <span class="macro">assert_eq!</span>(buf.into_inner(), expected_response.as_bytes());
 
@@ -1486,7 +1488,7 @@
         </span><span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="macro">vec!</span>[<span class="number">0</span>]);
         <span class="kw">let </span>response: Response = Error::EmptyID.into();
         response.write_all(<span class="kw-2">&amp;mut </span>buf).unwrap();
-        <span class="kw">let </span>body = ApiServer::json_fault_message(<span class="string">&quot;The ID cannot be empty.&quot;</span>);
+        <span class="kw">let </span>body = ApiServer::json_fault_message(<span class="string">"The ID cannot be empty."</span>);
         <span class="kw">let </span>expected_response = http_response(<span class="kw-2">&amp;</span>body, <span class="number">400</span>);
         <span class="macro">assert_eq!</span>(buf.into_inner(), expected_response.as_bytes());
 
@@ -1495,31 +1497,31 @@
         <span class="kw">let </span>response: Response = Error::InvalidID.into();
         response.write_all(<span class="kw-2">&amp;mut </span>buf).unwrap();
         <span class="kw">let </span>body = ApiServer::json_fault_message(
-            <span class="string">&quot;API Resource IDs can only contain alphanumeric characters and underscores.&quot;</span>,
+            <span class="string">"API Resource IDs can only contain alphanumeric characters and underscores."</span>,
         );
         <span class="kw">let </span>expected_response = http_response(<span class="kw-2">&amp;</span>body, <span class="number">400</span>);
         <span class="macro">assert_eq!</span>(buf.into_inner(), expected_response.as_bytes());
 
         <span class="comment">// Invalid path or method error.
         </span><span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="macro">vec!</span>[<span class="number">0</span>]);
-        <span class="kw">let </span>response: Response = Error::InvalidPathMethod(<span class="string">&quot;path&quot;</span>.to_string(), Method::Get).into();
+        <span class="kw">let </span>response: Response = Error::InvalidPathMethod(<span class="string">"path"</span>.to_string(), Method::Get).into();
         response.write_all(<span class="kw-2">&amp;mut </span>buf).unwrap();
         <span class="kw">let </span>body = ApiServer::json_fault_message(<span class="macro">format!</span>(
-            <span class="string">&quot;Invalid request method and/or path: {} {}.&quot;</span>,
+            <span class="string">"Invalid request method and/or path: {} {}."</span>,
             std::str::from_utf8(Method::Get.raw()).unwrap(),
-            <span class="string">&quot;path&quot;
+            <span class="string">"path"
         </span>));
         <span class="kw">let </span>expected_response = http_response(<span class="kw-2">&amp;</span>body, <span class="number">400</span>);
         <span class="macro">assert_eq!</span>(buf.into_inner(), expected_response.as_bytes());
 
         <span class="comment">// Serde error.
         </span><span class="kw">let </span><span class="kw-2">mut </span>buf = Cursor::new(<span class="macro">vec!</span>[<span class="number">0</span>]);
-        <span class="kw">let </span>serde_error = serde_json::Value::from_str(<span class="string">&quot;&quot;</span>).unwrap_err();
+        <span class="kw">let </span>serde_error = serde_json::Value::from_str(<span class="string">""</span>).unwrap_err();
         <span class="kw">let </span>response: Response = Error::SerdeJson(serde_error).into();
         response.write_all(<span class="kw-2">&amp;mut </span>buf).unwrap();
         <span class="kw">let </span>body = ApiServer::json_fault_message(
-            <span class="string">&quot;An error occurred when deserializing the json body of a request: EOF while parsing a \
-             value at line 1 column 0.&quot;</span>,
+            <span class="string">"An error occurred when deserializing the json body of a request: EOF while parsing a \
+             value at line 1 column 0."</span>,
         );
         <span class="kw">let </span>expected_response = http_response(<span class="kw-2">&amp;</span>body, <span class="number">400</span>);
         <span class="macro">assert_eq!</span>(buf.into_inner(), expected_response.as_bytes());
@@ -1528,16 +1530,16 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_describe() {
         <span class="macro">assert_eq!</span>(
-            describe(Method::Get, <span class="string">&quot;path&quot;</span>, <span class="prelude-val">None</span>),
-            <span class="string">&quot;Get request on \&quot;path\&quot;&quot;
+            describe(Method::Get, <span class="string">"path"</span>, <span class="prelude-val">None</span>),
+            <span class="string">"Get request on \"path\""
         </span>);
         <span class="macro">assert_eq!</span>(
-            describe(Method::Put, <span class="string">&quot;/mmds&quot;</span>, <span class="prelude-val">None</span>),
-            <span class="string">&quot;Put request on \&quot;/mmds\&quot;&quot;
+            describe(Method::Put, <span class="string">"/mmds"</span>, <span class="prelude-val">None</span>),
+            <span class="string">"Put request on \"/mmds\""
         </span>);
         <span class="macro">assert_eq!</span>(
-            describe(Method::Put, <span class="string">&quot;path&quot;</span>, <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>Body::new(<span class="string">&quot;body&quot;</span>))),
-            <span class="string">&quot;Put request on \&quot;path\&quot; with body \&quot;body\&quot;&quot;
+            describe(Method::Put, <span class="string">"path"</span>, <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>Body::new(<span class="string">"body"</span>))),
+            <span class="string">"Put request on \"path\" with body \"body\""
         </span>);
     }
 
@@ -1553,7 +1555,7 @@
                 VmmData::BalloonStats(stats) =&gt; {
                     http_response(<span class="kw-2">&amp;</span>serde_json::to_string(stats).unwrap(), <span class="number">200</span>)
                 }
-                VmmData::Empty =&gt; http_response(<span class="string">&quot;&quot;</span>, <span class="number">204</span>),
+                VmmData::Empty =&gt; http_response(<span class="string">""</span>, <span class="number">204</span>),
                 VmmData::FullVmConfig(cfg) =&gt; {
                     http_response(<span class="kw-2">&amp;</span>serde_json::to_string(cfg).unwrap(), <span class="number">200</span>)
                 }
@@ -1567,7 +1569,7 @@
                     http_response(<span class="kw-2">&amp;</span>serde_json::to_string(info).unwrap(), <span class="number">200</span>)
                 }
                 VmmData::VmmVersion(version) =&gt; http_response(
-                    <span class="kw-2">&amp;</span><span class="macro">serde_json::json!</span>({ <span class="string">&quot;firecracker_version&quot;</span>: version.as_str() }).to_string(),
+                    <span class="kw-2">&amp;</span><span class="macro">serde_json::json!</span>({ <span class="string">"firecracker_version"</span>: version.as_str() }).to_string(),
                     <span class="number">200</span>,
                 ),
             };
@@ -1585,7 +1587,7 @@
         verify_ok_response_with(VmmData::Empty);
         verify_ok_response_with(VmmData::FullVmConfig(VmmConfig::default()));
         verify_ok_response_with(VmmData::MachineConfiguration(MachineConfig::default()));
-        verify_ok_response_with(VmmData::MmdsValue(serde_json::from_str(<span class="string">&quot;{}&quot;</span>).unwrap()));
+        verify_ok_response_with(VmmData::MmdsValue(serde_json::from_str(<span class="string">"{}"</span>).unwrap()));
         verify_ok_response_with(VmmData::InstanceInformation(InstanceInfo::default()));
         verify_ok_response_with(VmmData::VmmVersion(String::default()));
 
@@ -1605,7 +1607,7 @@
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
         sender
-            .write_all(http_request(<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;/&quot;</span>, <span class="prelude-val">None</span>).as_bytes())
+            .write_all(http_request(<span class="string">"GET"</span>, <span class="string">"/"</span>, <span class="prelude-val">None</span>).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
@@ -1617,7 +1619,7 @@
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
         sender
-            .write_all(http_request(<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;/balloon&quot;</span>, <span class="prelude-val">None</span>).as_bytes())
+            .write_all(http_request(<span class="string">"GET"</span>, <span class="string">"/balloon"</span>, <span class="prelude-val">None</span>).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
@@ -1629,7 +1631,7 @@
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
         sender
-            .write_all(http_request(<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;/balloon/statistics&quot;</span>, <span class="prelude-val">None</span>).as_bytes())
+            .write_all(http_request(<span class="string">"GET"</span>, <span class="string">"/balloon/statistics"</span>, <span class="prelude-val">None</span>).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
@@ -1641,7 +1643,7 @@
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
         sender
-            .write_all(http_request(<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;/machine-config&quot;</span>, <span class="prelude-val">None</span>).as_bytes())
+            .write_all(http_request(<span class="string">"GET"</span>, <span class="string">"/machine-config"</span>, <span class="prelude-val">None</span>).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
@@ -1653,7 +1655,7 @@
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
         sender
-            .write_all(http_request(<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;/mmds&quot;</span>, <span class="prelude-val">None</span>).as_bytes())
+            .write_all(http_request(<span class="string">"GET"</span>, <span class="string">"/mmds"</span>, <span class="prelude-val">None</span>).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
@@ -1665,7 +1667,7 @@
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
         sender
-            .write_all(http_request(<span class="string">&quot;GET&quot;</span>, <span class="string">&quot;/version&quot;</span>, <span class="prelude-val">None</span>).as_bytes())
+            .write_all(http_request(<span class="string">"GET"</span>, <span class="string">"/version"</span>, <span class="prelude-val">None</span>).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
@@ -1676,9 +1678,9 @@
     </span><span class="kw">fn </span>test_try_from_put_actions() {
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
-        <span class="kw">let </span>body = <span class="string">&quot;{ \&quot;action_type\&quot;: \&quot;FlushMetrics\&quot; }&quot;</span>;
+        <span class="kw">let </span>body = <span class="string">"{ \"action_type\": \"FlushMetrics\" }"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;/actions&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PUT"</span>, <span class="string">"/actions"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
@@ -1690,9 +1692,9 @@
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
         <span class="kw">let </span>body =
-            <span class="string">&quot;{ \&quot;amount_mib\&quot;: 0, \&quot;deflate_on_oom\&quot;: false, \&quot;stats_polling_interval_s\&quot;: 0 }&quot;</span>;
+            <span class="string">"{ \"amount_mib\": 0, \"deflate_on_oom\": false, \"stats_polling_interval_s\": 0 }"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;/balloon&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PUT"</span>, <span class="string">"/balloon"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
@@ -1703,11 +1705,11 @@
     </span><span class="kw">fn </span>test_try_from_put_entropy() {
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
-        <span class="kw">let </span>body = <span class="string">&quot;{ \&quot;rate_limiter\&quot;: { \&quot;bandwidth\&quot; : { \&quot;size\&quot;: 0, \&quot;one_time_burst\&quot;: 0, \
-                    \&quot;refill_time\&quot;: 0 }, \&quot;ops\&quot;: { \&quot;size\&quot;: 0, \&quot;one_time_burst\&quot;: 0, \
-                    \&quot;refill_time\&quot;: 0 } } }&quot;</span>;
+        <span class="kw">let </span>body = <span class="string">"{ \"rate_limiter\": { \"bandwidth\" : { \"size\": 0, \"one_time_burst\": 0, \
+                    \"refill_time\": 0 }, \"ops\": { \"size\": 0, \"one_time_burst\": 0, \
+                    \"refill_time\": 0 } } }"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;/entropy&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PUT"</span>, <span class="string">"/entropy"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
@@ -1718,9 +1720,9 @@
     </span><span class="kw">fn </span>test_try_from_put_boot() {
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
-        <span class="kw">let </span>body = <span class="string">&quot;{ \&quot;kernel_image_path\&quot;: \&quot;string\&quot;, \&quot;boot_args\&quot;: \&quot;string\&quot; }&quot;</span>;
+        <span class="kw">let </span>body = <span class="string">"{ \"kernel_image_path\": \"string\", \"boot_args\": \"string\" }"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;/boot-source&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PUT"</span>, <span class="string">"/boot-source"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
@@ -1731,13 +1733,13 @@
     </span><span class="kw">fn </span>test_try_from_put_drives() {
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
-        <span class="kw">let </span>body = <span class="string">&quot;{ \&quot;drive_id\&quot;: \&quot;string\&quot;, \&quot;path_on_host\&quot;: \&quot;string\&quot;, \&quot;is_root_device\&quot;: \
-                    true, \&quot;partuuid\&quot;: \&quot;string\&quot;, \&quot;is_read_only\&quot;: true, \&quot;cache_type\&quot;: \
-                    \&quot;Unsafe\&quot;, \&quot;io_engine\&quot;: \&quot;Sync\&quot;, \&quot;rate_limiter\&quot;: { \&quot;bandwidth\&quot;: { \
-                    \&quot;size\&quot;: 0, \&quot;one_time_burst\&quot;: 0, \&quot;refill_time\&quot;: 0 }, \&quot;ops\&quot;: { \
-                    \&quot;size\&quot;: 0, \&quot;one_time_burst\&quot;: 0, \&quot;refill_time\&quot;: 0 } } }&quot;</span>;
+        <span class="kw">let </span>body = <span class="string">"{ \"drive_id\": \"string\", \"path_on_host\": \"string\", \"is_root_device\": \
+                    true, \"partuuid\": \"string\", \"is_read_only\": true, \"cache_type\": \
+                    \"Unsafe\", \"io_engine\": \"Sync\", \"rate_limiter\": { \"bandwidth\": { \
+                    \"size\": 0, \"one_time_burst\": 0, \"refill_time\": 0 }, \"ops\": { \
+                    \"size\": 0, \"one_time_burst\": 0, \"refill_time\": 0 } } }"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;/drives/string&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PUT"</span>, <span class="string">"/drives/string"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
@@ -1748,10 +1750,10 @@
     </span><span class="kw">fn </span>test_try_from_put_logger() {
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
-        <span class="kw">let </span>body = <span class="string">&quot;{ \&quot;log_path\&quot;: \&quot;string\&quot;, \&quot;level\&quot;: \&quot;Warning\&quot;, \&quot;show_level\&quot;: false, \
-                    \&quot;show_log_origin\&quot;: false }&quot;</span>;
+        <span class="kw">let </span>body = <span class="string">"{ \"log_path\": \"string\", \"level\": \"Warning\", \"show_level\": false, \
+                    \"show_log_origin\": false }"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;/logger&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PUT"</span>, <span class="string">"/logger"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
@@ -1762,9 +1764,9 @@
     </span><span class="kw">fn </span>test_try_from_put_machine_config() {
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
-        <span class="kw">let </span>body = <span class="string">&quot;{ \&quot;vcpu_count\&quot;: 1, \&quot;mem_size_mib\&quot;: 1 }&quot;</span>;
+        <span class="kw">let </span>body = <span class="string">"{ \"vcpu_count\": 1, \"mem_size_mib\": 1 }"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;/machine-config&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PUT"</span>, <span class="string">"/machine-config"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
@@ -1775,9 +1777,9 @@
     </span><span class="kw">fn </span>test_try_from_put_metrics() {
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
-        <span class="kw">let </span>body = <span class="string">&quot;{ \&quot;metrics_path\&quot;: \&quot;string\&quot; }&quot;</span>;
+        <span class="kw">let </span>body = <span class="string">"{ \"metrics_path\": \"string\" }"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;/metrics&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PUT"</span>, <span class="string">"/metrics"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
@@ -1791,24 +1793,24 @@
 
         <span class="comment">// `/mmds`
         </span>sender
-            .write_all(http_request(<span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;/mmds&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;{}&quot;</span>)).as_bytes())
+            .write_all(http_request(<span class="string">"PUT"</span>, <span class="string">"/mmds"</span>, <span class="prelude-val">Some</span>(<span class="string">"{}"</span>)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
         ParsedRequest::try_from(<span class="kw-2">&amp;</span>req).unwrap();
 
-        <span class="kw">let </span>body = <span class="string">&quot;{\&quot;foo\&quot;:\&quot;bar\&quot;}&quot;</span>;
+        <span class="kw">let </span>body = <span class="string">"{\"foo\":\"bar\"}"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;/mmds&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PUT"</span>, <span class="string">"/mmds"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
         ParsedRequest::try_from(<span class="kw-2">&amp;</span>req).unwrap();
 
         <span class="comment">// `/mmds/config`
-        </span><span class="kw">let </span>body = <span class="string">&quot;{ \&quot;ipv4_address\&quot;: \&quot;169.254.170.2\&quot;, \&quot;network_interfaces\&quot;: [\&quot;iface0\&quot;] }&quot;</span>;
+        </span><span class="kw">let </span>body = <span class="string">"{ \"ipv4_address\": \"169.254.170.2\", \"network_interfaces\": [\"iface0\"] }"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;/mmds/config&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PUT"</span>, <span class="string">"/mmds/config"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
@@ -1819,15 +1821,15 @@
     </span><span class="kw">fn </span>test_try_from_put_netif() {
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
-        <span class="kw">let </span>body = <span class="string">&quot;{ \&quot;iface_id\&quot;: \&quot;string\&quot;, \&quot;guest_mac\&quot;: \&quot;12:34:56:78:9a:BC\&quot;, \
-                    \&quot;host_dev_name\&quot;: \&quot;string\&quot;, \&quot;rx_rate_limiter\&quot;: { \&quot;bandwidth\&quot;: { \
-                    \&quot;size\&quot;: 0, \&quot;one_time_burst\&quot;: 0, \&quot;refill_time\&quot;: 0 }, \&quot;ops\&quot;: { \
-                    \&quot;size\&quot;: 0, \&quot;one_time_burst\&quot;: 0, \&quot;refill_time\&quot;: 0 } }, \
-                    \&quot;tx_rate_limiter\&quot;: { \&quot;bandwidth\&quot;: { \&quot;size\&quot;: 0, \&quot;one_time_burst\&quot;: 0, \
-                    \&quot;refill_time\&quot;: 0 }, \&quot;ops\&quot;: { \&quot;size\&quot;: 0, \&quot;one_time_burst\&quot;: 0, \
-                    \&quot;refill_time\&quot;: 0 } } }&quot;</span>;
+        <span class="kw">let </span>body = <span class="string">"{ \"iface_id\": \"string\", \"guest_mac\": \"12:34:56:78:9a:BC\", \
+                    \"host_dev_name\": \"string\", \"rx_rate_limiter\": { \"bandwidth\": { \
+                    \"size\": 0, \"one_time_burst\": 0, \"refill_time\": 0 }, \"ops\": { \
+                    \"size\": 0, \"one_time_burst\": 0, \"refill_time\": 0 } }, \
+                    \"tx_rate_limiter\": { \"bandwidth\": { \"size\": 0, \"one_time_burst\": 0, \
+                    \"refill_time\": 0 }, \"ops\": { \"size\": 0, \"one_time_burst\": 0, \
+                    \"refill_time\": 0 } } }"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;/network-interfaces/string&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PUT"</span>, <span class="string">"/network-interfaces/string"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
@@ -1838,18 +1840,18 @@
     </span><span class="kw">fn </span>test_try_from_put_snapshot() {
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
-        <span class="kw">let </span>body = <span class="string">&quot;{ \&quot;snapshot_path\&quot;: \&quot;foo\&quot;, \&quot;mem_file_path\&quot;: \&quot;bar\&quot; }&quot;</span>;
+        <span class="kw">let </span>body = <span class="string">"{ \"snapshot_path\": \"foo\", \"mem_file_path\": \"bar\" }"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;/snapshot/create&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PUT"</span>, <span class="string">"/snapshot/create"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
         ParsedRequest::try_from(<span class="kw-2">&amp;</span>req).unwrap();
 
-        <span class="kw">let </span>body = <span class="string">&quot;{ \&quot;snapshot_path\&quot;: \&quot;foo\&quot;, \&quot;mem_backend\&quot;: { \&quot;backend_type\&quot;: \&quot;File\&quot;, \
-                    \&quot;backend_path\&quot;: \&quot;bar\&quot; }, \&quot;enable_diff_snapshots\&quot;: true }&quot;</span>;
+        <span class="kw">let </span>body = <span class="string">"{ \"snapshot_path\": \"foo\", \"mem_backend\": { \"backend_type\": \"File\", \
+                    \"backend_path\": \"bar\" }, \"enable_diff_snapshots\": true }"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;/snapshot/load&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PUT"</span>, <span class="string">"/snapshot/load"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
 
         connection.try_read().unwrap();
@@ -1857,9 +1859,9 @@
         ParsedRequest::try_from(<span class="kw-2">&amp;</span>req).unwrap();
 
         <span class="kw">let </span>body =
-            <span class="string">&quot;{ \&quot;snapshot_path\&quot;: \&quot;foo\&quot;, \&quot;mem_file_path\&quot;: \&quot;bar\&quot;, \&quot;resume_vm\&quot;: true }&quot;</span>;
+            <span class="string">"{ \"snapshot_path\": \"foo\", \"mem_file_path\": \"bar\", \"resume_vm\": true }"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;/snapshot/load&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PUT"</span>, <span class="string">"/snapshot/load"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
 
         connection.try_read().unwrap();
@@ -1871,9 +1873,9 @@
     </span><span class="kw">fn </span>test_try_from_patch_vm() {
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
-        <span class="kw">let </span>body = <span class="string">&quot;{ \&quot;state\&quot;: \&quot;Paused\&quot; }&quot;</span>;
+        <span class="kw">let </span>body = <span class="string">"{ \"state\": \"Paused\" }"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PATCH&quot;</span>, <span class="string">&quot;/vm&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PATCH"</span>, <span class="string">"/vm"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
@@ -1884,9 +1886,9 @@
     </span><span class="kw">fn </span>test_try_from_put_vsock() {
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
-        <span class="kw">let </span>body = <span class="string">&quot;{ \&quot;vsock_id\&quot;: \&quot;string\&quot;, \&quot;guest_cid\&quot;: 0, \&quot;uds_path\&quot;: \&quot;string\&quot; }&quot;</span>;
+        <span class="kw">let </span>body = <span class="string">"{ \"vsock_id\": \"string\", \"guest_cid\": 0, \"uds_path\": \"string\" }"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;/vsock&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PUT"</span>, <span class="string">"/vsock"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
@@ -1897,16 +1899,16 @@
     </span><span class="kw">fn </span>test_try_from_patch_balloon() {
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
-        <span class="kw">let </span>body = <span class="string">&quot;{ \&quot;amount_mib\&quot;: 1 }&quot;</span>;
+        <span class="kw">let </span>body = <span class="string">"{ \"amount_mib\": 1 }"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PATCH&quot;</span>, <span class="string">&quot;/balloon&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PATCH"</span>, <span class="string">"/balloon"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
         ParsedRequest::try_from(<span class="kw-2">&amp;</span>req).unwrap();
-        <span class="kw">let </span>body = <span class="string">&quot;{ \&quot;stats_polling_interval_s\&quot;: 1 }&quot;</span>;
+        <span class="kw">let </span>body = <span class="string">"{ \"stats_polling_interval_s\": 1 }"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PATCH&quot;</span>, <span class="string">&quot;/balloon/statistics&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PATCH"</span>, <span class="string">"/balloon/statistics"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
@@ -1917,9 +1919,9 @@
     </span><span class="kw">fn </span>test_try_from_patch_drives() {
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
-        <span class="kw">let </span>body = <span class="string">&quot;{ \&quot;drive_id\&quot;: \&quot;string\&quot;, \&quot;path_on_host\&quot;: \&quot;string\&quot; }&quot;</span>;
+        <span class="kw">let </span>body = <span class="string">"{ \"drive_id\": \"string\", \"path_on_host\": \"string\" }"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PATCH&quot;</span>, <span class="string">&quot;/drives/string&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PATCH"</span>, <span class="string">"/drives/string"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
@@ -1930,23 +1932,23 @@
     </span><span class="kw">fn </span>test_try_from_patch_machine_config() {
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
-        <span class="kw">let </span>body = <span class="string">&quot;{ \&quot;vcpu_count\&quot;: 1, \&quot;mem_size_mib\&quot;: 1 }&quot;</span>;
+        <span class="kw">let </span>body = <span class="string">"{ \"vcpu_count\": 1, \"mem_size_mib\": 1 }"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PATCH&quot;</span>, <span class="string">&quot;/machine-config&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PATCH"</span>, <span class="string">"/machine-config"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
         ParsedRequest::try_from(<span class="kw-2">&amp;</span>req).unwrap();
         <span class="kw">let </span>body =
-            <span class="string">&quot;{ \&quot;vcpu_count\&quot;: 1, \&quot;mem_size_mib\&quot;: 1, \&quot;smt\&quot;: false, \&quot;cpu_template\&quot;: \&quot;C3\&quot; }&quot;</span>;
+            <span class="string">"{ \"vcpu_count\": 1, \"mem_size_mib\": 1, \"smt\": false, \"cpu_template\": \"C3\" }"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PATCH&quot;</span>, <span class="string">&quot;/machine-config&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PATCH"</span>, <span class="string">"/machine-config"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
         </span>ParsedRequest::try_from(<span class="kw-2">&amp;</span>req).unwrap();
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
         </span>ParsedRequest::try_from(<span class="kw-2">&amp;</span>req).unwrap_err();
     }
 
@@ -1959,16 +1961,16 @@
         <span class="kw">let </span>cpu_config_json_result = serde_json::to_string(<span class="kw-2">&amp;</span>cpu_template);
         <span class="macro">assert!</span>(
             cpu_config_json_result.is_ok(),
-            <span class="string">&quot;Unable to serialize custom CPU template&quot;
+            <span class="string">"Unable to serialize custom CPU template"
         </span>);
         <span class="kw">let </span>cpu_config_json = cpu_config_json_result.unwrap();
         <span class="kw">let </span>result =
-            sender.write_all(http_request(<span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;/cpu-config&quot;</span>, <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>cpu_config_json)).as_bytes());
+            sender.write_all(http_request(<span class="string">"PUT"</span>, <span class="string">"/cpu-config"</span>, <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>cpu_config_json)).as_bytes());
         result.unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
         <span class="kw">let </span>request_result = ParsedRequest::try_from(<span class="kw-2">&amp;</span>req);
-        <span class="macro">assert!</span>(request_result.is_ok(), <span class="string">&quot;{}&quot;</span>, request_result.err().unwrap());
+        <span class="macro">assert!</span>(request_result.is_ok(), <span class="string">"{}"</span>, request_result.err().unwrap());
     }
 
     <span class="attr">#[test]
@@ -1976,7 +1978,7 @@
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
         sender
-            .write_all(http_request(<span class="string">&quot;PATCH&quot;</span>, <span class="string">&quot;/mmds&quot;</span>, <span class="prelude-val">Some</span>(<span class="string">&quot;{}&quot;</span>)).as_bytes())
+            .write_all(http_request(<span class="string">"PATCH"</span>, <span class="string">"/mmds"</span>, <span class="prelude-val">Some</span>(<span class="string">"{}"</span>)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
@@ -1987,9 +1989,9 @@
     </span><span class="kw">fn </span>test_try_from_patch_netif() {
         <span class="kw">let </span>(<span class="kw-2">mut </span>sender, receiver) = UnixStream::pair().unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
-        <span class="kw">let </span>body = <span class="string">&quot;{ \&quot;iface_id\&quot;: \&quot;string\&quot; }&quot;</span>;
+        <span class="kw">let </span>body = <span class="string">"{ \"iface_id\": \"string\" }"</span>;
         sender
-            .write_all(http_request(<span class="string">&quot;PATCH&quot;</span>, <span class="string">&quot;/network-interfaces/string&quot;</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
+            .write_all(http_request(<span class="string">"PATCH"</span>, <span class="string">"/network-interfaces/string"</span>, <span class="prelude-val">Some</span>(body)).as_bytes())
             .unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();

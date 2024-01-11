@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["IER_RDA_BIT","IER_RDA_OFFSET"],"enum":["RawIOError","SerialOut"],"struct":["SerialDeviceMetrics","SerialEventsWrapper","SerialWrapper"],"trait":["RawIOHandler"],"type":["SerialDevice"]};
+window.SIDEBAR_ITEMS = {"constant":["IER_RDA_BIT","IER_RDA_OFFSET","_DERIVE_Display_FOR_RawIOError"],"enum":["RawIOError","SerialOut"],"fn":["is_fifo"],"static":["METRICS"],"struct":["SerialDeviceMetrics","SerialEventsWrapper","SerialWrapper"],"trait":["RawIOHandler"],"type":["SerialDevice"]};

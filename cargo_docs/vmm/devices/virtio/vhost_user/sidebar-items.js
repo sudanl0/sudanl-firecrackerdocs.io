@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["VhostUserError"],"struct":["VhostUserHandleImpl"],"trait":["VhostUserHandleBackend"],"type":["VhostUserHandle"]};
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_VhostUserError"],"enum":["VhostUserError"],"struct":["VhostUserHandleImpl"],"trait":["VhostUserHandleBackend"],"type":["VhostUserHandle"]};

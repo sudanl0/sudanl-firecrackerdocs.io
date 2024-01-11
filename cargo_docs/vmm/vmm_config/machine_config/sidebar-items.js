@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["DEFAULT_MEM_SIZE_MIB","MAX_SUPPORTED_VCPUS"],"enum":["VmConfigError"],"struct":["MachineConfig","MachineConfigUpdate","VmConfig"]};
+window.SIDEBAR_ITEMS = {"constant":["DEFAULT_MEM_SIZE_MIB","MAX_SUPPORTED_VCPUS","_DERIVE_Display_FOR_VmConfigError"],"enum":["VmConfigError"],"fn":["deserialize_smt","deserialize_vcpu_num"],"struct":["MachineConfig","MachineConfigUpdate","VmConfig"]};

@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["CONNECTION_RTO_COUNT_MAX","CONNECTION_RTO_PERIOD","EVICTION_THRESHOLD","RCV_BUF_MAX_SIZE"],"fn":["build_response","parse_request_bytes"],"struct":["Endpoint"]};

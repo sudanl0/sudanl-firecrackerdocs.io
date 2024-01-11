@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/vmm_config/drive.rs`."><title>drive.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../vmm/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/vmm_config/drive.rs`."><title>drive.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -783,9 +785,9 @@
     </span><span class="kw">pub </span>rate_limiter: <span class="prelude-ty">Option</span>&lt;RateLimiterConfig&gt;,
     <span class="doccomment">/// The type of IO engine used by the device.
     </span><span class="comment">// #[serde(default)]
-    // #[serde(rename = &quot;io_engine&quot;)]
+    // #[serde(rename = "io_engine")]
     // pub file_engine_type: FileEngineType,
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;io_engine&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"io_engine"</span>)]
     </span><span class="kw">pub </span>file_engine_type: <span class="prelude-ty">Option</span>&lt;FileEngineType&gt;,
 
     <span class="comment">// VhostUserBlock specific fields
@@ -841,8 +843,8 @@
         <span class="comment">// If there is a root device, it would be at the top of the list.
         </span><span class="kw">if let </span><span class="prelude-val">Some</span>(block) = <span class="self">self</span>.devices.get(<span class="number">0</span>) {
             <span class="kw">match </span>block {
-                BlockDeviceType::VirtioBlock(b) =&gt; b.lock().expect(<span class="string">&quot;Poisoned lock&quot;</span>).root_device,
-                BlockDeviceType::VhostUserBlock(b) =&gt; b.lock().expect(<span class="string">&quot;Poisoned lock&quot;</span>).root_device,
+                BlockDeviceType::VirtioBlock(b) =&gt; b.lock().expect(<span class="string">"Poisoned lock"</span>).root_device,
+                BlockDeviceType::VhostUserBlock(b) =&gt; b.lock().expect(<span class="string">"Poisoned lock"</span>).root_device,
             }
         } <span class="kw">else </span>{
             <span class="bool-val">false
@@ -852,14 +854,14 @@
     <span class="doccomment">/// Gets the index of the device with the specified `drive_id` if it exists in the list.
     </span><span class="kw">fn </span>get_index_of_drive_id(<span class="kw-2">&amp;</span><span class="self">self</span>, drive_id: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;usize&gt; {
         <span class="self">self</span>.devices.iter().position(|b| <span class="kw">match </span>b {
-            BlockDeviceType::VirtioBlock(b) =&gt; b.lock().expect(<span class="string">&quot;Poisoned lock&quot;</span>).id.eq(drive_id),
-            BlockDeviceType::VhostUserBlock(b) =&gt; b.lock().expect(<span class="string">&quot;Poisoned lock&quot;</span>).id.eq(drive_id),
+            BlockDeviceType::VirtioBlock(b) =&gt; b.lock().expect(<span class="string">"Poisoned lock"</span>).id.eq(drive_id),
+            BlockDeviceType::VhostUserBlock(b) =&gt; b.lock().expect(<span class="string">"Poisoned lock"</span>).id.eq(drive_id),
         })
     }
 
     <span class="doccomment">/// Inserts an existing block device.
     </span><span class="kw">pub fn </span>add_virtio_device(<span class="kw-2">&amp;mut </span><span class="self">self</span>, block_device: Arc&lt;Mutex&lt;VirtioBlock&gt;&gt;) {
-        <span class="kw">if </span>block_device.lock().expect(<span class="string">&quot;Poisoned lock&quot;</span>).root_device {
+        <span class="kw">if </span>block_device.lock().expect(<span class="string">"Poisoned lock"</span>).root_device {
             <span class="self">self</span>.devices
                 .push_front(BlockDeviceType::VirtioBlock(block_device));
         } <span class="kw">else </span>{
@@ -870,7 +872,7 @@
 
     <span class="doccomment">/// Inserts an existing block device.
     </span><span class="kw">pub fn </span>add_vhost_user_device(<span class="kw-2">&amp;mut </span><span class="self">self</span>, block_device: Arc&lt;Mutex&lt;VhostUserBlock&gt;&gt;) {
-        <span class="kw">if </span>block_device.lock().expect(<span class="string">&quot;Poisoned lock&quot;</span>).root_device {
+        <span class="kw">if </span>block_device.lock().expect(<span class="string">"Poisoned lock"</span>).root_device {
             <span class="self">self</span>.devices
                 .push_front(BlockDeviceType::VhostUserBlock(block_device));
         } <span class="kw">else </span>{
@@ -886,7 +888,7 @@
         <span class="kw">let </span>position = <span class="self">self</span>.get_index_of_drive_id(<span class="kw-2">&amp;</span>config.drive_id);
         <span class="kw">let </span>has_root_device = <span class="self">self</span>.has_root_device();
 
-        <span class="comment">// Don&#39;t allow adding a second root block device.
+        <span class="comment">// Don't allow adding a second root block device.
         // If the new device cfg is root and not an update to the existing root, fail fast.
         </span><span class="kw">if </span>config.is_root_device &amp;&amp; has_root_device &amp;&amp; position != <span class="prelude-val">Some</span>(<span class="number">0</span>) {
             <span class="kw">return </span><span class="prelude-val">Err</span>(DriveError::RootBlockDeviceAlreadyAdded);
@@ -985,7 +987,7 @@
     </span><span class="kw">fn </span>test_add_non_root_block_device() {
         <span class="kw">let </span>dummy_file = TempFile::new().unwrap();
         <span class="kw">let </span>dummy_path = dummy_file.as_path().to_str().unwrap().to_string();
-        <span class="kw">let </span>dummy_id = String::from(<span class="string">&quot;1&quot;</span>);
+        <span class="kw">let </span>dummy_id = String::from(<span class="string">"1"</span>);
         <span class="kw">let </span>dummy_block_device = BlockDeviceConfig {
             drive_id: dummy_id.clone(),
             partuuid: <span class="prelude-val">None</span>,
@@ -1026,7 +1028,7 @@
         <span class="kw">let </span>dummy_path = dummy_file.as_path().to_str().unwrap().to_string();
 
         <span class="kw">let </span>dummy_block_device = BlockDeviceConfig {
-            drive_id: String::from(<span class="string">&quot;1&quot;</span>),
+            drive_id: String::from(<span class="string">"1"</span>),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">true</span>,
             cache_type: CacheType::Unsafe,
@@ -1062,7 +1064,7 @@
         <span class="kw">let </span>dummy_file_1 = TempFile::new().unwrap();
         <span class="kw">let </span>dummy_path_1 = dummy_file_1.as_path().to_str().unwrap().to_string();
         <span class="kw">let </span>root_block_device_1 = BlockDeviceConfig {
-            drive_id: String::from(<span class="string">&quot;1&quot;</span>),
+            drive_id: String::from(<span class="string">"1"</span>),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">true</span>,
             cache_type: CacheType::Unsafe,
@@ -1078,7 +1080,7 @@
         <span class="kw">let </span>dummy_file_2 = TempFile::new().unwrap();
         <span class="kw">let </span>dummy_path_2 = dummy_file_2.as_path().to_str().unwrap().to_string();
         <span class="kw">let </span>root_block_device_2 = BlockDeviceConfig {
-            drive_id: String::from(<span class="string">&quot;2&quot;</span>),
+            drive_id: String::from(<span class="string">"2"</span>),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">true</span>,
             cache_type: CacheType::Unsafe,
@@ -1105,7 +1107,7 @@
         <span class="kw">let </span>dummy_file_1 = TempFile::new().unwrap();
         <span class="kw">let </span>dummy_path_1 = dummy_file_1.as_path().to_str().unwrap().to_string();
         <span class="kw">let </span>root_block_device = BlockDeviceConfig {
-            drive_id: String::from(<span class="string">&quot;1&quot;</span>),
+            drive_id: String::from(<span class="string">"1"</span>),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">true</span>,
             cache_type: CacheType::Unsafe,
@@ -1121,7 +1123,7 @@
         <span class="kw">let </span>dummy_file_2 = TempFile::new().unwrap();
         <span class="kw">let </span>dummy_path_2 = dummy_file_2.as_path().to_str().unwrap().to_string();
         <span class="kw">let </span>dummy_block_dev_2 = BlockDeviceConfig {
-            drive_id: String::from(<span class="string">&quot;2&quot;</span>),
+            drive_id: String::from(<span class="string">"2"</span>),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">false</span>,
             cache_type: CacheType::Unsafe,
@@ -1137,7 +1139,7 @@
         <span class="kw">let </span>dummy_file_3 = TempFile::new().unwrap();
         <span class="kw">let </span>dummy_path_3 = dummy_file_3.as_path().to_str().unwrap().to_string();
         <span class="kw">let </span>dummy_block_dev_3 = BlockDeviceConfig {
-            drive_id: String::from(<span class="string">&quot;3&quot;</span>),
+            drive_id: String::from(<span class="string">"3"</span>),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">false</span>,
             cache_type: CacheType::Unsafe,
@@ -1184,7 +1186,7 @@
         <span class="kw">let </span>dummy_file_1 = TempFile::new().unwrap();
         <span class="kw">let </span>dummy_path_1 = dummy_file_1.as_path().to_str().unwrap().to_string();
         <span class="kw">let </span>root_block_device = BlockDeviceConfig {
-            drive_id: String::from(<span class="string">&quot;1&quot;</span>),
+            drive_id: String::from(<span class="string">"1"</span>),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">true</span>,
             cache_type: CacheType::Unsafe,
@@ -1200,7 +1202,7 @@
         <span class="kw">let </span>dummy_file_2 = TempFile::new().unwrap();
         <span class="kw">let </span>dummy_path_2 = dummy_file_2.as_path().to_str().unwrap().to_string();
         <span class="kw">let </span>dummy_block_dev_2 = BlockDeviceConfig {
-            drive_id: String::from(<span class="string">&quot;2&quot;</span>),
+            drive_id: String::from(<span class="string">"2"</span>),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">false</span>,
             cache_type: CacheType::Unsafe,
@@ -1216,7 +1218,7 @@
         <span class="kw">let </span>dummy_file_3 = TempFile::new().unwrap();
         <span class="kw">let </span>dummy_path_3 = dummy_file_3.as_path().to_str().unwrap().to_string();
         <span class="kw">let </span>dummy_block_dev_3 = BlockDeviceConfig {
-            drive_id: String::from(<span class="string">&quot;3&quot;</span>),
+            drive_id: String::from(<span class="string">"3"</span>),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">false</span>,
             cache_type: CacheType::Unsafe,
@@ -1264,7 +1266,7 @@
         <span class="kw">let </span>dummy_file_1 = TempFile::new().unwrap();
         <span class="kw">let </span>dummy_path_1 = dummy_file_1.as_path().to_str().unwrap().to_string();
         <span class="kw">let </span>root_block_device = BlockDeviceConfig {
-            drive_id: String::from(<span class="string">&quot;1&quot;</span>),
+            drive_id: String::from(<span class="string">"1"</span>),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">true</span>,
             cache_type: CacheType::Unsafe,
@@ -1280,7 +1282,7 @@
         <span class="kw">let </span>dummy_file_2 = TempFile::new().unwrap();
         <span class="kw">let </span>dummy_path_2 = dummy_file_2.as_path().to_str().unwrap().to_string();
         <span class="kw">let </span><span class="kw-2">mut </span>dummy_block_device_2 = BlockDeviceConfig {
-            drive_id: String::from(<span class="string">&quot;2&quot;</span>),
+            drive_id: String::from(<span class="string">"2"</span>),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">false</span>,
             cache_type: CacheType::Unsafe,
@@ -1301,13 +1303,13 @@
 
         <span class="comment">// Get index zero.
         </span><span class="macro">assert_eq!</span>(
-            block_devs.get_index_of_drive_id(<span class="kw-2">&amp;</span>String::from(<span class="string">&quot;1&quot;</span>)),
+            block_devs.get_index_of_drive_id(<span class="kw-2">&amp;</span>String::from(<span class="string">"1"</span>)),
             <span class="prelude-val">Some</span>(<span class="number">0</span>)
         );
 
         <span class="comment">// Get None.
         </span><span class="macro">assert!</span>(block_devs
-            .get_index_of_drive_id(<span class="kw-2">&amp;</span>String::from(<span class="string">&quot;foo&quot;</span>))
+            .get_index_of_drive_id(<span class="kw-2">&amp;</span>String::from(<span class="string">"foo"</span>))
             .is_none());
 
         <span class="comment">// Test several update cases using dummy_block_device_2.
@@ -1329,7 +1331,7 @@
         }
 
         <span class="comment">// Update with invalid path.
-        </span><span class="kw">let </span>dummy_path_3 = String::from(<span class="string">&quot;test_update_3&quot;</span>);
+        </span><span class="kw">let </span>dummy_path_3 = String::from(<span class="string">"test_update_3"</span>);
         dummy_block_device_2.path_on_host = <span class="prelude-val">Some</span>(dummy_path_3);
         <span class="macro">assert!</span>(<span class="macro">matches!</span>(
             block_devs.insert(dummy_block_device_2.clone()),
@@ -1347,7 +1349,7 @@
         );
 
         <span class="kw">let </span>root_block_device = BlockDeviceConfig {
-            drive_id: String::from(<span class="string">&quot;1&quot;</span>),
+            drive_id: String::from(<span class="string">"1"</span>),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">true</span>,
             cache_type: CacheType::Unsafe,
@@ -1363,8 +1365,8 @@
         </span><span class="kw">let </span><span class="kw-2">mut </span>root_block_device_old = root_block_device;
         root_block_device_old.is_root_device = <span class="bool-val">false</span>;
         <span class="kw">let </span>root_block_device_new = BlockDeviceConfig {
-            drive_id: String::from(<span class="string">&quot;2&quot;</span>),
-            partuuid: <span class="prelude-val">Some</span>(<span class="string">&quot;0eaa91a0-01&quot;</span>.to_string()),
+            drive_id: String::from(<span class="string">"2"</span>),
+            partuuid: <span class="prelude-val">Some</span>(<span class="string">"0eaa91a0-01"</span>.to_string()),
             is_root_device: <span class="bool-val">true</span>,
             cache_type: CacheType::Unsafe,
 
@@ -1380,7 +1382,7 @@
         <span class="kw">let </span>root_block_id = root_block_device_new.drive_id.clone();
         block_devs.insert(root_block_device_new).unwrap();
         <span class="macro">assert!</span>(block_devs.has_root_device());
-        <span class="comment">// Verify it&#39;s been moved to the first position.
+        <span class="comment">// Verify it's been moved to the first position.
         </span><span class="kw">match </span>block_devs.devices[<span class="number">0</span>] {
             BlockDeviceType::VirtioBlock(<span class="kw-2">ref </span>b) =&gt; {
                 <span class="macro">assert_eq!</span>(b.lock().unwrap().id, root_block_id)
@@ -1394,7 +1396,7 @@
         <span class="kw">let </span>dummy_file = TempFile::new().unwrap();
 
         <span class="kw">let </span>dummy_block_device = BlockDeviceConfig {
-            drive_id: String::from(<span class="string">&quot;1&quot;</span>),
+            drive_id: String::from(<span class="string">"1"</span>),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">true</span>,
             cache_type: CacheType::Unsafe,
@@ -1420,7 +1422,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>block_devs = BlockBuilder::new();
         <span class="kw">let </span>backing_file = TempFile::new().unwrap();
 
-        <span class="kw">let </span>block_id = <span class="string">&quot;test_id&quot;</span>;
+        <span class="kw">let </span>block_id = <span class="string">"test_id"</span>;
         <span class="kw">let </span>config = VirtioBlockConfig {
             drive_id: block_id.to_string(),
             path_on_host: backing_file.as_path().to_str().unwrap().to_string(),

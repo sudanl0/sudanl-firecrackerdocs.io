@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["IFACE_NAME_MAX_LEN","TUNTAP","_DERIVE_Display_FOR_TapError"],"enum":["TapError"],"fn":["TUNSETIFF","TUNSETOFFLOAD","TUNSETVNETHDRSZ","build_terminated_if_name"],"struct":["IfReqBuilder","Tap"]};

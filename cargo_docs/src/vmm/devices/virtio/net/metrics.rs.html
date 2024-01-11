@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/devices/virtio/net/metrics.rs`."><title>metrics.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../../vmm/index.html"><img class="rust-logo" src="../../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/devices/virtio/net/metrics.rs`."><title>metrics.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -443,58 +445,58 @@
 //! ## JSON example with metrics:
 //! ```json
 //! {
-//!  &quot;net_eth0&quot;: {
-//!     &quot;activate_fails&quot;: &quot;SharedIncMetric&quot;,
-//!     &quot;cfg_fails&quot;: &quot;SharedIncMetric&quot;,
-//!     &quot;mac_address_updates&quot;: &quot;SharedIncMetric&quot;,
-//!     &quot;no_rx_avail_buffer&quot;: &quot;SharedIncMetric&quot;,
-//!     &quot;no_tx_avail_buffer&quot;: &quot;SharedIncMetric&quot;,
+//!  "net_eth0": {
+//!     "activate_fails": "SharedIncMetric",
+//!     "cfg_fails": "SharedIncMetric",
+//!     "mac_address_updates": "SharedIncMetric",
+//!     "no_rx_avail_buffer": "SharedIncMetric",
+//!     "no_tx_avail_buffer": "SharedIncMetric",
 //!     ...
 //!  }
-//!  &quot;net_eth1&quot;: {
-//!     &quot;activate_fails&quot;: &quot;SharedIncMetric&quot;,
-//!     &quot;cfg_fails&quot;: &quot;SharedIncMetric&quot;,
-//!     &quot;mac_address_updates&quot;: &quot;SharedIncMetric&quot;,
-//!     &quot;no_rx_avail_buffer&quot;: &quot;SharedIncMetric&quot;,
-//!     &quot;no_tx_avail_buffer&quot;: &quot;SharedIncMetric&quot;,
+//!  "net_eth1": {
+//!     "activate_fails": "SharedIncMetric",
+//!     "cfg_fails": "SharedIncMetric",
+//!     "mac_address_updates": "SharedIncMetric",
+//!     "no_rx_avail_buffer": "SharedIncMetric",
+//!     "no_tx_avail_buffer": "SharedIncMetric",
 //!     ...
 //!  }
 //!  ...
-//!  &quot;net_iface_id&quot;: {
-//!     &quot;activate_fails&quot;: &quot;SharedIncMetric&quot;,
-//!     &quot;cfg_fails&quot;: &quot;SharedIncMetric&quot;,
-//!     &quot;mac_address_updates&quot;: &quot;SharedIncMetric&quot;,
-//!     &quot;no_rx_avail_buffer&quot;: &quot;SharedIncMetric&quot;,
-//!     &quot;no_tx_avail_buffer&quot;: &quot;SharedIncMetric&quot;,
+//!  "net_iface_id": {
+//!     "activate_fails": "SharedIncMetric",
+//!     "cfg_fails": "SharedIncMetric",
+//!     "mac_address_updates": "SharedIncMetric",
+//!     "no_rx_avail_buffer": "SharedIncMetric",
+//!     "no_tx_avail_buffer": "SharedIncMetric",
 //!     ...
 //!  }
-//!  &quot;net&quot;: {
-//!     &quot;activate_fails&quot;: &quot;SharedIncMetric&quot;,
-//!     &quot;cfg_fails&quot;: &quot;SharedIncMetric&quot;,
-//!     &quot;mac_address_updates&quot;: &quot;SharedIncMetric&quot;,
-//!     &quot;no_rx_avail_buffer&quot;: &quot;SharedIncMetric&quot;,
-//!     &quot;no_tx_avail_buffer&quot;: &quot;SharedIncMetric&quot;,
+//!  "net": {
+//!     "activate_fails": "SharedIncMetric",
+//!     "cfg_fails": "SharedIncMetric",
+//!     "mac_address_updates": "SharedIncMetric",
+//!     "no_rx_avail_buffer": "SharedIncMetric",
+//!     "no_tx_avail_buffer": "SharedIncMetric",
 //!     ...
 //!  }
 //! }
 //! ```
 //! Each `net` field in the example above is a serializable `NetDeviceMetrics` structure
 //! collecting metrics such as `activate_fails`, `cfg_fails`, etc. for the network device.
-//! `net_eth0` represent metrics for the endpoint &quot;/network-interfaces/eth0&quot;,
-//! `net_eth1` represent metrics for the endpoint &quot;/network-interfaces/eth1&quot;, and
-//! `net_iface_id` represent metrics for the endpoint &quot;/network-interfaces/{iface_id}&quot;
+//! `net_eth0` represent metrics for the endpoint "/network-interfaces/eth0",
+//! `net_eth1` represent metrics for the endpoint "/network-interfaces/eth1", and
+//! `net_iface_id` represent metrics for the endpoint "/network-interfaces/{iface_id}"
 //! network device respectively and `net` is the aggregate of all the per device metrics.
 //!
 //! # Limitations
 //! Network device currently do not have `vmm::logger::metrics::StoreMetrics` so aggregate
-//! doesn&#39;t consider them.
+//! doesn't consider them.
 //!
 //! # Design
 //! The main design goals of this system are:
 //! * To improve network device metrics by logging them at per device granularity.
 //! * Continue to provide aggregate net metrics to maintain backward compatibility.
 //! * Move NetDeviceMetrics out of from logger and decouple it.
-//! * Use lockless operations, preferably ones that don&#39;t require anything other than simple
+//! * Use lockless operations, preferably ones that don't require anything other than simple
 //!   reads/writes being atomic.
 //! * Rely on `serde` to provide the actual serialization for writing the metrics.
 //! * Since all metrics start at 0, we implement the `Default` trait via derive for all of them, to
@@ -502,10 +504,10 @@
 //!
 //! * Devices could be created in any order i.e. the first device created could either be eth0 or
 //!   eth1 so if we use a vector for NetDeviceMetrics and call 1st device as net0, then net0 could
-//!   sometimes point to eth0 and sometimes to eth1 which doesn&#39;t help with analysing the metrics.
+//!   sometimes point to eth0 and sometimes to eth1 which doesn't help with analysing the metrics.
 //!   So, use Map instead of Vec to help understand which interface the metrics actually belongs to.
-//! * We use &quot;net_$iface_id&quot; for the metrics name instead of &quot;net_$tap_name&quot; to be consistent with
-//!   the net endpoint &quot;/network-interfaces/{iface_id}&quot;.
+//! * We use "net_$iface_id" for the metrics name instead of "net_$tap_name" to be consistent with
+//!   the net endpoint "/network-interfaces/{iface_id}".
 //!
 //! The system implements 1 types of metrics:
 //! * Shared Incremental Metrics (SharedIncMetrics) - dedicated for the metrics which need a counter
@@ -531,7 +533,7 @@
 
 <span class="kw">impl </span>NetMetricsPerDevice {
     <span class="doccomment">/// Allocate `NetDeviceMetrics` for net device having
-    /// id `iface_id`. Also, allocate only if it doesn&#39;t
+    /// id `iface_id`. Also, allocate only if it doesn't
     /// exist to avoid overwriting previously allocated data.
     /// lock is always initialized so it is safe the unwrap
     /// the lock without a check.
@@ -571,13 +573,13 @@
     <span class="kw">let </span><span class="kw-2">mut </span>net_aggregated: NetDeviceMetrics = NetDeviceMetrics::default();
 
     <span class="kw">for </span>(name, metrics) <span class="kw">in </span>net_metrics.metrics.iter() {
-        <span class="kw">let </span>devn = <span class="macro">format!</span>(<span class="string">&quot;net_{}&quot;</span>, name);
+        <span class="kw">let </span>devn = <span class="macro">format!</span>(<span class="string">"net_{}"</span>, name);
         <span class="comment">// serialization will flush the metrics so aggregate before it.
         </span><span class="kw">let </span>m: <span class="kw-2">&amp;</span>NetDeviceMetrics = metrics;
         net_aggregated.aggregate(m);
         seq.serialize_entry(<span class="kw-2">&amp;</span>devn, m)<span class="question-mark">?</span>;
     }
-    seq.serialize_entry(<span class="string">&quot;net&quot;</span>, <span class="kw-2">&amp;</span>net_aggregated)<span class="question-mark">?</span>;
+    seq.serialize_entry(<span class="string">"net"</span>, <span class="kw-2">&amp;</span>net_aggregated)<span class="question-mark">?</span>;
     seq.end()
 }
 
@@ -709,7 +711,7 @@
         drop(METRICS.write().unwrap());
 
         <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..MAX_NET_DEVICES {
-            <span class="kw">let </span>devn: String = <span class="macro">format!</span>(<span class="string">&quot;eth{}&quot;</span>, i);
+            <span class="kw">let </span>devn: String = <span class="macro">format!</span>(<span class="string">"eth{}"</span>, i);
             NetMetricsPerDevice::alloc(devn.clone());
             METRICS
                 .read()
@@ -738,7 +740,7 @@
         }
 
         <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..MAX_NET_DEVICES {
-            <span class="kw">let </span>devn: String = <span class="macro">format!</span>(<span class="string">&quot;eth{}&quot;</span>, i);
+            <span class="kw">let </span>devn: String = <span class="macro">format!</span>(<span class="string">"eth{}"</span>, i);
             <span class="macro">assert!</span>(
                 METRICS
                     .read()
@@ -778,7 +780,7 @@
     </span><span class="kw">fn </span>test_signle_net_dev_metrics() {
         <span class="comment">// Use eth0 so that we can check thread safety with the
         // `test_net_dev_metrics` which also uses the same name.
-        </span><span class="kw">let </span>devn = <span class="string">&quot;eth0&quot;</span>;
+        </span><span class="kw">let </span>devn = <span class="string">"eth0"</span>;
 
         drop(METRICS.read().unwrap());
         drop(METRICS.write().unwrap());
@@ -804,7 +806,7 @@
                 .activate_fails
                 .count()
                 &gt; <span class="number">0</span>,
-            <span class="string">&quot;{}&quot;</span>,
+            <span class="string">"{}"</span>,
             METRICS
                 .read()
                 .unwrap()
@@ -826,7 +828,7 @@
                 .activate_fails
                 .count()
                 &lt;= <span class="number">2</span>,
-            <span class="string">&quot;{}&quot;</span>,
+            <span class="string">"{}"</span>,
             METRICS
                 .read()
                 .unwrap()

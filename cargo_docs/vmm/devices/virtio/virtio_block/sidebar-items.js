@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["BLOCK_CONFIG_SPACE_SIZE","BLOCK_NUM_QUEUES","BLOCK_QUEUE_SIZES","IO_URING_NUM_ENTRIES","SECTOR_SHIFT","SECTOR_SIZE"],"enum":["VirtioBlockError"],"mod":["device","metrics","persist","request"]};
+window.SIDEBAR_ITEMS = {"constant":["BLOCK_CONFIG_SPACE_SIZE","BLOCK_NUM_QUEUES","BLOCK_QUEUE_SIZES","IO_URING_NUM_ENTRIES","SECTOR_SHIFT","SECTOR_SIZE","_DERIVE_Display_FOR_VirtioBlockError"],"enum":["VirtioBlockError"],"mod":["device","event_handler","io","metrics","persist","request"]};

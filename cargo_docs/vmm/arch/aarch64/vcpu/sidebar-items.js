@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["VcpuError"],"fn":["get_all_registers","get_all_registers_ids","get_manufacturer_id_from_host","get_manufacturer_id_from_state","get_mpidr","get_mpstate","get_registers","set_mpstate","set_registers","setup_boot_regs"]};

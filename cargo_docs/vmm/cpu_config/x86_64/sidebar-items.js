@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_CpuConfigurationError"],"enum":["CpuConfigurationError"],"mod":["cpuid","custom_cpu_template","static_cpu_templates","test_utils"],"struct":["CpuConfiguration"]};

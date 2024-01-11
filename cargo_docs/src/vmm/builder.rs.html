@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/builder.rs`."><title>builder.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../vmm/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/builder.rs`."><title>builder.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1610,14 +1612,12 @@
 <a href="#1610" id="1610">1610</a>
 <a href="#1611" id="1611">1611</a>
 <a href="#1612" id="1612">1612</a>
-<a href="#1613" id="1613">1613</a>
-<a href="#1614" id="1614">1614</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 </span><span class="doccomment">//! Enables pre-boot setup, instantiation and booting of a Firecracker VMM.
 
-</span><span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+</span><span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
 </span><span class="kw">use </span>std::convert::TryFrom;
 <span class="kw">use </span>std::fmt::Debug;
 <span class="kw">use </span>std::io::{<span class="self">self</span>, Seek, SeekFrom};
@@ -1626,9 +1626,9 @@
 <span class="kw">use </span>event_manager::{MutEventSubscriber, SubscriberOps};
 <span class="kw">use </span>libc::EFD_NONBLOCK;
 <span class="kw">use </span>linux_loader::cmdline::Cmdline <span class="kw">as </span>LoaderKernelCmdline;
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
 </span><span class="kw">use </span>linux_loader::loader::elf::Elf <span class="kw">as </span>Loader;
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
 </span><span class="kw">use </span>linux_loader::loader::pe::PE <span class="kw">as </span>Loader;
 <span class="kw">use </span>linux_loader::loader::KernelLoader;
 <span class="kw">use </span>seccompiler::BpfThreadMap;
@@ -1638,23 +1638,23 @@
 <span class="kw">use </span>utils::time::TimestampUs;
 <span class="kw">use </span>utils::u64_to_usize;
 <span class="kw">use </span>vm_memory::ReadVolatile;
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
 </span><span class="kw">use </span>vm_superio::Rtc;
 <span class="kw">use </span>vm_superio::Serial;
 
 <span class="kw">use </span><span class="kw">crate</span>::arch::InitrdConfig;
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::construct_kvm_mpidrs;
 <span class="kw">use </span><span class="kw">crate</span>::cpu_config::templates::{
     CpuConfiguration, CustomCpuTemplate, GetCpuTemplate, GetCpuTemplateError, GuestConfigError,
     KvmCapability,
 };
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::device_manager::legacy::PortIODeviceManager;
 <span class="kw">use </span><span class="kw">crate</span>::device_manager::mmio::MMIODeviceManager;
 <span class="kw">use </span><span class="kw">crate</span>::device_manager::persist::MMIODevManagerConstructorArgs;
 <span class="kw">use </span><span class="kw">crate</span>::devices::legacy::serial::SerialOut;
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::devices::legacy::RTCDevice;
 <span class="kw">use </span><span class="kw">crate</span>::devices::legacy::{EventFdTrigger, SerialEventsWrapper, SerialWrapper};
 <span class="kw">use </span><span class="kw">crate</span>::devices::virtio::balloon::Balloon;
@@ -1674,9 +1674,9 @@
 <span class="kw">use </span><span class="kw">crate</span>::vstate::memory::{
     create_memfd, GuestAddress, GuestMemory, GuestMemoryExtension, GuestMemoryMmap,
 };
-<span class="kw">use </span><span class="kw">crate</span>::vstate::vcpu::{Vcpu, VcpuConfig};
+<span class="kw">use </span><span class="kw">crate</span>::vstate::vcpu::{Vcpu, VcpuConfig, VcpuError};
 <span class="kw">use </span><span class="kw">crate</span>::vstate::vm::Vm;
-<span class="kw">use crate</span>::{device_manager, EventManager, RestoreVcpusError, Vmm, VmmError};
+<span class="kw">use crate</span>::{device_manager, EventManager, Vmm, VmmError};
 
 <span class="doccomment">/// Errors associated with starting the instance.
 </span><span class="attr">#[derive(Debug, thiserror::Error, displaydoc::Display)]
@@ -1692,7 +1692,7 @@
     <span class="doccomment">/// Cannot create RateLimiter: {0}
     </span>CreateRateLimiter(io::Error),
     <span class="doccomment">/// Error creating legacy device: {0}
-    </span><span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    </span><span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span>CreateLegacyDevice(device_manager::legacy::LegacyDeviceError),
     <span class="doccomment">/// Invalid Memory Configuration: {0}
     </span>GuestMemory(<span class="kw">crate</span>::vstate::memory::MemoryError),
@@ -1730,7 +1730,7 @@
     </span>CreateEntropyDevice(<span class="kw">crate</span>::devices::virtio::rng::EntropyError),
 }
 
-<span class="doccomment">/// It&#39;s convenient to automatically convert `linux_loader::cmdline::Error`s
+<span class="doccomment">/// It's convenient to automatically convert `linux_loader::cmdline::Error`s
 /// to `StartMicrovmError`s.
 </span><span class="kw">impl </span>std::convert::From&lt;linux_loader::cmdline::Error&gt; <span class="kw">for </span>StartMicrovmError {
     <span class="kw">fn </span>from(err: linux_loader::cmdline::Error) -&gt; StartMicrovmError {
@@ -1738,7 +1738,7 @@
     }
 }
 
-<span class="attr">#[cfg_attr(target_arch = <span class="string">&quot;aarch64&quot;</span>, allow(unused))]
+<span class="attr">#[cfg_attr(target_arch = <span class="string">"aarch64"</span>, allow(unused))]
 </span><span class="kw">fn </span>create_vmm_and_vcpus(
     instance_info: <span class="kw-2">&amp;</span>InstanceInfo,
     event_manager: <span class="kw-2">&amp;mut </span>EventManager,
@@ -1764,7 +1764,7 @@
         .map_err(Internal)<span class="question-mark">?</span>;
 
     <span class="comment">// Instantiate the MMIO device manager.
-    // &#39;mmio_base&#39; address has to be an address which is protected by the kernel
+    // 'mmio_base' address has to be an address which is protected by the kernel
     // and is architectural specific.
     </span><span class="kw">let </span>mmio_device_manager = MMIODeviceManager::new(
         <span class="kw">crate</span>::arch::MMIO_MEM_START,
@@ -1775,7 +1775,7 @@
 
     <span class="comment">// For x86_64 we need to create the interrupt controller before calling `KVM_CREATE_VCPUS`
     // while on aarch64 we need to do it the other way around.
-    </span><span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    </span><span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span><span class="kw">let </span>(vcpus, pio_device_manager) = {
         setup_interrupt_controller(<span class="kw-2">&amp;mut </span>vm)<span class="question-mark">?</span>;
         <span class="kw">let </span>vcpus = create_vcpus(<span class="kw-2">&amp;</span>vm, vcpu_count, <span class="kw-2">&amp;</span>vcpus_exit_evt).map_err(Internal)<span class="question-mark">?</span>;
@@ -1808,7 +1808,7 @@
     // IRQ chip because the `KVM_CREATE_VCPU` ioctl will return error if the IRQCHIP
     // was already initialized.
     // Search for `kvm_arch_vcpu_create` in arch/arm/kvm/arm.c.
-    </span><span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+    </span><span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
     </span><span class="kw">let </span>vcpus = {
         <span class="kw">let </span>vcpus = create_vcpus(<span class="kw-2">&amp;</span>vm, vcpu_count, <span class="kw-2">&amp;</span>vcpus_exit_evt).map_err(Internal)<span class="question-mark">?</span>;
         setup_interrupt_controller(<span class="kw-2">&amp;mut </span>vm, vcpu_count)<span class="question-mark">?</span>;
@@ -1825,7 +1825,7 @@
         vcpus_handles: Vec::new(),
         vcpus_exit_evt,
         mmio_device_manager,
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
         </span>pio_device_manager,
     };
 
@@ -1859,7 +1859,7 @@
         .map_err(StartMicrovmError::GuestMemory)<span class="question-mark">?</span>;
     <span class="kw">let </span>entry_addr = load_kernel(boot_config, <span class="kw-2">&amp;</span>guest_memory)<span class="question-mark">?</span>;
     <span class="kw">let </span>initrd = load_initrd_from_config(boot_config, <span class="kw-2">&amp;</span>guest_memory)<span class="question-mark">?</span>;
-    <span class="comment">// Clone the command-line so that a failed boot doesn&#39;t pollute the original.
+    <span class="comment">// Clone the command-line so that a failed boot doesn't pollute the original.
     </span><span class="attr">#[allow(unused_mut)]
     </span><span class="kw">let </span><span class="kw-2">mut </span>boot_cmdline = boot_config.cmdline.clone();
 
@@ -1907,7 +1907,7 @@
         attach_entropy_device(<span class="kw-2">&amp;mut </span>vmm, <span class="kw-2">&amp;mut </span>boot_cmdline, entropy, event_manager)<span class="question-mark">?</span>;
     }
 
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
     </span>attach_legacy_devices_aarch64(event_manager, <span class="kw-2">&amp;mut </span>vmm, <span class="kw-2">&amp;mut </span>boot_cmdline).map_err(Internal)<span class="question-mark">?</span>;
 
     configure_system_for_boot(
@@ -1920,12 +1920,12 @@
         boot_cmdline,
     )<span class="question-mark">?</span>;
 
-    <span class="comment">// Move vcpus to their own threads and start their state machine in the &#39;Paused&#39; state.
+    <span class="comment">// Move vcpus to their own threads and start their state machine in the 'Paused' state.
     </span>vmm.start_vcpus(
         vcpus,
         seccomp_filters
-            .get(<span class="string">&quot;vcpu&quot;</span>)
-            .ok_or_else(|| MissingSeccompFilters(<span class="string">&quot;vcpu&quot;</span>.to_string()))<span class="question-mark">?
+            .get(<span class="string">"vcpu"</span>)
+            .ok_or_else(|| MissingSeccompFilters(<span class="string">"vcpu"</span>.to_string()))<span class="question-mark">?
             </span>.clone(),
     )
     .map_err(VmmError::VcpuStart)
@@ -1937,8 +1937,8 @@
     // Keep this as the last step before resuming vcpus.
     </span>seccompiler::apply_filter(
         seccomp_filters
-            .get(<span class="string">&quot;vmm&quot;</span>)
-            .ok_or_else(|| MissingSeccompFilters(<span class="string">&quot;vmm&quot;</span>.to_string()))<span class="question-mark">?</span>,
+            .get(<span class="string">"vmm"</span>)
+            .ok_or_else(|| MissingSeccompFilters(<span class="string">"vmm"</span>.to_string()))<span class="question-mark">?</span>,
     )
     .map_err(VmmError::SeccompFilters)
     .map_err(Internal)<span class="question-mark">?</span>;
@@ -1962,16 +1962,16 @@
     event_manager: <span class="kw-2">&amp;mut </span>EventManager,
     seccomp_filters: <span class="kw-2">&amp;</span>BpfThreadMap,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;Arc&lt;Mutex&lt;Vmm&gt;&gt;, StartMicrovmError&gt; {
-    <span class="macro">debug!</span>(<span class="string">&quot;event_start: build microvm for boot&quot;</span>);
+    <span class="macro">debug!</span>(<span class="string">"event_start: build microvm for boot"</span>);
     <span class="kw">let </span>vmm = build_microvm_for_boot(instance_info, vm_resources, event_manager, seccomp_filters)<span class="question-mark">?</span>;
-    <span class="macro">debug!</span>(<span class="string">&quot;event_end: build microvm for boot&quot;</span>);
+    <span class="macro">debug!</span>(<span class="string">"event_end: build microvm for boot"</span>);
     <span class="comment">// The vcpus start off in the `Paused` state, let them run.
-    </span><span class="macro">debug!</span>(<span class="string">&quot;event_start: boot microvm&quot;</span>);
+    </span><span class="macro">debug!</span>(<span class="string">"event_start: boot microvm"</span>);
     vmm.lock()
         .unwrap()
         .resume_vm()
         .map_err(StartMicrovmError::Internal)<span class="question-mark">?</span>;
-    <span class="macro">debug!</span>(<span class="string">&quot;event_end: boot microvm&quot;</span>);
+    <span class="macro">debug!</span>(<span class="string">"event_end: boot microvm"</span>);
     <span class="prelude-val">Ok</span>(vmm)
 }
 
@@ -1986,10 +1986,10 @@
     </span>KvmAccess(<span class="attr">#[from] </span>utils::errno::Error),
     <span class="doccomment">/// Error configuring the TSC, frequency not present in the given snapshot.
     </span>TscFrequencyNotPresent,
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span><span class="doccomment">/// Could not get TSC to check if TSC scaling was required with the snapshot: {0}
     </span>GetTsc(<span class="attr">#[from] </span><span class="kw">crate</span>::vstate::vcpu::GetTscError),
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span><span class="doccomment">/// Could not set TSC scaling within the snapshot: {0}
     </span>SetTsc(<span class="attr">#[from] </span><span class="kw">crate</span>::vstate::vcpu::SetTscError),
     <span class="doccomment">/// Failed to restore microVM state: {0}
@@ -2005,7 +2005,7 @@
     <span class="doccomment">/// Failed to start vCPUs: {0}
     </span>StartVcpus(<span class="attr">#[from] </span><span class="kw">crate</span>::StartVcpusError),
     <span class="doccomment">/// Failed to restore vCPUs: {0}
-    </span>RestoreVcpus(<span class="attr">#[from] </span>RestoreVcpusError),
+    </span>RestoreVcpus(<span class="attr">#[from] </span>VcpuError),
     <span class="doccomment">/// Failed to apply VMM secccomp filter as none found.
     </span>MissingVmmSeccompFilters,
     <span class="doccomment">/// Failed to apply VMM secccomp filter: {0}
@@ -2032,7 +2032,7 @@
     })<span class="question-mark">?</span>;
 
     <span class="comment">// Build Vmm.
-    </span><span class="macro">debug!</span>(<span class="string">&quot;event_start: build microvm from snapshot&quot;</span>);
+    </span><span class="macro">debug!</span>(<span class="string">"event_start: build microvm from snapshot"</span>);
     <span class="kw">let </span>(<span class="kw-2">mut </span>vmm, <span class="kw-2">mut </span>vcpus) = create_vmm_and_vcpus(
         instance_info,
         event_manager,
@@ -2043,7 +2043,7 @@
         microvm_state.vm_state.kvm_cap_modifiers.clone(),
     )<span class="question-mark">?</span>;
 
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span>{
         <span class="comment">// Scale TSC to match, extract the TSC freq from the state if specified
         </span><span class="kw">if let </span><span class="prelude-val">Some</span>(state_tsc) = microvm_state.vcpu_states[<span class="number">0</span>].tsc_khz {
@@ -2058,13 +2058,12 @@
     }
 
     <span class="comment">// Restore vcpus kvm state.
-    </span><span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+    </span><span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
     </span>{
         <span class="kw">for </span>(vcpu, state) <span class="kw">in </span>vcpus.iter_mut().zip(microvm_state.vcpu_states.iter()) {
             vcpu.kvm_vcpu
                 .restore_state(vmm.vm.fd(), state)
-                .map_err(<span class="kw">crate</span>::vstate::vcpu::VcpuError::VcpuResponse)
-                .map_err(RestoreVcpusError::RestoreVcpuState)
+                .map_err(VcpuError::VcpuResponse)
                 .map_err(BuildMicrovmFromSnapshotError::RestoreVcpus)<span class="question-mark">?</span>;
         }
         <span class="kw">let </span>mpidrs = construct_kvm_mpidrs(<span class="kw-2">&amp;</span>microvm_state.vcpu_states);
@@ -2072,17 +2071,16 @@
         </span>vmm.vm.restore_state(<span class="kw-2">&amp;</span>mpidrs, <span class="kw-2">&amp;</span>microvm_state.vm_state)<span class="question-mark">?</span>;
     }
 
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span><span class="kw">for </span>(vcpu, state) <span class="kw">in </span>vcpus.iter_mut().zip(microvm_state.vcpu_states.iter()) {
         vcpu.kvm_vcpu
             .restore_state(state)
-            .map_err(<span class="kw">crate</span>::vstate::vcpu::VcpuError::VcpuResponse)
-            .map_err(RestoreVcpusError::RestoreVcpuState)
+            .map_err(VcpuError::VcpuResponse)
             .map_err(BuildMicrovmFromSnapshotError::RestoreVcpus)<span class="question-mark">?</span>;
     }
 
     <span class="comment">// Restore kvm vm state.
-    </span><span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    </span><span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span>vmm.vm.restore_state(<span class="kw-2">&amp;</span>microvm_state.vm_state)<span class="question-mark">?</span>;
 
     vm_resources.update_vm_config(<span class="kw-2">&amp;</span>MachineConfigUpdate {
@@ -2111,11 +2109,11 @@
             .map_err(MicrovmStateError::RestoreDevices)<span class="question-mark">?</span>;
     vmm.emulate_serial_init()<span class="question-mark">?</span>;
 
-    <span class="comment">// Move vcpus to their own threads and start their state machine in the &#39;Paused&#39; state.
+    <span class="comment">// Move vcpus to their own threads and start their state machine in the 'Paused' state.
     </span>vmm.start_vcpus(
         vcpus,
         seccomp_filters
-            .get(<span class="string">&quot;vcpu&quot;</span>)
+            .get(<span class="string">"vcpu"</span>)
             .ok_or(BuildMicrovmFromSnapshotError::MissingVcpuSeccompFilters)<span class="question-mark">?
             </span>.clone(),
     )<span class="question-mark">?</span>;
@@ -2127,10 +2125,10 @@
     // Keep this as the last step of the building process.
     </span>seccompiler::apply_filter(
         seccomp_filters
-            .get(<span class="string">&quot;vmm&quot;</span>)
+            .get(<span class="string">"vmm"</span>)
             .ok_or(BuildMicrovmFromSnapshotError::MissingVmmSeccompFilters)<span class="question-mark">?</span>,
     )<span class="question-mark">?</span>;
-    <span class="macro">debug!</span>(<span class="string">&quot;event_end: build microvm from snapshot&quot;</span>);
+    <span class="macro">debug!</span>(<span class="string">"event_end: build microvm from snapshot"</span>);
 
     <span class="prelude-val">Ok</span>(vmm)
 }
@@ -2144,7 +2142,7 @@
         .try_clone()
         .map_err(|err| StartMicrovmError::Internal(VmmError::KernelFile(err)))<span class="question-mark">?</span>;
 
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span><span class="kw">let </span>entry_addr = Loader::load::&lt;std::fs::File, GuestMemoryMmap&gt;(
         guest_memory,
         <span class="prelude-val">None</span>,
@@ -2153,7 +2151,7 @@
     )
     .map_err(StartMicrovmError::KernelLoader)<span class="question-mark">?</span>;
 
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
     </span><span class="kw">let </span>entry_addr = Loader::load::&lt;std::fs::File, GuestMemoryMmap&gt;(
         guest_memory,
         <span class="prelude-val">Some</span>(GuestAddress(<span class="kw">crate</span>::arch::get_kernel_start())),
@@ -2202,7 +2200,7 @@
         <span class="prelude-val">Ok</span>(<span class="number">0</span>) =&gt; {
             <span class="kw">return </span><span class="prelude-val">Err</span>(InitrdRead(io::Error::new(
                 io::ErrorKind::InvalidData,
-                <span class="string">&quot;Initrd image seek returned a size of zero&quot;</span>,
+                <span class="string">"Initrd image seek returned a size of zero"</span>,
             )))
         }
         <span class="prelude-val">Ok</span>(s) =&gt; size = u64_to_usize(s),
@@ -2229,7 +2227,7 @@
 }
 
 <span class="doccomment">/// Sets up the irqchip for a x86_64 microVM.
-</span><span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+</span><span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
 </span><span class="kw">pub fn </span>setup_interrupt_controller(vm: <span class="kw-2">&amp;mut </span>Vm) -&gt; <span class="prelude-ty">Result</span>&lt;(), StartMicrovmError&gt; {
     vm.setup_irqchip()
         .map_err(VmmError::Vm)
@@ -2237,7 +2235,7 @@
 }
 
 <span class="doccomment">/// Sets up the irqchip for a aarch64 microVM.
-</span><span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+</span><span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
 </span><span class="kw">pub fn </span>setup_interrupt_controller(vm: <span class="kw-2">&amp;mut </span>Vm, vcpu_count: u8) -&gt; <span class="prelude-ty">Result</span>&lt;(), StartMicrovmError&gt; {
     vm.setup_irqchip(vcpu_count)
         .map_err(VmmError::Vm)
@@ -2267,7 +2265,7 @@
     <span class="prelude-val">Ok</span>(serial)
 }
 
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
 </span><span class="kw">fn </span>attach_legacy_devices_aarch64(
     event_manager: <span class="kw-2">&amp;mut </span>EventManager,
     vmm: <span class="kw-2">&amp;mut </span>Vmm,
@@ -2279,7 +2277,7 @@
         .map_err(|<span class="kw">_</span>| VmmError::Cmdline)<span class="question-mark">?
         </span>.into_string()
         .map_err(|<span class="kw">_</span>| VmmError::Cmdline)<span class="question-mark">?
-        </span>.contains(<span class="string">&quot;console=&quot;</span>);
+        </span>.contains(<span class="string">"console="</span>);
 
     <span class="kw">if </span>cmdline_contains_console {
         <span class="comment">// Make stdout non-blocking.
@@ -2312,7 +2310,7 @@
 }
 
 <span class="doccomment">/// Configures the system for booting Linux.
-</span><span class="attr">#[cfg_attr(target_arch = <span class="string">&quot;aarch64&quot;</span>, allow(unused))]
+</span><span class="attr">#[cfg_attr(target_arch = <span class="string">"aarch64"</span>, allow(unused))]
 </span><span class="kw">pub fn </span>configure_system_for_boot(
     vmm: <span class="kw-2">&amp;</span>Vmm,
     vcpus: <span class="kw-2">&amp;mut </span>[Vcpu],
@@ -2325,7 +2323,7 @@
     <span class="kw">use </span><span class="self">self</span>::StartMicrovmError::<span class="kw-2">*</span>;
 
     <span class="comment">// Construct the base CpuConfiguration to apply CPU template onto.
-    </span><span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    </span><span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span><span class="kw">let </span>cpu_config = {
         <span class="kw">use </span><span class="kw">crate</span>::cpu_config::x86_64::cpuid;
         <span class="kw">let </span>cpuid = cpuid::Cpuid::try_from(vmm.vm.supported_cpuid().clone())
@@ -2338,7 +2336,7 @@
         CpuConfiguration { cpuid, msrs }
     };
 
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
     </span><span class="kw">let </span>cpu_config = {
         <span class="kw">use </span><span class="kw">crate</span>::arch::aarch64::regs::Aarch64RegisterVec;
         <span class="kw">use </span><span class="kw">crate</span>::arch::aarch64::vcpu::get_registers;
@@ -2373,7 +2371,7 @@
             .map_err(Internal)<span class="question-mark">?</span>;
     }
 
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span>{
         <span class="comment">// Write the kernel command line to guest memory. This is x86_64 specific, since on
         // aarch64 the command line will be specified through the FDT.
@@ -2396,7 +2394,7 @@
         )
         .map_err(ConfigureSystem)<span class="question-mark">?</span>;
     }
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
     </span>{
         <span class="kw">let </span>vcpu_mpidr = vcpus
             .iter_mut()
@@ -2417,7 +2415,7 @@
 }
 
 <span class="doccomment">/// Attaches a VirtioDevice device to the device manager and event manager.
-</span><span class="kw">fn </span>attach_virtio_device&lt;T: <span class="lifetime">&#39;static </span>+ VirtioDevice + MutEventSubscriber + Debug&gt;(
+</span><span class="kw">fn </span>attach_virtio_device&lt;T: <span class="lifetime">'static </span>+ VirtioDevice + MutEventSubscriber + Debug&gt;(
     event_manager: <span class="kw-2">&amp;mut </span>EventManager,
     vmm: <span class="kw-2">&amp;mut </span>Vmm,
     id: String,
@@ -2429,7 +2427,7 @@
 
     event_manager.add_subscriber(device.clone());
 
-    <span class="comment">// The device mutex mustn&#39;t be locked here otherwise it will deadlock.
+    <span class="comment">// The device mutex mustn't be locked here otherwise it will deadlock.
     </span><span class="kw">let </span>device = MmioTransport::new(vmm.guest_memory().clone(), device, is_vhost_user);
     vmm.mmio_device_manager
         .register_mmio_virtio_for_boot(vmm.vm.fd(), id, device, cmdline)
@@ -2460,7 +2458,7 @@
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(), StartMicrovmError&gt; {
     <span class="kw">let </span>id = entropy_device
         .lock()
-        .expect(<span class="string">&quot;Poisoned lock&quot;</span>)
+        .expect(<span class="string">"Poisoned lock"</span>)
         .id()
         .to_string();
 
@@ -2474,7 +2472,7 @@
     )
 }
 
-<span class="kw">fn </span>attach_block_devices&lt;<span class="lifetime">&#39;a</span>, I: Iterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>BlockDeviceType&gt; + Debug&gt;(
+<span class="kw">fn </span>attach_block_devices&lt;<span class="lifetime">'a</span>, I: Iterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span>BlockDeviceType&gt; + Debug&gt;(
     vmm: <span class="kw-2">&amp;mut </span>Vmm,
     cmdline: <span class="kw-2">&amp;mut </span>LoaderKernelCmdline,
     blocks: I,
@@ -2483,22 +2481,22 @@
     <span class="macro">macro_rules! </span>attach_block {
         (<span class="macro-nonterminal">$block</span>:ident, <span class="macro-nonterminal">$is_vhost_user</span>:ident) =&gt; {
             <span class="kw">let </span>id = {
-                <span class="kw">let </span>locked = <span class="macro-nonterminal">$block</span>.lock().expect(<span class="string">&quot;Poisoned lock&quot;</span>);
+                <span class="kw">let </span>locked = <span class="macro-nonterminal">$block</span>.lock().expect(<span class="string">"Poisoned lock"</span>);
                 <span class="kw">if </span>locked.root_device {
                     <span class="kw">match </span>locked.partuuid {
                         <span class="prelude-val">Some</span>(<span class="kw-2">ref </span>partuuid) =&gt; {
-                            cmdline.insert_str(<span class="macro">format!</span>(<span class="string">&quot;root=PARTUUID={}&quot;</span>, partuuid))<span class="question-mark">?
+                            cmdline.insert_str(<span class="macro">format!</span>(<span class="string">"root=PARTUUID={}"</span>, partuuid))<span class="question-mark">?
                         </span>}
-                        <span class="prelude-val">None </span>=&gt; cmdline.insert_str(<span class="string">&quot;root=/dev/vda&quot;</span>)<span class="question-mark">?</span>,
+                        <span class="prelude-val">None </span>=&gt; cmdline.insert_str(<span class="string">"root=/dev/vda"</span>)<span class="question-mark">?</span>,
                     }
                     <span class="kw">match </span>locked.read_only {
-                        <span class="bool-val">true </span>=&gt; cmdline.insert_str(<span class="string">&quot;ro&quot;</span>)<span class="question-mark">?</span>,
-                        <span class="bool-val">false </span>=&gt; cmdline.insert_str(<span class="string">&quot;rw&quot;</span>)<span class="question-mark">?</span>,
+                        <span class="bool-val">true </span>=&gt; cmdline.insert_str(<span class="string">"ro"</span>)<span class="question-mark">?</span>,
+                        <span class="bool-val">false </span>=&gt; cmdline.insert_str(<span class="string">"rw"</span>)<span class="question-mark">?</span>,
                     }
                 }
                 locked.id.clone()
             };
-            <span class="comment">// The device mutex mustn&#39;t be locked here otherwise it will deadlock.
+            <span class="comment">// The device mutex mustn't be locked here otherwise it will deadlock.
             </span>attach_virtio_device(
                 event_manager,
                 vmm,
@@ -2523,15 +2521,15 @@
     <span class="prelude-val">Ok</span>(())
 }
 
-<span class="kw">fn </span>attach_net_devices&lt;<span class="lifetime">&#39;a</span>, I: Iterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Arc&lt;Mutex&lt;Net&gt;&gt;&gt; + Debug&gt;(
+<span class="kw">fn </span>attach_net_devices&lt;<span class="lifetime">'a</span>, I: Iterator&lt;Item = <span class="kw-2">&amp;</span><span class="lifetime">'a </span>Arc&lt;Mutex&lt;Net&gt;&gt;&gt; + Debug&gt;(
     vmm: <span class="kw-2">&amp;mut </span>Vmm,
     cmdline: <span class="kw-2">&amp;mut </span>LoaderKernelCmdline,
     net_devices: I,
     event_manager: <span class="kw-2">&amp;mut </span>EventManager,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(), StartMicrovmError&gt; {
     <span class="kw">for </span>net_device <span class="kw">in </span>net_devices {
-        <span class="kw">let </span>id = net_device.lock().expect(<span class="string">&quot;Poisoned lock&quot;</span>).id().clone();
-        <span class="comment">// The device mutex mustn&#39;t be locked here otherwise it will deadlock.
+        <span class="kw">let </span>id = net_device.lock().expect(<span class="string">"Poisoned lock"</span>).id().clone();
+        <span class="comment">// The device mutex mustn't be locked here otherwise it will deadlock.
         </span>attach_virtio_device(event_manager, vmm, id, net_device.clone(), cmdline, <span class="bool-val">false</span>)<span class="question-mark">?</span>;
     }
     <span class="prelude-val">Ok</span>(())
@@ -2543,8 +2541,8 @@
     unix_vsock: <span class="kw-2">&amp;</span>Arc&lt;Mutex&lt;Vsock&lt;VsockUnixBackend&gt;&gt;&gt;,
     event_manager: <span class="kw-2">&amp;mut </span>EventManager,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(), StartMicrovmError&gt; {
-    <span class="kw">let </span>id = String::from(unix_vsock.lock().expect(<span class="string">&quot;Poisoned lock&quot;</span>).id());
-    <span class="comment">// The device mutex mustn&#39;t be locked here otherwise it will deadlock.
+    <span class="kw">let </span>id = String::from(unix_vsock.lock().expect(<span class="string">"Poisoned lock"</span>).id());
+    <span class="comment">// The device mutex mustn't be locked here otherwise it will deadlock.
     </span>attach_virtio_device(event_manager, vmm, id, unix_vsock.clone(), cmdline, <span class="bool-val">false</span>)
 }
 
@@ -2554,8 +2552,8 @@
     balloon: <span class="kw-2">&amp;</span>Arc&lt;Mutex&lt;Balloon&gt;&gt;,
     event_manager: <span class="kw-2">&amp;mut </span>EventManager,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(), StartMicrovmError&gt; {
-    <span class="kw">let </span>id = String::from(balloon.lock().expect(<span class="string">&quot;Poisoned lock&quot;</span>).id());
-    <span class="comment">// The device mutex mustn&#39;t be locked here otherwise it will deadlock.
+    <span class="kw">let </span>id = String::from(balloon.lock().expect(<span class="string">"Poisoned lock"</span>).id());
+    <span class="comment">// The device mutex mustn't be locked here otherwise it will deadlock.
     </span>attach_virtio_device(event_manager, vmm, id, balloon.clone(), cmdline, <span class="bool-val">false</span>)
 }
 
@@ -2564,12 +2562,12 @@
     <span class="comment">// SAFETY: Call is safe since parameters are valid.
     </span><span class="kw">let </span>flags = <span class="kw">unsafe </span>{ libc::fcntl(libc::STDOUT_FILENO, libc::F_GETFL, <span class="number">0</span>) };
     <span class="kw">if </span>flags &lt; <span class="number">0 </span>{
-        <span class="macro">error!</span>(<span class="string">&quot;Could not get Firecracker stdout flags.&quot;</span>);
+        <span class="macro">error!</span>(<span class="string">"Could not get Firecracker stdout flags."</span>);
     }
     <span class="comment">// SAFETY: Call is safe since parameters are valid.
     </span><span class="kw">let </span>rc = <span class="kw">unsafe </span>{ libc::fcntl(libc::STDOUT_FILENO, libc::F_SETFL, flags | libc::O_NONBLOCK) };
     <span class="kw">if </span>rc &lt; <span class="number">0 </span>{
-        <span class="macro">error!</span>(<span class="string">&quot;Could not set Firecracker stdout to non-blocking.&quot;</span>);
+        <span class="macro">error!</span>(<span class="string">"Could not set Firecracker stdout to non-blocking."</span>);
     }
 }
 
@@ -2637,7 +2635,7 @@
         // would return an `Err` is if one of the following conditions is met:
         //    1. The command line is empty: We just added things to it, and if insertion of an
         //       argument goes wrong, then `Cmdline::insert` would have already returned `Err`.
-        //    2. There&#39;s a spurious null character somewhere in the command line: The
+        //    2. There's a spurious null character somewhere in the command line: The
         //       `Cmdline::insert` methods verify that this is not the case.
         //    3. The `CString` is not valid UTF8: It just got created from a `String`, which was
         //       valid UTF8.
@@ -2669,7 +2667,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>vm = Vm::new(<span class="macro">vec!</span>[]).unwrap();
         vm.memory_init(<span class="kw-2">&amp;</span>guest_memory, <span class="bool-val">false</span>).unwrap();
         <span class="kw">let </span>mmio_device_manager = default_mmio_device_manager();
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
         </span><span class="kw">let </span>pio_device_manager = PortIODeviceManager::new(
             Arc::new(Mutex::new(BusDevice::Serial(SerialWrapper {
                 serial: Serial::with_events(
@@ -2685,10 +2683,10 @@
         )
         .unwrap();
 
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
         </span>setup_interrupt_controller(<span class="kw-2">&amp;mut </span>vm).unwrap();
 
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
         </span>{
             <span class="kw">let </span>exit_evt = EventFd::new(libc::EFD_NONBLOCK).unwrap();
             <span class="kw">let </span>_vcpu = Vcpu::new(<span class="number">1</span>, <span class="kw-2">&amp;</span>vm, exit_evt).unwrap();
@@ -2705,7 +2703,7 @@
             vcpus_handles: Vec::new(),
             vcpus_exit_evt,
             mmio_device_manager,
-            <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+            <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
             </span>pio_device_manager,
         }
     }
@@ -2872,10 +2870,10 @@
         <span class="kw">let </span><span class="kw-2">mut </span>tempfile = tempfile.into_file();
         tempfile.write_all(<span class="kw-2">&amp;</span>image).unwrap();
 
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
         </span><span class="kw">let </span>gm = create_guest_mem_with_size(mem_size);
 
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
         </span><span class="kw">let </span>gm = create_guest_mem_with_size(mem_size + <span class="kw">crate</span>::arch::aarch64::layout::FDT_MAX_SIZE);
 
         <span class="kw">let </span>res = load_initrd(<span class="kw-2">&amp;</span>gm, <span class="kw-2">&amp;mut </span>tempfile);
@@ -2894,7 +2892,7 @@
         <span class="kw">let </span>res = load_initrd(<span class="kw-2">&amp;</span>gm, <span class="kw-2">&amp;mut </span>tempfile);
         <span class="macro">assert!</span>(
             <span class="macro">matches!</span>(res, <span class="prelude-val">Err</span>(StartMicrovmError::InitrdLoad)),
-            <span class="string">&quot;{:?}&quot;</span>,
+            <span class="string">"{:?}"</span>,
             res
         );
     }
@@ -2913,7 +2911,7 @@
         <span class="kw">let </span>res = load_initrd(<span class="kw-2">&amp;</span>gm, <span class="kw-2">&amp;mut </span>tempfile);
         <span class="macro">assert!</span>(
             <span class="macro">matches!</span>(res, <span class="prelude-val">Err</span>(StartMicrovmError::InitrdLoad)),
-            <span class="string">&quot;{:?}&quot;</span>,
+            <span class="string">"{:?}"</span>,
             res
         );
     }
@@ -2945,7 +2943,7 @@
         vm.memory_init(<span class="kw-2">&amp;</span>guest_memory, <span class="bool-val">false</span>).unwrap();
         <span class="kw">let </span>evfd = EventFd::new(libc::EFD_NONBLOCK).unwrap();
 
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
         </span>setup_interrupt_controller(<span class="kw-2">&amp;mut </span>vm).unwrap();
 
         <span class="kw">let </span>vcpu_vec = create_vcpus(<span class="kw-2">&amp;</span>vm, vcpu_count, <span class="kw-2">&amp;</span>evfd).unwrap();
@@ -2954,12 +2952,12 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_attach_net_devices() {
-        <span class="kw">let </span><span class="kw-2">mut </span>event_manager = EventManager::new().expect(<span class="string">&quot;Unable to create EventManager&quot;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>event_manager = EventManager::new().expect(<span class="string">"Unable to create EventManager"</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>vmm = default_vmm();
 
         <span class="kw">let </span>network_interface = NetworkInterfaceConfig {
-            iface_id: String::from(<span class="string">&quot;netif&quot;</span>),
-            host_dev_name: String::from(<span class="string">&quot;hostname&quot;</span>),
+            iface_id: String::from(<span class="string">"netif"</span>),
+            host_dev_name: String::from(<span class="string">"hostname"</span>),
             guest_mac: <span class="prelude-val">None</span>,
             rx_rate_limiter: <span class="prelude-val">None</span>,
             tx_rate_limiter: <span class="prelude-val">None</span>,
@@ -2980,11 +2978,11 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_attach_block_devices() {
-        <span class="kw">let </span><span class="kw-2">mut </span>event_manager = EventManager::new().expect(<span class="string">&quot;Unable to create EventManager&quot;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>event_manager = EventManager::new().expect(<span class="string">"Unable to create EventManager"</span>);
 
         <span class="comment">// Use case 1: root block device is not specified through PARTUUID.
         </span>{
-            <span class="kw">let </span>drive_id = String::from(<span class="string">&quot;root&quot;</span>);
+            <span class="kw">let </span>drive_id = String::from(<span class="string">"root"</span>);
             <span class="kw">let </span>block_configs = <span class="macro">vec!</span>[CustomBlockConfig::new(
                 drive_id.clone(),
                 <span class="bool-val">true</span>,
@@ -2995,7 +2993,7 @@
             <span class="kw">let </span><span class="kw-2">mut </span>vmm = default_vmm();
             <span class="kw">let </span><span class="kw-2">mut </span>cmdline = default_kernel_cmdline();
             insert_block_devices(<span class="kw-2">&amp;mut </span>vmm, <span class="kw-2">&amp;mut </span>cmdline, <span class="kw-2">&amp;mut </span>event_manager, block_configs);
-            <span class="macro">assert!</span>(cmdline_contains(<span class="kw-2">&amp;</span>cmdline, <span class="string">&quot;root=/dev/vda ro&quot;</span>));
+            <span class="macro">assert!</span>(cmdline_contains(<span class="kw-2">&amp;</span>cmdline, <span class="string">"root=/dev/vda ro"</span>));
             <span class="macro">assert!</span>(vmm
                 .mmio_device_manager
                 .get_device(DeviceType::Virtio(TYPE_BLOCK), drive_id.as_str())
@@ -3004,18 +3002,18 @@
 
         <span class="comment">// Use case 2: root block device is specified through PARTUUID.
         </span>{
-            <span class="kw">let </span>drive_id = String::from(<span class="string">&quot;root&quot;</span>);
+            <span class="kw">let </span>drive_id = String::from(<span class="string">"root"</span>);
             <span class="kw">let </span>block_configs = <span class="macro">vec!</span>[CustomBlockConfig::new(
                 drive_id.clone(),
                 <span class="bool-val">true</span>,
-                <span class="prelude-val">Some</span>(<span class="string">&quot;0eaa91a0-01&quot;</span>.to_string()),
+                <span class="prelude-val">Some</span>(<span class="string">"0eaa91a0-01"</span>.to_string()),
                 <span class="bool-val">false</span>,
                 CacheType::Unsafe,
             )];
             <span class="kw">let </span><span class="kw-2">mut </span>vmm = default_vmm();
             <span class="kw">let </span><span class="kw-2">mut </span>cmdline = default_kernel_cmdline();
             insert_block_devices(<span class="kw-2">&amp;mut </span>vmm, <span class="kw-2">&amp;mut </span>cmdline, <span class="kw-2">&amp;mut </span>event_manager, block_configs);
-            <span class="macro">assert!</span>(cmdline_contains(<span class="kw-2">&amp;</span>cmdline, <span class="string">&quot;root=PARTUUID=0eaa91a0-01 rw&quot;</span>));
+            <span class="macro">assert!</span>(cmdline_contains(<span class="kw-2">&amp;</span>cmdline, <span class="string">"root=PARTUUID=0eaa91a0-01 rw"</span>));
             <span class="macro">assert!</span>(vmm
                 .mmio_device_manager
                 .get_device(DeviceType::Virtio(TYPE_BLOCK), drive_id.as_str())
@@ -3024,19 +3022,19 @@
 
         <span class="comment">// Use case 3: root block device is not added at all.
         </span>{
-            <span class="kw">let </span>drive_id = String::from(<span class="string">&quot;non_root&quot;</span>);
+            <span class="kw">let </span>drive_id = String::from(<span class="string">"non_root"</span>);
             <span class="kw">let </span>block_configs = <span class="macro">vec!</span>[CustomBlockConfig::new(
                 drive_id.clone(),
                 <span class="bool-val">false</span>,
-                <span class="prelude-val">Some</span>(<span class="string">&quot;0eaa91a0-01&quot;</span>.to_string()),
+                <span class="prelude-val">Some</span>(<span class="string">"0eaa91a0-01"</span>.to_string()),
                 <span class="bool-val">false</span>,
                 CacheType::Unsafe,
             )];
             <span class="kw">let </span><span class="kw-2">mut </span>vmm = default_vmm();
             <span class="kw">let </span><span class="kw-2">mut </span>cmdline = default_kernel_cmdline();
             insert_block_devices(<span class="kw-2">&amp;mut </span>vmm, <span class="kw-2">&amp;mut </span>cmdline, <span class="kw-2">&amp;mut </span>event_manager, block_configs);
-            <span class="macro">assert!</span>(!cmdline_contains(<span class="kw-2">&amp;</span>cmdline, <span class="string">&quot;root=PARTUUID=&quot;</span>));
-            <span class="macro">assert!</span>(!cmdline_contains(<span class="kw-2">&amp;</span>cmdline, <span class="string">&quot;root=/dev/vda&quot;</span>));
+            <span class="macro">assert!</span>(!cmdline_contains(<span class="kw-2">&amp;</span>cmdline, <span class="string">"root=PARTUUID="</span>));
+            <span class="macro">assert!</span>(!cmdline_contains(<span class="kw-2">&amp;</span>cmdline, <span class="string">"root=/dev/vda"</span>));
             <span class="macro">assert!</span>(vmm
                 .mmio_device_manager
                 .get_device(DeviceType::Virtio(TYPE_BLOCK), drive_id.as_str())
@@ -3047,21 +3045,21 @@
         </span>{
             <span class="kw">let </span>block_configs = <span class="macro">vec!</span>[
                 CustomBlockConfig::new(
-                    String::from(<span class="string">&quot;root&quot;</span>),
+                    String::from(<span class="string">"root"</span>),
                     <span class="bool-val">true</span>,
-                    <span class="prelude-val">Some</span>(<span class="string">&quot;0eaa91a0-01&quot;</span>.to_string()),
+                    <span class="prelude-val">Some</span>(<span class="string">"0eaa91a0-01"</span>.to_string()),
                     <span class="bool-val">false</span>,
                     CacheType::Unsafe,
                 ),
                 CustomBlockConfig::new(
-                    String::from(<span class="string">&quot;secondary&quot;</span>),
+                    String::from(<span class="string">"secondary"</span>),
                     <span class="bool-val">false</span>,
                     <span class="prelude-val">None</span>,
                     <span class="bool-val">true</span>,
                     CacheType::Unsafe,
                 ),
                 CustomBlockConfig::new(
-                    String::from(<span class="string">&quot;third&quot;</span>),
+                    String::from(<span class="string">"third"</span>),
                     <span class="bool-val">false</span>,
                     <span class="prelude-val">None</span>,
                     <span class="bool-val">false</span>,
@@ -3072,32 +3070,32 @@
             <span class="kw">let </span><span class="kw-2">mut </span>cmdline = default_kernel_cmdline();
             insert_block_devices(<span class="kw-2">&amp;mut </span>vmm, <span class="kw-2">&amp;mut </span>cmdline, <span class="kw-2">&amp;mut </span>event_manager, block_configs);
 
-            <span class="macro">assert!</span>(cmdline_contains(<span class="kw-2">&amp;</span>cmdline, <span class="string">&quot;root=PARTUUID=0eaa91a0-01 rw&quot;</span>));
+            <span class="macro">assert!</span>(cmdline_contains(<span class="kw-2">&amp;</span>cmdline, <span class="string">"root=PARTUUID=0eaa91a0-01 rw"</span>));
             <span class="macro">assert!</span>(vmm
                 .mmio_device_manager
-                .get_device(DeviceType::Virtio(TYPE_BLOCK), <span class="string">&quot;root&quot;</span>)
+                .get_device(DeviceType::Virtio(TYPE_BLOCK), <span class="string">"root"</span>)
                 .is_some());
             <span class="macro">assert!</span>(vmm
                 .mmio_device_manager
-                .get_device(DeviceType::Virtio(TYPE_BLOCK), <span class="string">&quot;secondary&quot;</span>)
+                .get_device(DeviceType::Virtio(TYPE_BLOCK), <span class="string">"secondary"</span>)
                 .is_some());
             <span class="macro">assert!</span>(vmm
                 .mmio_device_manager
-                .get_device(DeviceType::Virtio(TYPE_BLOCK), <span class="string">&quot;third&quot;</span>)
+                .get_device(DeviceType::Virtio(TYPE_BLOCK), <span class="string">"third"</span>)
                 .is_some());
 
             <span class="comment">// Check if these three block devices are inserted in kernel_cmdline.
-            </span><span class="attr">#[cfg(any(target_arch = <span class="string">&quot;x86&quot;</span>, target_arch = <span class="string">&quot;x86_64&quot;</span>))]
+            </span><span class="attr">#[cfg(any(target_arch = <span class="string">"x86"</span>, target_arch = <span class="string">"x86_64"</span>))]
             </span><span class="macro">assert!</span>(cmdline_contains(
                 <span class="kw-2">&amp;</span>cmdline,
-                <span class="string">&quot;virtio_mmio.device=4K@0xd0000000:5 virtio_mmio.device=4K@0xd0001000:6 \
-                 virtio_mmio.device=4K@0xd0002000:7&quot;
+                <span class="string">"virtio_mmio.device=4K@0xd0000000:5 virtio_mmio.device=4K@0xd0001000:6 \
+                 virtio_mmio.device=4K@0xd0002000:7"
             </span>));
         }
 
         <span class="comment">// Use case 5: root block device is rw.
         </span>{
-            <span class="kw">let </span>drive_id = String::from(<span class="string">&quot;root&quot;</span>);
+            <span class="kw">let </span>drive_id = String::from(<span class="string">"root"</span>);
             <span class="kw">let </span>block_configs = <span class="macro">vec!</span>[CustomBlockConfig::new(
                 drive_id.clone(),
                 <span class="bool-val">true</span>,
@@ -3108,7 +3106,7 @@
             <span class="kw">let </span><span class="kw-2">mut </span>vmm = default_vmm();
             <span class="kw">let </span><span class="kw-2">mut </span>cmdline = default_kernel_cmdline();
             insert_block_devices(<span class="kw-2">&amp;mut </span>vmm, <span class="kw-2">&amp;mut </span>cmdline, <span class="kw-2">&amp;mut </span>event_manager, block_configs);
-            <span class="macro">assert!</span>(cmdline_contains(<span class="kw-2">&amp;</span>cmdline, <span class="string">&quot;root=/dev/vda rw&quot;</span>));
+            <span class="macro">assert!</span>(cmdline_contains(<span class="kw-2">&amp;</span>cmdline, <span class="string">"root=/dev/vda rw"</span>));
             <span class="macro">assert!</span>(vmm
                 .mmio_device_manager
                 .get_device(DeviceType::Virtio(TYPE_BLOCK), drive_id.as_str())
@@ -3117,18 +3115,18 @@
 
         <span class="comment">// Use case 6: root block device is ro, with PARTUUID.
         </span>{
-            <span class="kw">let </span>drive_id = String::from(<span class="string">&quot;root&quot;</span>);
+            <span class="kw">let </span>drive_id = String::from(<span class="string">"root"</span>);
             <span class="kw">let </span>block_configs = <span class="macro">vec!</span>[CustomBlockConfig::new(
                 drive_id.clone(),
                 <span class="bool-val">true</span>,
-                <span class="prelude-val">Some</span>(<span class="string">&quot;0eaa91a0-01&quot;</span>.to_string()),
+                <span class="prelude-val">Some</span>(<span class="string">"0eaa91a0-01"</span>.to_string()),
                 <span class="bool-val">true</span>,
                 CacheType::Unsafe,
             )];
             <span class="kw">let </span><span class="kw-2">mut </span>vmm = default_vmm();
             <span class="kw">let </span><span class="kw-2">mut </span>cmdline = default_kernel_cmdline();
             insert_block_devices(<span class="kw-2">&amp;mut </span>vmm, <span class="kw-2">&amp;mut </span>cmdline, <span class="kw-2">&amp;mut </span>event_manager, block_configs);
-            <span class="macro">assert!</span>(cmdline_contains(<span class="kw-2">&amp;</span>cmdline, <span class="string">&quot;root=PARTUUID=0eaa91a0-01 ro&quot;</span>));
+            <span class="macro">assert!</span>(cmdline_contains(<span class="kw-2">&amp;</span>cmdline, <span class="string">"root=PARTUUID=0eaa91a0-01 ro"</span>));
             <span class="macro">assert!</span>(vmm
                 .mmio_device_manager
                 .get_device(DeviceType::Virtio(TYPE_BLOCK), drive_id.as_str())
@@ -3137,7 +3135,7 @@
 
         <span class="comment">// Use case 7: root block device is rw with flush enabled
         </span>{
-            <span class="kw">let </span>drive_id = String::from(<span class="string">&quot;root&quot;</span>);
+            <span class="kw">let </span>drive_id = String::from(<span class="string">"root"</span>);
             <span class="kw">let </span>block_configs = <span class="macro">vec!</span>[CustomBlockConfig::new(
                 drive_id.clone(),
                 <span class="bool-val">true</span>,
@@ -3148,7 +3146,7 @@
             <span class="kw">let </span><span class="kw-2">mut </span>vmm = default_vmm();
             <span class="kw">let </span><span class="kw-2">mut </span>cmdline = default_kernel_cmdline();
             insert_block_devices(<span class="kw-2">&amp;mut </span>vmm, <span class="kw-2">&amp;mut </span>cmdline, <span class="kw-2">&amp;mut </span>event_manager, block_configs);
-            <span class="macro">assert!</span>(cmdline_contains(<span class="kw-2">&amp;</span>cmdline, <span class="string">&quot;root=/dev/vda rw&quot;</span>));
+            <span class="macro">assert!</span>(cmdline_contains(<span class="kw-2">&amp;</span>cmdline, <span class="string">"root=/dev/vda rw"</span>));
             <span class="macro">assert!</span>(vmm
                 .mmio_device_manager
                 .get_device(DeviceType::Virtio(TYPE_BLOCK), drive_id.as_str())
@@ -3171,7 +3169,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_attach_balloon_device() {
-        <span class="kw">let </span><span class="kw-2">mut </span>event_manager = EventManager::new().expect(<span class="string">&quot;Unable to create EventManager&quot;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>event_manager = EventManager::new().expect(<span class="string">"Unable to create EventManager"</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>vmm = default_vmm();
 
         <span class="kw">let </span>balloon_config = BalloonDeviceConfig {
@@ -3183,16 +3181,16 @@
         <span class="kw">let </span><span class="kw-2">mut </span>cmdline = default_kernel_cmdline();
         insert_balloon_device(<span class="kw-2">&amp;mut </span>vmm, <span class="kw-2">&amp;mut </span>cmdline, <span class="kw-2">&amp;mut </span>event_manager, balloon_config);
         <span class="comment">// Check if the vsock device is described in kernel_cmdline.
-        </span><span class="attr">#[cfg(any(target_arch = <span class="string">&quot;x86&quot;</span>, target_arch = <span class="string">&quot;x86_64&quot;</span>))]
+        </span><span class="attr">#[cfg(any(target_arch = <span class="string">"x86"</span>, target_arch = <span class="string">"x86_64"</span>))]
         </span><span class="macro">assert!</span>(cmdline_contains(
             <span class="kw-2">&amp;</span>cmdline,
-            <span class="string">&quot;virtio_mmio.device=4K@0xd0000000:5&quot;
+            <span class="string">"virtio_mmio.device=4K@0xd0000000:5"
         </span>));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_attach_entropy_device() {
-        <span class="kw">let </span><span class="kw-2">mut </span>event_manager = EventManager::new().expect(<span class="string">&quot;Unable to create EventManager&quot;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>event_manager = EventManager::new().expect(<span class="string">"Unable to create EventManager"</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>vmm = default_vmm();
 
         <span class="kw">let </span>entropy_config = EntropyDeviceConfig::default();
@@ -3200,16 +3198,16 @@
         <span class="kw">let </span><span class="kw-2">mut </span>cmdline = default_kernel_cmdline();
         insert_entropy_device(<span class="kw-2">&amp;mut </span>vmm, <span class="kw-2">&amp;mut </span>cmdline, <span class="kw-2">&amp;mut </span>event_manager, entropy_config);
         <span class="comment">// Check if the vsock device is described in kernel_cmdline.
-        </span><span class="attr">#[cfg(any(target_arch = <span class="string">&quot;x86&quot;</span>, target_arch = <span class="string">&quot;x86_64&quot;</span>))]
+        </span><span class="attr">#[cfg(any(target_arch = <span class="string">"x86"</span>, target_arch = <span class="string">"x86_64"</span>))]
         </span><span class="macro">assert!</span>(cmdline_contains(
             <span class="kw-2">&amp;</span>cmdline,
-            <span class="string">&quot;virtio_mmio.device=4K@0xd0000000:5&quot;
+            <span class="string">"virtio_mmio.device=4K@0xd0000000:5"
         </span>));
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_attach_vsock_device() {
-        <span class="kw">let </span><span class="kw-2">mut </span>event_manager = EventManager::new().expect(<span class="string">&quot;Unable to create EventManager&quot;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>event_manager = EventManager::new().expect(<span class="string">"Unable to create EventManager"</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>vmm = default_vmm();
 
         <span class="kw">let </span><span class="kw-2">mut </span>tmp_sock_file = TempFile::new().unwrap();
@@ -3219,10 +3217,10 @@
         <span class="kw">let </span><span class="kw-2">mut </span>cmdline = default_kernel_cmdline();
         insert_vsock_device(<span class="kw-2">&amp;mut </span>vmm, <span class="kw-2">&amp;mut </span>cmdline, <span class="kw-2">&amp;mut </span>event_manager, vsock_config);
         <span class="comment">// Check if the vsock device is described in kernel_cmdline.
-        </span><span class="attr">#[cfg(any(target_arch = <span class="string">&quot;x86&quot;</span>, target_arch = <span class="string">&quot;x86_64&quot;</span>))]
+        </span><span class="attr">#[cfg(any(target_arch = <span class="string">"x86"</span>, target_arch = <span class="string">"x86_64"</span>))]
         </span><span class="macro">assert!</span>(cmdline_contains(
             <span class="kw-2">&amp;</span>cmdline,
-            <span class="string">&quot;virtio_mmio.device=4K@0xd0000000:5&quot;
+            <span class="string">"virtio_mmio.device=4K@0xd0000000:5"
         </span>));
     }
 }

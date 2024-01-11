@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/cpu-template-helper/src/main.rs`."><title>main.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cpu_template_helper" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../cpu_template_helper/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/cpu-template-helper/src/main.rs`."><title>main.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cpu_template_helper" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../cpu_template_helper/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -485,7 +487,7 @@
 }
 
 <span class="attr">#[derive(Debug, Parser)]
-#[command(version = <span class="macro">format!</span>(<span class="string">&quot;v{}&quot;</span>, <span class="kw">crate</span>::utils::CPU_TEMPLATE_HELPER_VERSION))]
+#[command(version = <span class="macro">format!</span>(<span class="string">"v{}"</span>, <span class="kw">crate</span>::utils::CPU_TEMPLATE_HELPER_VERSION))]
 </span><span class="kw">struct </span>Cli {
     <span class="attr">#[command(subcommand)]
     </span>command: Command,
@@ -506,25 +508,25 @@
     <span class="doccomment">/// Dump guest CPU configuration in the custom CPU template format.
     </span>Dump {
         <span class="doccomment">/// Path of firecracker config file.
-        </span><span class="attr">#[arg(short, long, value_name = <span class="string">&quot;PATH&quot;</span>)]
+        </span><span class="attr">#[arg(short, long, value_name = <span class="string">"PATH"</span>)]
         </span>config: PathBuf,
         <span class="doccomment">/// Path of output file.
-        </span><span class="attr">#[arg(short, long, value_name = <span class="string">&quot;PATH&quot;</span>, default_value = <span class="string">&quot;cpu_config.json&quot;</span>)]
+        </span><span class="attr">#[arg(short, long, value_name = <span class="string">"PATH"</span>, default_value = <span class="string">"cpu_config.json"</span>)]
         </span>output: PathBuf,
     },
     <span class="doccomment">/// Strip entries shared between multiple CPU template files.
     </span>Strip {
         <span class="doccomment">/// List of paths of input CPU configuration files.
-        </span><span class="attr">#[arg(short, long, value_name = <span class="string">&quot;PATH&quot;</span>, num_args = <span class="number">2</span>..)]
+        </span><span class="attr">#[arg(short, long, value_name = <span class="string">"PATH"</span>, num_args = <span class="number">2</span>..)]
         </span>paths: Vec&lt;PathBuf&gt;,
-        <span class="doccomment">/// Suffix of output files. To overwrite input files, specify an empty string &#39;&#39;.
-        </span><span class="attr">#[arg(short, long, default_value = <span class="string">&quot;_stripped&quot;</span>)]
+        <span class="doccomment">/// Suffix of output files. To overwrite input files, specify an empty string ''.
+        </span><span class="attr">#[arg(short, long, default_value = <span class="string">"_stripped"</span>)]
         </span>suffix: String,
     },
     <span class="doccomment">/// Verify that the given CPU template file is applied as intended.
     </span>Verify {
         <span class="doccomment">/// Path of firecracker config file specifying the target CPU template.
-        </span><span class="attr">#[arg(short, long, value_name = <span class="string">&quot;PATH&quot;</span>)]
+        </span><span class="attr">#[arg(short, long, value_name = <span class="string">"PATH"</span>)]
         </span>config: PathBuf,
     },
 }
@@ -534,19 +536,19 @@
     <span class="doccomment">/// Dump fingerprint consisting of host-related information and guest CPU config.
     </span>Dump {
         <span class="doccomment">/// Path of fingerprint config file.
-        </span><span class="attr">#[arg(short, long, value_name = <span class="string">&quot;PATH&quot;</span>)]
+        </span><span class="attr">#[arg(short, long, value_name = <span class="string">"PATH"</span>)]
         </span>config: PathBuf,
         <span class="doccomment">/// Path of output file.
-        </span><span class="attr">#[arg(short, long, value_name = <span class="string">&quot;PATH&quot;</span>, default_value = <span class="string">&quot;fingerprint.json&quot;</span>)]
+        </span><span class="attr">#[arg(short, long, value_name = <span class="string">"PATH"</span>, default_value = <span class="string">"fingerprint.json"</span>)]
         </span>output: PathBuf,
     },
     <span class="doccomment">/// Compare two fingerprint files with queries.
     </span>Compare {
         <span class="doccomment">/// Path of fingerprint file that stores the previous state at CPU template creation.
-        </span><span class="attr">#[arg(short, long, value_name = <span class="string">&quot;PATH&quot;</span>)]
+        </span><span class="attr">#[arg(short, long, value_name = <span class="string">"PATH"</span>)]
         </span>prev: PathBuf,
         <span class="doccomment">/// Path of fingerprint file that stores the current state.
-        </span><span class="attr">#[arg(short, long, value_name = <span class="string">&quot;PATH&quot;</span>)]
+        </span><span class="attr">#[arg(short, long, value_name = <span class="string">"PATH"</span>)]
         </span>curr: PathBuf,
         <span class="doccomment">/// List of fields to be compared.
         </span><span class="attr">#[arg(
@@ -633,7 +635,7 @@
     <span class="kw">let </span>cli = Cli::parse();
     <span class="kw">let </span>result = run(cli);
     <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = result {
-        <span class="macro">eprintln!</span>(<span class="string">&quot;{}&quot;</span>, e);
+        <span class="macro">eprintln!</span>(<span class="string">"{}"</span>, e);
         <span class="prelude-val">Err</span>(e)
     } <span class="kw">else </span>{
         <span class="prelude-val">Ok</span>(())
@@ -651,19 +653,19 @@
 
     <span class="kw">pub fn </span>generate_config(kernel_image_path: <span class="kw-2">&amp;</span>str, rootfs_path: <span class="kw-2">&amp;</span>str) -&gt; String {
         <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{
-                &quot;boot-source&quot;: {{
-                    &quot;kernel_image_path&quot;: &quot;{}&quot;
+            <span class="string">r#"{{
+                "boot-source": {{
+                    "kernel_image_path": "{}"
                 }},
-                &quot;drives&quot;: [
+                "drives": [
                     {{
-                        &quot;drive_id&quot;: &quot;rootfs&quot;,
-                        &quot;path_on_host&quot;: &quot;{}&quot;,
-                        &quot;is_root_device&quot;: true,
-                        &quot;is_read_only&quot;: false
+                        "drive_id": "rootfs",
+                        "path_on_host": "{}",
+                        "is_root_device": true,
+                        "is_read_only": false
                     }}
                 ]
-            }}&quot;#</span>,
+            }}"#</span>,
             kernel_image_path, rootfs_path,
         )
     }
@@ -674,20 +676,20 @@
         cpu_template_path: <span class="kw-2">&amp;</span>str,
     ) -&gt; String {
         <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{
-                &quot;boot-source&quot;: {{
-                    &quot;kernel_image_path&quot;: &quot;{}&quot;
+            <span class="string">r#"{{
+                "boot-source": {{
+                    "kernel_image_path": "{}"
                 }},
-                &quot;drives&quot;: [
+                "drives": [
                     {{
-                        &quot;drive_id&quot;: &quot;rootfs&quot;,
-                        &quot;path_on_host&quot;: &quot;{}&quot;,
-                        &quot;is_root_device&quot;: true,
-                        &quot;is_read_only&quot;: false
+                        "drive_id": "rootfs",
+                        "path_on_host": "{}",
+                        "is_root_device": true,
+                        "is_read_only": false
                     }}
                 ],
-                &quot;cpu-config&quot;: &quot;{}&quot;
-            }}&quot;#</span>,
+                "cpu-config": "{}"
+            }}"#</span>,
             kernel_image_path, rootfs_path, cpu_template_path,
         )
     }
@@ -713,43 +715,43 @@
     // * CPUID leaf 0x0 / subleaf 0x0 / register eax indicates the maximum input EAX value for basic
     //   CPUID information.
     // * MSR index 0x4b564d00 indicates MSR_KVM_WALL_CLOCK_NEW.
-    </span><span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
-    </span><span class="kw">const </span>SAMPLE_MODIFIERS: <span class="kw-2">&amp;</span>str = <span class="string">r#&quot;
+    </span><span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
+    </span><span class="kw">const </span>SAMPLE_MODIFIERS: <span class="kw-2">&amp;</span>str = <span class="string">r#"
     {
-        &quot;cpuid_modifiers&quot;: [
+        "cpuid_modifiers": [
             {
-                &quot;leaf&quot;: &quot;0x0&quot;,
-                &quot;subleaf&quot;: &quot;0x0&quot;,
-                &quot;flags&quot;: 0,
-                &quot;modifiers&quot;: [
+                "leaf": "0x0",
+                "subleaf": "0x0",
+                "flags": 0,
+                "modifiers": [
                     {
-                        &quot;register&quot;: &quot;eax&quot;,
-                        &quot;bitmap&quot;: &quot;0b00000000000000000000000000000001&quot;
+                        "register": "eax",
+                        "bitmap": "0b00000000000000000000000000000001"
                     }
                 ]
             }
         ],
-        &quot;msr_modifiers&quot;: [
+        "msr_modifiers": [
             {
-                &quot;addr&quot;: &quot;0x4b564d00&quot;,
-                &quot;bitmap&quot;: &quot;0b0000000000000000000000000000000000000000000000000000000000000001&quot;
+                "addr": "0x4b564d00",
+                "bitmap": "0b0000000000000000000000000000000000000000000000000000000000000001"
             }
         ]
-    }&quot;#</span>;
+    }"#</span>;
 
     <span class="comment">// Sample modifiers for aarch64 that should work correctly as a CPU template and a guest CPU
     // config.
     // * Register ID 0x6030000000100002 indicates X1 register.
-    </span><span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
-    </span><span class="kw">const </span>SAMPLE_MODIFIERS: <span class="kw-2">&amp;</span>str = <span class="string">r#&quot;
+    </span><span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
+    </span><span class="kw">const </span>SAMPLE_MODIFIERS: <span class="kw-2">&amp;</span>str = <span class="string">r#"
     {
-        &quot;reg_modifiers&quot;: [
+        "reg_modifiers": [
             {
-                &quot;addr&quot;: &quot;0x6030000000100002&quot;,
-                &quot;bitmap&quot;: &quot;0b00000001&quot;
+                "addr": "0x6030000000100002",
+                "bitmap": "0b00000001"
             }
         ]
-    }&quot;#</span>;
+    }"#</span>;
 
     <span class="comment">// Build a sample custom CPU template.
     </span><span class="kw">fn </span>generate_sample_template() -&gt; TempFile {
@@ -764,10 +766,10 @@
     </span><span class="kw">fn </span>generate_sample_fingerprint() -&gt; TempFile {
         <span class="kw">let </span>fingerprint = fingerprint::Fingerprint {
             firecracker_version: <span class="kw">crate</span>::utils::CPU_TEMPLATE_HELPER_VERSION.to_string(),
-            kernel_version: <span class="string">&quot;sample_kernel_version&quot;</span>.to_string(),
-            microcode_version: <span class="string">&quot;sample_microcode_version&quot;</span>.to_string(),
-            bios_version: <span class="string">&quot;sample_bios_version&quot;</span>.to_string(),
-            bios_revision: <span class="string">&quot;sample_bios_revision&quot;</span>.to_string(),
+            kernel_version: <span class="string">"sample_kernel_version"</span>.to_string(),
+            microcode_version: <span class="string">"sample_microcode_version"</span>.to_string(),
+            bios_version: <span class="string">"sample_bios_version"</span>.to_string(),
+            bios_revision: <span class="string">"sample_bios_revision"</span>.to_string(),
             guest_cpu_config: serde_json::from_str(SAMPLE_MODIFIERS).unwrap(),
         };
         <span class="kw">let </span>file = TempFile::new().unwrap();
@@ -793,12 +795,12 @@
         <span class="kw">let </span>output_file = TempFile::new().unwrap();
 
         <span class="kw">let </span>args = <span class="macro">vec!</span>[
-            <span class="string">&quot;cpu-template-helper&quot;</span>,
-            <span class="string">&quot;template&quot;</span>,
-            <span class="string">&quot;dump&quot;</span>,
-            <span class="string">&quot;--config&quot;</span>,
+            <span class="string">"cpu-template-helper"</span>,
+            <span class="string">"template"</span>,
+            <span class="string">"dump"</span>,
+            <span class="string">"--config"</span>,
             config_file.as_path().to_str().unwrap(),
-            <span class="string">&quot;--output&quot;</span>,
+            <span class="string">"--output"</span>,
             output_file.as_path().to_str().unwrap(),
         ];
         <span class="kw">let </span>cli = Cli::parse_from(args);
@@ -810,7 +812,7 @@
     </span><span class="kw">fn </span>test_template_strip_command() {
         <span class="kw">let </span>files = <span class="macro">vec!</span>[generate_sample_template(), generate_sample_template()];
 
-        <span class="kw">let </span><span class="kw-2">mut </span>args = <span class="macro">vec!</span>[<span class="string">&quot;cpu-template-helper&quot;</span>, <span class="string">&quot;template&quot;</span>, <span class="string">&quot;strip&quot;</span>, <span class="string">&quot;-p&quot;</span>];
+        <span class="kw">let </span><span class="kw-2">mut </span>args = <span class="macro">vec!</span>[<span class="string">"cpu-template-helper"</span>, <span class="string">"template"</span>, <span class="string">"strip"</span>, <span class="string">"-p"</span>];
         <span class="kw">let </span>paths = files
             .iter()
             .map(|file| file.as_path().to_str().unwrap())
@@ -833,10 +835,10 @@
         );
 
         <span class="kw">let </span>args = <span class="macro">vec!</span>[
-            <span class="string">&quot;cpu-template-helper&quot;</span>,
-            <span class="string">&quot;template&quot;</span>,
-            <span class="string">&quot;verify&quot;</span>,
-            <span class="string">&quot;--config&quot;</span>,
+            <span class="string">"cpu-template-helper"</span>,
+            <span class="string">"template"</span>,
+            <span class="string">"verify"</span>,
+            <span class="string">"--config"</span>,
             config_file.as_path().to_str().unwrap(),
         ];
         <span class="kw">let </span>cli = Cli::parse_from(args);
@@ -856,12 +858,12 @@
         <span class="kw">let </span>output_file = TempFile::new().unwrap();
 
         <span class="kw">let </span>args = <span class="macro">vec!</span>[
-            <span class="string">&quot;cpu-template-helper&quot;</span>,
-            <span class="string">&quot;fingerprint&quot;</span>,
-            <span class="string">&quot;dump&quot;</span>,
-            <span class="string">&quot;--config&quot;</span>,
+            <span class="string">"cpu-template-helper"</span>,
+            <span class="string">"fingerprint"</span>,
+            <span class="string">"dump"</span>,
+            <span class="string">"--config"</span>,
             config_file.as_path().to_str().unwrap(),
-            <span class="string">&quot;--output&quot;</span>,
+            <span class="string">"--output"</span>,
             output_file.as_path().to_str().unwrap(),
         ];
         <span class="kw">let </span>cli = Cli::parse_from(args);
@@ -879,14 +881,14 @@
             .collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
 
         <span class="kw">let </span><span class="kw-2">mut </span>args = <span class="macro">vec!</span>[
-            <span class="string">&quot;cpu-template-helper&quot;</span>,
-            <span class="string">&quot;fingerprint&quot;</span>,
-            <span class="string">&quot;compare&quot;</span>,
-            <span class="string">&quot;--prev&quot;</span>,
+            <span class="string">"cpu-template-helper"</span>,
+            <span class="string">"fingerprint"</span>,
+            <span class="string">"compare"</span>,
+            <span class="string">"--prev"</span>,
             fingerprint_file1.as_path().to_str().unwrap(),
-            <span class="string">&quot;--curr&quot;</span>,
+            <span class="string">"--curr"</span>,
             fingerprint_file2.as_path().to_str().unwrap(),
-            <span class="string">&quot;--filters&quot;</span>,
+            <span class="string">"--filters"</span>,
         ];
         <span class="kw">for </span>filter <span class="kw">in </span><span class="kw-2">&amp;</span>filters {
             args.push(filter);

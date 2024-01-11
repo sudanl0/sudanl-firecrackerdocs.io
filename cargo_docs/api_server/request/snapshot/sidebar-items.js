@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["LOAD_DEPRECATION_MESSAGE","MISSING_FIELD","TOO_MANY_FIELDS"],"fn":["parse_patch_vm_state","parse_put_snapshot","parse_put_snapshot_create","parse_put_snapshot_load"]};

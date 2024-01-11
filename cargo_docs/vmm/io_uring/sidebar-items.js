@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["CQueueError","IoUringError","SQueueError"],"mod":["operation","restriction"],"struct":["IoUring"]};
+window.SIDEBAR_ITEMS = {"constant":["IORING_MAX_FIXED_FILES","REQUIRED_OPS","_DERIVE_Display_FOR_IoUringError"],"enum":["CQueueError","IoUringError","SQueueError"],"mod":["bindings","operation","probe","queue","restriction"],"struct":["IoUring"]};

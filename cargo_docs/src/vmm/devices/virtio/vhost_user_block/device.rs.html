@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/devices/virtio/vhost_user_block/device.rs`."><title>device.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../../vmm/index.html"><img class="rust-logo" src="../../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/devices/virtio/vhost_user_block/device.rs`."><title>device.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -940,34 +942,34 @@
 
 <span class="comment">// Need custom implementation because otherwise `Debug` is required for `vhost::Master`
 </span><span class="kw">impl</span>&lt;T: VhostUserHandleBackend&gt; std::fmt::Debug <span class="kw">for </span>VhostUserBlockImpl&lt;T&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
-        f.debug_struct(<span class="string">&quot;VhostUserBlockImpl&quot;</span>)
-            .field(<span class="string">&quot;avail_features&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.avail_features)
-            .field(<span class="string">&quot;acked_features&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.acked_features)
-            .field(<span class="string">&quot;config_space&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.config_space)
-            .field(<span class="string">&quot;activate_evt&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.activate_evt)
-            .field(<span class="string">&quot;queues&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.queues)
-            .field(<span class="string">&quot;queue_evts&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.queue_evts)
-            .field(<span class="string">&quot;device_state&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.device_state)
-            .field(<span class="string">&quot;irq_trigger&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.irq_trigger)
-            .field(<span class="string">&quot;id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.id)
-            .field(<span class="string">&quot;partuuid&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.partuuid)
-            .field(<span class="string">&quot;cache_type&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.cache_type)
-            .field(<span class="string">&quot;root_device&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.root_device)
-            .field(<span class="string">&quot;read_only&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.read_only)
-            .field(<span class="string">&quot;vu_handle&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.vu_handle)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
+        f.debug_struct(<span class="string">"VhostUserBlockImpl"</span>)
+            .field(<span class="string">"avail_features"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.avail_features)
+            .field(<span class="string">"acked_features"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.acked_features)
+            .field(<span class="string">"config_space"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.config_space)
+            .field(<span class="string">"activate_evt"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.activate_evt)
+            .field(<span class="string">"queues"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.queues)
+            .field(<span class="string">"queue_evts"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.queue_evts)
+            .field(<span class="string">"device_state"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.device_state)
+            .field(<span class="string">"irq_trigger"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.irq_trigger)
+            .field(<span class="string">"id"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.id)
+            .field(<span class="string">"partuuid"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.partuuid)
+            .field(<span class="string">"cache_type"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.cache_type)
+            .field(<span class="string">"root_device"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.root_device)
+            .field(<span class="string">"read_only"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.read_only)
+            .field(<span class="string">"vu_handle"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.vu_handle)
             .field(
-                <span class="string">&quot;vu_acked_protocol_features&quot;</span>,
+                <span class="string">"vu_acked_protocol_features"</span>,
                 <span class="kw-2">&amp;</span><span class="self">self</span>.vu_acked_protocol_features,
             )
-            .field(<span class="string">&quot;metrics&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.metrics)
+            .field(<span class="string">"metrics"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.metrics)
             .finish()
     }
 }
 
 <span class="kw">impl</span>&lt;T: VhostUserHandleBackend&gt; VhostUserBlockImpl&lt;T&gt; {
     <span class="kw">pub fn </span>new(config: VhostUserBlockConfig) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, VhostUserBlockError&gt; {
-        log_dev_preview_warning(<span class="string">&quot;vhost-user-blk device&quot;</span>, Option::None);
+        log_dev_preview_warning(<span class="string">"vhost-user-blk device"</span>, Option::None);
         <span class="kw">let </span>start_time = utils::time::get_time_us(utils::time::ClockType::Monotonic);
         <span class="kw">let </span><span class="kw-2">mut </span>requested_features = AVAILABLE_FEATURES;
 
@@ -1016,7 +1018,7 @@
         </span><span class="kw">let </span>avail_features = acked_features;
         <span class="kw">let </span>acked_features = acked_features &amp; VhostUserVirtioFeatures::PROTOCOL_FEATURES.bits();
         <span class="kw">let </span>read_only = acked_features &amp; (<span class="number">1 </span>&lt;&lt; VIRTIO_BLK_F_RO) != <span class="number">0</span>;
-        <span class="kw">let </span>vhost_user_block_metrics_name = <span class="macro">format!</span>(<span class="string">&quot;block_{}&quot;</span>, config.drive_id);
+        <span class="kw">let </span>vhost_user_block_metrics_name = <span class="macro">format!</span>(<span class="string">"block_{}"</span>, config.drive_id);
 
         <span class="kw">let </span>metrics = VhostUserMetricsPerDevice::alloc(vhost_user_block_metrics_name);
         <span class="kw">let </span>delta_us = utils::time::get_time_us(utils::time::ClockType::Monotonic) - start_time;
@@ -1047,7 +1049,7 @@
 
     <span class="doccomment">/// Prepare device for being snapshotted.
     </span><span class="kw">pub fn </span>prepare_save(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="macro">unimplemented!</span>(<span class="string">&quot;VhostUserBlock does not support snapshotting yet&quot;</span>);
+        <span class="macro">unimplemented!</span>(<span class="string">"VhostUserBlock does not support snapshotting yet"</span>);
     }
 
     <span class="kw">pub fn </span>config(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; VhostUserBlockConfig {
@@ -1087,7 +1089,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;T: VhostUserHandleBackend + Send + <span class="lifetime">&#39;static</span>&gt; VirtioDevice <span class="kw">for </span>VhostUserBlockImpl&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: VhostUserHandleBackend + Send + <span class="lifetime">'static</span>&gt; VirtioDevice <span class="kw">for </span>VhostUserBlockImpl&lt;T&gt; {
     <span class="kw">fn </span>avail_features(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u64 {
         <span class="self">self</span>.avail_features
     }
@@ -1128,12 +1130,12 @@
     <span class="kw">fn </span>read_config(<span class="kw-2">&amp;</span><span class="self">self</span>, offset: u64, <span class="kw-2">mut </span>data: <span class="kw-2">&amp;mut </span>[u8]) {
         <span class="kw">let </span>config_len = <span class="self">self</span>.config_space.len() <span class="kw">as </span>u64;
         <span class="kw">if </span>offset &gt;= config_len {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to read config space&quot;</span>);
+            <span class="macro">error!</span>(<span class="string">"Failed to read config space"</span>);
             <span class="self">self</span>.metrics.cfg_fails.inc();
             <span class="kw">return</span>;
         }
         <span class="kw">if let </span><span class="prelude-val">Some</span>(end) = offset.checked_add(data.len() <span class="kw">as </span>u64) {
-            <span class="comment">// This write can&#39;t fail, offset and end are checked against config_len.
+            <span class="comment">// This write can't fail, offset and end are checked against config_len.
             </span>data.write_all(
                 <span class="kw-2">&amp;</span><span class="self">self</span>.config_space[u64_to_usize(offset)..u64_to_usize(cmp::min(end, config_len))],
             )
@@ -1143,7 +1145,7 @@
 
     <span class="kw">fn </span>write_config(<span class="kw-2">&amp;mut </span><span class="self">self</span>, _offset: u64, _data: <span class="kw-2">&amp;</span>[u8]) {
         <span class="comment">// We do not advertise VIRTIO_BLK_F_CONFIG_WCE
-        // that would allow configuring the &quot;writeback&quot; field.
+        // that would allow configuring the "writeback" field.
         // Other block config fields are immutable.
     </span>}
 
@@ -1194,7 +1196,7 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_from_config() {
         <span class="kw">let </span>block_config = BlockDeviceConfig {
-            drive_id: <span class="string">&quot;&quot;</span>.to_string(),
+            drive_id: <span class="string">""</span>.to_string(),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">false</span>,
             cache_type: CacheType::Unsafe,
@@ -1204,18 +1206,18 @@
             rate_limiter: <span class="prelude-val">None</span>,
             file_engine_type: <span class="prelude-val">None</span>,
 
-            socket: <span class="prelude-val">Some</span>(<span class="string">&quot;sock&quot;</span>.to_string()),
+            socket: <span class="prelude-val">Some</span>(<span class="string">"sock"</span>.to_string()),
         };
         VhostUserBlockConfig::try_from(<span class="kw-2">&amp;</span>block_config).unwrap();
 
         <span class="kw">let </span>block_config = BlockDeviceConfig {
-            drive_id: <span class="string">&quot;&quot;</span>.to_string(),
+            drive_id: <span class="string">""</span>.to_string(),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">false</span>,
             cache_type: CacheType::Unsafe,
 
             is_read_only: <span class="prelude-val">Some</span>(<span class="bool-val">true</span>),
-            path_on_host: <span class="prelude-val">Some</span>(<span class="string">&quot;path&quot;</span>.to_string()),
+            path_on_host: <span class="prelude-val">Some</span>(<span class="string">"path"</span>.to_string()),
             rate_limiter: <span class="prelude-val">None</span>,
             file_engine_type: <span class="prelude-val">Some</span>(FileEngineType::Sync),
 
@@ -1224,17 +1226,17 @@
         VhostUserBlockConfig::try_from(<span class="kw-2">&amp;</span>block_config).unwrap_err();
 
         <span class="kw">let </span>block_config = BlockDeviceConfig {
-            drive_id: <span class="string">&quot;&quot;</span>.to_string(),
+            drive_id: <span class="string">""</span>.to_string(),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">false</span>,
             cache_type: CacheType::Unsafe,
 
             is_read_only: <span class="prelude-val">Some</span>(<span class="bool-val">true</span>),
-            path_on_host: <span class="prelude-val">Some</span>(<span class="string">&quot;path&quot;</span>.to_string()),
+            path_on_host: <span class="prelude-val">Some</span>(<span class="string">"path"</span>.to_string()),
             rate_limiter: <span class="prelude-val">None</span>,
             file_engine_type: <span class="prelude-val">Some</span>(FileEngineType::Sync),
 
-            socket: <span class="prelude-val">Some</span>(<span class="string">&quot;sock&quot;</span>.to_string()),
+            socket: <span class="prelude-val">Some</span>(<span class="string">"sock"</span>.to_string()),
         };
         VhostUserBlockConfig::try_from(<span class="kw-2">&amp;</span>block_config).unwrap_err();
     }
@@ -1291,7 +1293,7 @@
         <span class="kw">let </span>(_tmp_dir, tmp_socket_path) = create_tmp_socket();
 
         <span class="kw">let </span>vhost_block_config = VhostUserBlockConfig {
-            drive_id: <span class="string">&quot;test_drive&quot;</span>.to_string(),
+            drive_id: <span class="string">"test_drive"</span>.to_string(),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">false</span>,
             cache_type: CacheType::Unsafe,
@@ -1391,7 +1393,7 @@
         <span class="kw">let </span>(_tmp_dir, tmp_socket_path) = create_tmp_socket();
 
         <span class="kw">let </span>vhost_block_config = VhostUserBlockConfig {
-            drive_id: <span class="string">&quot;test_drive&quot;</span>.to_string(),
+            drive_id: <span class="string">"test_drive"</span>.to_string(),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">false</span>,
             cache_type: CacheType::Writeback,
@@ -1577,7 +1579,7 @@
         <span class="comment">// Block creation
         </span><span class="kw">let </span>(_tmp_dir, tmp_socket_path) = create_tmp_socket();
         <span class="kw">let </span>vhost_block_config = VhostUserBlockConfig {
-            drive_id: <span class="string">&quot;test_drive&quot;</span>.to_string(),
+            drive_id: <span class="string">"test_drive"</span>.to_string(),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">false</span>,
             cache_type: CacheType::Writeback,

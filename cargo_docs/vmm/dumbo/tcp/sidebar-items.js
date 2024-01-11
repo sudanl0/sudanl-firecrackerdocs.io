@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["MAX_WINDOW_SIZE","MSS_DEFAULT"],"enum":["NextSegmentStatus","RstConfig"],"fn":["seq_after","seq_at_or_after"],"mod":["connection","handler"]};
+window.SIDEBAR_ITEMS = {"constant":["MAX_WINDOW_SIZE","MSS_DEFAULT"],"enum":["NextSegmentStatus","RstConfig"],"fn":["seq_after","seq_at_or_after"],"mod":["connection","endpoint","handler"]};

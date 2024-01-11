@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/api_server/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="api_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../api_server/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/api_server/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="api_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../api_server/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -585,24 +587,24 @@
         // altogether is the desired behaviour.
         </span><span class="kw">if let </span><span class="prelude-val">Err</span>(err) = seccompiler::apply_filter(seccomp_filter) {
             <span class="macro">panic!</span>(
-                <span class="string">&quot;Failed to set the requested seccomp filters on the API thread: {}&quot;</span>,
+                <span class="string">"Failed to set the requested seccomp filters on the API thread: {}"</span>,
                 err
             );
         }
 
-        server.start_server().expect(<span class="string">&quot;Cannot start HTTP server&quot;</span>);
+        server.start_server().expect(<span class="string">"Cannot start HTTP server"</span>);
 
         <span class="kw">loop </span>{
             <span class="kw">let </span>request_vec = <span class="kw">match </span>server.requests() {
                 <span class="prelude-val">Ok</span>(vec) =&gt; vec,
                 <span class="prelude-val">Err</span>(ServerError::ShutdownEvent) =&gt; {
                     server.flush_outgoing_writes();
-                    <span class="macro">debug!</span>(<span class="string">&quot;shutdown request received, API server thread ending.&quot;</span>);
+                    <span class="macro">debug!</span>(<span class="string">"shutdown request received, API server thread ending."</span>);
                     <span class="kw">return</span>;
                 }
                 <span class="prelude-val">Err</span>(err) =&gt; {
                     <span class="comment">// print request error, but keep server running
-                    </span><span class="macro">error!</span>(<span class="string">&quot;API Server error on retrieving incoming request: {}&quot;</span>, err);
+                    </span><span class="macro">error!</span>(<span class="string">"API Server error on retrieving incoming request: {}"</span>, err);
                     <span class="kw">continue</span>;
                 }
             };
@@ -613,12 +615,12 @@
                 </span><span class="kw">let </span>response = server_request
                     .process(|request| <span class="self">self</span>.handle_request(request, request_processing_start_us));
                 <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = server.respond(response) {
-                    <span class="macro">error!</span>(<span class="string">&quot;API Server encountered an error on response: {}&quot;</span>, err);
+                    <span class="macro">error!</span>(<span class="string">"API Server encountered an error on response: {}"</span>, err);
                 };
 
                 <span class="kw">let </span>delta_us = utils::time::get_time_us(utils::time::ClockType::Monotonic)
                     - request_processing_start_us;
-                <span class="macro">debug!</span>(<span class="string">&quot;Total previous API call duration: {} us.&quot;</span>, delta_us);
+                <span class="macro">debug!</span>(<span class="string">"Total previous API call duration: {} us."</span>, delta_us);
             }
         }
     }
@@ -637,13 +639,13 @@
                     }
                 };
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(message) = parsing_info.take_deprecation_message() {
-                    <span class="macro">warn!</span>(<span class="string">&quot;{}&quot;</span>, message);
+                    <span class="macro">warn!</span>(<span class="string">"{}"</span>, message);
                     response.set_deprecation();
                 }
                 response
             }
             <span class="prelude-val">Err</span>(err) =&gt; {
-                <span class="macro">error!</span>(<span class="string">&quot;{:?}&quot;</span>, err);
+                <span class="macro">error!</span>(<span class="string">"{:?}"</span>, err);
                 err.into()
             }
         }
@@ -658,33 +660,33 @@
             VmmAction::CreateSnapshot(<span class="kw-2">ref </span>params) =&gt; <span class="kw">match </span>params.snapshot_type {
                 SnapshotType::Full =&gt; <span class="prelude-val">Some</span>((
                     <span class="kw-2">&amp;</span>METRICS.latencies_us.full_create_snapshot,
-                    <span class="string">&quot;create full snapshot&quot;</span>,
+                    <span class="string">"create full snapshot"</span>,
                 )),
                 SnapshotType::Diff =&gt; <span class="prelude-val">Some</span>((
                     <span class="kw-2">&amp;</span>METRICS.latencies_us.diff_create_snapshot,
-                    <span class="string">&quot;create diff snapshot&quot;</span>,
+                    <span class="string">"create diff snapshot"</span>,
                 )),
             },
             VmmAction::LoadSnapshot(<span class="kw">_</span>) =&gt; {
-                <span class="prelude-val">Some</span>((<span class="kw-2">&amp;</span>METRICS.latencies_us.load_snapshot, <span class="string">&quot;load snapshot&quot;</span>))
+                <span class="prelude-val">Some</span>((<span class="kw-2">&amp;</span>METRICS.latencies_us.load_snapshot, <span class="string">"load snapshot"</span>))
             }
-            VmmAction::Pause =&gt; <span class="prelude-val">Some</span>((<span class="kw-2">&amp;</span>METRICS.latencies_us.pause_vm, <span class="string">&quot;pause vm&quot;</span>)),
-            VmmAction::Resume =&gt; <span class="prelude-val">Some</span>((<span class="kw-2">&amp;</span>METRICS.latencies_us.resume_vm, <span class="string">&quot;resume vm&quot;</span>)),
+            VmmAction::Pause =&gt; <span class="prelude-val">Some</span>((<span class="kw-2">&amp;</span>METRICS.latencies_us.pause_vm, <span class="string">"pause vm"</span>)),
+            VmmAction::Resume =&gt; <span class="prelude-val">Some</span>((<span class="kw-2">&amp;</span>METRICS.latencies_us.resume_vm, <span class="string">"resume vm"</span>)),
             <span class="kw">_ </span>=&gt; <span class="prelude-val">None</span>,
         };
 
         <span class="self">self</span>.api_request_sender
             .send(vmm_action)
-            .expect(<span class="string">&quot;Failed to send VMM message&quot;</span>);
-        <span class="self">self</span>.to_vmm_fd.write(<span class="number">1</span>).expect(<span class="string">&quot;Cannot update send VMM fd&quot;</span>);
-        <span class="kw">let </span>vmm_outcome = <span class="kw-2">*</span>(<span class="self">self</span>.vmm_response_receiver.recv().expect(<span class="string">&quot;VMM disconnected&quot;</span>));
+            .expect(<span class="string">"Failed to send VMM message"</span>);
+        <span class="self">self</span>.to_vmm_fd.write(<span class="number">1</span>).expect(<span class="string">"Cannot update send VMM fd"</span>);
+        <span class="kw">let </span>vmm_outcome = <span class="kw-2">*</span>(<span class="self">self</span>.vmm_response_receiver.recv().expect(<span class="string">"VMM disconnected"</span>));
         <span class="kw">let </span>response = ParsedRequest::convert_to_response(<span class="kw-2">&amp;</span>vmm_outcome);
 
         <span class="kw">if </span>vmm_outcome.is_ok() {
             <span class="kw">if let </span><span class="prelude-val">Some</span>((metric, action)) = metric_with_action {
                 <span class="kw">let </span>elapsed_time_us =
                     update_metric_with_elapsed_time(metric, request_processing_start_us);
-                <span class="macro">info!</span>(<span class="string">&quot;&#39;{}&#39; API request took {} us.&quot;</span>, action, elapsed_time_us);
+                <span class="macro">info!</span>(<span class="string">"'{}' API request took {} us."</span>, action, elapsed_time_us);
             }
         }
         response
@@ -698,7 +700,7 @@
     }
 
     <span class="kw">fn </span>json_fault_message&lt;T: AsRef&lt;str&gt; + serde::Serialize + Debug&gt;(msg: T) -&gt; String {
-        <span class="macro">json!</span>({ <span class="string">&quot;fault_message&quot;</span>: msg }).to_string()
+        <span class="macro">json!</span>({ <span class="string">"fault_message"</span>: msg }).to_string()
     }
 }
 
@@ -724,26 +726,26 @@
     <span class="kw">use </span><span class="kw">crate</span>::request::cpu_configuration::parse_put_cpu_config;
 
     <span class="doccomment">/// Test unescaped CPU template in JSON format.
-    /// Newlines injected into a field&#39;s value to
+    /// Newlines injected into a field's value to
     /// test deserialization and logging.
-    </span><span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
-    </span><span class="kw">const </span>TEST_UNESCAPED_JSON_TEMPLATE: <span class="kw-2">&amp;</span>str = <span class="string">r#&quot;{
-        &quot;msr_modifiers&quot;: [
+    </span><span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
+    </span><span class="kw">const </span>TEST_UNESCAPED_JSON_TEMPLATE: <span class="kw-2">&amp;</span>str = <span class="string">r#"{
+        "msr_modifiers": [
             {
-                &quot;addr&quot;: &quot;0x0\n\n\n\nTEST\n\n\n\n&quot;,
-                &quot;bitmap&quot;: &quot;0b00&quot;
+                "addr": "0x0\n\n\n\nTEST\n\n\n\n",
+                "bitmap": "0b00"
             }
         ]
-    }&quot;#</span>;
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
-    </span><span class="kw">pub const </span>TEST_UNESCAPED_JSON_TEMPLATE: <span class="kw-2">&amp;</span>str = <span class="string">r#&quot;{
-        &quot;reg_modifiers&quot;: [
+    }"#</span>;
+    <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
+    </span><span class="kw">pub const </span>TEST_UNESCAPED_JSON_TEMPLATE: <span class="kw-2">&amp;</span>str = <span class="string">r#"{
+        "reg_modifiers": [
             {
-                &quot;addr&quot;: &quot;0x0\n\n\n\nTEST\n\n\n\n&quot;,
-                &quot;bitmap&quot;: &quot;0b00&quot;
+                "addr": "0x0\n\n\n\nTEST\n\n\n\n",
+                "bitmap": "0b00"
             }
         ]
-    }&quot;#</span>;
+    }"#</span>;
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_serve_vmm_action_request() {
@@ -786,7 +788,7 @@
             start_time_us,
         );
         <span class="macro">assert_eq!</span>(response.status(), StatusCode::BadRequest);
-        <span class="comment">// The metric should not be updated if the request wasn&#39;t successful.
+        <span class="comment">// The metric should not be updated if the request wasn't successful.
         </span><span class="macro">assert_eq!</span>(METRICS.latencies_us.diff_create_snapshot.fetch(), <span class="number">0</span>);
 
         to_api.send(Box::new(<span class="prelude-val">Ok</span>(VmmData::Empty))).unwrap();
@@ -816,12 +818,12 @@
         <span class="kw">let </span><span class="kw-2">mut </span>connection = HttpConnection::new(receiver);
         sender
             .write_all(
-                <span class="string">b&quot;PUT /actions HTTP/1.1\r\n\
+                <span class="string">b"PUT /actions HTTP/1.1\r\n\
                 Content-Type: application/json\r\n\
                 Content-Length: 49\r\n\r\n{ \
-                \&quot;action_type\&quot;: \&quot;Invalid\&quot;, \
-                \&quot;payload\&quot;: \&quot;string\&quot; \
-                }&quot;</span>,
+                \"action_type\": \"Invalid\", \
+                \"payload\": \"string\" \
+                }"</span>,
             )
             .unwrap();
         connection.try_read().unwrap();
@@ -835,7 +837,7 @@
                 InstanceInfo::default(),
             ))))
             .unwrap();
-        sender.write_all(<span class="string">b&quot;GET / HTTP/1.1\r\n\r\n&quot;</span>).unwrap();
+        sender.write_all(<span class="string">b"GET / HTTP/1.1\r\n\r\n"</span>).unwrap();
         connection.try_read().unwrap();
         <span class="kw">let </span>req = connection.pop_parsed_request().unwrap();
         <span class="kw">let </span>response = api_server.handle_request(<span class="kw-2">&amp;</span>req, <span class="number">0</span>);
@@ -844,9 +846,9 @@
         <span class="comment">// Test erroneous request.
         </span>sender
             .write_all(
-                <span class="string">b&quot;GET /mmds HTTP/1.1\r\n\
+                <span class="string">b"GET /mmds HTTP/1.1\r\n\
                 Content-Type: application/json\r\n\
-                Content-Length: 2\r\n\r\n{}&quot;</span>,
+                Content-Length: 2\r\n\r\n{}"</span>,
             )
             .unwrap();
         connection.try_read().unwrap();
@@ -860,20 +862,20 @@
         <span class="kw">let </span>cpu_template_json = TEST_UNESCAPED_JSON_TEMPLATE;
         <span class="kw">let </span>result = parse_put_cpu_config(<span class="kw-2">&amp;</span>Body::new(cpu_template_json.as_bytes()));
         <span class="kw">let </span>result_error = result.unwrap_err();
-        <span class="kw">let </span>err_msg = <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, result_error);
+        <span class="kw">let </span>err_msg = <span class="macro">format!</span>(<span class="string">"{}"</span>, result_error);
         <span class="macro">assert_ne!</span>(
             <span class="number">1</span>,
             err_msg.lines().count(),
-            <span class="string">&quot;Error Body response:\n{}&quot;</span>,
+            <span class="string">"Error Body response:\n{}"</span>,
             err_msg
         );
 
-        <span class="kw">let </span>err_msg_with_debug = <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, result_error);
+        <span class="kw">let </span>err_msg_with_debug = <span class="macro">format!</span>(<span class="string">"{:?}"</span>, result_error);
         <span class="comment">// Check the loglines are on one line.
         </span><span class="macro">assert_eq!</span>(
             <span class="number">1</span>,
             err_msg_with_debug.lines().count(),
-            <span class="string">&quot;Error Body response:\n{}&quot;</span>,
+            <span class="string">"Error Body response:\n{}"</span>,
             err_msg_with_debug
         );
     }
@@ -891,12 +893,12 @@
         <span class="kw">let </span>seccomp_filters = get_empty_filters();
         <span class="kw">let </span>server = HttpServer::new(PathBuf::from(api_thread_path_to_socket)).unwrap();
         thread::Builder::new()
-            .name(<span class="string">&quot;fc_api_test&quot;</span>.to_owned())
+            .name(<span class="string">"fc_api_test"</span>.to_owned())
             .spawn(<span class="kw">move </span>|| {
                 ApiServer::new(api_request_sender, vmm_response_receiver, to_vmm_fd).run(
                     server,
                     ProcessTimeReporter::new(<span class="prelude-val">Some</span>(<span class="number">1</span>), <span class="prelude-val">Some</span>(<span class="number">1</span>), <span class="prelude-val">Some</span>(<span class="number">1</span>)),
-                    seccomp_filters.get(<span class="string">&quot;api&quot;</span>).unwrap(),
+                    seccomp_filters.get(<span class="string">"api"</span>).unwrap(),
                     vmm::HTTP_MAX_PAYLOAD_SIZE,
                 );
             })
@@ -910,12 +912,12 @@
         <span class="kw">let </span><span class="kw-2">mut </span>sock = UnixStream::connect(PathBuf::from(path_to_socket)).unwrap();
 
         <span class="comment">// Send a GET InstanceInfo request.
-        </span>sock.write_all(<span class="string">b&quot;GET / HTTP/1.1\r\n\r\n&quot;</span>).unwrap();
+        </span>sock.write_all(<span class="string">b"GET / HTTP/1.1\r\n\r\n"</span>).unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>buf: [u8; <span class="number">100</span>] = [<span class="number">0</span>; <span class="number">100</span>];
         <span class="macro">assert!</span>(sock.read(<span class="kw-2">&amp;mut </span>buf[..]).unwrap() &gt; <span class="number">0</span>);
 
         <span class="comment">// Send an erroneous request.
-        </span>sock.write_all(<span class="string">b&quot;OPTIONS / HTTP/1.1\r\n\r\n&quot;</span>).unwrap();
+        </span>sock.write_all(<span class="string">b"OPTIONS / HTTP/1.1\r\n\r\n"</span>).unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>buf: [u8; <span class="number">100</span>] = [<span class="number">0</span>; <span class="number">100</span>];
         <span class="macro">assert!</span>(sock.read(<span class="kw-2">&amp;mut </span>buf[..]).unwrap() &gt; <span class="number">0</span>);
     }
@@ -934,12 +936,12 @@
 
         <span class="kw">let </span>server = HttpServer::new(PathBuf::from(api_thread_path_to_socket)).unwrap();
         thread::Builder::new()
-            .name(<span class="string">&quot;fc_api_test&quot;</span>.to_owned())
+            .name(<span class="string">"fc_api_test"</span>.to_owned())
             .spawn(<span class="kw">move </span>|| {
                 ApiServer::new(api_request_sender, vmm_response_receiver, to_vmm_fd).run(
                     server,
                     ProcessTimeReporter::new(<span class="prelude-val">Some</span>(<span class="number">1</span>), <span class="prelude-val">Some</span>(<span class="number">1</span>), <span class="prelude-val">Some</span>(<span class="number">1</span>)),
-                    seccomp_filters.get(<span class="string">&quot;api&quot;</span>).unwrap(),
+                    seccomp_filters.get(<span class="string">"api"</span>).unwrap(),
                     <span class="number">50</span>,
                 )
             })
@@ -949,20 +951,20 @@
 
         <span class="comment">// Send a GET mmds request.
         </span>sock.write_all(
-            <span class="string">b&quot;PUT http://localhost/home HTTP/1.1\r\n\
-                  Content-Length: 50000\r\n\r\naaaaaa&quot;</span>,
+            <span class="string">b"PUT http://localhost/home HTTP/1.1\r\n\
+                  Content-Length: 50000\r\n\r\naaaaaa"</span>,
         )
         .unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>buf: [u8; <span class="number">265</span>] = [<span class="number">0</span>; <span class="number">265</span>];
         <span class="macro">assert!</span>(sock.read(<span class="kw-2">&amp;mut </span>buf[..]).unwrap() &gt; <span class="number">0</span>);
-        <span class="kw">let </span>error_message = <span class="string">b&quot;HTTP/1.1 400 \r\n\
+        <span class="kw">let </span>error_message = <span class="string">b"HTTP/1.1 400 \r\n\
                               Server: Firecracker API\r\n\
                               Connection: keep-alive\r\n\
                               Content-Type: application/json\r\n\
-                              Content-Length: 146\r\n\r\n{ \&quot;error\&quot;: \&quot;\
+                              Content-Length: 146\r\n\r\n{ \"error\": \"\
                               Request payload with size 50000 is larger than \
                               the limit of 50 allowed by server.\nAll previous \
-                              unanswered requests will be dropped.\&quot; }&quot;</span>;
+                              unanswered requests will be dropped.\" }"</span>;
         <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span>buf[..], <span class="kw-2">&amp;</span>error_message[..]);
     }
 
@@ -984,12 +986,12 @@
         server.add_kill_switch(kill_switch).unwrap();
 
         <span class="kw">let </span>api_thread = thread::Builder::new()
-            .name(<span class="string">&quot;fc_api_test&quot;</span>.to_owned())
+            .name(<span class="string">"fc_api_test"</span>.to_owned())
             .spawn(<span class="kw">move </span>|| {
                 ApiServer::new(api_request_sender, vmm_response_receiver, to_vmm_fd).run(
                     server,
                     ProcessTimeReporter::new(<span class="prelude-val">Some</span>(<span class="number">1</span>), <span class="prelude-val">Some</span>(<span class="number">1</span>), <span class="prelude-val">Some</span>(<span class="number">1</span>)),
-                    seccomp_filters.get(<span class="string">&quot;api&quot;</span>).unwrap(),
+                    seccomp_filters.get(<span class="string">"api"</span>).unwrap(),
                     vmm::HTTP_MAX_PAYLOAD_SIZE,
                 )
             })

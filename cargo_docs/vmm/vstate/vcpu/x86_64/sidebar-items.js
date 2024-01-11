@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["TSC_KHZ_TOL_DENOMINATOR","TSC_KHZ_TOL_NUMERATOR","_DERIVE_Display_FOR_KvmVcpuConfigureError","_DERIVE_Display_FOR_KvmVcpuError"],"enum":["KvmVcpuConfigureError","KvmVcpuError"],"struct":["GetTscError","KvmVcpu","SetTscError","VcpuState"]};

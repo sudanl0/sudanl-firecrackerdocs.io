@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["BucketReduction","BucketUpdate","Error","TokenType"],"mod":["persist"],"struct":["RateLimiter","TokenBucket"]};
+window.SIDEBAR_ITEMS = {"constant":["NANOSEC_IN_ONE_MILLISEC","REFILL_TIMER_INTERVAL_MS","TIMER_REFILL_STATE","_DERIVE_Display_FOR_Error"],"enum":["BucketReduction","BucketUpdate","Error","TokenType"],"fn":["gcd"],"mod":["persist"],"struct":["RateLimiter","TokenBucket"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["NetPersistError"],"struct":["NetConfigSpaceState","NetConstructorArgs","NetState"]};
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_NetPersistError"],"enum":["NetPersistError"],"struct":["NetConfigSpaceState","NetConstructorArgs","NetState"]};

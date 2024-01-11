@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/seccompiler/src/backend.rs`."><title>backend.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="seccompiler" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../seccompiler/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/seccompiler/src/backend.rs`."><title>backend.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="seccompiler" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../seccompiler/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1832,7 +1834,7 @@
 <a href="#1832" id="1832">1832</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-</span><span class="attr">#![cfg(target_endian = <span class="string">&quot;little&quot;</span>)]
+</span><span class="attr">#![cfg(target_endian = <span class="string">"little"</span>)]
 </span><span class="doccomment">//! This module defines the data structures used for the intermmediate representation (IR),
 //! as well as the logic for compiling the filter into BPF code, the final form of the filter.
 
@@ -1915,10 +1917,10 @@
 </span><span class="attr">#[derive(PartialEq, Debug, Clone)]
 </span><span class="kw">pub struct </span>Comment;
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;de</span>&gt; Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; <span class="kw">for </span>Comment {
+<span class="kw">impl</span>&lt;<span class="lifetime">'de</span>&gt; Deserialize&lt;<span class="lifetime">'de</span>&gt; <span class="kw">for </span>Comment {
     <span class="kw">fn </span>deserialize&lt;D&gt;(_deserializer: D) -&gt; std::result::Result&lt;Comment, D::Error&gt;
     <span class="kw">where
-        </span>D: Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
+        </span>D: Deserializer&lt;<span class="lifetime">'de</span>&gt;,
     {
         String::deserialize(_deserializer)<span class="question-mark">?</span>;
 
@@ -1968,10 +1970,10 @@
     }
 
     <span class="doccomment">/// Get the string representation.
-    </span><span class="kw">fn </span>to_string(<span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
+    </span><span class="kw">fn </span>to_string(<span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str {
         <span class="kw">match </span><span class="self">self </span>{
-            TargetArch::x86_64 =&gt; <span class="string">&quot;x86_64&quot;</span>,
-            TargetArch::aarch64 =&gt; <span class="string">&quot;aarch64&quot;</span>,
+            TargetArch::x86_64 =&gt; <span class="string">"x86_64"</span>,
+            TargetArch::aarch64 =&gt; <span class="string">"aarch64"</span>,
         }
     }
 }
@@ -1980,8 +1982,8 @@
     <span class="kw">type </span>Error = TargetArchError;
     <span class="kw">fn </span>try_into(<span class="self">self</span>) -&gt; std::result::Result&lt;TargetArch, TargetArchError&gt; {
         <span class="kw">match </span><span class="self">self</span>.to_lowercase().as_str() {
-            <span class="string">&quot;x86_64&quot; </span>=&gt; <span class="prelude-val">Ok</span>(TargetArch::x86_64),
-            <span class="string">&quot;aarch64&quot; </span>=&gt; <span class="prelude-val">Ok</span>(TargetArch::aarch64),
+            <span class="string">"x86_64" </span>=&gt; <span class="prelude-val">Ok</span>(TargetArch::x86_64),
+            <span class="string">"aarch64" </span>=&gt; <span class="prelude-val">Ok</span>(TargetArch::aarch64),
             <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(TargetArchError::InvalidString(<span class="self">self</span>.to_string())),
         }
     }
@@ -1995,7 +1997,7 @@
 
 <span class="doccomment">/// Comparison to perform when matching a condition.
 </span><span class="attr">#[derive(Clone, Debug, Deserialize, PartialEq)]
-#[serde(rename_all = <span class="string">&quot;snake_case&quot;</span>)]
+#[serde(rename_all = <span class="string">"snake_case"</span>)]
 </span><span class="kw">pub enum </span>SeccompCmpOp {
     <span class="doccomment">/// Argument value is equal to the specified value.
     </span>Eq,
@@ -2015,7 +2017,7 @@
 
 <span class="doccomment">/// Seccomp argument value length.
 </span><span class="attr">#[derive(Clone, Debug, Deserialize, PartialEq)]
-#[serde(rename_all = <span class="string">&quot;lowercase&quot;</span>)]
+#[serde(rename_all = <span class="string">"lowercase"</span>)]
 </span><span class="kw">pub enum </span>SeccompCmpArgLen {
     <span class="doccomment">/// Argument value length is 4 bytes.
     </span>Dword,
@@ -2028,16 +2030,16 @@
 #[serde(deny_unknown_fields)]
 </span><span class="kw">pub struct </span>SeccompCondition {
     <span class="doccomment">/// Index of the argument that is to be compared.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;index&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"index"</span>)]
     </span>arg_number: u8,
     <span class="doccomment">/// Length of the argument value that is to be compared.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;type&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"type"</span>)]
     </span>arg_len: SeccompCmpArgLen,
     <span class="doccomment">/// Comparison to perform.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;op&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"op"</span>)]
     </span>operator: SeccompCmpOp,
     <span class="doccomment">/// The value that will be compared with the argument value.
-    </span><span class="attr">#[serde(rename = <span class="string">&quot;val&quot;</span>)]
+    </span><span class="attr">#[serde(rename = <span class="string">"val"</span>)]
     </span>value: u64,
     <span class="doccomment">/// Optional empty value, represents a `comment` property in the JSON file.
     </span>comment: <span class="prelude-ty">Option</span>&lt;Comment&gt;,
@@ -2045,7 +2047,7 @@
 
 <span class="doccomment">/// Actions that `seccomp` can apply to process calling a syscall.
 </span><span class="attr">#[derive(Clone, Debug, PartialEq, Deserialize)]
-#[serde(rename_all = <span class="string">&quot;snake_case&quot;</span>)]
+#[serde(rename_all = <span class="string">"snake_case"</span>)]
 </span><span class="kw">pub enum </span>SeccompAction {
     <span class="doccomment">/// Allows syscall.
     </span>Allow,
@@ -2118,7 +2120,7 @@
         </span><span class="kw">let </span>arg_offset = SECCOMP_DATA_ARGS_OFFSET + <span class="self">self</span>.arg_number * SECCOMP_DATA_ARG_SIZE;
 
         <span class="comment">// Extracts offsets of most significant and least significant halves of argument.
-        // Addition cannot overflow because it&#39;s at most `arg_offset` + 4 = 68.
+        // Addition cannot overflow because it's at most `arg_offset` + 4 = 68.
         </span><span class="kw">let </span>(msb_offset, lsb_offset) = { (arg_offset + SECCOMP_DATA_ARG_SIZE / <span class="number">2</span>, arg_offset) };
 
         (msb, lsb, msb_offset, lsb_offset)
@@ -2491,7 +2493,7 @@
 
             <span class="comment">// Now check for conflicting rules.
             // Match on the number of empty rules for the given syscall.
-            // An `empty rule` is a rule that doesn&#39;t have any argument checks.
+            // An `empty rule` is a rule that doesn't have any argument checks.
             </span><span class="kw">match </span>syscall_rules
                 .iter()
                 .filter(|rule| rule.conditions.is_empty())
@@ -2575,7 +2577,7 @@
         </span><span class="kw">let </span><span class="kw-2">mut </span>result = VALIDATE_ARCHITECTURE(<span class="self">self</span>.target_arch);
 
         <span class="comment">// If no rules are set up, the filter will always return the default action,
-        // so let&#39;s short-circuit the function.
+        // so let's short-circuit the function.
         </span><span class="kw">if </span><span class="self">self</span>.rules.is_empty() {
             result.extend(<span class="macro">vec!</span>[BPF_STMT(
                 BPF_RET + BPF_K,
@@ -2638,7 +2640,7 @@
     sock_filter { code, jt, jf, k }
 }
 
-<span class="doccomment">/// Builds a &quot;statement&quot; BPF instruction.
+<span class="doccomment">/// Builds a "statement" BPF instruction.
 ///
 /// # Arguments
 ///
@@ -2721,13 +2723,13 @@
 
     <span class="comment">// The type of the `req` parameter is different for the `musl` library. This will enable
     // successful build for other non-musl libraries.
-    </span><span class="attr">#[cfg(target_env = <span class="string">&quot;musl&quot;</span>)]
+    </span><span class="attr">#[cfg(target_env = <span class="string">"musl"</span>)]
     </span><span class="kw">type </span>IoctlRequest = i32;
-    <span class="attr">#[cfg(not(target_env = <span class="string">&quot;musl&quot;</span>))]
+    <span class="attr">#[cfg(not(target_env = <span class="string">"musl"</span>))]
     </span><span class="kw">type </span>IoctlRequest = u64;
 
     <span class="comment">// We use KVM_GET_PIT2 as the second parameter for ioctl syscalls in some unit tests
-    // because it&#39;s a corner case. More details
+    // because it's a corner case. More details
     // [here](https://github.com/firecracker-microvm/firecracker/issues/1206)
     </span><span class="kw">const </span>KVM_GET_PIT2: u64 = <span class="number">0x8070_ae9f</span>;
     <span class="kw">const </span>KVM_GET_PIT2_MSB: u64 = <span class="number">0x0000_ae9f</span>;
@@ -3499,9 +3501,9 @@
                     code: <span class="number">21</span>,
                     jt: <span class="number">1</span>,
                     jf: <span class="number">0</span>,
-                    <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+                    <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
                     </span>k: AUDIT_ARCH_X86_64,
-                    <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+                    <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
                     </span>k: AUDIT_ARCH_AARCH64,
                 },
                 sock_filter {
@@ -3559,23 +3561,23 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_error_messages() {
         <span class="macro">assert_eq!</span>(
-            <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, FilterError::EmptyRulesVector),
-            <span class="string">&quot;The seccomp rules vector is empty.&quot;
+            <span class="macro">format!</span>(<span class="string">"{}"</span>, FilterError::EmptyRulesVector),
+            <span class="string">"The seccomp rules vector is empty."
         </span>);
         <span class="macro">assert_eq!</span>(
-            <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, FilterError::FilterTooLarge),
-            <span class="string">&quot;The seccomp filter contains too many BPF instructions.&quot;
+            <span class="macro">format!</span>(<span class="string">"{}"</span>, FilterError::FilterTooLarge),
+            <span class="string">"The seccomp filter contains too many BPF instructions."
         </span>);
         <span class="macro">assert_eq!</span>(
-            <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, FilterError::InvalidArgumentNumber),
-            <span class="string">&quot;The seccomp rule contains an invalid argument number.&quot;
+            <span class="macro">format!</span>(<span class="string">"{}"</span>, FilterError::InvalidArgumentNumber),
+            <span class="string">"The seccomp rule contains an invalid argument number."
         </span>);
         <span class="macro">assert_eq!</span>(
             <span class="macro">format!</span>(
-                <span class="string">&quot;{}&quot;</span>,
-                FilterError::Arch(TargetArchError::InvalidString(<span class="string">&quot;lala&quot;</span>.to_string()))
+                <span class="string">"{}"</span>,
+                FilterError::Arch(TargetArchError::InvalidString(<span class="string">"lala"</span>.to_string()))
             ),
-            <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, TargetArchError::InvalidString(<span class="string">&quot;lala&quot;</span>.to_string()))
+            <span class="macro">format!</span>(<span class="string">"{:?}"</span>, TargetArchError::InvalidString(<span class="string">"lala"</span>.to_string()))
         );
     }
 

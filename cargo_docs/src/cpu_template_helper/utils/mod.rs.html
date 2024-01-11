@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/cpu-template-helper/src/utils/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="cpu_template_helper" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../cpu_template_helper/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/cpu-template-helper/src/utils/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="cpu_template_helper" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../cpu_template_helper/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -221,12 +223,12 @@
 <span class="kw">use </span>vmm::vmm_config::instance_info::{InstanceInfo, VmState};
 <span class="kw">use </span>vmm::{EventManager, Vmm, HTTP_MAX_PAYLOAD_SIZE};
 
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
 </span><span class="kw">pub mod </span>aarch64;
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
 </span><span class="kw">pub mod </span>x86_64;
 
-<span class="kw">pub const </span>CPU_TEMPLATE_HELPER_VERSION: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>);
+<span class="kw">pub const </span>CPU_TEMPLATE_HELPER_VERSION: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">"CARGO_PKG_VERSION"</span>);
 
 <span class="doccomment">/// Trait for key of `HashMap`-based modifier.
 ///
@@ -251,15 +253,15 @@
             <span class="kw">let </span>template_bit = template &amp; mask;
             <span class="kw">let </span>config_bit = config &amp; mask;
             diff.push(<span class="kw">match </span>template_bit == config_bit {
-                <span class="bool-val">true </span>=&gt; <span class="string">&#39; &#39;</span>,
-                <span class="bool-val">false </span>=&gt; <span class="string">&#39;^&#39;</span>,
+                <span class="bool-val">true </span>=&gt; <span class="string">' '</span>,
+                <span class="bool-val">false </span>=&gt; <span class="string">'^'</span>,
             });
         }
 
         <span class="macro">format!</span>(
-            <span class="string">&quot;* CPU template     : 0b{template:0width$b}\n\
+            <span class="string">"* CPU template     : 0b{template:0width$b}\n\
              * CPU configuration: 0b{config:0width$b}\n\
-             * Diff             :   {diff}&quot;</span>,
+             * Diff             :   {diff}"</span>,
             width = V::BITS <span class="kw">as </span>usize,
         )
     }
@@ -278,10 +280,10 @@
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(Arc&lt;Mutex&lt;Vmm&gt;&gt;, VmResources), UtilsError&gt; {
     <span class="comment">// Prepare resources from the given config file.
     </span><span class="kw">let </span>instance_info = InstanceInfo {
-        id: <span class="string">&quot;anonymous-instance&quot;</span>.to_string(),
+        id: <span class="string">"anonymous-instance"</span>.to_string(),
         state: VmState::NotStarted,
         vmm_version: CPU_TEMPLATE_HELPER_VERSION.to_string(),
-        app_name: <span class="string">&quot;cpu-template-helper&quot;</span>.to_string(),
+        app_name: <span class="string">"cpu-template-helper"</span>.to_string(),
     };
     <span class="kw">let </span>vm_resources = VmResources::from_json(config, <span class="kw-2">&amp;</span>instance_info, HTTP_MAX_PAYLOAD_SIZE, <span class="prelude-val">None</span>)
         .map_err(UtilsError::CreateVmResources)<span class="question-mark">?</span>;
@@ -306,7 +308,7 @@
     <span class="comment">// Push the suffix and the extension.
     </span>new_file_name.push(suffix);
     <span class="kw">if let </span><span class="prelude-val">Some</span>(ext) = path.extension() {
-        new_file_name.push(<span class="string">&quot;.&quot;</span>);
+        new_file_name.push(<span class="string">"."</span>);
         new_file_name.push(ext);
     }
 
@@ -324,15 +326,15 @@
     <span class="kw">use super</span>::<span class="kw-2">*</span>;
     <span class="kw">use </span><span class="kw">crate</span>::tests::generate_config;
 
-    <span class="kw">const </span>SUFFIX: <span class="kw-2">&amp;</span>str = <span class="string">&quot;_suffix&quot;</span>;
+    <span class="kw">const </span>SUFFIX: <span class="kw-2">&amp;</span>str = <span class="string">"_suffix"</span>;
 
     <span class="attr">#[derive(Debug, PartialEq, Eq, Hash, Clone)]
     </span><span class="kw">pub struct </span>MockModifierMapKey(<span class="kw">pub </span>u8);
 
     <span class="kw">impl </span>ModifierMapKey <span class="kw">for </span>MockModifierMapKey {}
     <span class="kw">impl </span>Display <span class="kw">for </span>MockModifierMapKey {
-        <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; std::fmt::Result {
-            <span class="macro">write!</span>(f, <span class="string">&quot;ID={:#x}&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
+        <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; std::fmt::Result {
+            <span class="macro">write!</span>(f, <span class="string">"ID={:#x}"</span>, <span class="self">self</span>.<span class="number">0</span>)
         }
     }
 
@@ -373,42 +375,42 @@
     </span><span class="kw">fn </span>test_build_microvm_from_invalid_config() {
         <span class="kw">let </span>rootfs_file = TempFile::new().unwrap();
         <span class="kw">let </span>invalid_config = generate_config(
-            <span class="string">&quot;/invalid_kernel_image_path&quot;</span>,
+            <span class="string">"/invalid_kernel_image_path"</span>,
             rootfs_file.as_path().to_str().unwrap(),
         );
 
         <span class="kw">match </span>build_microvm_from_config(<span class="kw-2">&amp;</span>invalid_config) {
-            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Should fail with `No such file or directory`.&quot;</span>),
+            <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; <span class="macro">panic!</span>(<span class="string">"Should fail with `No such file or directory`."</span>),
             <span class="prelude-val">Err</span>(UtilsError::CreateVmResources(<span class="kw">_</span>)) =&gt; (),
-            <span class="prelude-val">Err</span>(err) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Unexpected error: {err}&quot;</span>),
+            <span class="prelude-val">Err</span>(err) =&gt; <span class="macro">panic!</span>(<span class="string">"Unexpected error: {err}"</span>),
         }
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_suffix_filename_only() {
-        <span class="kw">let </span>path = PathBuf::from(<span class="string">&quot;file.ext&quot;</span>);
-        <span class="kw">let </span>expected = PathBuf::from(<span class="macro">format!</span>(<span class="string">&quot;file{SUFFIX}.ext&quot;</span>));
+        <span class="kw">let </span>path = PathBuf::from(<span class="string">"file.ext"</span>);
+        <span class="kw">let </span>expected = PathBuf::from(<span class="macro">format!</span>(<span class="string">"file{SUFFIX}.ext"</span>));
         <span class="macro">assert_eq!</span>(add_suffix(<span class="kw-2">&amp;</span>path, SUFFIX), expected);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_suffix_filename_without_ext() {
-        <span class="kw">let </span>path = PathBuf::from(<span class="string">&quot;file_no_ext&quot;</span>);
-        <span class="kw">let </span>expected = PathBuf::from(<span class="macro">format!</span>(<span class="string">&quot;file_no_ext{SUFFIX}&quot;</span>));
+        <span class="kw">let </span>path = PathBuf::from(<span class="string">"file_no_ext"</span>);
+        <span class="kw">let </span>expected = PathBuf::from(<span class="macro">format!</span>(<span class="string">"file_no_ext{SUFFIX}"</span>));
         <span class="macro">assert_eq!</span>(add_suffix(<span class="kw-2">&amp;</span>path, SUFFIX), expected);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_suffix_rel_path() {
-        <span class="kw">let </span>path = PathBuf::from(<span class="string">&quot;relative/path/to/file.ext&quot;</span>);
-        <span class="kw">let </span>expected = PathBuf::from(<span class="macro">format!</span>(<span class="string">&quot;relative/path/to/file{SUFFIX}.ext&quot;</span>));
+        <span class="kw">let </span>path = PathBuf::from(<span class="string">"relative/path/to/file.ext"</span>);
+        <span class="kw">let </span>expected = PathBuf::from(<span class="macro">format!</span>(<span class="string">"relative/path/to/file{SUFFIX}.ext"</span>));
         <span class="macro">assert_eq!</span>(add_suffix(<span class="kw-2">&amp;</span>path, SUFFIX), expected);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_add_suffix_abs_path() {
-        <span class="kw">let </span>path = PathBuf::from(<span class="string">&quot;/absolute/path/to/file.ext&quot;</span>);
-        <span class="kw">let </span>expected = PathBuf::from(<span class="macro">format!</span>(<span class="string">&quot;/absolute/path/to/file{SUFFIX}.ext&quot;</span>));
+        <span class="kw">let </span>path = PathBuf::from(<span class="string">"/absolute/path/to/file.ext"</span>);
+        <span class="kw">let </span>expected = PathBuf::from(<span class="macro">format!</span>(<span class="string">"/absolute/path/to/file{SUFFIX}.ext"</span>));
         <span class="macro">assert_eq!</span>(add_suffix(<span class="kw-2">&amp;</span>path, SUFFIX), expected);
     }
 }

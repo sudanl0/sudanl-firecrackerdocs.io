@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Method","RequestError","StatusCode","Version"],"mod":["actions","balloon","boot_source","cpu_configuration","drive","entropy","instance_info","logger","machine_configuration","metrics","mmds","net","snapshot","version","vsock"],"struct":["Body","HttpServer","Request","Response"]};

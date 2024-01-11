@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":["GICDevice","GICVersion","GicError"],"fn":["create_gic"],"struct":["GIC","GicState"]};

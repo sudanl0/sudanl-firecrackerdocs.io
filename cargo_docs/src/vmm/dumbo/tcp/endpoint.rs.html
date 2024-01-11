@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/dumbo/tcp/endpoint.rs`."><title>endpoint.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../vmm/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/dumbo/tcp/endpoint.rs`."><title>endpoint.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -657,7 +659,7 @@
 // When designing the MMDS, we thought about a split in functionality, were we have some basic
 // building blocks (such as the simplified TCP implementation, and the micro HTTP server) which can
 // even be exported as libraries at some point, and then we have things built on top of those.
-// That&#39;s why the Connection struct (and the upcoming TcpHandler) do not log things, or increase
+// That's why the Connection struct (and the upcoming TcpHandler) do not log things, or increase
 // metrics, but rather express status via return values. The Endpoint struct implements our HTTP
 // based interaction with the MMDS, making use of the aforementioned building blocks, and is
 // totally specific to Firecracker. Ideally, the current crate should only contain the generic
@@ -686,10 +688,10 @@
 <span class="kw">const </span>CONNECTION_RTO_COUNT_MAX: u16 = <span class="number">15</span>;
 
 <span class="comment">// This is one plus the size of the largest bytestream carrying an HTTP request we are willing to
-// accept. It&#39;s limited in order to have a bound on memory usage. This value should be plenty for
+// accept. It's limited in order to have a bound on memory usage. This value should be plenty for
 // imaginable regular MMDS requests.
 // TODO: Maybe at some point include this in the checks we do when populating the MMDS via the API,
-// since it effectively limits the size of the keys (URIs) we&#39;re willing to use.
+// since it effectively limits the size of the keys (URIs) we're willing to use.
 </span><span class="kw">const </span>RCV_BUF_MAX_SIZE: u32 = <span class="number">2500</span>;
 
 <span class="comment">// Represents the local endpoint of a HTTP over TCP connection which carries GET requests
@@ -719,17 +721,17 @@
     </span>stop_receiving: bool,
 }
 
-<span class="comment">// The &quot;contract&quot; for the Endpoint (if it implemented a trait or something) is something along
+<span class="comment">// The "contract" for the Endpoint (if it implemented a trait or something) is something along
 // these lines:
 // - Incoming segments are passed by calling receive_segment().
 // - To check whether the Endpoint has something to transmit, we must call write_next_segment()
 // (the buf parameter should point to where the TCP segment begins). This function will return
-// None if there&#39;s nothing to write (or there was an error writing, in which case it also
+// None if there's nothing to write (or there was an error writing, in which case it also
 // increases a metric).
 // - After calling either of the previous functions, the user should also call is_done() to see
 // if the Endpoint is finished.
 // - The is_evictable() function returns true if the Endpoint can be destroyed as far as its
-// internal logic is concerned. It&#39;s going to be used by the connection handler when trying to
+// internal logic is concerned. It's going to be used by the connection handler when trying to
 // find a new slot for incoming connections if none are free (when replacing an existing connection
 // is the only option).
 
@@ -795,9 +797,9 @@
 
         <span class="self">self</span>.last_segment_received_timestamp = now;
 
-        <span class="comment">// As long as new segments arrive, we save data in the buffer. We don&#39;t have to worry
+        <span class="comment">// As long as new segments arrive, we save data in the buffer. We don't have to worry
         // about writing out of bounds because we set the receive window of the connection to
-        // match the size of the buffer. When space frees up, we&#39;ll advance the window
+        // match the size of the buffer. When space frees up, we'll advance the window
         // accordingly.
         </span><span class="kw">let </span>(value, status) = <span class="kw">match </span><span class="self">self</span>.connection.receive_segment(
             s,
@@ -843,7 +845,7 @@
         }
 
         <span class="kw">if </span><span class="self">self</span>.response_buf.is_empty() {
-            <span class="comment">// There&#39;s no pending response currently, so we&#39;re back to waiting for a request to be
+            <span class="comment">// There's no pending response currently, so we're back to waiting for a request to be
             // available in self.receive_buf.
 
             // The following is some ugly but workable code that attempts to find the end of an
@@ -852,18 +854,18 @@
             </span><span class="kw">if </span><span class="self">self</span>.receive_buf_left &gt; <span class="number">2 </span>{
                 <span class="kw">let </span>b = <span class="self">self</span>.receive_buf.as_mut();
                 <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..<span class="self">self</span>.receive_buf_left - <span class="number">1 </span>{
-                    <span class="comment">// We&#39;re basically looking for a double new line, which can only appear at the
+                    <span class="comment">// We're basically looking for a double new line, which can only appear at the
                     // end of a valid request.
-                    </span><span class="kw">if </span>b[i] == <span class="string">b&#39;\n&#39; </span>{
-                        <span class="kw">let </span>end = <span class="kw">if </span>b[i + <span class="number">1</span>] == <span class="string">b&#39;\n&#39; </span>{
+                    </span><span class="kw">if </span>b[i] == <span class="string">b'\n' </span>{
+                        <span class="kw">let </span>end = <span class="kw">if </span>b[i + <span class="number">1</span>] == <span class="string">b'\n' </span>{
                             i + <span class="number">2
-                        </span>} <span class="kw">else if </span>i + <span class="number">3 </span>&lt;= <span class="self">self</span>.receive_buf_left &amp;&amp; <span class="kw-2">&amp;</span>b[i + <span class="number">1</span>..i + <span class="number">3</span>] == <span class="string">b&quot;\r\n&quot; </span>{
+                        </span>} <span class="kw">else if </span>i + <span class="number">3 </span>&lt;= <span class="self">self</span>.receive_buf_left &amp;&amp; <span class="kw-2">&amp;</span>b[i + <span class="number">1</span>..i + <span class="number">3</span>] == <span class="string">b"\r\n" </span>{
                             i + <span class="number">3
                         </span>} <span class="kw">else </span>{
                             <span class="kw">continue</span>;
                         };
 
-                        <span class="comment">// We found a potential request, let&#39;s parse it.
+                        <span class="comment">// We found a potential request, let's parse it.
                         </span><span class="kw">let </span>response = parse_request_bytes(<span class="kw-2">&amp;</span>b[..end], callback);
 
                         <span class="comment">// The unwrap is safe because a Vec will allocate more space until all the
@@ -891,7 +893,7 @@
             }
 
             <span class="kw">if </span><span class="self">self</span>.receive_buf_left == <span class="self">self</span>.receive_buf.len() {
-                <span class="comment">// If we get here the buffer is full, but we still couldn&#39;t identify the end of a
+                <span class="comment">// If we get here the buffer is full, but we still couldn't identify the end of a
                 // request, so we reset because we are over the maximum request size.
                 </span><span class="self">self</span>.connection.reset();
                 <span class="self">self</span>.stop_receiving = <span class="bool-val">true</span>;
@@ -906,11 +908,11 @@
         }
     }
 
-    <span class="kw">pub fn </span>write_next_segment&lt;<span class="lifetime">&#39;a</span>&gt;(
+    <span class="kw">pub fn </span>write_next_segment&lt;<span class="lifetime">'a</span>&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        buf: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>[u8],
+        buf: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[u8],
         mss_reserved: u16,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;Incomplete&lt;TcpSegment&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>[u8]&gt;&gt;&gt; {
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;Incomplete&lt;TcpSegment&lt;<span class="lifetime">'a</span>, <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[u8]&gt;&gt;&gt; {
         <span class="kw">let </span>tcp_payload_src = <span class="kw">if </span>!<span class="self">self</span>.response_buf.is_empty() {
             <span class="kw">let </span>offset = <span class="self">self</span>.response_seq - <span class="self">self</span>.initial_response_seq;
             <span class="prelude-val">Some</span>((
@@ -1002,7 +1004,7 @@
             }
             RequestError::InvalidRequest =&gt; build_response(
                 StatusCode::BadRequest,
-                Body::new(<span class="string">&quot;Invalid request.&quot;</span>.to_string()),
+                Body::new(<span class="string">"Invalid request."</span>.to_string()),
             ),
             RequestError::SizeLimitExceeded(<span class="kw">_</span>, <span class="kw">_</span>) =&gt; {
                 build_response(StatusCode::PayloadTooLarge, Body::new(err.to_string()))
@@ -1050,7 +1052,7 @@
         <span class="kw">let </span>remote_isn = syn.sequence_number();
         <span class="kw">let </span><span class="kw-2">mut </span>endpoint = Endpoint::new_with_defaults(<span class="kw-2">&amp;</span>syn).unwrap();
 
-        <span class="comment">// Let&#39;s complete the three-way handshake. The next segment sent by the endpoint should
+        <span class="comment">// Let's complete the three-way handshake. The next segment sent by the endpoint should
         // be a SYNACK.
         </span><span class="macro">assert_eq!</span>(endpoint.next_segment_status(), NextSegmentStatus::Available);
         <span class="kw">let </span>endpoint_isn = {
@@ -1069,7 +1071,7 @@
                 endpoint.connection().control_segment_or_timeout_status()
             );
         } <span class="kw">else </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;missing expected timeout.&quot;</span>);
+            <span class="macro">panic!</span>(<span class="string">"missing expected timeout."</span>);
         }
 
         <span class="comment">// And now we ACK the SYNACK.
@@ -1083,8 +1085,8 @@
         <span class="comment">// Also, there should be nothing to send now anymore, nor any timeout pending.
         </span><span class="macro">assert_eq!</span>(endpoint.next_segment_status(), NextSegmentStatus::Nothing);
 
-        <span class="comment">// Incomplete because it&#39;s missing the newlines at the end.
-        </span><span class="kw">let </span>incomplete_request = <span class="string">b&quot;GET http://169.254.169.255/asdfghjkl HTTP/1.1&quot;</span>;
+        <span class="comment">// Incomplete because it's missing the newlines at the end.
+        </span><span class="kw">let </span>incomplete_request = <span class="string">b"GET http://169.254.169.255/asdfghjkl HTTP/1.1"</span>;
         {
             <span class="kw">let </span><span class="kw-2">mut </span>data = t.write_data(write_buf.as_mut(), incomplete_request.as_ref());
             data.set_flags_after_ns(TcpFlags::ACK);
@@ -1112,8 +1114,8 @@
         <span class="comment">// There should be nothing else to send.
         </span><span class="macro">assert_eq!</span>(endpoint.next_segment_status(), NextSegmentStatus::Nothing);
 
-        <span class="kw">let </span>rest_of_the_request = <span class="string">b&quot;\r\n\r\n&quot;</span>;
-        <span class="comment">// Let&#39;s also send the newlines.
+        <span class="kw">let </span>rest_of_the_request = <span class="string">b"\r\n\r\n"</span>;
+        <span class="comment">// Let's also send the newlines.
         </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>data = t.write_data(write_buf.as_mut(), rest_of_the_request.as_ref());
             data.set_flags_after_ns(TcpFlags::ACK);
@@ -1137,8 +1139,8 @@
             <span class="macro">assert_eq!</span>(s.inner().ack_number(), remote_first_not_sent);
 
             <span class="kw">let </span>response = from_utf8(s.inner().payload()).unwrap();
-            <span class="comment">// The response should contain &quot;200&quot; because the HTTP request is correct.
-            </span><span class="macro">assert!</span>(response.contains(<span class="string">&quot;200&quot;</span>));
+            <span class="comment">// The response should contain "200" because the HTTP request is correct.
+            </span><span class="macro">assert!</span>(response.contains(<span class="string">"200"</span>));
 
             endpoint_first_not_sent = s
                 .inner()
@@ -1146,13 +1148,13 @@
                 .wrapping_add(u32::from(s.inner().payload_len()));
         }
 
-        <span class="comment">// Cool, now let&#39;s check that even though receive_buf is limited to some value, we can
+        <span class="comment">// Cool, now let's check that even though receive_buf is limited to some value, we can
         // respond to any number of requests, as long as each fits individually inside the buffer.
-        // We&#39;re going to use the simple approach where we send the same request over and over
+        // We're going to use the simple approach where we send the same request over and over
         // again, for a relatively large number of iterations.
 
-        </span><span class="kw">let </span>complete_request = <span class="string">b&quot;GET http://169.254.169.255/asdfghjkl HTTP/1.1\r\n\r\n&quot;</span>;
-        <span class="kw">let </span>last_request = <span class="string">b&quot;GET http://169.254.169.255/asdfghjkl HTTP/1.1\r\n\r\n123&quot;</span>;
+        </span><span class="kw">let </span>complete_request = <span class="string">b"GET http://169.254.169.255/asdfghjkl HTTP/1.1\r\n\r\n"</span>;
+        <span class="kw">let </span>last_request = <span class="string">b"GET http://169.254.169.255/asdfghjkl HTTP/1.1\r\n\r\n123"</span>;
 
         <span class="comment">// Send one request for each byte in receive_buf, just to be sure.
         </span><span class="kw">let </span>max_iter = endpoint.receive_buf.len();
@@ -1186,7 +1188,7 @@
                 <span class="macro">assert_eq!</span>(s.inner().ack_number(), remote_first_not_sent);
 
                 <span class="kw">let </span>response = from_utf8(s.inner().payload()).unwrap();
-                <span class="macro">assert!</span>(response.contains(<span class="string">&quot;200&quot;</span>));
+                <span class="macro">assert!</span>(response.contains(<span class="string">"200"</span>));
 
                 endpoint_first_not_sent =
                     endpoint_first_not_sent.wrapping_add(u32::from(s.inner().payload_len()));
@@ -1201,12 +1203,12 @@
         // near the expiry of the eviction timer.
         </span><span class="macro">assert!</span>(!endpoint.is_evictable());
 
-        <span class="comment">// Let&#39;s hack this a bit and change the eviction_threshold to 0.
+        <span class="comment">// Let's hack this a bit and change the eviction_threshold to 0.
         </span>endpoint.set_eviction_threshold(<span class="number">0</span>);
         <span class="comment">// The endpoint should be evictable now.
         </span><span class="macro">assert!</span>(endpoint.is_evictable());
 
-        <span class="comment">// Finally, let&#39;s fill self.receive_buf with the following request, and see if we get the
+        <span class="comment">// Finally, let's fill self.receive_buf with the following request, and see if we get the
         // reset we expect on the next segment.
         </span><span class="kw">let </span>request_to_fill = <span class="macro">vec!</span>[<span class="number">0u8</span>; RCV_BUF_MAX_SIZE <span class="kw">as </span>usize - endpoint.receive_buf_left];
 
@@ -1232,73 +1234,73 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_request_bytes_error() {
         <span class="comment">// Test unsupported HTTP version.
-        </span><span class="kw">let </span>request_bytes = <span class="string">b&quot;GET http://169.254.169.255/ HTTP/2.0\r\n\r\n&quot;</span>;
+        </span><span class="kw">let </span>request_bytes = <span class="string">b"GET http://169.254.169.255/ HTTP/2.0\r\n\r\n"</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>expected_response = Response::new(Version::Http11, StatusCode::NotImplemented);
-        expected_response.set_body(Body::new(<span class="string">&quot;Unsupported HTTP version.&quot;</span>.to_string()));
+        expected_response.set_body(Body::new(<span class="string">"Unsupported HTTP version."</span>.to_string()));
         <span class="kw">let </span>actual_response = parse_request_bytes(request_bytes, mock_callback);
         <span class="macro">assert_eq!</span>(actual_response, expected_response);
 
         <span class="comment">// Test invalid URI (empty URI).
-        </span><span class="kw">let </span>request_bytes = <span class="string">b&quot;GET   HTTP/1.0\r\n\r\n&quot;</span>;
+        </span><span class="kw">let </span>request_bytes = <span class="string">b"GET   HTTP/1.0\r\n\r\n"</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>expected_response = Response::new(Version::Http11, StatusCode::BadRequest);
-        expected_response.set_body(Body::new(<span class="string">&quot;Empty URI not allowed.&quot;</span>.to_string()));
+        expected_response.set_body(Body::new(<span class="string">"Empty URI not allowed."</span>.to_string()));
         <span class="kw">let </span>actual_response = parse_request_bytes(request_bytes, mock_callback);
         <span class="macro">assert_eq!</span>(actual_response, expected_response);
 
         <span class="comment">// Test invalid HTTP methods.
-        </span><span class="kw">let </span>invalid_methods = [<span class="string">&quot;POST&quot;</span>, <span class="string">&quot;HEAD&quot;</span>, <span class="string">&quot;DELETE&quot;</span>, <span class="string">&quot;CONNECT&quot;</span>, <span class="string">&quot;OPTIONS&quot;</span>, <span class="string">&quot;TRACE&quot;</span>];
+        </span><span class="kw">let </span>invalid_methods = [<span class="string">"POST"</span>, <span class="string">"HEAD"</span>, <span class="string">"DELETE"</span>, <span class="string">"CONNECT"</span>, <span class="string">"OPTIONS"</span>, <span class="string">"TRACE"</span>];
         <span class="kw">for </span>method <span class="kw">in </span>invalid_methods.iter() {
-            <span class="kw">let </span>request_bytes = <span class="macro">format!</span>(<span class="string">&quot;{} http://169.254.169.255/ HTTP/1.0\r\n\r\n&quot;</span>, method);
+            <span class="kw">let </span>request_bytes = <span class="macro">format!</span>(<span class="string">"{} http://169.254.169.255/ HTTP/1.0\r\n\r\n"</span>, method);
             <span class="kw">let </span><span class="kw-2">mut </span>expected_response = Response::new(Version::Http11, StatusCode::NotImplemented);
-            expected_response.set_body(Body::new(<span class="string">&quot;Unsupported HTTP method.&quot;</span>.to_string()));
+            expected_response.set_body(Body::new(<span class="string">"Unsupported HTTP method."</span>.to_string()));
             <span class="kw">let </span>actual_response = parse_request_bytes(request_bytes.as_bytes(), mock_callback);
             <span class="macro">assert_eq!</span>(actual_response, expected_response);
         }
 
         <span class="comment">// Test valid methods.
-        </span><span class="kw">let </span>valid_methods = [<span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;PATCH&quot;</span>, <span class="string">&quot;GET&quot;</span>];
+        </span><span class="kw">let </span>valid_methods = [<span class="string">"PUT"</span>, <span class="string">"PATCH"</span>, <span class="string">"GET"</span>];
         <span class="kw">for </span>method <span class="kw">in </span>valid_methods.iter() {
-            <span class="kw">let </span>request_bytes = <span class="macro">format!</span>(<span class="string">&quot;{} http://169.254.169.255/ HTTP/1.0\r\n\r\n&quot;</span>, method);
+            <span class="kw">let </span>request_bytes = <span class="macro">format!</span>(<span class="string">"{} http://169.254.169.255/ HTTP/1.0\r\n\r\n"</span>, method);
             <span class="kw">let </span>expected_response = Response::new(Version::Http11, StatusCode::OK);
             <span class="kw">let </span>actual_response = parse_request_bytes(request_bytes.as_bytes(), mock_callback);
             <span class="macro">assert_eq!</span>(actual_response, expected_response);
         }
 
         <span class="comment">// Test invalid HTTP format.
-        </span><span class="kw">let </span>request_bytes = <span class="string">b&quot;GET / HTTP/1.1\r\n&quot;</span>;
+        </span><span class="kw">let </span>request_bytes = <span class="string">b"GET / HTTP/1.1\r\n"</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>expected_response = Response::new(Version::Http11, StatusCode::BadRequest);
-        expected_response.set_body(Body::new(<span class="string">&quot;Invalid request.&quot;</span>.to_string()));
+        expected_response.set_body(Body::new(<span class="string">"Invalid request."</span>.to_string()));
         <span class="kw">let </span>actual_response = parse_request_bytes(request_bytes, mock_callback);
         <span class="macro">assert_eq!</span>(actual_response, expected_response);
 
         <span class="comment">// Test invalid HTTP headers.
-        </span><span class="kw">let </span>request_bytes = <span class="string">b&quot;PATCH http://localhost/home HTTP/1.1\r\n\
+        </span><span class="kw">let </span>request_bytes = <span class="string">b"PATCH http://localhost/home HTTP/1.1\r\n\
                                  Expect: 100-continue\r\n\
                                  Transfer-Encoding: identity; q=0\r\n\
-                                 Content-Length: 26\r\n\r\nthis is not\n\r\na json \nbody&quot;</span>;
+                                 Content-Length: 26\r\n\r\nthis is not\n\r\na json \nbody"</span>;
         <span class="macro">assert!</span>(parse_request_bytes(request_bytes, mock_callback)
             .body()
             .is_none());
 
-        <span class="kw">let </span>request_bytes = <span class="string">b&quot;PATCH http://localhost/home HTTP/1.1\r\n\
+        <span class="kw">let </span>request_bytes = <span class="string">b"PATCH http://localhost/home HTTP/1.1\r\n\
                                  Expect: 100-continue\r\n\
                                  Transfer-Encoding: identity; q=0\r\n\
-                                 Content-Length: alpha\r\n\r\nthis is not\n\r\na json \nbody&quot;</span>;
+                                 Content-Length: alpha\r\n\r\nthis is not\n\r\na json \nbody"</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>expected_response = Response::new(Version::Http11, StatusCode::BadRequest);
         expected_response.set_body(Body::new(
-            <span class="string">&quot;Invalid value. Key:Content-Length; Value: alpha&quot;</span>.to_string(),
+            <span class="string">"Invalid value. Key:Content-Length; Value: alpha"</span>.to_string(),
         ));
         <span class="kw">let </span>actual_response = parse_request_bytes(request_bytes, mock_callback);
         <span class="macro">assert_eq!</span>(actual_response, expected_response);
 
-        <span class="kw">let </span>request_bytes = <span class="string">b&quot;PATCH http://localhost/home HTTP/1.1\r\n\
+        <span class="kw">let </span>request_bytes = <span class="string">b"PATCH http://localhost/home HTTP/1.1\r\n\
                                  Expect: 100-continue\r\n\
                                  Transfer-Encoding: identity; q=0\r\n\
                                  Content-Length: 67\r\n\
-                                 Accept-Encoding: deflate, compress, *;q=0\r\n\r\nthis is not\n\r\na json \nbody&quot;</span>;
+                                 Accept-Encoding: deflate, compress, *;q=0\r\n\r\nthis is not\n\r\na json \nbody"</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>expected_response = Response::new(Version::Http11, StatusCode::BadRequest);
         expected_response.set_body(Body::new(
-            <span class="string">&quot;Invalid value. Key:Accept-Encoding; Value: *;q=0&quot;</span>.to_string(),
+            <span class="string">"Invalid value. Key:Accept-Encoding; Value: *;q=0"</span>.to_string(),
         ));
         <span class="kw">let </span>actual_response = parse_request_bytes(request_bytes, mock_callback);
         <span class="macro">assert_eq!</span>(actual_response, expected_response);

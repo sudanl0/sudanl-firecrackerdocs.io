@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/vmm_config/machine_config.rs`."><title>machine_config.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../vmm/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/vmm_config/machine_config.rs`."><title>machine_config.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -299,15 +301,15 @@
 #[serde(deny_unknown_fields)]
 </span><span class="kw">pub struct </span>MachineConfig {
     <span class="doccomment">/// Number of vcpu to start.
-    </span><span class="attr">#[serde(deserialize_with = <span class="string">&quot;deserialize_vcpu_num&quot;</span>)]
+    </span><span class="attr">#[serde(deserialize_with = <span class="string">"deserialize_vcpu_num"</span>)]
     </span><span class="kw">pub </span>vcpu_count: u8,
     <span class="doccomment">/// The memory size in MiB.
     </span><span class="kw">pub </span>mem_size_mib: usize,
     <span class="doccomment">/// Enables or disabled SMT.
-    </span><span class="attr">#[serde(default, deserialize_with = <span class="string">&quot;deserialize_smt&quot;</span>)]
+    </span><span class="attr">#[serde(default, deserialize_with = <span class="string">"deserialize_smt"</span>)]
     </span><span class="kw">pub </span>smt: bool,
     <span class="doccomment">/// A CPU template that it is used to filter the CPU features exposed to the guest.
-    </span><span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span><span class="attr">#[serde(default, skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>cpu_template: <span class="prelude-ty">Option</span>&lt;StaticCpuTemplate&gt;,
     <span class="doccomment">/// Enables or disables dirty page tracking. Enabling allows incremental snapshots.
     </span><span class="attr">#[serde(default)]
@@ -324,8 +326,8 @@
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
         <span class="macro">write!</span>(
             f,
-            <span class="string">&quot;{{ \&quot;vcpu_count\&quot;: {:?}, \&quot;mem_size_mib\&quot;: {:?}, \&quot;smt\&quot;: {:?}, \&quot;cpu_template\&quot;: \
-             {:?}, \&quot;track_dirty_pages\&quot;: {:?} }}&quot;</span>,
+            <span class="string">"{{ \"vcpu_count\": {:?}, \"mem_size_mib\": {:?}, \"smt\": {:?}, \"cpu_template\": \
+             {:?}, \"track_dirty_pages\": {:?} }}"</span>,
             <span class="self">self</span>.vcpu_count, <span class="self">self</span>.mem_size_mib, <span class="self">self</span>.smt, <span class="self">self</span>.cpu_template, <span class="self">self</span>.track_dirty_pages
         )
     }
@@ -343,25 +345,25 @@
     <span class="doccomment">/// Number of vcpu to start.
     </span><span class="attr">#[serde(
         default,
-        skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>,
-        deserialize_with = <span class="string">&quot;deserialize_vcpu_num&quot;
+        skip_serializing_if = <span class="string">"Option::is_none"</span>,
+        deserialize_with = <span class="string">"deserialize_vcpu_num"
     </span>)]
     </span><span class="kw">pub </span>vcpu_count: <span class="prelude-ty">Option</span>&lt;u8&gt;,
     <span class="doccomment">/// The memory size in MiB.
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>mem_size_mib: <span class="prelude-ty">Option</span>&lt;usize&gt;,
     <span class="doccomment">/// Enables or disabled SMT.
     </span><span class="attr">#[serde(
         default,
-        skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>,
-        deserialize_with = <span class="string">&quot;deserialize_smt&quot;
+        skip_serializing_if = <span class="string">"Option::is_none"</span>,
+        deserialize_with = <span class="string">"deserialize_smt"
     </span>)]
     </span><span class="kw">pub </span>smt: <span class="prelude-ty">Option</span>&lt;bool&gt;,
     <span class="doccomment">/// A CPU template that it is used to filter the CPU features exposed to the guest.
-    </span><span class="attr">#[serde(default, skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span><span class="attr">#[serde(default, skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>cpu_template: <span class="prelude-ty">Option</span>&lt;StaticCpuTemplate&gt;,
     <span class="doccomment">/// Enables or disables dirty page tracking. Enabling allows incremental snapshots.
-    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">&quot;Option::is_none&quot;</span>)]
+    </span><span class="attr">#[serde(skip_serializing_if = <span class="string">"Option::is_none"</span>)]
     </span><span class="kw">pub </span>track_dirty_pages: <span class="prelude-ty">Option</span>&lt;bool&gt;,
 }
 
@@ -489,23 +491,23 @@
 /// This is called only when `vcpu_num` is present in the JSON configuration.
 /// `T` can be either `u8` or `Option&lt;u8&gt;` which both support ordering if `vcpu_num` is
 /// present in the JSON.
-</span><span class="kw">fn </span>deserialize_vcpu_num&lt;<span class="lifetime">&#39;de</span>, D, T&gt;(d: D) -&gt; <span class="prelude-ty">Result</span>&lt;T, D::Error&gt;
+</span><span class="kw">fn </span>deserialize_vcpu_num&lt;<span class="lifetime">'de</span>, D, T&gt;(d: D) -&gt; <span class="prelude-ty">Result</span>&lt;T, D::Error&gt;
 <span class="kw">where
-    </span>D: de::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
-    T: Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; + PartialOrd + From&lt;u8&gt; + Debug,
+    </span>D: de::Deserializer&lt;<span class="lifetime">'de</span>&gt;,
+    T: Deserialize&lt;<span class="lifetime">'de</span>&gt; + PartialOrd + From&lt;u8&gt; + Debug,
 {
     <span class="kw">let </span>val = T::deserialize(d)<span class="question-mark">?</span>;
 
     <span class="kw">if </span>val &gt; T::from(MAX_SUPPORTED_VCPUS) {
         <span class="kw">return </span><span class="prelude-val">Err</span>(de::Error::invalid_value(
-            de::Unexpected::Other(<span class="string">&quot;vcpu_num&quot;</span>),
-            <span class="kw-2">&amp;</span><span class="string">&quot;number of vCPUs exceeds the maximum limitation&quot;</span>,
+            de::Unexpected::Other(<span class="string">"vcpu_num"</span>),
+            <span class="kw-2">&amp;</span><span class="string">"number of vCPUs exceeds the maximum limitation"</span>,
         ));
     }
     <span class="kw">if </span>val &lt; T::from(<span class="number">1</span>) {
         <span class="kw">return </span><span class="prelude-val">Err</span>(de::Error::invalid_value(
-            de::Unexpected::Other(<span class="string">&quot;vcpu_num&quot;</span>),
-            <span class="kw-2">&amp;</span><span class="string">&quot;number of vCPUs should be larger than 0&quot;</span>,
+            de::Unexpected::Other(<span class="string">"vcpu_num"</span>),
+            <span class="kw-2">&amp;</span><span class="string">"number of vCPUs should be larger than 0"</span>,
         ));
     }
 
@@ -514,21 +516,21 @@
 
 <span class="doccomment">/// Deserialization function for the `smt` field in `MachineConfig` and `MachineConfigUpdate`.
 /// This is called only when `smt` is present in the JSON configuration.
-</span><span class="kw">fn </span>deserialize_smt&lt;<span class="lifetime">&#39;de</span>, D, T&gt;(d: D) -&gt; <span class="prelude-ty">Result</span>&lt;T, D::Error&gt;
+</span><span class="kw">fn </span>deserialize_smt&lt;<span class="lifetime">'de</span>, D, T&gt;(d: D) -&gt; <span class="prelude-ty">Result</span>&lt;T, D::Error&gt;
 <span class="kw">where
-    </span>D: de::Deserializer&lt;<span class="lifetime">&#39;de</span>&gt;,
-    T: Deserialize&lt;<span class="lifetime">&#39;de</span>&gt; + PartialEq + From&lt;bool&gt; + Debug,
+    </span>D: de::Deserializer&lt;<span class="lifetime">'de</span>&gt;,
+    T: Deserialize&lt;<span class="lifetime">'de</span>&gt; + PartialEq + From&lt;bool&gt; + Debug,
 {
     <span class="kw">let </span>val = T::deserialize(d)<span class="question-mark">?</span>;
 
     <span class="comment">// If this function was called it means that `smt` was specified in
     // the JSON. On aarch64 the only accepted value is `false` so throw an
     // error if `true` was specified.
-    </span><span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+    </span><span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
     </span><span class="kw">if </span>val == T::from(<span class="bool-val">true</span>) {
         <span class="kw">return </span><span class="prelude-val">Err</span>(de::Error::invalid_value(
-            de::Unexpected::Other(<span class="string">&quot;smt&quot;</span>),
-            <span class="kw-2">&amp;</span><span class="string">&quot;Enabling simultaneous multithreading is not supported on aarch64&quot;</span>,
+            de::Unexpected::Other(<span class="string">"smt"</span>),
+            <span class="kw-2">&amp;</span><span class="string">"Enabling simultaneous multithreading is not supported on aarch64"</span>,
         ));
     }
 

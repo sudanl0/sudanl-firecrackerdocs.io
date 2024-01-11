@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["Error","RequestAction"],"fn":["checked_id","describe","describe_with_body","method_to_error"],"struct":["ParsedRequest","ParsingInfo"]};

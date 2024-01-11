@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["DEFAULT_INSTANCE_ID","DEFAULT_LEVEL"],"enum":["LevelFilter"],"static":["INSTANCE_ID","LOGGER"],"struct":["LevelFilterFromStrError","LogFilter","LogFormat","Logger","LoggerConfig","LoggerConfiguration","LoggerUpdateError"],"type":["LoggerInitError"]};

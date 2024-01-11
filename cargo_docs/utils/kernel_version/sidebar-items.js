@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["Error"],"fn":["min_kernel_version_for_io_uring"],"struct":["KernelVersion"]};
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_Error"],"enum":["Error"],"fn":["min_kernel_version_for_io_uring"],"struct":["KernelVersion"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["VCPU_RTSIG_OFFSET"],"enum":["VcpuEmulation","VcpuError","VcpuEvent","VcpuResponse"],"mod":["aarch64"],"struct":["StartThreadedError","Vcpu","VcpuConfig","VcpuHandle","VcpuSendEventError"]};
+window.SIDEBAR_ITEMS = {"constant":["VCPU_RTSIG_OFFSET","_DERIVE_Display_FOR_VcpuError"],"enum":["VcpuEmulation","VcpuError","VcpuEvent","VcpuResponse"],"mod":["x86_64"],"struct":["StartThreadedError","Vcpu","VcpuConfig","VcpuHandle","VcpuSendEventError"],"type":["VcpuCell"]};

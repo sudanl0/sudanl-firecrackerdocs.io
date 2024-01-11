@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["OpCode"],"struct":["Cqe","Operation"],"type":["FixedFd"]};
+window.SIDEBAR_ITEMS = {"enum":["OpCode"],"mod":["cqe","sqe"],"struct":["Cqe","Operation"],"type":["FixedFd"]};

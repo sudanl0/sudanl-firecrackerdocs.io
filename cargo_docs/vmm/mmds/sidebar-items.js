@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["Error"],"fn":["convert_to_response","json_patch"],"mod":["data_store","ns","persist","token_headers"]};
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_Error"],"enum":["Error"],"fn":["build_response","convert_to_response","json_patch","respond_to_get_request_checked","respond_to_get_request_unchecked","respond_to_put_request","respond_to_request_mmdsv1","respond_to_request_mmdsv2","sanitize_uri"],"mod":["data_store","ns","persist","token","token_headers"]};

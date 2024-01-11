@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["parse_get_machine_config","parse_patch_machine_config","parse_put_machine_config"]};

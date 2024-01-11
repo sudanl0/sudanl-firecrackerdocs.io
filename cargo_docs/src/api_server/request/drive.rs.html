@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/api_server/src/request/drive.rs`."><title>drive.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="api_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../api_server/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/api_server/src/request/drive.rs`."><title>drive.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="api_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../api_server/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -278,7 +280,7 @@
         METRICS.put_api_requests.drive_fails.inc();
         <span class="prelude-val">Err</span>(Error::Generic(
             StatusCode::BadRequest,
-            <span class="string">&quot;The id from the path does not match the id from the body!&quot;</span>.to_string(),
+            <span class="string">"The id from the path does not match the id from the body!"</span>.to_string(),
         ))
     } <span class="kw">else </span>{
         <span class="prelude-val">Ok</span>(ParsedRequest::new_sync(VmmAction::InsertBlockDevice(
@@ -309,7 +311,7 @@
         METRICS.patch_api_requests.drive_fails.inc();
         <span class="kw">return </span><span class="prelude-val">Err</span>(Error::Generic(
             StatusCode::BadRequest,
-            String::from(<span class="string">&quot;The id from the path does not match the id from the body!&quot;</span>),
+            String::from(<span class="string">"The id from the path does not match the id from the body!"</span>),
         ));
     }
 
@@ -325,175 +327,175 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_patch_drive_request() {
-        parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(<span class="string">&quot;invalid_payload&quot;</span>), <span class="prelude-val">None</span>).unwrap_err();
-        parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(<span class="string">&quot;invalid_payload&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;id&quot;</span>)).unwrap_err();
+        parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(<span class="string">"invalid_payload"</span>), <span class="prelude-val">None</span>).unwrap_err();
+        parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(<span class="string">"invalid_payload"</span>), <span class="prelude-val">Some</span>(<span class="string">"id"</span>)).unwrap_err();
 
         <span class="comment">// PATCH with invalid fields.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;drive_id&quot;: &quot;bar&quot;,
-            &quot;is_read_only&quot;: false
-        }&quot;#</span>;
-        parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">&quot;2&quot;</span>)).unwrap_err();
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "drive_id": "bar",
+            "is_read_only": false
+        }"#</span>;
+        parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">"2"</span>)).unwrap_err();
 
         <span class="comment">// PATCH with invalid types on fields. Adding a drive_id as number instead of string.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;drive_id&quot;: 1000,
-            &quot;path_on_host&quot;: &quot;dummy&quot;
-        }&quot;#</span>;
-        <span class="kw">let </span>res = parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">&quot;1000&quot;</span>));
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "drive_id": 1000,
+            "path_on_host": "dummy"
+        }"#</span>;
+        <span class="kw">let </span>res = parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">"1000"</span>));
         res.unwrap_err();
 
         <span class="comment">// PATCH with invalid types on fields. Adding a path_on_host as bool instead of string.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;drive_id&quot;: 1000,
-            &quot;path_on_host&quot;: true
-        }&quot;#</span>;
-        <span class="kw">let </span>res = parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">&quot;1000&quot;</span>));
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "drive_id": 1000,
+            "path_on_host": true
+        }"#</span>;
+        <span class="kw">let </span>res = parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">"1000"</span>));
         res.unwrap_err();
 
         <span class="comment">// PATCH with only drive_id field.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;drive_id&quot;: &quot;1000&quot;
-        }&quot;#</span>;
-        <span class="kw">let </span>res = parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">&quot;1000&quot;</span>));
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "drive_id": "1000"
+        }"#</span>;
+        <span class="kw">let </span>res = parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">"1000"</span>));
         res.unwrap();
 
         <span class="comment">// PATCH with missing drive_id field.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;path_on_host&quot;: true
-        }&quot;#</span>;
-        <span class="kw">let </span>res = parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">&quot;1000&quot;</span>));
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "path_on_host": true
+        }"#</span>;
+        <span class="kw">let </span>res = parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">"1000"</span>));
         res.unwrap_err();
 
         <span class="comment">// PATCH that tries to update something else other than path_on_host.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;drive_id&quot;: &quot;dummy_id&quot;,
-            &quot;path_on_host&quot;: &quot;dummy_host&quot;,
-            &quot;is_read_only&quot;: false
-        }&quot;#</span>;
-        <span class="kw">let </span>res = parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">&quot;1234&quot;</span>));
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "drive_id": "dummy_id",
+            "path_on_host": "dummy_host",
+            "is_read_only": false
+        }"#</span>;
+        <span class="kw">let </span>res = parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">"1234"</span>));
         res.unwrap_err();
 
         <span class="comment">// PATCH with payload that is not a json.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;fields&quot;: &quot;dummy_field&quot;
-        }&quot;#</span>;
-        parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">&quot;1234&quot;</span>)).unwrap_err();
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "fields": "dummy_field"
+        }"#</span>;
+        parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">"1234"</span>)).unwrap_err();
 
-        <span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;drive_id&quot;: &quot;foo&quot;,
-            &quot;path_on_host&quot;: &quot;dummy&quot;
-        }&quot;#</span>;
+        <span class="kw">let </span>body = <span class="string">r#"{
+            "drive_id": "foo",
+            "path_on_host": "dummy"
+        }"#</span>;
         <span class="kw">let </span>expected_config = BlockDeviceUpdateConfig {
-            drive_id: <span class="string">&quot;foo&quot;</span>.to_string(),
-            path_on_host: <span class="prelude-val">Some</span>(<span class="string">&quot;dummy&quot;</span>.to_string()),
+            drive_id: <span class="string">"foo"</span>.to_string(),
+            path_on_host: <span class="prelude-val">Some</span>(<span class="string">"dummy"</span>.to_string()),
             rate_limiter: <span class="prelude-val">None</span>,
         };
         <span class="macro">assert_eq!</span>(
-            vmm_action_from_request(parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">&quot;foo&quot;</span>)).unwrap()),
+            vmm_action_from_request(parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">"foo"</span>)).unwrap()),
             VmmAction::UpdateBlockDevice(expected_config)
         );
 
-        <span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;drive_id&quot;: &quot;foo&quot;,
-            &quot;path_on_host&quot;: &quot;dummy&quot;
-        }&quot;#</span>;
+        <span class="kw">let </span>body = <span class="string">r#"{
+            "drive_id": "foo",
+            "path_on_host": "dummy"
+        }"#</span>;
         <span class="comment">// Must fail since the drive id differs from id_from_path (foo vs bar).
-        </span>parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">&quot;bar&quot;</span>)).unwrap_err();
+        </span>parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">"bar"</span>)).unwrap_err();
 
-        <span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;drive_id&quot;: &quot;foo&quot;,
-            &quot;rate_limiter&quot;: {
-                &quot;bandwidth&quot;: {
-                    &quot;size&quot;: 5000,
-                    &quot;refill_time&quot;: 100
+        <span class="kw">let </span>body = <span class="string">r#"{
+            "drive_id": "foo",
+            "rate_limiter": {
+                "bandwidth": {
+                    "size": 5000,
+                    "refill_time": 100
                 },
-                &quot;ops&quot;: {
-                    &quot;size&quot;: 500,
-                    &quot;refill_time&quot;: 100
+                "ops": {
+                    "size": 500,
+                    "refill_time": 100
                 }
             }
-        }&quot;#</span>;
+        }"#</span>;
         <span class="comment">// Validate that updating just the ratelimiter works.
-        </span>parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">&quot;foo&quot;</span>)).unwrap();
+        </span>parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">"foo"</span>)).unwrap();
 
-        <span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;drive_id&quot;: &quot;foo&quot;,
-            &quot;path_on_host&quot;: &quot;/there&quot;,
-            &quot;rate_limiter&quot;: {
-                &quot;bandwidth&quot;: {
-                    &quot;size&quot;: 5000,
-                    &quot;refill_time&quot;: 100
+        <span class="kw">let </span>body = <span class="string">r#"{
+            "drive_id": "foo",
+            "path_on_host": "/there",
+            "rate_limiter": {
+                "bandwidth": {
+                    "size": 5000,
+                    "refill_time": 100
                 },
-                &quot;ops&quot;: {
-                    &quot;size&quot;: 500,
-                    &quot;refill_time&quot;: 100
+                "ops": {
+                    "size": 500,
+                    "refill_time": 100
                 }
             }
-        }&quot;#</span>;
+        }"#</span>;
         <span class="comment">// Validate that updating both path and rate limiter succeds.
-        </span>parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">&quot;foo&quot;</span>)).unwrap();
+        </span>parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">"foo"</span>)).unwrap();
 
-        <span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;drive_id&quot;: &quot;foo&quot;,
-            &quot;path_on_host&quot;: &quot;/there&quot;,
-            &quot;rate_limiter&quot;: {
-                &quot;ops&quot;: {
-                    &quot;size&quot;: 100
+        <span class="kw">let </span>body = <span class="string">r#"{
+            "drive_id": "foo",
+            "path_on_host": "/there",
+            "rate_limiter": {
+                "ops": {
+                    "size": 100
                 }
             }
-        }&quot;#</span>;
+        }"#</span>;
         <span class="comment">// Validate that parse_patch_drive fails for invalid rate limiter cfg.
-        </span>parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">&quot;foo&quot;</span>)).unwrap_err();
+        </span>parse_patch_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">"foo"</span>)).unwrap_err();
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_put_drive_request() {
-        parse_put_drive(<span class="kw-2">&amp;</span>Body::new(<span class="string">&quot;invalid_payload&quot;</span>), <span class="prelude-val">None</span>).unwrap_err();
-        parse_put_drive(<span class="kw-2">&amp;</span>Body::new(<span class="string">&quot;invalid_payload&quot;</span>), <span class="prelude-val">Some</span>(<span class="string">&quot;id&quot;</span>)).unwrap_err();
+        parse_put_drive(<span class="kw-2">&amp;</span>Body::new(<span class="string">"invalid_payload"</span>), <span class="prelude-val">None</span>).unwrap_err();
+        parse_put_drive(<span class="kw-2">&amp;</span>Body::new(<span class="string">"invalid_payload"</span>), <span class="prelude-val">Some</span>(<span class="string">"id"</span>)).unwrap_err();
 
         <span class="comment">// PUT with invalid fields.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;drive_id&quot;: &quot;bar&quot;,
-            &quot;is_read_only&quot;: false
-        }&quot;#</span>;
-        parse_put_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">&quot;2&quot;</span>)).unwrap_err();
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "drive_id": "bar",
+            "is_read_only": false
+        }"#</span>;
+        parse_put_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">"2"</span>)).unwrap_err();
 
         <span class="comment">// PUT with missing all optional fields.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;drive_id&quot;: &quot;1000&quot;,
-            &quot;path_on_host&quot;: &quot;dummy&quot;,
-            &quot;is_root_device&quot;: true,
-            &quot;is_read_only&quot;: true
-        }&quot;#</span>;
-        parse_put_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">&quot;1000&quot;</span>)).unwrap();
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "drive_id": "1000",
+            "path_on_host": "dummy",
+            "is_root_device": true,
+            "is_read_only": true
+        }"#</span>;
+        parse_put_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">"1000"</span>)).unwrap();
 
         <span class="comment">// PUT with invalid types on fields. Adding a drive_id as number instead of string.
-        </span>parse_put_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">&quot;foo&quot;</span>)).unwrap_err();
+        </span>parse_put_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">"foo"</span>)).unwrap_err();
 
         <span class="comment">// PUT with the complete configuration.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;drive_id&quot;: &quot;1000&quot;,
-            &quot;path_on_host&quot;: &quot;dummy&quot;,
-            &quot;is_root_device&quot;: true,
-            &quot;partuuid&quot;: &quot;string&quot;,
-            &quot;is_read_only&quot;: true,
-            &quot;cache_type&quot;: &quot;Unsafe&quot;,
-            &quot;io_engine&quot;: &quot;Sync&quot;,
-            &quot;rate_limiter&quot;: {
-                &quot;bandwidth&quot;: {
-                    &quot;size&quot;: 0,
-                    &quot;one_time_burst&quot;: 0,
-                    &quot;refill_time&quot;: 0
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "drive_id": "1000",
+            "path_on_host": "dummy",
+            "is_root_device": true,
+            "partuuid": "string",
+            "is_read_only": true,
+            "cache_type": "Unsafe",
+            "io_engine": "Sync",
+            "rate_limiter": {
+                "bandwidth": {
+                    "size": 0,
+                    "one_time_burst": 0,
+                    "refill_time": 0
                 },
-                &quot;ops&quot;: {
-                    &quot;size&quot;: 0,
-                    &quot;one_time_burst&quot;: 0,
-                    &quot;refill_time&quot;: 0
+                "ops": {
+                    "size": 0,
+                    "one_time_burst": 0,
+                    "refill_time": 0
                 }
             }
-        }&quot;#</span>;
-        parse_put_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">&quot;1000&quot;</span>)).unwrap();
+        }"#</span>;
+        parse_put_drive(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">"1000"</span>)).unwrap();
     }
 }
 </code></pre></div></section></main></body></html>

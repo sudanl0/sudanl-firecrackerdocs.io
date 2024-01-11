@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/persist.rs`."><title>persist.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../vmm/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/persist.rs`."><title>persist.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -746,13 +748,13 @@
 <span class="kw">use </span>versionize::{VersionMap, Versionize, VersionizeResult};
 <span class="kw">use </span>versionize_derive::Versionize;
 
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::arch::aarch64::vcpu::{get_manufacturer_id_from_host, get_manufacturer_id_from_state};
 <span class="kw">use </span><span class="kw">crate</span>::builder::{<span class="self">self</span>, BuildMicrovmFromSnapshotError};
 <span class="kw">use </span><span class="kw">crate</span>::cpu_config::templates::StaticCpuTemplate;
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::cpu_config::x86_64::cpuid::common::get_vendor_id_from_host;
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::cpu_config::x86_64::cpuid::CpuidTrait;
 <span class="kw">use </span><span class="kw">crate</span>::device_manager::persist::{DevicePersistError, DeviceStates};
 <span class="kw">use </span><span class="kw">crate</span>::logger::{info, warn};
@@ -770,7 +772,7 @@
 <span class="kw">use </span><span class="kw">crate</span>::vstate::vm::VmState;
 <span class="kw">use crate</span>::{mem_size_mib, vstate, EventManager, Vmm, VmmError};
 
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
 </span><span class="kw">const </span>FC_V0_23_MAX_DEVICES: u32 = <span class="number">11</span>;
 
 <span class="doccomment">/// Holds information related to the VM that is not part of VmState.
@@ -780,29 +782,29 @@
     <span class="doccomment">/// Guest memory size.
     </span><span class="kw">pub </span>mem_size_mib: u64,
     <span class="doccomment">/// smt information
-    </span><span class="attr">#[version(start = <span class="number">2</span>, default_fn = <span class="string">&quot;def_smt&quot;</span>)]
+    </span><span class="attr">#[version(start = <span class="number">2</span>, default_fn = <span class="string">"def_smt"</span>)]
     </span><span class="kw">pub </span>smt: bool,
     <span class="doccomment">/// CPU template type
-    </span><span class="attr">#[version(start = <span class="number">2</span>, default_fn = <span class="string">&quot;def_cpu_template&quot;</span>)]
+    </span><span class="attr">#[version(start = <span class="number">2</span>, default_fn = <span class="string">"def_cpu_template"</span>)]
     </span><span class="kw">pub </span>cpu_template: StaticCpuTemplate,
     <span class="doccomment">/// Boot source information.
-    </span><span class="attr">#[version(start = <span class="number">2</span>, default_fn = <span class="string">&quot;def_boot_source&quot;</span>)]
+    </span><span class="attr">#[version(start = <span class="number">2</span>, default_fn = <span class="string">"def_boot_source"</span>)]
     </span><span class="kw">pub </span>boot_source: BootSourceConfig,
 }
 
 <span class="kw">impl </span>VmInfo {
     <span class="kw">fn </span>def_smt(<span class="kw">_</span>: u16) -&gt; bool {
-        <span class="macro">warn!</span>(<span class="string">&quot;SMT field not found in snapshot.&quot;</span>);
+        <span class="macro">warn!</span>(<span class="string">"SMT field not found in snapshot."</span>);
         <span class="bool-val">false
     </span>}
 
     <span class="kw">fn </span>def_cpu_template(<span class="kw">_</span>: u16) -&gt; StaticCpuTemplate {
-        <span class="macro">warn!</span>(<span class="string">&quot;CPU template field not found in snapshot.&quot;</span>);
+        <span class="macro">warn!</span>(<span class="string">"CPU template field not found in snapshot."</span>);
         StaticCpuTemplate::default()
     }
 
     <span class="kw">fn </span>def_boot_source(<span class="kw">_</span>: u16) -&gt; BootSourceConfig {
-        <span class="macro">warn!</span>(<span class="string">&quot;Boot source information not found in snapshot.&quot;</span>);
+        <span class="macro">warn!</span>(<span class="string">"Boot source information not found in snapshot."</span>);
         BootSourceConfig::default()
     }
 }
@@ -862,17 +864,17 @@
     </span>InvalidInput,
     <span class="doccomment">/// Operation not allowed: {0}
     </span>NotAllowed(String),
-    <span class="doccomment">/// Cannot restore devices: {0:?}
+    <span class="doccomment">/// Cannot restore devices: {0}
     </span>RestoreDevices(DevicePersistError),
-    <span class="doccomment">/// Cannot restore Vcpu state: {0:?}
+    <span class="doccomment">/// Cannot restore Vcpu state: {0}
     </span>RestoreVcpuState(vstate::vcpu::VcpuError),
-    <span class="doccomment">/// Cannot restore Vm state: {0:?}
+    <span class="doccomment">/// Cannot restore Vm state: {0}
     </span>RestoreVmState(vstate::vm::VmError),
-    <span class="doccomment">/// Cannot save Vcpu state: {0:?}
+    <span class="doccomment">/// Cannot save Vcpu state: {0}
     </span>SaveVcpuState(vstate::vcpu::VcpuError),
-    <span class="doccomment">/// Cannot save Vm state: {0:?}
+    <span class="doccomment">/// Cannot save Vm state: {0}
     </span>SaveVmState(vstate::vm::VmError),
-    <span class="doccomment">/// Cannot signal Vcpu: {0:?}
+    <span class="doccomment">/// Cannot signal Vcpu: {0}
     </span>SignalVcpu(VcpuSendEventError),
     <span class="doccomment">/// Vcpu is in unexpected state.
     </span>UnexpectedVcpuResponse,
@@ -885,7 +887,7 @@
     <span class="doccomment">/// Cannot get dirty bitmap: {0}
     </span>DirtyBitmap(VmmError),
     <span class="doccomment">/// The virtio devices use a features that is incompatible with older versions of Firecracker: {0}
-    </span>IncompatibleVirtioFeature(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str),
+    </span>IncompatibleVirtioFeature(<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str),
     <span class="doccomment">/// Invalid microVM version format
     </span>InvalidVersionFormat,
     <span class="doccomment">/// Cannot translate microVM version to snapshot data version
@@ -893,16 +895,16 @@
     <span class="doccomment">/// Cannot write memory file: {0}
     </span>Memory(MemoryError),
     <span class="doccomment">/// Cannot perform {0} on the memory backing file: {1}
-    </span>MemoryBackingFile(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, io::Error),
+    </span>MemoryBackingFile(<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, io::Error),
     <span class="doccomment">/// Cannot save the microVM state: {0}
     </span>MicrovmState(MicrovmStateError),
     <span class="doccomment">/// Cannot serialize the microVM state: {0}
     </span>SerializeMicrovmState(snapshot::Error),
     <span class="doccomment">/// Cannot perform {0} on the snapshot backing file: {1}
-    </span>SnapshotBackingFile(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str, io::Error),
+    </span>SnapshotBackingFile(<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str, io::Error),
     <span class="doccomment">/// Size mismatch when writing diff snapshot on top of base layer: base layer size is {0} but diff layer is size {1}.
     </span>SnapshotBackingFileLengthMismatch(u64, u64),
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span><span class="doccomment">/// Too many devices attached: {0}. The maximum number allowed for the snapshot data version requested is {FC_V0_23_MAX_DEVICES:}.
     </span>TooManyDevices(usize),
 }
@@ -944,7 +946,7 @@
         .write(<span class="bool-val">true</span>)
         .truncate(<span class="bool-val">true</span>)
         .open(snapshot_path)
-        .map_err(|err| SnapshotBackingFile(<span class="string">&quot;open&quot;</span>, err))<span class="question-mark">?</span>;
+        .map_err(|err| SnapshotBackingFile(<span class="string">"open"</span>, err))<span class="question-mark">?</span>;
 
     <span class="kw">let </span><span class="kw-2">mut </span>snapshot = Snapshot::new(version_map, snapshot_data_version);
     snapshot
@@ -952,10 +954,10 @@
         .map_err(SerializeMicrovmState)<span class="question-mark">?</span>;
     snapshot_file
         .flush()
-        .map_err(|err| SnapshotBackingFile(<span class="string">&quot;flush&quot;</span>, err))<span class="question-mark">?</span>;
+        .map_err(|err| SnapshotBackingFile(<span class="string">"flush"</span>, err))<span class="question-mark">?</span>;
     snapshot_file
         .sync_all()
-        .map_err(|err| SnapshotBackingFile(<span class="string">&quot;sync_all&quot;</span>, err))
+        .map_err(|err| SnapshotBackingFile(<span class="string">"sync_all"</span>, err))
 }
 
 <span class="doccomment">/// Takes a snapshot of the virtual machine running inside the given [`Vmm`] and saves it to
@@ -978,7 +980,7 @@
         .write(<span class="bool-val">true</span>)
         .create(<span class="bool-val">true</span>)
         .open(mem_file_path)
-        .map_err(|err| MemoryBackingFile(<span class="string">&quot;open&quot;</span>, err))<span class="question-mark">?</span>;
+        .map_err(|err| MemoryBackingFile(<span class="string">"open"</span>, err))<span class="question-mark">?</span>;
 
     <span class="comment">// Determine what size our total memory area is.
     </span><span class="kw">let </span>mem_size_mib = mem_size_mib(vmm.guest_memory());
@@ -987,11 +989,11 @@
     <span class="kw">if </span>file_existed {
         <span class="kw">let </span>file_size = file
             .metadata()
-            .map_err(|e| MemoryBackingFile(<span class="string">&quot;get_metadata&quot;</span>, e))<span class="question-mark">?
+            .map_err(|e| MemoryBackingFile(<span class="string">"get_metadata"</span>, e))<span class="question-mark">?
             </span>.len();
 
         <span class="comment">// Here we only truncate the file if the size mismatches.
-        // - For full snapshots, the entire file&#39;s contents will be overwritten anyway. We have to
+        // - For full snapshots, the entire file's contents will be overwritten anyway. We have to
         //   avoid truncating here to deal with the edge case where it represents the snapshot file
         //   from which this very microVM was loaded (as modifying the memory file would be
         //   reflected in the mmap of the file, meaning a truncate operation would zero out guest
@@ -999,13 +1001,13 @@
         // - For diff snapshots, we want to merge the diff layer directly into the file.
         </span><span class="kw">if </span>file_size != expected_size {
             file.set_len(<span class="number">0</span>)
-                .map_err(|err| MemoryBackingFile(<span class="string">&quot;truncate&quot;</span>, err))<span class="question-mark">?</span>;
+                .map_err(|err| MemoryBackingFile(<span class="string">"truncate"</span>, err))<span class="question-mark">?</span>;
         }
     }
 
     <span class="comment">// Set the length of the file to the full size of the memory area.
     </span>file.set_len(expected_size)
-        .map_err(|e| MemoryBackingFile(<span class="string">&quot;set_length&quot;</span>, e))<span class="question-mark">?</span>;
+        .map_err(|e| MemoryBackingFile(<span class="string">"set_length"</span>, e))<span class="question-mark">?</span>;
 
     <span class="kw">match </span>snapshot_type {
         SnapshotType::Diff =&gt; {
@@ -1017,9 +1019,9 @@
         SnapshotType::Full =&gt; vmm.guest_memory().dump(<span class="kw-2">&amp;mut </span>file).map_err(Memory),
     }<span class="question-mark">?</span>;
     file.flush()
-        .map_err(|err| MemoryBackingFile(<span class="string">&quot;flush&quot;</span>, err))<span class="question-mark">?</span>;
+        .map_err(|err| MemoryBackingFile(<span class="string">"flush"</span>, err))<span class="question-mark">?</span>;
     file.sync_all()
-        .map_err(|err| MemoryBackingFile(<span class="string">&quot;sync_all&quot;</span>, err))
+        .map_err(|err| MemoryBackingFile(<span class="string">"sync_all"</span>, err))
 }
 
 <span class="doccomment">/// Validates that snapshot CPU vendor matches the host CPU vendor.
@@ -1029,29 +1031,29 @@
 /// When:
 /// - Failed to read host vendor.
 /// - Failed to read snapshot vendor.
-</span><span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+</span><span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
 </span><span class="kw">pub fn </span>validate_cpu_vendor(microvm_state: <span class="kw-2">&amp;</span>MicrovmState) {
     <span class="kw">let </span>host_vendor_id = get_vendor_id_from_host();
     <span class="kw">let </span>snapshot_vendor_id = microvm_state.vcpu_states[<span class="number">0</span>].cpuid.vendor_id();
     <span class="kw">match </span>(host_vendor_id, snapshot_vendor_id) {
         (<span class="prelude-val">Ok</span>(host_id), <span class="prelude-val">Some</span>(snapshot_id)) =&gt; {
-            <span class="macro">info!</span>(<span class="string">&quot;Host CPU vendor ID: {host_id:?}&quot;</span>);
-            <span class="macro">info!</span>(<span class="string">&quot;Snapshot CPU vendor ID: {snapshot_id:?}&quot;</span>);
+            <span class="macro">info!</span>(<span class="string">"Host CPU vendor ID: {host_id:?}"</span>);
+            <span class="macro">info!</span>(<span class="string">"Snapshot CPU vendor ID: {snapshot_id:?}"</span>);
             <span class="kw">if </span>host_id != snapshot_id {
-                <span class="macro">warn!</span>(<span class="string">&quot;Host CPU vendor ID differs from the snapshotted one&quot;</span>,);
+                <span class="macro">warn!</span>(<span class="string">"Host CPU vendor ID differs from the snapshotted one"</span>,);
             }
         }
         (<span class="prelude-val">Ok</span>(host_id), <span class="prelude-val">None</span>) =&gt; {
-            <span class="macro">info!</span>(<span class="string">&quot;Host CPU vendor ID: {host_id:?}&quot;</span>);
-            <span class="macro">warn!</span>(<span class="string">&quot;Snapshot CPU vendor ID: couldn&#39;t get from the snapshot&quot;</span>);
+            <span class="macro">info!</span>(<span class="string">"Host CPU vendor ID: {host_id:?}"</span>);
+            <span class="macro">warn!</span>(<span class="string">"Snapshot CPU vendor ID: couldn't get from the snapshot"</span>);
         }
         (<span class="prelude-val">Err</span>(<span class="kw">_</span>), <span class="prelude-val">Some</span>(snapshot_id)) =&gt; {
-            <span class="macro">warn!</span>(<span class="string">&quot;Host CPU vendor ID: couldn&#39;t get from the host&quot;</span>);
-            <span class="macro">info!</span>(<span class="string">&quot;Snapshot CPU vendor ID: {snapshot_id:?}&quot;</span>);
+            <span class="macro">warn!</span>(<span class="string">"Host CPU vendor ID: couldn't get from the host"</span>);
+            <span class="macro">info!</span>(<span class="string">"Snapshot CPU vendor ID: {snapshot_id:?}"</span>);
         }
         (<span class="prelude-val">Err</span>(<span class="kw">_</span>), <span class="prelude-val">None</span>) =&gt; {
-            <span class="macro">warn!</span>(<span class="string">&quot;Host CPU vendor ID: couldn&#39;t get from the host&quot;</span>);
-            <span class="macro">warn!</span>(<span class="string">&quot;Snapshot CPU vendor ID: couldn&#39;t get from the snapshot&quot;</span>);
+            <span class="macro">warn!</span>(<span class="string">"Host CPU vendor ID: couldn't get from the host"</span>);
+            <span class="macro">warn!</span>(<span class="string">"Snapshot CPU vendor ID: couldn't get from the snapshot"</span>);
         }
     }
 }
@@ -1065,29 +1067,29 @@
 /// When:
 /// - Failed to read host vendor.
 /// - Failed to read snapshot vendor.
-</span><span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+</span><span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
 </span><span class="kw">pub fn </span>validate_cpu_manufacturer_id(microvm_state: <span class="kw-2">&amp;</span>MicrovmState) {
     <span class="kw">let </span>host_cpu_id = get_manufacturer_id_from_host();
     <span class="kw">let </span>snapshot_cpu_id = get_manufacturer_id_from_state(<span class="kw-2">&amp;</span>microvm_state.vcpu_states[<span class="number">0</span>].regs);
     <span class="kw">match </span>(host_cpu_id, snapshot_cpu_id) {
         (<span class="prelude-val">Ok</span>(host_id), <span class="prelude-val">Ok</span>(snapshot_id)) =&gt; {
-            <span class="macro">info!</span>(<span class="string">&quot;Host CPU manufacturer ID: {host_id:?}&quot;</span>);
-            <span class="macro">info!</span>(<span class="string">&quot;Snapshot CPU manufacturer ID: {snapshot_id:?}&quot;</span>);
+            <span class="macro">info!</span>(<span class="string">"Host CPU manufacturer ID: {host_id:?}"</span>);
+            <span class="macro">info!</span>(<span class="string">"Snapshot CPU manufacturer ID: {snapshot_id:?}"</span>);
             <span class="kw">if </span>host_id != snapshot_id {
-                <span class="macro">warn!</span>(<span class="string">&quot;Host CPU manufacturer ID differs from the snapshotted one&quot;</span>,);
+                <span class="macro">warn!</span>(<span class="string">"Host CPU manufacturer ID differs from the snapshotted one"</span>,);
             }
         }
         (<span class="prelude-val">Ok</span>(host_id), <span class="prelude-val">Err</span>(<span class="kw">_</span>)) =&gt; {
-            <span class="macro">info!</span>(<span class="string">&quot;Host CPU manufacturer ID: {host_id:?}&quot;</span>);
-            <span class="macro">warn!</span>(<span class="string">&quot;Snapshot CPU manufacturer ID: couldn&#39;t get from the snapshot&quot;</span>);
+            <span class="macro">info!</span>(<span class="string">"Host CPU manufacturer ID: {host_id:?}"</span>);
+            <span class="macro">warn!</span>(<span class="string">"Snapshot CPU manufacturer ID: couldn't get from the snapshot"</span>);
         }
         (<span class="prelude-val">Err</span>(<span class="kw">_</span>), <span class="prelude-val">Ok</span>(snapshot_id)) =&gt; {
-            <span class="macro">warn!</span>(<span class="string">&quot;Host CPU manufacturer ID: couldn&#39;t get from the host&quot;</span>);
-            <span class="macro">info!</span>(<span class="string">&quot;Snapshot CPU manufacturer ID: {snapshot_id:?}&quot;</span>);
+            <span class="macro">warn!</span>(<span class="string">"Host CPU manufacturer ID: couldn't get from the host"</span>);
+            <span class="macro">info!</span>(<span class="string">"Snapshot CPU manufacturer ID: {snapshot_id:?}"</span>);
         }
         (<span class="prelude-val">Err</span>(<span class="kw">_</span>), <span class="prelude-val">Err</span>(<span class="kw">_</span>)) =&gt; {
-            <span class="macro">warn!</span>(<span class="string">&quot;Host CPU manufacturer ID: couldn&#39;t get from the host&quot;</span>);
-            <span class="macro">warn!</span>(<span class="string">&quot;Snapshot CPU manufacturer ID: couldn&#39;t get from the snapshot&quot;</span>);
+            <span class="macro">warn!</span>(<span class="string">"Host CPU manufacturer ID: couldn't get from the host"</span>);
+            <span class="macro">warn!</span>(<span class="string">"Snapshot CPU manufacturer ID: couldn't get from the snapshot"</span>);
         }
     }
 }
@@ -1118,9 +1120,9 @@
         <span class="kw">return </span><span class="prelude-val">Err</span>(SnapShotStateSanityCheckError::NoMemory);
     }
 
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span>validate_cpu_vendor(microvm_state);
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
     </span>validate_cpu_manufacturer_id(microvm_state);
 
     <span class="prelude-val">Ok</span>(())
@@ -1148,7 +1150,7 @@
     </span>Uffd(<span class="attr">#[from] </span>GuestMemoryFromUffdError),
 }
 
-<span class="doccomment">/// Loads a Microvm snapshot producing a &#39;paused&#39; Microvm.
+<span class="doccomment">/// Loads a Microvm snapshot producing a 'paused' Microvm.
 </span><span class="kw">pub fn </span>restore_from_snapshot(
     instance_info: <span class="kw-2">&amp;</span>InstanceInfo,
     event_manager: <span class="kw-2">&amp;mut </span>EventManager,
@@ -1306,7 +1308,7 @@
         //
         // To tackle this scenario, the page fault handler can notify Firecracker of any
         // crashes/exits. There is no need for Firecracker to explicitly send its process ID.
-        // The external process can obtain Firecracker&#39;s PID by calling `getsockopt` with
+        // The external process can obtain Firecracker's PID by calling `getsockopt` with
         // `libc::SO_PEERCRED` option like so:
         //
         // let mut val = libc::ucred { pid: 0, gid: 0, uid: 0 };
@@ -1343,7 +1345,7 @@
         default_kernel_cmdline, default_vmm, insert_balloon_device, insert_block_devices,
         insert_net_device, insert_vsock_device, CustomBlockConfig,
     };
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
     </span><span class="kw">use </span><span class="kw">crate</span>::construct_kvm_mpidrs;
     <span class="kw">use </span><span class="kw">crate</span>::devices::virtio::block_common::CacheType;
     <span class="kw">use </span><span class="kw">crate</span>::vmm_config::balloon::BalloonDeviceConfig;
@@ -1352,7 +1354,7 @@
     <span class="kw">use </span><span class="kw">crate</span>::Vmm;
 
     <span class="kw">fn </span>default_vmm_with_devices() -&gt; Vmm {
-        <span class="kw">let </span><span class="kw-2">mut </span>event_manager = EventManager::new().expect(<span class="string">&quot;Cannot create EventManager&quot;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>event_manager = EventManager::new().expect(<span class="string">"Cannot create EventManager"</span>);
         <span class="kw">let </span><span class="kw-2">mut </span>vmm = default_vmm();
         <span class="kw">let </span><span class="kw-2">mut </span>cmdline = default_kernel_cmdline();
 
@@ -1365,7 +1367,7 @@
         insert_balloon_device(<span class="kw-2">&amp;mut </span>vmm, <span class="kw-2">&amp;mut </span>cmdline, <span class="kw-2">&amp;mut </span>event_manager, balloon_config);
 
         <span class="comment">// Add a block device.
-        </span><span class="kw">let </span>drive_id = String::from(<span class="string">&quot;root&quot;</span>);
+        </span><span class="kw">let </span>drive_id = String::from(<span class="string">"root"</span>);
         <span class="kw">let </span>block_configs = <span class="macro">vec!</span>[CustomBlockConfig::new(
             drive_id,
             <span class="bool-val">true</span>,
@@ -1377,8 +1379,8 @@
 
         <span class="comment">// Add net device.
         </span><span class="kw">let </span>network_interface = NetworkInterfaceConfig {
-            iface_id: String::from(<span class="string">&quot;netif&quot;</span>),
-            host_dev_name: String::from(<span class="string">&quot;hostname&quot;</span>),
+            iface_id: String::from(<span class="string">"netif"</span>),
+            host_dev_name: String::from(<span class="string">"hostname"</span>),
             guest_mac: <span class="prelude-val">None</span>,
             rx_rate_limiter: <span class="prelude-val">None</span>,
             tx_rate_limiter: <span class="prelude-val">None</span>,
@@ -1406,7 +1408,7 @@
         <span class="kw">let </span>states = vmm.mmio_device_manager.save();
 
         <span class="comment">// Only checking that all devices are saved, actual device state
-        // is tested by that device&#39;s tests.
+        // is tested by that device's tests.
         </span><span class="macro">assert_eq!</span>(states.virtio_block_devices.len(), <span class="number">1</span>);
         <span class="macro">assert_eq!</span>(states.net_devices.len(), <span class="number">1</span>);
         <span class="macro">assert!</span>(states.vsock_device.is_some());
@@ -1414,7 +1416,7 @@
 
         <span class="kw">let </span>memory_state = vmm.guest_memory().describe();
         <span class="kw">let </span>vcpu_states = <span class="macro">vec!</span>[VcpuState::default()];
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
         </span><span class="kw">let </span>mpidrs = construct_kvm_mpidrs(<span class="kw-2">&amp;</span>vcpu_states);
         <span class="kw">let </span>microvm_state = MicrovmState {
             device_states: states,
@@ -1424,9 +1426,9 @@
                 mem_size_mib: <span class="number">1u64</span>,
                 ..Default::default()
             },
-            <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+            <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
             </span>vm_state: vmm.vm.save_state(<span class="kw-2">&amp;</span>mpidrs).unwrap(),
-            <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+            <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
             </span>vm_state: vmm.vm.save_state().unwrap(),
         };
 

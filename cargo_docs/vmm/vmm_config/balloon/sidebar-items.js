@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["BalloonConfigError"],"struct":["BalloonBuilder","BalloonDeviceConfig","BalloonUpdateConfig","BalloonUpdateStatsConfig"]};
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_BalloonConfigError"],"enum":["BalloonConfigError"],"struct":["BalloonBuilder","BalloonDeviceConfig","BalloonUpdateConfig","BalloonUpdateStatsConfig"],"type":["MutexBalloon"]};

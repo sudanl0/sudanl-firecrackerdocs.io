@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_DevicePersistError"],"enum":["DevicePersistError","MmdsVersionState","SharedDeviceType"],"struct":["ConnectedBalloonState","ConnectedEntropyState","ConnectedNetState","ConnectedVhostUserBlockState","ConnectedVirtioBlockState","ConnectedVsockState","DeviceStates","MMIODevManagerConstructorArgs"]};

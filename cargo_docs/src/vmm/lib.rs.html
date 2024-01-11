@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../vmm/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -934,19 +936,6 @@
 <a href="#934" id="934">934</a>
 <a href="#935" id="935">935</a>
 <a href="#936" id="936">936</a>
-<a href="#937" id="937">937</a>
-<a href="#938" id="938">938</a>
-<a href="#939" id="939">939</a>
-<a href="#940" id="940">940</a>
-<a href="#941" id="941">941</a>
-<a href="#942" id="942">942</a>
-<a href="#943" id="943">943</a>
-<a href="#944" id="944">944</a>
-<a href="#945" id="945">945</a>
-<a href="#946" id="946">946</a>
-<a href="#947" id="947">947</a>
-<a href="#948" id="948">948</a>
-<a href="#949" id="949">949</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 //
@@ -987,19 +976,19 @@
 ///
 /// ## Behavior
 ///
-/// The rate limiter starts off as &#39;unblocked&#39; with two token buckets configured
+/// The rate limiter starts off as 'unblocked' with two token buckets configured
 /// with the values passed in the `RateLimiter::new()` constructor.
 /// All subsequent accounting is done independently for each token bucket based
 /// on the `TokenType` used. If any of the buckets runs out of budget, the limiter
-/// goes in the &#39;blocked&#39; state. At this point an internal timer is set up which
-/// will later &#39;wake up&#39; the user in order to retry sending data. The &#39;wake up&#39;
+/// goes in the 'blocked' state. At this point an internal timer is set up which
+/// will later 'wake up' the user in order to retry sending data. The 'wake up'
 /// notification will be dispatched as an event on the FD provided by the `AsRawFD`
 /// trait implementation.
 ///
 /// The contract is that the user shall also call the `event_handler()` method on
 /// receipt of such an event.
 ///
-/// The token buckets are replenished when a called `consume()` doesn&#39;t find enough
+/// The token buckets are replenished when a called `consume()` doesn't find enough
 /// tokens in the bucket. The amount of tokens replenished is automatically calculated
 /// to respect the `complete_refill_time` configuration parameter provided by the user.
 /// The token buckets will never replenish above their respective `size`.
@@ -1008,18 +997,18 @@
 /// on top of their `size`. This initial extra credit does not replenish and
 /// can be used for an initial burst of data.
 ///
-/// The granularity for &#39;wake up&#39; events when the rate limiter is blocked is
+/// The granularity for 'wake up' events when the rate limiter is blocked is
 /// currently hardcoded to `100 milliseconds`.
 ///
 /// ## Limitations
 ///
-/// This rate limiter implementation relies on the *Linux kernel&#39;s timerfd* so its
+/// This rate limiter implementation relies on the *Linux kernel's timerfd* so its
 /// usage is limited to Linux systems.
 ///
 /// Another particularity of this implementation is that it is not self-driving.
 /// It is meant to be used in an external event loop and thus implements the `AsRawFd`
 /// trait and provides an *event-handler* as part of its API. This *event-handler*
-/// needs to be called by the user on every event on the rate limiter&#39;s `AsRawFd` FD.
+/// needs to be called by the user on every event on the rate limiter's `AsRawFd` FD.
 </span><span class="kw">pub mod </span>rate_limiter;
 
 <span class="doccomment">/// Handles setup and initialization a `Vmm` object.
@@ -1075,7 +1064,7 @@
 
 <span class="kw">use </span><span class="kw">crate</span>::arch::DeviceType;
 <span class="kw">use </span><span class="kw">crate</span>::cpu_config::templates::CpuConfiguration;
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::device_manager::legacy::PortIODeviceManager;
 <span class="kw">use </span><span class="kw">crate</span>::device_manager::mmio::MMIODeviceManager;
 <span class="kw">use </span><span class="kw">crate</span>::devices::legacy::{IER_RDA_BIT, IER_RDA_OFFSET};
@@ -1128,7 +1117,7 @@
     </span>SIGHUP = <span class="number">156</span>,
     <span class="doccomment">/// Firecracker was shut down after intercepting `SIGILL`.
     </span>SIGILL = <span class="number">157</span>,
-    <span class="doccomment">/// Bad configuration for microvm&#39;s resources, when using a single json.
+    <span class="doccomment">/// Bad configuration for microvm's resources, when using a single json.
     </span>BadConfiguration = <span class="number">152</span>,
     <span class="doccomment">/// Command line arguments parsing error.
     </span>ArgParsing = <span class="number">153</span>,
@@ -1143,11 +1132,11 @@
 </span><span class="kw">pub const </span>HTTP_MAX_PAYLOAD_SIZE: usize = <span class="number">51200</span>;
 
 <span class="doccomment">/// Errors associated with the VMM internal logic. These errors cannot be generated by direct user
-/// input, but can result from bad configuration of the host (for example if Firecracker doesn&#39;t
+/// input, but can result from bad configuration of the host (for example if Firecracker doesn't
 /// have permissions to open the KVM fd).
 </span><span class="attr">#[derive(Debug, thiserror::Error, displaydoc::Display)]
 </span><span class="kw">pub enum </span>VmmError {
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
     </span><span class="doccomment">/// Invalid command line error.
     </span>Cmdline,
     <span class="doccomment">/// Device manager error: {0}
@@ -1160,7 +1149,7 @@
     </span>I8042Error(devices::legacy::I8042DeviceError),
     <span class="doccomment">/// Cannot access kernel file: {0}
     </span>KernelFile(io::Error),
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span><span class="doccomment">/// Cannot add devices to the legacy I/O Bus. {0}
     </span>LegacyIOBus(device_manager::legacy::LegacyDeviceError),
     <span class="doccomment">/// Metrics error: {0}
@@ -1181,7 +1170,7 @@
     </span>VcpuEvent(vstate::vcpu::VcpuError),
     <span class="doccomment">/// Cannot create a vCPU handle. {0}
     </span>VcpuHandle(vstate::vcpu::VcpuError),
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
     </span><span class="doccomment">/// Error initializing the vcpu: {0}
     </span>VcpuInit(vstate::vcpu::KvmVcpuError),
     <span class="doccomment">/// Failed to start vCPUs
@@ -1226,19 +1215,6 @@
     </span>VcpuHandle(<span class="attr">#[from] </span>StartThreadedError),
 }
 
-<span class="doccomment">/// Error type for [`Vmm::restore_vcpu_states`]
-</span><span class="attr">#[derive(Debug, thiserror::Error, displaydoc::Display)]
-</span><span class="kw">pub enum </span>RestoreVcpusError {
-    <span class="doccomment">/// Failed to send event: {0}
-    </span>SendEvent(<span class="attr">#[from] </span>VcpuSendEventError),
-    <span class="doccomment">/// Unexpected vCPU response.
-    </span>UnexpectedVcpuResponse,
-    <span class="doccomment">/// Failed to restore vCPU state: {0}
-    </span>RestoreVcpuState(<span class="attr">#[from] </span>vcpu::VcpuError),
-    <span class="doccomment">/// Not allowed: {0}
-    </span>NotAllowed(String),
-}
-
 <span class="doccomment">/// Error type for [`Vmm::dump_cpu_config()`]
 </span><span class="attr">#[derive(Debug, thiserror::Error, displaydoc::Display)]
 </span><span class="kw">pub enum </span>DumpCpuConfigError {
@@ -1272,7 +1248,7 @@
 
     <span class="comment">// Guest VM devices.
     </span>mmio_device_manager: MMIODeviceManager,
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span>pio_device_manager: PortIODeviceManager,
 }
 
@@ -1319,13 +1295,13 @@
         <span class="kw">if let </span><span class="prelude-val">Some</span>(stdin) = <span class="self">self</span>.events_observer.as_mut() {
             <span class="comment">// Set raw mode for stdin.
             </span>stdin.lock().set_raw_mode().map_err(|err| {
-                <span class="macro">warn!</span>(<span class="string">&quot;Cannot set raw mode for the terminal. {:?}&quot;</span>, err);
+                <span class="macro">warn!</span>(<span class="string">"Cannot set raw mode for the terminal. {:?}"</span>, err);
                 err
             })<span class="question-mark">?</span>;
 
             <span class="comment">// Set non blocking stdin.
             </span>stdin.lock().set_non_block(<span class="bool-val">true</span>).map_err(|err| {
-                <span class="macro">warn!</span>(<span class="string">&quot;Cannot set non block for the terminal. {:?}&quot;</span>, err);
+                <span class="macro">warn!</span>(<span class="string">"Cannot set non block for the terminal. {:?}"</span>, err);
                 err
             })<span class="question-mark">?</span>;
         }
@@ -1336,7 +1312,7 @@
 
         <span class="kw">for </span><span class="kw-2">mut </span>vcpu <span class="kw">in </span>vcpus.drain(..) {
             vcpu.set_mmio_bus(<span class="self">self</span>.mmio_device_manager.bus.clone());
-            <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+            <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
             </span>vcpu.kvm_vcpu
                 .set_pio_bus(<span class="self">self</span>.pio_device_manager.io_bus.clone());
 
@@ -1405,22 +1381,22 @@
     </span><span class="kw">pub fn </span>emulate_serial_init(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), EmulateSerialInitError&gt; {
         <span class="comment">// When restoring from a previously saved state, there is no serial
         // driver initialization, therefore the RDA (Received Data Available)
-        // interrupt is not enabled. Because of that, the driver won&#39;t get
+        // interrupt is not enabled. Because of that, the driver won't get
         // notified of any bytes that we send to the guest. The clean solution
         // would be to save the whole serial device state when we do the vm
         // serialization. For now we set that bit manually
 
-        </span><span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+        </span><span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
         </span>{
-            <span class="kw">let </span>serial_bus_device = <span class="self">self</span>.get_bus_device(DeviceType::Serial, <span class="string">&quot;Serial&quot;</span>);
+            <span class="kw">let </span>serial_bus_device = <span class="self">self</span>.get_bus_device(DeviceType::Serial, <span class="string">"Serial"</span>);
             <span class="kw">if </span>serial_bus_device.is_none() {
                 <span class="kw">return </span><span class="prelude-val">Ok</span>(());
             }
             <span class="kw">let </span><span class="kw-2">mut </span>serial_device_locked =
-                serial_bus_device.unwrap().lock().expect(<span class="string">&quot;Poisoned lock&quot;</span>);
+                serial_bus_device.unwrap().lock().expect(<span class="string">"Poisoned lock"</span>);
             <span class="kw">let </span>serial = serial_device_locked
                 .serial_mut()
-                .expect(<span class="string">&quot;Unexpected BusDeviceType&quot;</span>);
+                .expect(<span class="string">"Unexpected BusDeviceType"</span>);
 
             serial
                 .serial
@@ -1429,13 +1405,13 @@
             <span class="prelude-val">Ok</span>(())
         }
 
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
         </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>guard = <span class="self">self
                 </span>.pio_device_manager
                 .stdio_serial
                 .lock()
-                .expect(<span class="string">&quot;Poisoned lock&quot;</span>);
+                .expect(<span class="string">"Poisoned lock"</span>);
             <span class="kw">let </span>serial = guard.serial_mut().unwrap();
 
             serial
@@ -1447,12 +1423,12 @@
     }
 
     <span class="doccomment">/// Injects CTRL+ALT+DEL keystroke combo in the i8042 device.
-    </span><span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    </span><span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span><span class="kw">pub fn </span>send_ctrl_alt_del(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), VmmError&gt; {
         <span class="self">self</span>.pio_device_manager
             .i8042
             .lock()
-            .expect(<span class="string">&quot;i8042 lock was poisoned&quot;</span>)
+            .expect(<span class="string">"i8042 lock was poisoned"</span>)
             .i8042_device_mut()
             .unwrap()
             .trigger_ctrl_alt_del()
@@ -1464,11 +1440,11 @@
         <span class="kw">use </span><span class="self">self</span>::MicrovmStateError::SaveVmState;
         <span class="kw">let </span>vcpu_states = <span class="self">self</span>.save_vcpu_states()<span class="question-mark">?</span>;
         <span class="kw">let </span>vm_state = {
-            <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+            <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
             </span>{
                 <span class="self">self</span>.vm.save_state().map_err(SaveVmState)<span class="question-mark">?
             </span>}
-            <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+            <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
             </span>{
                 <span class="kw">let </span>mpidrs = construct_kvm_mpidrs(<span class="kw-2">&amp;</span>vcpu_states);
 
@@ -1544,7 +1520,7 @@
         <span class="prelude-val">Ok</span>(cpu_configs)
     }
 
-    <span class="doccomment">/// Retrieves the KVM dirty bitmap for each of the guest&#39;s memory regions.
+    <span class="doccomment">/// Retrieves the KVM dirty bitmap for each of the guest's memory regions.
     </span><span class="kw">pub fn </span>get_dirty_bitmap(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;DirtyBitmap, VmmError&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>bitmap: DirtyBitmap = HashMap::new();
         <span class="self">self</span>.guest_memory
@@ -1565,8 +1541,8 @@
     <span class="doccomment">/// Enables or disables KVM dirty page tracking.
     </span><span class="kw">pub fn </span>set_dirty_page_tracking(<span class="kw-2">&amp;mut </span><span class="self">self</span>, enable: bool) -&gt; <span class="prelude-ty">Result</span>&lt;(), VmmError&gt; {
         <span class="comment">// This function _always_ results in an ioctl update. The VMM is stateless in the sense
-        // that it&#39;s unaware of the current dirty page tracking setting.
-        // The VMM&#39;s consumer will need to cache the dirty tracking setting internally. For
+        // that it's unaware of the current dirty page tracking setting.
+        // The VMM's consumer will need to cache the dirty tracking setting internally. For
         // example, if this function were to be exposed through the VMM controller, the VMM
         // resources should cache the flag.
         </span><span class="self">self</span>.vm
@@ -1585,7 +1561,7 @@
             .with_virtio_device_with_id(TYPE_BLOCK, drive_id, |block: <span class="kw-2">&amp;mut </span>VirtioBlock| {
                 block
                     .update_disk_image(path_on_host)
-                    .map_err(|err| <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, err))
+                    .map_err(|err| <span class="macro">format!</span>(<span class="string">"{:?}"</span>, err))
             })
             .map_err(VmmError::DeviceManager)
     }
@@ -1609,7 +1585,7 @@
     </span><span class="kw">pub fn </span>update_vhost_user_block_config(<span class="kw-2">&amp;mut </span><span class="self">self</span>, drive_id: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;(), VmmError&gt; {
         <span class="self">self</span>.mmio_device_manager
             .with_virtio_device_with_id(TYPE_BLOCK, drive_id, |block: <span class="kw-2">&amp;mut </span>VhostUserBlock| {
-                block.config_update().map_err(|err| <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, err))
+                block.config_update().map_err(|err| <span class="macro">format!</span>(<span class="string">"{:?}"</span>, err))
             })
             .map_err(VmmError::DeviceManager)
     }
@@ -1637,14 +1613,14 @@
         {
             <span class="kw">let </span>virtio_device = busdev
                 .lock()
-                .expect(<span class="string">&quot;Poisoned lock&quot;</span>)
+                .expect(<span class="string">"Poisoned lock"</span>)
                 .mmio_transport_ref()
-                .expect(<span class="string">&quot;Unexpected device type&quot;</span>)
+                .expect(<span class="string">"Unexpected device type"</span>)
                 .device();
 
             <span class="kw">let </span>config = virtio_device
                 .lock()
-                .expect(<span class="string">&quot;Poisoned lock&quot;</span>)
+                .expect(<span class="string">"Poisoned lock"</span>)
                 .as_mut_any()
                 .downcast_mut::&lt;Balloon&gt;()
                 .unwrap()
@@ -1662,14 +1638,14 @@
         {
             <span class="kw">let </span>virtio_device = busdev
                 .lock()
-                .expect(<span class="string">&quot;Poisoned lock&quot;</span>)
+                .expect(<span class="string">"Poisoned lock"</span>)
                 .mmio_transport_ref()
-                .expect(<span class="string">&quot;Unexpected device type&quot;</span>)
+                .expect(<span class="string">"Unexpected device type"</span>)
                 .device();
 
             <span class="kw">let </span>latest_stats = virtio_device
                 .lock()
-                .expect(<span class="string">&quot;Poisoned lock&quot;</span>)
+                .expect(<span class="string">"Poisoned lock"</span>)
                 .as_mut_any()
                 .downcast_mut::&lt;Balloon&gt;()
                 .unwrap()
@@ -1696,14 +1672,14 @@
             {
                 <span class="kw">let </span>virtio_device = busdev
                     .lock()
-                    .expect(<span class="string">&quot;Poisoned lock&quot;</span>)
+                    .expect(<span class="string">"Poisoned lock"</span>)
                     .mmio_transport_ref()
-                    .expect(<span class="string">&quot;Unexpected device type&quot;</span>)
+                    .expect(<span class="string">"Unexpected device type"</span>)
                     .device();
 
                 virtio_device
                     .lock()
-                    .expect(<span class="string">&quot;Poisoned lock&quot;</span>)
+                    .expect(<span class="string">"Poisoned lock"</span>)
                     .as_mut_any()
                     .downcast_mut::&lt;Balloon&gt;()
                     .unwrap()
@@ -1726,14 +1702,14 @@
             {
                 <span class="kw">let </span>virtio_device = busdev
                     .lock()
-                    .expect(<span class="string">&quot;Poisoned lock&quot;</span>)
+                    .expect(<span class="string">"Poisoned lock"</span>)
                     .mmio_transport_ref()
-                    .expect(<span class="string">&quot;Unexpected device type&quot;</span>)
+                    .expect(<span class="string">"Unexpected device type"</span>)
                     .device();
 
                 virtio_device
                     .lock()
-                    .expect(<span class="string">&quot;Poisoned lock&quot;</span>)
+                    .expect(<span class="string">"Poisoned lock"</span>)
                     .as_mut_any()
                     .downcast_mut::&lt;Balloon&gt;()
                     .unwrap()
@@ -1762,22 +1738,22 @@
         //   +------------------------+----------------------------+------------------------+
         // Vcpu initiated teardown starts from `fn Vcpu::exit()` (step 1).
         // Vmm initiated teardown starts from `pub fn Vmm::stop()` (step 4).
-        // Once `vmm.shutdown_exit_code` becomes `Some(exit_code)`, it is the upper layer&#39;s
+        // Once `vmm.shutdown_exit_code` becomes `Some(exit_code)`, it is the upper layer's
         // responsibility to break main event loop and propagate the exit code value.
-        </span><span class="macro">info!</span>(<span class="string">&quot;Vmm is stopping.&quot;</span>);
+        </span><span class="macro">info!</span>(<span class="string">"Vmm is stopping."</span>);
 
-        <span class="comment">// We send a &quot;Finish&quot; event.  If a VCPU has already exited, this is the only
+        <span class="comment">// We send a "Finish" event.  If a VCPU has already exited, this is the only
         // message it will accept... but running and paused will take it as well.
         // It breaks out of the state machine loop so that the thread can be joined.
         </span><span class="kw">for </span>(idx, handle) <span class="kw">in </span><span class="self">self</span>.vcpus_handles.iter().enumerate() {
             <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = handle.send_event(VcpuEvent::Finish) {
-                <span class="macro">error!</span>(<span class="string">&quot;Failed to send VcpuEvent::Finish to vCPU {}: {}&quot;</span>, idx, err);
+                <span class="macro">error!</span>(<span class="string">"Failed to send VcpuEvent::Finish to vCPU {}: {}"</span>, idx, err);
             }
         }
-        <span class="comment">// The actual thread::join() that runs to release the thread&#39;s resource is done in
-        // the VcpuHandle&#39;s Drop trait.  We can trigger that to happen now by clearing the
+        <span class="comment">// The actual thread::join() that runs to release the thread's resource is done in
+        // the VcpuHandle's Drop trait.  We can trigger that to happen now by clearing the
         // list of handles. Do it here instead of Vmm::Drop to avoid dependency cycles.
-        // (Vmm&#39;s Drop will also check if this list is empty).
+        // (Vmm's Drop will also check if this list is empty).
         </span><span class="self">self</span>.vcpus_handles.clear();
 
         <span class="comment">// Break the main event loop, propagating the Vmm exit-code.
@@ -1799,7 +1775,7 @@
 /// | 63 .... 56 | 55 .... 48 | 47 .... 40 | 39 .... 32 |
 /// |    Aff3    |    Aff2    |    Aff1    |    Aff0    |
 /// As specified in the linux kernel: Documentation/virt/kvm/devices/arm-vgic-v3.rst
-</span><span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+</span><span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
 </span><span class="kw">fn </span>construct_kvm_mpidrs(vcpu_states: <span class="kw-2">&amp;</span>[VcpuState]) -&gt; Vec&lt;u64&gt; {
     vcpu_states
         .iter()
@@ -1835,21 +1811,21 @@
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(observer) = <span class="self">self</span>.events_observer.as_mut() {
             <span class="kw">let </span>res = observer.lock().set_canon_mode().map_err(|err| {
-                <span class="macro">warn!</span>(<span class="string">&quot;Cannot set canonical mode for the terminal. {:?}&quot;</span>, err);
+                <span class="macro">warn!</span>(<span class="string">"Cannot set canonical mode for the terminal. {:?}"</span>, err);
                 err
             });
             <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = res {
-                <span class="macro">warn!</span>(<span class="string">&quot;{}&quot;</span>, VmmError::VmmObserverTeardown(err));
+                <span class="macro">warn!</span>(<span class="string">"{}"</span>, VmmError::VmmObserverTeardown(err));
             }
         }
 
         <span class="comment">// Write the metrics before exiting.
         </span><span class="kw">if let </span><span class="prelude-val">Err</span>(err) = METRICS.write() {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to write metrics while stopping: {}&quot;</span>, err);
+            <span class="macro">error!</span>(<span class="string">"Failed to write metrics while stopping: {}"</span>, err);
         }
 
         <span class="kw">if </span>!<span class="self">self</span>.vcpus_handles.is_empty() {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to tear down Vmm: the vcpu threads have not finished execution.&quot;</span>);
+            <span class="macro">error!</span>(<span class="string">"Failed to tear down Vmm: the vcpu threads have not finished execution."</span>);
         }
     }
 }
@@ -1861,10 +1837,10 @@
         <span class="kw">let </span>event_set = event.event_set();
 
         <span class="kw">if </span>source == <span class="self">self</span>.vcpus_exit_evt.as_raw_fd() &amp;&amp; event_set == EventSet::IN {
-            <span class="comment">// Exit event handling should never do anything more than call &#39;self.stop()&#39;.
+            <span class="comment">// Exit event handling should never do anything more than call 'self.stop()'.
             </span><span class="kw">let _ </span>= <span class="self">self</span>.vcpus_exit_evt.read();
 
-            <span class="kw">let </span>exit_code = <span class="lifetime">&#39;exit_code</span>: {
+            <span class="kw">let </span>exit_code = <span class="lifetime">'exit_code</span>: {
                 <span class="comment">// Query each vcpu for their exit_code.
                 </span><span class="kw">for </span>handle <span class="kw">in </span><span class="kw-2">&amp;</span><span class="self">self</span>.vcpus_handles {
                     <span class="comment">// Drain all vcpu responses that are pending from this vcpu until we find an
@@ -1873,26 +1849,26 @@
                         <span class="kw">if let </span>VcpuResponse::Exited(status) = response {
                             <span class="comment">// It could be that some vcpus exited successfully while others
                             // errored out. Thus make sure that error exits from one vcpu always
-                            // takes precedence over &quot;ok&quot; exits
+                            // takes precedence over "ok" exits
                             </span><span class="kw">if </span>status != FcExitCode::Ok {
-                                <span class="kw">break </span><span class="lifetime">&#39;exit_code </span>status;
+                                <span class="kw">break </span><span class="lifetime">'exit_code </span>status;
                             }
                         }
                     }
                 }
 
-                <span class="comment">// No CPUs exited with error status code, report &quot;Ok&quot;
+                <span class="comment">// No CPUs exited with error status code, report "Ok"
                 </span>FcExitCode::Ok
             };
             <span class="self">self</span>.stop(exit_code);
         } <span class="kw">else </span>{
-            <span class="macro">error!</span>(<span class="string">&quot;Spurious EventManager event for handler: Vmm&quot;</span>);
+            <span class="macro">error!</span>(<span class="string">"Spurious EventManager event for handler: Vmm"</span>);
         }
     }
 
     <span class="kw">fn </span>init(<span class="kw-2">&amp;mut </span><span class="self">self</span>, ops: <span class="kw-2">&amp;mut </span>EventOps) {
         <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = ops.add(Events::new(<span class="kw-2">&amp;</span><span class="self">self</span>.vcpus_exit_evt, EventSet::IN)) {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to register vmm exit event: {}&quot;</span>, err);
+            <span class="macro">error!</span>(<span class="string">"Failed to register vmm exit event: {}"</span>, err);
         }
     }
 }

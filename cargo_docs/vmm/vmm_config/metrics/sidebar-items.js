@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["MetricsConfigError"],"fn":["init_metrics"],"struct":["MetricsConfig"]};
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_MetricsConfigError"],"enum":["MetricsConfigError"],"fn":["init_metrics"],"struct":["MetricsConfig"]};

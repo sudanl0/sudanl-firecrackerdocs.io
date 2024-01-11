@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["IoVecError"],"struct":["IoVecBuffer","IoVecBufferMut"]};
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_IoVecError"],"enum":["IoVecError"],"struct":["IoVecBuffer","IoVecBufferMut"],"type":["IoVecVec"]};

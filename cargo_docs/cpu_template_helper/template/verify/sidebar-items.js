@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_VerifyError"],"enum":["VerifyError"],"fn":["verify_common"],"mod":["aarch64"]};
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_VerifyError"],"enum":["VerifyError"],"fn":["verify_common"],"mod":["x86_64"]};

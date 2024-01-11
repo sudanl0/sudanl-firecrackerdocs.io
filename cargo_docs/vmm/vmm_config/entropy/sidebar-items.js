@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["EntropyDeviceError"],"struct":["EntropyDeviceBuilder","EntropyDeviceConfig"]};
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_EntropyDeviceError"],"enum":["EntropyDeviceError"],"struct":["EntropyDeviceBuilder","EntropyDeviceConfig"]};

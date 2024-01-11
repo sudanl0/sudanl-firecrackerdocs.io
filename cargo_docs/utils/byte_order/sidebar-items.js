@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["read_be_u16","read_be_u32","read_le_i32","read_le_u16","read_le_u32","read_le_u32_from_i8","read_le_u64","write_be_u16","write_be_u32","write_le_i32","write_le_u16","write_le_u32","write_le_u32_to_i8","write_le_u64"]};
+window.SIDEBAR_ITEMS = {"fn":["read_be_u16","read_be_u32","read_le_i32","read_le_u16","read_le_u32","read_le_u32_from_i8","read_le_u64","write_be_u16","write_be_u32","write_le_i32","write_le_u16","write_le_u32","write_le_u32_to_i8","write_le_u64"],"macro":["generate_read_fn","generate_write_fn"]};

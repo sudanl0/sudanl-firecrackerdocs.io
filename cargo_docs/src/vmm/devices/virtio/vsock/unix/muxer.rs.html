@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/devices/virtio/vsock/unix/muxer.rs`."><title>muxer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../../../" data-static-root-path="../../../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../../../src-files.js"></script><script defer src="../../../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../../../vmm/index.html"><img class="rust-logo" src="../../../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/devices/virtio/vsock/unix/muxer.rs`."><title>muxer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../../../../" data-static-root-path="../../../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../../src-files.js"></script><script defer src="../../../../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1539,7 +1541,7 @@
 /// device model.
 ///
 /// The vsock muxer has two main roles:
-/// 1. Vsock connection multiplexer: It&#39;s the muxer&#39;s job to create, manage, and terminate
+/// 1. Vsock connection multiplexer: It's the muxer's job to create, manage, and terminate
 ///    `VsockConnection` objects. The muxer also routes packets to their owning connections. It
 ///    does so via a connection `HashMap`, keyed by what is basically a (host_port, guest_port)
 ///    tuple. Vsock packet traffic needs to be inspected, in order to detect connection request
@@ -1596,7 +1598,7 @@
     </span>RstPkt { local_port: u32, peer_port: u32 },
 }
 
-<span class="doccomment">/// An epoll listener, registered under the muxer&#39;s nested epoll FD.
+<span class="doccomment">/// An epoll listener, registered under the muxer's nested epoll FD.
 </span><span class="attr">#[derive(Debug)]
 </span><span class="kw">enum </span>EpollListener {
     <span class="doccomment">/// The listener is a `MuxerConnection`, identified by `key`, and interested in the events
@@ -1605,7 +1607,7 @@
     </span>Connection { key: ConnMapKey, evset: EventSet },
     <span class="doccomment">/// A listener interested in new host-initiated connections.
     </span>HostSock,
-    <span class="doccomment">/// A listener interested in reading host &quot;connect &lt;port&gt;&quot; commands from a freshly
+    <span class="doccomment">/// A listener interested in reading host `connect &lt;port&gt;` commands from a freshly
     /// connected host socket.
     </span>LocalStream(UnixStream),
 }
@@ -1629,7 +1631,7 @@
     <span class="doccomment">/// The Unix socket, through which host-initiated connections are accepted.
     </span>host_sock: UnixListener,
     <span class="doccomment">/// The file system path of the host-side Unix socket. This is used to figure out the path
-    /// to Unix sockets listening on specific ports. I.e. &quot;&lt;this path&gt;_&lt;port number&gt;&quot;.
+    /// to Unix sockets listening on specific ports. I.e. `"&lt;this path&gt;_&lt;port number&gt;"`.
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) host_sock_path: String,
     <span class="doccomment">/// The nested epoll event set, used to register epoll listeners.
     </span>epoll: Epoll,
@@ -1647,9 +1649,9 @@
     /// - `Ok(())`: `pkt` has been successfully filled in; or
     /// - `Err(VsockError::NoData)`: there was no available data with which to fill in the packet.
     </span><span class="kw">fn </span>recv_pkt(<span class="kw-2">&amp;mut </span><span class="self">self</span>, pkt: <span class="kw-2">&amp;mut </span>VsockPacket) -&gt; <span class="prelude-ty">Result</span>&lt;(), VsockError&gt; {
-        <span class="comment">// We&#39;ll look for instructions on how to build the RX packet in the RX queue. If the
-        // queue is empty, that doesn&#39;t necessarily mean we don&#39;t have any pending RX, since
-        // the queue might be out-of-sync. If that&#39;s the case, we&#39;ll attempt to sync it first,
+        <span class="comment">// We'll look for instructions on how to build the RX packet in the RX queue. If the
+        // queue is empty, that doesn't necessarily mean we don't have any pending RX, since
+        // the queue might be out-of-sync. If that's the case, we'll attempt to sync it first,
         // and then try to pop something out again.
         </span><span class="kw">if </span><span class="self">self</span>.rxq.is_empty() &amp;&amp; !<span class="self">self</span>.rxq.is_synced() {
             <span class="self">self</span>.rxq = MuxerRxQ::from_conn_map(<span class="kw-2">&amp;</span><span class="self">self</span>.conn_map);
@@ -1676,7 +1678,7 @@
                     <span class="kw">return </span><span class="prelude-val">Ok</span>(());
                 }
 
-                <span class="comment">// We&#39;ll defer building the packet to this connection, since it has something
+                <span class="comment">// We'll defer building the packet to this connection, since it has something
                 // to say.
                 </span>MuxerRx::ConnRx(key) =&gt; {
                     <span class="kw">let </span><span class="kw-2">mut </span>conn_res = <span class="prelude-val">Err</span>(VsockError::NoData);
@@ -1703,7 +1705,7 @@
                     });
                 }
 
-                <span class="macro">debug!</span>(<span class="string">&quot;vsock muxer: RX pkt: {:?}&quot;</span>, pkt.hdr());
+                <span class="macro">debug!</span>(<span class="string">"vsock muxer: RX pkt: {:?}"</span>, pkt.hdr());
                 <span class="kw">return </span><span class="prelude-val">Ok</span>(());
             }
         }
@@ -1726,7 +1728,7 @@
         };
 
         <span class="macro">debug!</span>(
-            <span class="string">&quot;vsock: muxer.send[rxq.len={}]: {:?}&quot;</span>,
+            <span class="string">"vsock: muxer.send[rxq.len={}]: {:?}"</span>,
             <span class="self">self</span>.rxq.len(),
             pkt.hdr()
         );
@@ -1738,25 +1740,25 @@
             <span class="kw">return </span><span class="prelude-val">Ok</span>(());
         }
 
-        <span class="comment">// We don&#39;t know how to handle packets addressed to other CIDs. We only handle the host
+        <span class="comment">// We don't know how to handle packets addressed to other CIDs. We only handle the host
         // part of the guest - host communication here.
         </span><span class="kw">if </span>pkt.dst_cid() != uapi::VSOCK_HOST_CID {
             <span class="macro">info!</span>(
-                <span class="string">&quot;vsock: dropping guest packet for unknown CID: {:?}&quot;</span>,
+                <span class="string">"vsock: dropping guest packet for unknown CID: {:?}"</span>,
                 pkt.hdr()
             );
             <span class="kw">return </span><span class="prelude-val">Ok</span>(());
         }
 
         <span class="kw">if </span>!<span class="self">self</span>.conn_map.contains_key(<span class="kw-2">&amp;</span>conn_key) {
-            <span class="comment">// This packet can&#39;t be routed to any active connection (based on its src and dst
+            <span class="comment">// This packet can't be routed to any active connection (based on its src and dst
             // ports).  The only orphan / unroutable packets we know how to handle are
             // connection requests.
             </span><span class="kw">if </span>pkt.op() == uapi::VSOCK_OP_REQUEST {
                 <span class="comment">// Oh, this is a connection request!
                 </span><span class="self">self</span>.handle_peer_request_pkt(pkt);
             } <span class="kw">else </span>{
-                <span class="comment">// Send back an RST, to let the drive know we weren&#39;t expecting this packet.
+                <span class="comment">// Send back an RST, to let the drive know we weren't expecting this packet.
                 </span><span class="self">self</span>.enq_rst(pkt.dst_port(), pkt.src_port());
             }
             <span class="kw">return </span><span class="prelude-val">Ok</span>(());
@@ -1764,7 +1766,7 @@
 
         <span class="comment">// Right, we know where to send this packet, then (to `conn_key`).
         // However, if this is an RST, we have to forcefully terminate the connection, so
-        // there&#39;s no point in forwarding it the packet.
+        // there's no point in forwarding it the packet.
         </span><span class="kw">if </span>pkt.op() == uapi::VSOCK_OP_RST {
             <span class="self">self</span>.remove_connection(conn_key);
             <span class="kw">return </span><span class="prelude-val">Ok</span>(());
@@ -1790,7 +1792,7 @@
     <span class="doccomment">/// Get the FD to be registered for polling upstream (in the main VMM epoll loop, in this
     /// case).
     ///
-    /// This will be the muxer&#39;s nested epoll FD.
+    /// This will be the muxer's nested epoll FD.
     </span><span class="kw">fn </span>as_raw_fd(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; RawFd {
         <span class="self">self</span>.epoll.as_raw_fd()
     }
@@ -1799,7 +1801,7 @@
 <span class="kw">impl </span>VsockEpollListener <span class="kw">for </span>VsockMuxer {
     <span class="doccomment">/// Get the epoll events to be polled upstream.
     ///
-    /// Since the polled FD is a nested epoll FD, we&#39;re only interested in EPOLLIN events (i.e.
+    /// Since the polled FD is a nested epoll FD, we're only interested in EPOLLIN events (i.e.
     /// some event occurred on one of the FDs registered under our epoll FD).
     </span><span class="kw">fn </span>get_polled_evset(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; EventSet {
         EventSet::IN
@@ -1813,7 +1815,7 @@
                 <span class="kw">for </span>ev <span class="kw">in </span><span class="kw-2">&amp;</span>epoll_events[<span class="number">0</span>..ev_cnt] {
                     <span class="self">self</span>.handle_event(
                         ev.fd(),
-                        <span class="comment">// It&#39;s ok to unwrap here, since the `epoll_events[i].events` is filled
+                        <span class="comment">// It's ok to unwrap here, since the `epoll_events[i].events` is filled
                         // in by `epoll::wait()`, and therefore contains only valid epoll
                         // flags.
                         </span>EventSet::from_bits(ev.events).unwrap(),
@@ -1821,7 +1823,7 @@
                 }
             }
             <span class="prelude-val">Err</span>(err) =&gt; {
-                <span class="macro">warn!</span>(<span class="string">&quot;vsock: failed to consume muxer epoll event: {}&quot;</span>, err);
+                <span class="macro">warn!</span>(<span class="string">"vsock: failed to consume muxer epoll event: {}"</span>, err);
                 METRICS.muxer_event_fails.inc();
             }
         }
@@ -1865,7 +1867,7 @@
     <span class="doccomment">/// Handle/dispatch an epoll event to its listener.
     </span><span class="kw">fn </span>handle_event(<span class="kw-2">&amp;mut </span><span class="self">self</span>, fd: RawFd, event_set: EventSet) {
         <span class="macro">debug!</span>(
-            <span class="string">&quot;vsock: muxer processing event: fd={}, evset={:?}&quot;</span>,
+            <span class="string">"vsock: muxer processing event: fd={}, evset={:?}"</span>,
             fd, event_set
         );
 
@@ -1875,8 +1877,8 @@
             </span><span class="prelude-val">Some</span>(EpollListener::Connection { key, evset: <span class="kw">_ </span>}) =&gt; {
                 <span class="kw">let </span>key_copy = <span class="kw-2">*</span>key;
                 <span class="comment">// The handling of this event will most probably mutate the state of the
-                // receiving connection. We&#39;ll need to check for new pending RX, event set
-                // mutation, and all that, so we&#39;re wrapping the event delivery inside those
+                // receiving connection. We'll need to check for new pending RX, event set
+                // mutation, and all that, so we're wrapping the event delivery inside those
                 // checks.
                 </span><span class="self">self</span>.apply_conn_mutation(key_copy, |conn| {
                     conn.notify(event_set);
@@ -1886,9 +1888,9 @@
             <span class="comment">// A new host-initiated connection is ready to be accepted.
             </span><span class="prelude-val">Some</span>(EpollListener::HostSock) =&gt; {
                 <span class="kw">if </span><span class="self">self</span>.conn_map.len() == defs::MAX_CONNECTIONS {
-                    <span class="comment">// If we&#39;re already maxed-out on connections, we&#39;ll just accept and
+                    <span class="comment">// If we're already maxed-out on connections, we'll just accept and
                     // immediately discard this potentially new one.
-                    </span><span class="macro">warn!</span>(<span class="string">&quot;vsock: connection limit reached; refusing new host connection&quot;</span>);
+                    </span><span class="macro">warn!</span>(<span class="string">"vsock: connection limit reached; refusing new host connection"</span>);
                     <span class="self">self</span>.host_sock.accept().map(|<span class="kw">_</span>| <span class="number">0</span>).unwrap_or(<span class="number">0</span>);
                     <span class="kw">return</span>;
                 }
@@ -1903,18 +1905,18 @@
                     })
                     .and_then(|stream| {
                         <span class="comment">// Before forwarding this connection to a listening AF_VSOCK socket on
-                        // the guest side, we need to know the destination port. We&#39;ll read
-                        // that port from a &quot;connect&quot; command received on this socket, so the
+                        // the guest side, we need to know the destination port. We'll read
+                        // that port from a "connect" command received on this socket, so the
                         // next step is to ask to be notified the moment we can read from it.
                         </span><span class="self">self</span>.add_listener(stream.as_raw_fd(), EpollListener::LocalStream(stream))
                     })
                     .unwrap_or_else(|err| {
-                        <span class="macro">warn!</span>(<span class="string">&quot;vsock: unable to accept local connection: {:?}&quot;</span>, err);
+                        <span class="macro">warn!</span>(<span class="string">"vsock: unable to accept local connection: {:?}"</span>, err);
                     });
             }
 
             <span class="comment">// Data is ready to be read from a host-initiated connection. That would be the
-            // &quot;connect&quot; command that we&#39;re expecting.
+            // "connect" command that we're expecting.
             </span><span class="prelude-val">Some</span>(EpollListener::LocalStream(<span class="kw">_</span>)) =&gt; {
                 <span class="kw">if let </span><span class="prelude-val">Some</span>(EpollListener::LocalStream(<span class="kw-2">mut </span>stream)) = <span class="self">self</span>.remove_listener(fd) {
                     <span class="self">Self</span>::read_local_stream_port(<span class="kw-2">&amp;mut </span>stream)
@@ -1935,14 +1937,14 @@
                             )
                         })
                         .unwrap_or_else(|err| {
-                            <span class="macro">info!</span>(<span class="string">&quot;vsock: error adding local-init connection: {:?}&quot;</span>, err);
+                            <span class="macro">info!</span>(<span class="string">"vsock: error adding local-init connection: {:?}"</span>, err);
                         })
                 }
             }
 
             <span class="kw">_ </span>=&gt; {
                 <span class="macro">info!</span>(
-                    <span class="string">&quot;vsock: unexpected event: fd={:?}, evset={:?}&quot;</span>,
+                    <span class="string">"vsock: unexpected event: fd={:?}, evset={:?}"</span>,
                     fd, event_set
                 );
                 METRICS.muxer_event_fails.inc();
@@ -1950,12 +1952,12 @@
         }
     }
 
-    <span class="doccomment">/// Parse a host &quot;connect&quot; command, and extract the destination vsock port.
+    <span class="doccomment">/// Parse a host "connect" command, and extract the destination vsock port.
     </span><span class="kw">fn </span>read_local_stream_port(stream: <span class="kw-2">&amp;mut </span>UnixStream) -&gt; <span class="prelude-ty">Result</span>&lt;u32, VsockUnixBackendError&gt; {
         <span class="kw">let </span><span class="kw-2">mut </span>buf = [<span class="number">0u8</span>; <span class="number">32</span>];
 
         <span class="comment">// This is the minimum number of bytes that we should be able to read, when parsing a
-        // valid connection request. I.e. `b&quot;connect 0\n&quot;.len()`.
+        // valid connection request. I.e. `b"connect 0\n".len()`.
         </span><span class="kw">const </span>MIN_READ_LEN: usize = <span class="number">10</span>;
 
         <span class="comment">// Bring in the minimum number of bytes that we should be able to read.
@@ -1967,7 +1969,7 @@
         // until we reach an EOL terminator (or our buffer space runs out).  Yeah, not
         // particularly proud of this approach, but it will have to do for now.
         </span><span class="kw">let </span><span class="kw-2">mut </span>blen = MIN_READ_LEN;
-        <span class="kw">while </span>buf[blen - <span class="number">1</span>] != <span class="string">b&#39;\n&#39; </span>&amp;&amp; blen &lt; buf.len() {
+        <span class="kw">while </span>buf[blen - <span class="number">1</span>] != <span class="string">b'\n' </span>&amp;&amp; blen &lt; buf.len() {
             stream
                 .read_exact(<span class="kw-2">&amp;mut </span>buf[blen..=blen])
                 .map_err(VsockUnixBackendError::UnixRead)<span class="question-mark">?</span>;
@@ -1982,7 +1984,7 @@
             .next()
             .ok_or(VsockUnixBackendError::InvalidPortRequest)
             .and_then(|word| {
-                <span class="kw">if </span>word.to_lowercase() == <span class="string">&quot;connect&quot; </span>{
+                <span class="kw">if </span>word.to_lowercase() == <span class="string">"connect" </span>{
                     <span class="prelude-val">Ok</span>(())
                 } <span class="kw">else </span>{
                     <span class="prelude-val">Err</span>(VsockUnixBackendError::InvalidPortRequest)
@@ -2006,15 +2008,15 @@
         key: ConnMapKey,
         conn: MuxerConnection,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), VsockUnixBackendError&gt; {
-        <span class="comment">// We might need to make room for this new connection, so let&#39;s sweep the kill queue
-        // first.  It&#39;s fine to do this here because:
+        <span class="comment">// We might need to make room for this new connection, so let's sweep the kill queue
+        // first.  It's fine to do this here because:
         // - unless the kill queue is out of sync, this is a pretty inexpensive operation; and
         // - we are under no pressure to respect any accurate timing for connection termination.
         </span><span class="self">self</span>.sweep_killq();
 
         <span class="kw">if </span><span class="self">self</span>.conn_map.len() &gt;= defs::MAX_CONNECTIONS {
             <span class="macro">info!</span>(
-                <span class="string">&quot;vsock: muxer connection limit reached ({})&quot;</span>,
+                <span class="string">"vsock: muxer connection limit reached ({})"</span>,
                 defs::MAX_CONNECTIONS
             );
             <span class="kw">return </span><span class="prelude-val">Err</span>(VsockUnixBackendError::TooManyConnections);
@@ -2030,7 +2032,7 @@
         .map(|<span class="kw">_</span>| {
             <span class="kw">if </span>conn.has_pending_rx() {
                 <span class="comment">// We can safely ignore any error in adding a connection RX indication. Worst
-                // case scenario, the RX queue will get desynchronized, but we&#39;ll handle that
+                // case scenario, the RX queue will get desynchronized, but we'll handle that
                 // the next time we need to yield an RX packet.
                 </span><span class="self">self</span>.rxq.push(MuxerRx::ConnRx(key));
             }
@@ -2049,7 +2051,7 @@
     }
 
     <span class="doccomment">/// Schedule a connection for immediate termination.
-    /// I.e. as soon as we can also let our peer know we&#39;re dropping the connection, by sending
+    /// I.e. as soon as we can also let our peer know we're dropping the connection, by sending
     /// it an RST packet.
     </span><span class="kw">fn </span>kill_connection(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: ConnMapKey) {
         <span class="kw">let </span><span class="kw-2">mut </span>had_rx = <span class="bool-val">false</span>;
@@ -2060,16 +2062,16 @@
             conn.kill();
         });
         <span class="comment">// This connection will now have an RST packet to yield, so we need to add it to the RX
-        // queue.  However, there&#39;s no point in doing that if it was already in the queue.
+        // queue.  However, there's no point in doing that if it was already in the queue.
         </span><span class="kw">if </span>!had_rx {
             <span class="comment">// We can safely ignore any error in adding a connection RX indication. Worst case
-            // scenario, the RX queue will get desynchronized, but we&#39;ll handle that the next
+            // scenario, the RX queue will get desynchronized, but we'll handle that the next
             // time we need to yield an RX packet.
             </span><span class="self">self</span>.rxq.push(MuxerRx::ConnRx(key));
         }
     }
 
-    <span class="doccomment">/// Register a new epoll listener under the muxer&#39;s nested epoll FD.
+    <span class="doccomment">/// Register a new epoll listener under the muxer's nested epoll FD.
     </span><span class="kw">fn </span>add_listener(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         fd: RawFd,
@@ -2104,7 +2106,7 @@
                 .ctl(ControlOperation::Delete, fd, EpollEvent::default())
                 .unwrap_or_else(|err| {
                     <span class="macro">warn!</span>(
-                        <span class="string">&quot;vosck muxer: error removing epoll listener for fd {:?}: {:?}&quot;</span>,
+                        <span class="string">"vosck muxer: error removing epoll listener for fd {:?}: {:?}"</span>,
                         fd, err
                     );
                 });
@@ -2115,7 +2117,7 @@
 
     <span class="doccomment">/// Allocate a host-side port to be assigned to a new host-initiated connection.
     </span><span class="kw">fn </span>allocate_local_port(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; u32 {
-        <span class="comment">// TODO: this doesn&#39;t seem very space-efficient.
+        <span class="comment">// TODO: this doesn't seem very space-efficient.
         // Mybe rewrite this to limit port range and use a bitmap?
         //
 
@@ -2140,7 +2142,7 @@
     /// connection object will be created and added to the connection pool. On failure, a new
     /// RST packet will be scheduled for delivery to the guest.
     </span><span class="kw">fn </span>handle_peer_request_pkt(<span class="kw-2">&amp;mut </span><span class="self">self</span>, pkt: <span class="kw-2">&amp;</span>VsockPacket) {
-        <span class="kw">let </span>port_path = <span class="macro">format!</span>(<span class="string">&quot;{}_{}&quot;</span>, <span class="self">self</span>.host_sock_path, pkt.dst_port());
+        <span class="kw">let </span>port_path = <span class="macro">format!</span>(<span class="string">"{}_{}"</span>, <span class="self">self</span>.host_sock_path, pkt.dst_port());
 
         UnixStream::connect(port_path)
             .and_then(|stream| stream.set_nonblocking(<span class="bool-val">true</span>).map(|<span class="kw">_</span>| stream))
@@ -2164,11 +2166,11 @@
             .unwrap_or_else(|<span class="kw">_</span>| <span class="self">self</span>.enq_rst(pkt.dst_port(), pkt.src_port()));
     }
 
-    <span class="doccomment">/// Perform an action that might mutate a connection&#39;s state.
+    <span class="doccomment">/// Perform an action that might mutate a connection's state.
     ///
     /// This is used as shorthand for repetitive tasks that need to be performed after a
     /// connection object mutates. E.g.
-    /// - update the connection&#39;s epoll listener;
+    /// - update the connection's epoll listener;
     /// - schedule the connection to be queried for RX data;
     /// - kill the connection if an unrecoverable error occurs.
     </span><span class="kw">fn </span>apply_conn_mutation&lt;F&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, key: ConnMapKey, mut_fn: F)
@@ -2182,34 +2184,34 @@
 
             mut_fn(conn);
 
-            <span class="comment">// If this is a host-initiated connection that has just become established, we&#39;ll have
+            <span class="comment">// If this is a host-initiated connection that has just become established, we'll have
             // to send an ack message to the host end.
             </span><span class="kw">if </span>prev_state == ConnState::LocalInit &amp;&amp; conn.state() == ConnState::Established {
-                <span class="kw">let </span>msg = <span class="macro">format!</span>(<span class="string">&quot;OK {}\n&quot;</span>, key.local_port);
+                <span class="kw">let </span>msg = <span class="macro">format!</span>(<span class="string">"OK {}\n"</span>, key.local_port);
                 <span class="kw">match </span>conn.send_bytes_raw(msg.as_bytes()) {
                     <span class="prelude-val">Ok</span>(written) <span class="kw">if </span>written == msg.len() =&gt; (),
                     <span class="prelude-val">Ok</span>(<span class="kw">_</span>) =&gt; {
-                        <span class="comment">// If we can&#39;t write a dozen bytes to a pristine connection something
+                        <span class="comment">// If we can't write a dozen bytes to a pristine connection something
                         // must be really wrong. Killing it.
                         </span>conn.kill();
-                        <span class="macro">warn!</span>(<span class="string">&quot;vsock: unable to fully write connection ack msg.&quot;</span>);
+                        <span class="macro">warn!</span>(<span class="string">"vsock: unable to fully write connection ack msg."</span>);
                     }
                     <span class="prelude-val">Err</span>(err) =&gt; {
                         conn.kill();
-                        <span class="macro">warn!</span>(<span class="string">&quot;vsock: unable to ack host connection: {:?}&quot;</span>, err);
+                        <span class="macro">warn!</span>(<span class="string">"vsock: unable to ack host connection: {:?}"</span>, err);
                     }
                 };
             }
 
-            <span class="comment">// If the connection wasn&#39;t previously scheduled for RX, add it to our RX queue.
+            <span class="comment">// If the connection wasn't previously scheduled for RX, add it to our RX queue.
             </span><span class="kw">if </span>!had_rx &amp;&amp; conn.has_pending_rx() {
                 <span class="self">self</span>.rxq.push(MuxerRx::ConnRx(key));
             }
 
-            <span class="comment">// If the connection wasn&#39;t previously scheduled for termination, add it to the
+            <span class="comment">// If the connection wasn't previously scheduled for termination, add it to the
             // kill queue.
             </span><span class="kw">if </span>!was_expiring &amp;&amp; conn.will_expire() {
-                <span class="comment">// It&#39;s safe to unwrap here, since `conn.will_expire()` already guaranteed that
+                <span class="comment">// It's safe to unwrap here, since `conn.will_expire()` already guaranteed that
                 // an `conn.expiry` is available.
                 </span><span class="self">self</span>.killq.push(key, conn.expiry().unwrap());
             }
@@ -2227,7 +2229,7 @@
                     <span class="comment">// If the set of events that the connection is interested in has changed,
                     // we need to update its epoll listener.
                     </span><span class="macro">debug!</span>(
-                        <span class="string">&quot;vsock: updating listener for (lp={}, pp={}): old={:?}, new={:?}&quot;</span>,
+                        <span class="string">"vsock: updating listener for (lp={}, pp={}): old={:?}, new={:?}"</span>,
                         key.local_port, key.peer_port, <span class="kw-2">*</span>evset, new_evset
                     );
 
@@ -2239,11 +2241,11 @@
                             EpollEvent::new(new_evset, u64::try_from(fd).unwrap()),
                         )
                         .unwrap_or_else(|err| {
-                            <span class="comment">// This really shouldn&#39;t happen, like, ever. However, &quot;famous last
-                            // words&quot; and all that, so let&#39;s just kill it with fire, and walk away.
+                            <span class="comment">// This really shouldn't happen, like, ever. However, "famous last
+                            // words" and all that, so let's just kill it with fire, and walk away.
                             </span><span class="self">self</span>.kill_connection(key);
                             <span class="macro">error!</span>(
-                                <span class="string">&quot;vsock: error updating epoll listener for (lp={}, pp={}): {:?}&quot;</span>,
+                                <span class="string">"vsock: error updating epoll listener for (lp={}, pp={}): {:?}"</span>,
                                 key.local_port, key.peer_port, err
                             );
                             METRICS.muxer_event_fails.inc();
@@ -2262,7 +2264,7 @@
                 .unwrap_or_else(|err| {
                     <span class="self">self</span>.kill_connection(key);
                     <span class="macro">error!</span>(
-                        <span class="string">&quot;vsock: error updating epoll listener for (lp={}, pp={}): {:?}&quot;</span>,
+                        <span class="string">"vsock: error updating epoll listener for (lp={}, pp={}): {:?}"</span>,
                         key.local_port, key.peer_port, err
                     );
                     METRICS.muxer_event_fails.inc();
@@ -2275,7 +2277,7 @@
     /// termination.
     </span><span class="kw">fn </span>sweep_killq(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">while let </span><span class="prelude-val">Some</span>(key) = <span class="self">self</span>.killq.pop() {
-            <span class="comment">// Connections don&#39;t get removed from the kill queue when their kill timer is
+            <span class="comment">// Connections don't get removed from the kill queue when their kill timer is
             // disarmed, since that would be a costly operation. This means we must check if
             // the connection has indeed expired, prior to killing it.
             </span><span class="kw">let </span><span class="kw-2">mut </span>kill = <span class="bool-val">false</span>;
@@ -2290,7 +2292,7 @@
         <span class="kw">if </span><span class="self">self</span>.killq.is_empty() &amp;&amp; !<span class="self">self</span>.killq.is_synced() {
             <span class="self">self</span>.killq = MuxerKillQ::from_conn_map(<span class="kw-2">&amp;</span><span class="self">self</span>.conn_map);
             METRICS.killq_resync.inc();
-            <span class="comment">// If we&#39;ve just re-created the kill queue, we can sweep it again; maybe there&#39;s
+            <span class="comment">// If we've just re-created the kill queue, we can sweep it again; maybe there's
             // more to kill.
             </span><span class="self">self</span>.sweep_killq();
         }
@@ -2298,7 +2300,7 @@
 
     <span class="doccomment">/// Enqueue an RST packet into `self.rxq`.
     ///
-    /// Enqueue errors aren&#39;t propagated up the call chain, since there is nothing we can do to
+    /// Enqueue errors aren't propagated up the call chain, since there is nothing we can do to
     /// handle them. We do, however, log a warning, since not being able to enqueue an RST
     /// packet means we have to drop it, which is not normal operation.
     </span><span class="kw">fn </span>enq_rst(<span class="kw-2">&amp;mut </span><span class="self">self</span>, local_port: u32, peer_port: u32) {
@@ -2308,7 +2310,7 @@
         });
         <span class="kw">if </span>!pushed {
             <span class="macro">warn!</span>(
-                <span class="string">&quot;vsock: muxer.rxq full; dropping RST packet for lp={}, pp={}&quot;</span>,
+                <span class="string">"vsock: muxer.rxq full; dropping RST packet for lp={}, pp={}"</span>,
                 local_port, peer_port
             );
         }
@@ -2439,7 +2441,7 @@
         }
 
         <span class="kw">fn </span>create_local_listener(<span class="kw-2">&amp;</span><span class="self">self</span>, port: u32) -&gt; LocalListener {
-            LocalListener::new(<span class="macro">format!</span>(<span class="string">&quot;{}_{}&quot;</span>, <span class="self">self</span>.muxer.host_sock_path, port))
+            LocalListener::new(<span class="macro">format!</span>(<span class="string">"{}_{}"</span>, <span class="self">self</span>.muxer.host_sock_path, port))
         }
 
         <span class="kw">fn </span>local_connect(<span class="kw-2">&amp;mut </span><span class="self">self</span>, peer_port: u32) -&gt; (UnixStream, u32) {
@@ -2451,12 +2453,12 @@
             // socket, so it can accept it.
             </span><span class="self">self</span>.notify_muxer();
 
-            <span class="comment">// Just after having accepted a new local connection, the muxer should&#39;ve added a new
+            <span class="comment">// Just after having accepted a new local connection, the muxer should've added a new
             // `LocalStream` listener to its `listener_map`.
             </span><span class="kw">let </span>(local_lsn_count, <span class="kw">_</span>) = <span class="self">self</span>.count_epoll_listeners();
             <span class="macro">assert_eq!</span>(local_lsn_count, init_local_lsn_count + <span class="number">1</span>);
 
-            <span class="kw">let </span>buf = <span class="macro">format!</span>(<span class="string">&quot;CONNECT {}\n&quot;</span>, peer_port);
+            <span class="kw">let </span>buf = <span class="macro">format!</span>(<span class="string">"CONNECT {}\n"</span>, peer_port);
             stream.write_all(buf.as_bytes()).unwrap();
             <span class="comment">// The muxer would now get notified that data is available for reading from the locally
             // initiated connection.
@@ -2468,7 +2470,7 @@
             <span class="macro">assert_eq!</span>(local_lsn_count, init_local_lsn_count);
             <span class="macro">assert_eq!</span>(conn_lsn_count, init_conn_lsn_count + <span class="number">1</span>);
 
-            <span class="comment">// A LocalInit connection should&#39;ve been added to the muxer connection map.  A new
+            <span class="comment">// A LocalInit connection should've been added to the muxer connection map.  A new
             // local port should also have been allocated for the new LocalInit connection.
             </span><span class="kw">let </span>local_port = <span class="self">self</span>.muxer.local_port_last;
             <span class="kw">let </span>key = ConnMapKey {
@@ -2490,7 +2492,7 @@
 
             <span class="kw">let </span><span class="kw-2">mut </span>buf = [<span class="number">0u8</span>; <span class="number">32</span>];
             <span class="kw">let </span>len = stream.read(<span class="kw-2">&amp;mut </span>buf[..]).unwrap();
-            <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span>buf[..len], <span class="macro">format!</span>(<span class="string">&quot;OK {}\n&quot;</span>, local_port).as_bytes());
+            <span class="macro">assert_eq!</span>(<span class="kw-2">&amp;</span>buf[..len], <span class="macro">format!</span>(<span class="string">"OK {}\n"</span>, local_port).as_bytes());
 
             (stream, local_port)
         }
@@ -2525,14 +2527,14 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_muxer_epoll_listener() {
-        <span class="kw">let </span>ctx = MuxerTestContext::new(<span class="string">&quot;muxer_epoll_listener&quot;</span>);
+        <span class="kw">let </span>ctx = MuxerTestContext::new(<span class="string">"muxer_epoll_listener"</span>);
         <span class="macro">assert_eq!</span>(ctx.muxer.as_raw_fd(), ctx.muxer.epoll.as_raw_fd());
         <span class="macro">assert_eq!</span>(ctx.muxer.get_polled_evset(), EventSet::IN);
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_muxer_epoll_listener_regression() {
-        <span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">&quot;muxer_epoll_listener&quot;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">"muxer_epoll_listener"</span>);
         ctx.local_connect(<span class="number">1025</span>);
 
         <span class="kw">let </span>(<span class="kw">_</span>, conn) = ctx.muxer.conn_map.iter().next().unwrap();
@@ -2554,7 +2556,7 @@
         <span class="kw">const </span>PEER_PORT: u32 = <span class="number">1025</span>;
         <span class="kw">const </span>SOCK_DGRAM: u16 = <span class="number">2</span>;
 
-        <span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">&quot;bad_peer_pkt&quot;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">"bad_peer_pkt"</span>);
         ctx.init_tx_pkt(LOCAL_PORT, PEER_PORT, uapi::VSOCK_OP_REQUEST)
             .set_type(SOCK_DGRAM);
         ctx.send();
@@ -2601,7 +2603,7 @@
         <span class="kw">const </span>LOCAL_PORT: u32 = <span class="number">1026</span>;
         <span class="kw">const </span>PEER_PORT: u32 = <span class="number">1025</span>;
 
-        <span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">&quot;peer_connection&quot;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">"peer_connection"</span>);
 
         <span class="comment">// Test peer connection refused.
         </span>ctx.init_tx_pkt(LOCAL_PORT, PEER_PORT, uapi::VSOCK_OP_REQUEST);
@@ -2646,10 +2648,10 @@
         stream.write_all(<span class="kw-2">&amp;</span>data).unwrap();
 
         <span class="comment">// When data is available on the local stream, an EPOLLIN event would normally be delivered
-        // to the muxer&#39;s nested epoll FD. For testing only, we can fake that event notification
+        // to the muxer's nested epoll FD. For testing only, we can fake that event notification
         // here.
         </span>ctx.notify_muxer();
-        <span class="comment">// After being notified, the muxer should&#39;ve figured out that RX data was available for one
+        <span class="comment">// After being notified, the muxer should've figured out that RX data was available for one
         // of its connections, so it should now be reporting that it can fill in an RX packet.
         </span><span class="macro">assert!</span>(ctx.muxer.has_pending_rx());
         ctx.recv();
@@ -2666,7 +2668,7 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_local_connection() {
         <span class="comment">// Test guest -&gt; host data flow.
-        </span><span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">&quot;local_connection&quot;</span>);
+        </span><span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">"local_connection"</span>);
         <span class="kw">let </span>peer_port = <span class="number">1025</span>;
         <span class="kw">let </span>(<span class="kw-2">mut </span>stream, local_port) = ctx.local_connect(peer_port);
 
@@ -2679,7 +2681,7 @@
         <span class="macro">assert_eq!</span>(buf.as_slice(), <span class="kw-2">&amp;</span>data);
 
         <span class="comment">// Test host -&gt; guest data flow.
-        </span><span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">&quot;local_connection&quot;</span>);
+        </span><span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">"local_connection"</span>);
         <span class="kw">let </span>peer_port = <span class="number">1025</span>;
         <span class="kw">let </span>(<span class="kw-2">mut </span>stream, local_port) = ctx.local_connect(peer_port);
 
@@ -2700,7 +2702,7 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_local_close() {
         <span class="kw">let </span>peer_port = <span class="number">1025</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">&quot;local_close&quot;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">"local_close"</span>);
         <span class="kw">let </span>local_port;
         {
             <span class="kw">let </span>(_stream, local_port_) = ctx.local_connect(peer_port);
@@ -2734,7 +2736,7 @@
     </span><span class="kw">fn </span>test_peer_close() {
         <span class="kw">let </span>peer_port = <span class="number">1025</span>;
         <span class="kw">let </span>local_port = <span class="number">1026</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">&quot;peer_close&quot;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">"peer_close"</span>);
 
         <span class="kw">let </span><span class="kw-2">mut </span>sock = ctx.create_local_listener(local_port);
         ctx.init_tx_pkt(local_port, peer_port, uapi::VSOCK_OP_REQUEST);
@@ -2777,7 +2779,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_muxer_rxq() {
-        <span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">&quot;muxer_rxq&quot;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">"muxer_rxq"</span>);
         <span class="kw">let </span>local_port = <span class="number">1026</span>;
         <span class="kw">let </span>peer_port_first = <span class="number">1025</span>;
         <span class="kw">let </span><span class="kw-2">mut </span>listener = ctx.create_local_listener(local_port);
@@ -2803,7 +2805,7 @@
         <span class="macro">assert!</span>(!ctx.muxer.rxq.is_synced());
 
         <span class="comment">// With an out-of-sync queue, an RST should evict any non-RST packet from the queue, and
-        // take its place. We&#39;ll check that by making sure that the last packet popped from the
+        // take its place. We'll check that by making sure that the last packet popped from the
         // queue is an RST.
         </span>ctx.init_tx_pkt(local_port + <span class="number">1</span>, peer_port_first, uapi::VSOCK_OP_REQUEST);
         ctx.send();
@@ -2841,7 +2843,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_muxer_killq() {
-        <span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">&quot;muxer_killq&quot;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">"muxer_killq"</span>);
         <span class="kw">let </span>local_port = <span class="number">1026</span>;
         <span class="kw">let </span>peer_port_first = <span class="number">1025</span>;
         <span class="kw">let </span>peer_port_last = peer_port_first + defs::MUXER_KILLQ_SIZE;
@@ -2937,7 +2939,7 @@
         <span class="comment">// Address one of the issues found while fixing the following issue:
         // https://github.com/firecracker-microvm/firecracker/issues/1751
         // This test checks that the handshake message is not accounted for
-        </span><span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">&quot;regression_handshake&quot;</span>);
+        </span><span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">"regression_handshake"</span>);
         <span class="kw">let </span>peer_port = <span class="number">1025</span>;
 
         <span class="comment">// Create a local connection.
@@ -2950,7 +2952,7 @@
         };
         <span class="kw">let </span>conn = ctx.muxer.conn_map.get_mut(<span class="kw-2">&amp;</span>key).unwrap();
 
-        <span class="comment">// Check that fwd_cnt is 0 - &quot;OK ...&quot; was not accounted for.
+        <span class="comment">// Check that fwd_cnt is 0 - "OK ..." was not accounted for.
         </span><span class="macro">assert_eq!</span>(conn.fwd_cnt().<span class="number">0</span>, <span class="number">0</span>);
     }
 
@@ -2960,7 +2962,7 @@
         // https://github.com/firecracker-microvm/firecracker/issues/1751
         // This test checks that a connection is not popped out of the muxer
         // rxq when multiple flags are set
-        </span><span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">&quot;regression_rxq_pop&quot;</span>);
+        </span><span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">"regression_rxq_pop"</span>);
         <span class="kw">let </span>peer_port = <span class="number">1025</span>;
         <span class="kw">let </span>(<span class="kw-2">mut </span>stream, local_port) = ctx.local_connect(peer_port);
 
@@ -3004,7 +3006,7 @@
         <span class="kw">let </span>conns_removed = METRICS.conns_removed.count();
 
         <span class="comment">// Create a basic connection.
-        </span><span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">&quot;vsock_basic_metrics&quot;</span>);
+        </span><span class="kw">let </span><span class="kw-2">mut </span>ctx = MuxerTestContext::new(<span class="string">"vsock_basic_metrics"</span>);
         <span class="kw">let </span>peer_port = <span class="number">1025</span>;
         <span class="kw">let </span>(<span class="kw-2">mut </span>stream, local_port) = ctx.local_connect(peer_port);
 

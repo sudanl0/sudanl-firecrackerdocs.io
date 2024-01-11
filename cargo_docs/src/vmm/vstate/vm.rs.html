@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/vstate/vm.rs`."><title>vm.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../vmm/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/vstate/vm.rs`."><title>vm.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -604,10 +606,10 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the THIRD-PARTY file.
 
-</span><span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+</span><span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
 </span><span class="kw">use </span>std::fmt;
 
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
 </span><span class="kw">use </span>kvm_bindings::{
     kvm_clock_data, kvm_irqchip, kvm_pit_config, kvm_pit_state2, CpuId, MsrList,
     KVM_CLOCK_TSC_STABLE, KVM_IRQCHIP_IOAPIC, KVM_IRQCHIP_PIC_MASTER, KVM_IRQCHIP_PIC_SLAVE,
@@ -615,14 +617,14 @@
 };
 <span class="kw">use </span>kvm_bindings::{kvm_userspace_memory_region, KVM_API_VERSION, KVM_MEM_LOG_DIRTY_PAGES};
 <span class="kw">use </span>kvm_ioctls::{Kvm, VmFd};
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
 </span><span class="kw">use </span>utils::u64_to_usize;
 <span class="kw">use </span>versionize::{VersionMap, Versionize, VersionizeResult};
 <span class="kw">use </span>versionize_derive::Versionize;
 
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::arch::aarch64::gic::GICDevice;
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
 </span><span class="kw">use </span><span class="kw">crate</span>::arch::aarch64::gic::GicState;
 <span class="kw">use </span><span class="kw">crate</span>::cpu_config::templates::KvmCapability;
 <span class="kw">use </span><span class="kw">crate</span>::vstate::memory::{Address, GuestMemory, GuestMemoryMmap, GuestMemoryRegion};
@@ -637,51 +639,51 @@
     <span class="doccomment">/// Missing KVM capabilities: {0:x?}
     </span>Capabilities(u32),
     <span class="doccomment">/**  Error creating KVM object: {0} Make sure the user launching the firecracker process is \
-    configured on the /dev/kvm file&#39;s ACL. */
+    configured on the /dev/kvm file's ACL. */
     </span>Kvm(kvm_ioctls::Error),
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span><span class="doccomment">/// Failed to get MSR index list to save into snapshots: {0}
     </span>GetMsrsToSave(<span class="attr">#[from] </span><span class="kw">crate</span>::arch::x86_64::msr::MsrError),
     <span class="doccomment">/// The number of configured slots is bigger than the maximum reported by KVM
     </span>NotEnoughMemorySlots,
     <span class="doccomment">/// Cannot set the memory regions: {0}
     </span>SetUserMemoryRegion(kvm_ioctls::Error),
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
     </span><span class="doccomment">/// Error creating the global interrupt controller: {0}
     </span>VmCreateGIC(<span class="kw">crate</span>::arch::aarch64::gic::GicError),
     <span class="doccomment">/// Cannot open the VM file descriptor: {0}
     </span>VmFd(kvm_ioctls::Error),
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span><span class="doccomment">/// Failed to get KVM vm pit state: {0}
     </span>VmGetPit2(kvm_ioctls::Error),
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span><span class="doccomment">/// Failed to get KVM vm clock: {0}
     </span>VmGetClock(kvm_ioctls::Error),
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span><span class="doccomment">/// Failed to get KVM vm irqchip: {0}
     </span>VmGetIrqChip(kvm_ioctls::Error),
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span><span class="doccomment">/// Failed to set KVM vm pit state: {0}
     </span>VmSetPit2(kvm_ioctls::Error),
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span><span class="doccomment">/// Failed to set KVM vm clock: {0}
     </span>VmSetClock(kvm_ioctls::Error),
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span><span class="doccomment">/// Failed to set KVM vm irqchip: {0}
     </span>VmSetIrqChip(kvm_ioctls::Error),
     <span class="doccomment">/// Cannot configure the microvm: {0}
     </span>VmSetup(kvm_ioctls::Error),
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
-    </span><span class="doccomment">/// Failed to save the VM&#39;s GIC state: {0}
+    <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
+    </span><span class="doccomment">/// Failed to save the VM's GIC state: {0}
     </span>SaveGic(<span class="kw">crate</span>::arch::aarch64::gic::GicError),
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
-    </span><span class="doccomment">/// Failed to restore the VM&#39;s GIC state: {0}
+    <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
+    </span><span class="doccomment">/// Failed to restore the VM's GIC state: {0}
     </span>RestoreGic(<span class="kw">crate</span>::arch::aarch64::gic::GicError),
 }
 
 <span class="doccomment">/// Error type for [`Vm::restore_state`]
 </span><span class="attr">#[allow(missing_docs)]
-#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+#[cfg(target_arch = <span class="string">"x86_64"</span>)]
 #[derive(Debug, thiserror::Error, displaydoc::Display, PartialEq, Eq)]
 </span><span class="kw">pub enum </span>RestoreStateError {
     <span class="doccomment">/// Set PIT2 error: {0}
@@ -699,7 +701,7 @@
 }
 
 <span class="doccomment">/// Error type for [`Vm::restore_state`]
-</span><span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+</span><span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
 #[derive(Debug, thiserror::Error, displaydoc::Display)]
 </span><span class="kw">pub enum </span>RestoreStateError {
     <span class="doccomment">/// {0}
@@ -718,14 +720,14 @@
     </span><span class="kw">pub </span>kvm_cap_modifiers: Vec&lt;KvmCapability&gt;,
 
     <span class="comment">// X86 specific fields.
-    </span><span class="attr">#[cfg(any(target_arch = <span class="string">&quot;x86&quot;</span>, target_arch = <span class="string">&quot;x86_64&quot;</span>))]
+    </span><span class="attr">#[cfg(any(target_arch = <span class="string">"x86"</span>, target_arch = <span class="string">"x86_64"</span>))]
     </span>supported_cpuid: CpuId,
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     </span>msrs_to_save: MsrList,
 
     <span class="comment">// Arm specific fields.
     // On aarch64 we need to keep around the fd obtained by creating the VGIC device.
-    </span><span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+    </span><span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
     </span>irqchip_handle: <span class="prelude-ty">Option</span>&lt;GICDevice&gt;,
 }
 
@@ -750,7 +752,7 @@
         <span class="comment">// Create fd for interacting with kvm-vm specific functions.
         </span><span class="kw">let </span>vm_fd = kvm.create_vm().map_err(VmError::VmFd)<span class="question-mark">?</span>;
 
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
         </span>{
             <span class="prelude-val">Ok</span>(Vm {
                 fd: vm_fd,
@@ -760,7 +762,7 @@
             })
         }
 
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
         </span>{
             <span class="kw">let </span>supported_cpuid = kvm
                 .get_supported_cpuid(KVM_MAX_CPUID_ENTRIES)
@@ -816,7 +818,7 @@
             <span class="kw">return </span><span class="prelude-val">Err</span>(VmError::NotEnoughMemorySlots);
         }
         <span class="self">self</span>.set_kvm_memory_regions(guest_mem, track_dirty_pages)<span class="question-mark">?</span>;
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
         </span><span class="self">self</span>.fd
             .set_tss_address(u64_to_usize(<span class="kw">crate</span>::arch::x86_64::layout::KVM_TSS_ADDRESS))
             .map_err(VmError::VmSetup)<span class="question-mark">?</span>;
@@ -841,7 +843,7 @@
                     slot: u32::try_from(index).unwrap(),
                     guest_phys_addr: region.start_addr().raw_value(),
                     memory_size: region.len(),
-                    <span class="comment">// It&#39;s safe to unwrap because the guest address is valid.
+                    <span class="comment">// It's safe to unwrap because the guest address is valid.
                     </span>userspace_addr: guest_mem.get_host_address(region.start_addr()).unwrap() <span class="kw">as </span>u64,
                     flags,
                 };
@@ -859,7 +861,7 @@
     }
 }
 
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
 </span><span class="kw">impl </span>Vm {
     <span class="kw">const </span>DEFAULT_CAPABILITIES: [u32; <span class="number">7</span>] = [
         kvm_bindings::KVM_CAP_IOEVENTFD,
@@ -882,7 +884,7 @@
 
     <span class="doccomment">/// Gets a reference to the irqchip of the VM.
     </span><span class="kw">pub fn </span>get_irqchip(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>GICDevice {
-        <span class="self">self</span>.irqchip_handle.as_ref().expect(<span class="string">&quot;IRQ chip not set&quot;</span>)
+        <span class="self">self</span>.irqchip_handle.as_ref().expect(<span class="string">"IRQ chip not set"</span>)
     }
 
     <span class="doccomment">/// Saves and returns the Kvm Vm state.
@@ -914,17 +916,17 @@
 }
 
 <span class="doccomment">/// Structure holding an general specific VM state.
-</span><span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+</span><span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
 #[derive(Debug, Default, Versionize)]
 </span><span class="kw">pub struct </span>VmState {
     <span class="doccomment">/// GIC state.
     </span><span class="kw">pub </span>gic: GicState,
     <span class="doccomment">/// Additional capabilities that were specified in cpu template.
-    </span><span class="attr">#[version(start = <span class="number">2</span>, default_fn = <span class="string">&quot;default_caps&quot;</span>)]
+    </span><span class="attr">#[version(start = <span class="number">2</span>, default_fn = <span class="string">"default_caps"</span>)]
     </span><span class="kw">pub </span>kvm_cap_modifiers: Vec&lt;KvmCapability&gt;,
 }
 
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
 </span><span class="kw">impl </span>Vm {
     <span class="kw">const </span>DEFAULT_CAPABILITIES: [u32; <span class="number">14</span>] = [
         kvm_bindings::KVM_CAP_IRQCHIP,
@@ -1037,7 +1039,7 @@
     }
 }
 
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
 #[derive(Default, Versionize)]
 </span><span class="doccomment">/// Structure holding VM kvm state.
 </span><span class="comment">// NOTICE: Any changes to this structure require a snapshot version bump.
@@ -1051,7 +1053,7 @@
     ioapic: kvm_irqchip,
 
     <span class="doccomment">/// Additional capabilities that were specified in cpu template.
-    </span><span class="attr">#[version(start = <span class="number">2</span>, default_fn = <span class="string">&quot;default_caps&quot;</span>)]
+    </span><span class="attr">#[version(start = <span class="number">2</span>, default_fn = <span class="string">"default_caps"</span>)]
     </span><span class="kw">pub </span>kvm_cap_modifiers: Vec&lt;KvmCapability&gt;,
 }
 
@@ -1061,15 +1063,15 @@
     }
 }
 
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
 </span><span class="kw">impl </span>fmt::Debug <span class="kw">for </span>VmState {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;VmState&quot;</span>)
-            .field(<span class="string">&quot;pitstate&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.pitstate)
-            .field(<span class="string">&quot;clock&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.clock)
-            .field(<span class="string">&quot;pic_master&quot;</span>, <span class="kw-2">&amp;</span><span class="string">&quot;?&quot;</span>)
-            .field(<span class="string">&quot;pic_slave&quot;</span>, <span class="kw-2">&amp;</span><span class="string">&quot;?&quot;</span>)
-            .field(<span class="string">&quot;ioapic&quot;</span>, <span class="kw-2">&amp;</span><span class="string">&quot;?&quot;</span>)
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        f.debug_struct(<span class="string">"VmState"</span>)
+            .field(<span class="string">"pitstate"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.pitstate)
+            .field(<span class="string">"clock"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.clock)
+            .field(<span class="string">"pic_master"</span>, <span class="kw-2">&amp;</span><span class="string">"?"</span>)
+            .field(<span class="string">"pic_slave"</span>, <span class="kw-2">&amp;</span><span class="string">"?"</span>)
+            .field(<span class="string">"ioapic"</span>, <span class="kw-2">&amp;</span><span class="string">"?"</span>)
             .finish()
     }
 }
@@ -1084,7 +1086,7 @@
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>setup_vm(mem_size: usize) -&gt; (Vm, GuestMemoryMmap) {
         <span class="kw">let </span>gm = GuestMemoryMmap::from_raw_regions(<span class="kw-2">&amp;</span>[(GuestAddress(<span class="number">0</span>), mem_size)], <span class="bool-val">false</span>).unwrap();
 
-        <span class="kw">let </span>vm = Vm::new(<span class="macro">vec!</span>[]).expect(<span class="string">&quot;Cannot create new vm&quot;</span>);
+        <span class="kw">let </span>vm = Vm::new(<span class="macro">vec!</span>[]).expect(<span class="string">"Cannot create new vm"</span>);
         vm.memory_init(<span class="kw-2">&amp;</span>gm, <span class="bool-val">false</span>).unwrap();
 
         (vm, gm)
@@ -1098,7 +1100,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_combine_capabilities() {
-        <span class="comment">// Default caps for x86_64 and aarch64 both have KVM_CAP_IOEVENTFD and don&#39;t have
+        <span class="comment">// Default caps for x86_64 and aarch64 both have KVM_CAP_IOEVENTFD and don't have
         // KVM_CAP_IOMMU caps.
         </span><span class="kw">let </span>additional_capabilities = <span class="macro">vec!</span>[
             KvmCapability::Add(kvm_bindings::KVM_CAP_IOMMU),
@@ -1116,17 +1118,17 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_vm_memory_init() {
-        <span class="kw">let </span>vm = Vm::new(<span class="macro">vec!</span>[]).expect(<span class="string">&quot;Cannot create new vm&quot;</span>);
+        <span class="kw">let </span>vm = Vm::new(<span class="macro">vec!</span>[]).expect(<span class="string">"Cannot create new vm"</span>);
 
         <span class="comment">// Create valid memory region and test that the initialization is successful.
         </span><span class="kw">let </span>gm = GuestMemoryMmap::from_raw_regions(<span class="kw-2">&amp;</span>[(GuestAddress(<span class="number">0</span>), <span class="number">0x1000</span>)], <span class="bool-val">false</span>).unwrap();
         vm.memory_init(<span class="kw-2">&amp;</span>gm, <span class="bool-val">true</span>).unwrap();
     }
 
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     #[test]
     </span><span class="kw">fn </span>test_vm_save_restore_state() {
-        <span class="kw">let </span>vm = Vm::new(<span class="macro">vec!</span>[]).expect(<span class="string">&quot;new vm failed&quot;</span>);
+        <span class="kw">let </span>vm = Vm::new(<span class="macro">vec!</span>[]).expect(<span class="string">"new vm failed"</span>);
         <span class="comment">// Irqchips, clock and pitstate are not configured so trying to save state should fail.
         </span>vm.save_state().unwrap_err();
 
@@ -1149,7 +1151,7 @@
         vm.restore_state(<span class="kw-2">&amp;</span>vm_state).unwrap();
     }
 
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
     #[test]
     </span><span class="kw">fn </span>test_vm_save_restore_state_bad_irqchip() {
         <span class="kw">use </span>kvm_bindings::KVM_NR_IRQCHIPS;
@@ -1180,7 +1182,7 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_set_kvm_memory_regions() {
-        <span class="kw">let </span>vm = Vm::new(<span class="macro">vec!</span>[]).expect(<span class="string">&quot;Cannot create new vm&quot;</span>);
+        <span class="kw">let </span>vm = Vm::new(<span class="macro">vec!</span>[]).expect(<span class="string">"Cannot create new vm"</span>);
 
         <span class="kw">let </span>gm = GuestMemoryMmap::from_raw_regions(<span class="kw-2">&amp;</span>[(GuestAddress(<span class="number">0</span>), <span class="number">0x1000</span>)], <span class="bool-val">false</span>).unwrap();
         <span class="kw">let </span>res = vm.set_kvm_memory_regions(<span class="kw-2">&amp;</span>gm, <span class="bool-val">false</span>);
@@ -1192,7 +1194,7 @@
         <span class="kw">let </span>res = vm.set_kvm_memory_regions(<span class="kw-2">&amp;</span>gm, <span class="bool-val">false</span>);
         <span class="macro">assert_eq!</span>(
             res.unwrap_err().to_string(),
-            <span class="string">&quot;Cannot set the memory regions: Invalid argument (os error 22)&quot;
+            <span class="string">"Cannot set the memory regions: Invalid argument (os error 22)"
         </span>);
     }
 }

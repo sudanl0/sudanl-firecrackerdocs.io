@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/devices/virtio/queue.rs`."><title>queue.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../vmm/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/devices/virtio/queue.rs`."><title>queue.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1531,11 +1533,11 @@
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const </span>VIRTQ_DESC_F_NEXT: u16 = <span class="number">0x1</span>;
 <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const </span>VIRTQ_DESC_F_WRITE: u16 = <span class="number">0x2</span>;
 
-<span class="doccomment">/// Max size of virtio queues offered by firecracker&#39;s virtio devices.
+<span class="doccomment">/// Max size of virtio queues offered by firecracker's virtio devices.
 </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const </span>FIRECRACKER_MAX_QUEUE_SIZE: u16 = <span class="number">256</span>;
 
 <span class="comment">// GuestMemoryMmap::read_obj_from_addr() will be used to fetch the descriptor,
-// which has an explicit constraint that the entire descriptor doesn&#39;t
+// which has an explicit constraint that the entire descriptor doesn't
 // cross the page boundary. Otherwise the descriptor may be splitted into
 // two mmap regions which causes failure of GuestMemoryMmap::read_obj_from_addr().
 //
@@ -1565,13 +1567,13 @@
 
 <span class="doccomment">/// A virtio descriptor chain.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>DescriptorChain&lt;<span class="lifetime">&#39;a</span>, M: GuestMemory = GuestMemoryMmap&gt; {
+</span><span class="kw">pub struct </span>DescriptorChain&lt;<span class="lifetime">'a</span>, M: GuestMemory = GuestMemoryMmap&gt; {
     desc_table: GuestAddress,
     queue_size: u16,
     ttl: u16, <span class="comment">// used to prevent infinite chain cycles
 
     </span><span class="doccomment">/// Reference to guest memory
-    </span><span class="kw">pub </span>mem: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>M,
+    </span><span class="kw">pub </span>mem: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>M,
 
     <span class="doccomment">/// Index into the descriptor table
     </span><span class="kw">pub </span>index: u16,
@@ -1590,9 +1592,9 @@
     </span><span class="kw">pub </span>next: u16,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, M: GuestMemory&gt; DescriptorChain&lt;<span class="lifetime">&#39;a</span>, M&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, M: GuestMemory&gt; DescriptorChain&lt;<span class="lifetime">'a</span>, M&gt; {
     <span class="kw">fn </span>checked_new(
-        mem: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>M,
+        mem: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>M,
         desc_table: GuestAddress,
         queue_size: u16,
         index: u16,
@@ -1604,12 +1606,12 @@
         <span class="kw">let </span>desc_head = mem.checked_offset(desc_table, (index <span class="kw">as </span>usize) * <span class="number">16</span>)<span class="question-mark">?</span>;
         mem.checked_offset(desc_head, <span class="number">16</span>)<span class="question-mark">?</span>;
 
-        <span class="comment">// These reads can&#39;t fail unless Guest memory is hopelessly broken.
+        <span class="comment">// These reads can't fail unless Guest memory is hopelessly broken.
         </span><span class="kw">let </span>desc = <span class="kw">match </span>mem.read_obj::&lt;Descriptor&gt;(desc_head) {
             <span class="prelude-val">Ok</span>(ret) =&gt; ret,
             <span class="prelude-val">Err</span>(err) =&gt; {
                 <span class="comment">// TODO log address
-                </span><span class="macro">error!</span>(<span class="string">&quot;Failed to read virtio descriptor from memory: {}&quot;</span>, err);
+                </span><span class="macro">error!</span>(<span class="string">"Failed to read virtio descriptor from memory: {}"</span>, err);
                 <span class="kw">return </span><span class="prelude-val">None</span>;
             }
         };
@@ -1668,19 +1670,19 @@
 }
 
 <span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>DescriptorIterator&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="prelude-ty">Option</span>&lt;DescriptorChain&lt;<span class="lifetime">&#39;a</span>&gt;&gt;);
+</span><span class="kw">pub struct </span>DescriptorIterator&lt;<span class="lifetime">'a</span>&gt;(<span class="prelude-ty">Option</span>&lt;DescriptorChain&lt;<span class="lifetime">'a</span>&gt;&gt;);
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; IntoIterator <span class="kw">for </span>DescriptorChain&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">type </span>Item = DescriptorChain&lt;<span class="lifetime">&#39;a</span>&gt;;
-    <span class="kw">type </span>IntoIter = DescriptorIterator&lt;<span class="lifetime">&#39;a</span>&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; IntoIterator <span class="kw">for </span>DescriptorChain&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>Item = DescriptorChain&lt;<span class="lifetime">'a</span>&gt;;
+    <span class="kw">type </span>IntoIter = DescriptorIterator&lt;<span class="lifetime">'a</span>&gt;;
 
     <span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
         DescriptorIterator(<span class="prelude-val">Some</span>(<span class="self">self</span>))
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; Iterator <span class="kw">for </span>DescriptorIterator&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">type </span>Item = DescriptorChain&lt;<span class="lifetime">&#39;a</span>&gt;;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; Iterator <span class="kw">for </span>DescriptorIterator&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">type </span>Item = DescriptorChain&lt;<span class="lifetime">'a</span>&gt;;
 
     <span class="kw">fn </span>next(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>::Item&gt; {
         <span class="self">self</span>.<span class="number">0</span>.take().map(|desc| {
@@ -1691,7 +1693,7 @@
 }
 
 <span class="attr">#[derive(Clone, Debug, PartialEq, Eq)]
-</span><span class="doccomment">/// A virtio queue&#39;s parameters.
+</span><span class="doccomment">/// A virtio queue's parameters.
 </span><span class="kw">pub struct </span>Queue {
     <span class="doccomment">/// The maximal size in elements offered by the device
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) max_size: u16,
@@ -1749,7 +1751,7 @@
         min(<span class="self">self</span>.size, <span class="self">self</span>.max_size)
     }
 
-    <span class="doccomment">/// Validates the queue&#39;s in-memory layout is correct.
+    <span class="doccomment">/// Validates the queue's in-memory layout is correct.
     </span><span class="kw">pub fn </span>is_layout_valid&lt;M: GuestMemory&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, mem: <span class="kw-2">&amp;</span>M) -&gt; bool {
         <span class="kw">let </span>queue_size = usize::from(<span class="self">self</span>.actual_size());
         <span class="kw">let </span>desc_table = <span class="self">self</span>.desc_table;
@@ -1760,39 +1762,39 @@
         <span class="kw">let </span>used_ring_size = <span class="number">6 </span>+ <span class="number">8 </span>* queue_size;
 
         <span class="kw">if </span>!<span class="self">self</span>.ready {
-            <span class="macro">error!</span>(<span class="string">&quot;attempt to use virtio queue that is not marked ready&quot;</span>);
+            <span class="macro">error!</span>(<span class="string">"attempt to use virtio queue that is not marked ready"</span>);
             <span class="bool-val">false
         </span>} <span class="kw">else if </span><span class="self">self</span>.size &gt; <span class="self">self</span>.max_size || <span class="self">self</span>.size == <span class="number">0 </span>|| (<span class="self">self</span>.size &amp; (<span class="self">self</span>.size - <span class="number">1</span>)) != <span class="number">0
         </span>{
-            <span class="macro">error!</span>(<span class="string">&quot;virtio queue with invalid size: {}&quot;</span>, <span class="self">self</span>.size);
+            <span class="macro">error!</span>(<span class="string">"virtio queue with invalid size: {}"</span>, <span class="self">self</span>.size);
             <span class="bool-val">false
         </span>} <span class="kw">else if </span>desc_table.raw_value() &amp; <span class="number">0xf </span>!= <span class="number">0 </span>{
-            <span class="macro">error!</span>(<span class="string">&quot;virtio queue descriptor table breaks alignment constraints&quot;</span>);
+            <span class="macro">error!</span>(<span class="string">"virtio queue descriptor table breaks alignment constraints"</span>);
             <span class="bool-val">false
         </span>} <span class="kw">else if </span>avail_ring.raw_value() &amp; <span class="number">0x1 </span>!= <span class="number">0 </span>{
-            <span class="macro">error!</span>(<span class="string">&quot;virtio queue available ring breaks alignment constraints&quot;</span>);
+            <span class="macro">error!</span>(<span class="string">"virtio queue available ring breaks alignment constraints"</span>);
             <span class="bool-val">false
         </span>} <span class="kw">else if </span>used_ring.raw_value() &amp; <span class="number">0x3 </span>!= <span class="number">0 </span>{
-            <span class="macro">error!</span>(<span class="string">&quot;virtio queue used ring breaks alignment constraints&quot;</span>);
+            <span class="macro">error!</span>(<span class="string">"virtio queue used ring breaks alignment constraints"</span>);
             <span class="bool-val">false
         </span><span class="comment">// range check entire descriptor table to be assigned valid guest physical addresses
         </span>} <span class="kw">else if </span>mem.get_slice(desc_table, desc_table_size).is_err() {
             <span class="macro">error!</span>(
-                <span class="string">&quot;virtio queue descriptor table goes out of bounds: start:0x{:08x} size:0x{:08x}&quot;</span>,
+                <span class="string">"virtio queue descriptor table goes out of bounds: start:0x{:08x} size:0x{:08x}"</span>,
                 desc_table.raw_value(),
                 desc_table_size
             );
             <span class="bool-val">false
         </span>} <span class="kw">else if </span>mem.get_slice(avail_ring, avail_ring_size).is_err() {
             <span class="macro">error!</span>(
-                <span class="string">&quot;virtio queue available ring goes out of bounds: start:0x{:08x} size:0x{:08x}&quot;</span>,
+                <span class="string">"virtio queue available ring goes out of bounds: start:0x{:08x} size:0x{:08x}"</span>,
                 avail_ring.raw_value(),
                 avail_ring_size
             );
             <span class="bool-val">false
         </span>} <span class="kw">else if </span>mem.get_slice(used_ring, used_ring_size).is_err() {
             <span class="macro">error!</span>(
-                <span class="string">&quot;virtio queue used ring goes out of bounds: start:0x{:08x} size:0x{:08x}&quot;</span>,
+                <span class="string">"virtio queue used ring goes out of bounds: start:0x{:08x} size:0x{:08x}"</span>,
                 used_ring.raw_value(),
                 used_ring_size
             );
@@ -1802,13 +1804,13 @@
         </span>}
     }
 
-    <span class="doccomment">/// Validates that the queue&#39;s representation is correct.
+    <span class="doccomment">/// Validates that the queue's representation is correct.
     </span><span class="kw">pub fn </span>is_valid&lt;M: GuestMemory&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, mem: <span class="kw-2">&amp;</span>M) -&gt; bool {
         <span class="kw">if </span>!<span class="self">self</span>.is_layout_valid(mem) {
             <span class="bool-val">false
         </span>} <span class="kw">else if </span><span class="self">self</span>.len(mem) &gt; <span class="self">self</span>.max_size {
             <span class="macro">error!</span>(
-                <span class="string">&quot;virtio queue number of available descriptors {} is greater than queue max size {}&quot;</span>,
+                <span class="string">"virtio queue number of available descriptors {} is greater than queue max size {}"</span>,
                 <span class="self">self</span>.len(mem),
                 <span class="self">self</span>.max_size
             );
@@ -1831,7 +1833,7 @@
     </span>}
 
     <span class="doccomment">/// Pop the first available descriptor chain from the avail ring.
-    </span><span class="kw">pub fn </span>pop&lt;<span class="lifetime">&#39;b</span>, M: GuestMemory&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, mem: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>M) -&gt; <span class="prelude-ty">Option</span>&lt;DescriptorChain&lt;<span class="lifetime">&#39;b</span>, M&gt;&gt; {
+    </span><span class="kw">pub fn </span>pop&lt;<span class="lifetime">'b</span>, M: GuestMemory&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, mem: <span class="kw-2">&amp;</span><span class="lifetime">'b </span>M) -&gt; <span class="prelude-ty">Option</span>&lt;DescriptorChain&lt;<span class="lifetime">'b</span>, M&gt;&gt; {
         <span class="macro">debug_assert!</span>(<span class="self">self</span>.is_layout_valid(mem));
 
         <span class="kw">let </span>len = <span class="self">self</span>.len(mem);
@@ -1845,7 +1847,7 @@
             <span class="comment">// We are choosing to interrupt execution since this could be a potential malicious
             // driver scenario. This way we also eliminate the risk of repeatedly
             // logging and potentially clogging the microVM through the log system.
-            </span><span class="macro">panic!</span>(<span class="string">&quot;The number of available virtio descriptors is greater than queue size!&quot;</span>);
+            </span><span class="macro">panic!</span>(<span class="string">"The number of available virtio descriptors is greater than queue size!"</span>);
         }
 
         <span class="kw">if </span>len == <span class="number">0 </span>{
@@ -1857,10 +1859,10 @@
 
     <span class="doccomment">/// Try to pop the first available descriptor chain from the avail ring.
     /// If no descriptor is available, enable notifications.
-    </span><span class="kw">pub fn </span>pop_or_enable_notification&lt;<span class="lifetime">&#39;b</span>, M: GuestMemory&gt;(
+    </span><span class="kw">pub fn </span>pop_or_enable_notification&lt;<span class="lifetime">'b</span>, M: GuestMemory&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        mem: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>M,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;DescriptorChain&lt;<span class="lifetime">&#39;b</span>, M&gt;&gt; {
+        mem: <span class="kw-2">&amp;</span><span class="lifetime">'b </span>M,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;DescriptorChain&lt;<span class="lifetime">'b</span>, M&gt;&gt; {
         <span class="kw">if </span>!<span class="self">self</span>.uses_notif_suppression {
             <span class="kw">return </span><span class="self">self</span>.pop(mem);
         }
@@ -1877,14 +1879,14 @@
     /// # Important
     /// This is an internal method that ASSUMES THAT THERE ARE AVAILABLE DESCRIPTORS. Otherwise it
     /// will retrieve a descriptor that contains garbage data (obsolete/empty).
-    </span><span class="kw">fn </span>do_pop_unchecked&lt;<span class="lifetime">&#39;b</span>, M: GuestMemory&gt;(
+    </span><span class="kw">fn </span>do_pop_unchecked&lt;<span class="lifetime">'b</span>, M: GuestMemory&gt;(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
-        mem: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span>M,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;DescriptorChain&lt;<span class="lifetime">&#39;b</span>, M&gt;&gt; {
+        mem: <span class="kw-2">&amp;</span><span class="lifetime">'b </span>M,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;DescriptorChain&lt;<span class="lifetime">'b</span>, M&gt;&gt; {
         <span class="comment">// This fence ensures all subsequent reads see the updated driver writes.
         </span>fence(Ordering::Acquire);
 
-        <span class="comment">// We&#39;ll need to find the first available descriptor, that we haven&#39;t yet popped.
+        <span class="comment">// We'll need to find the first available descriptor, that we haven't yet popped.
         // In a naive notation, that would be:
         // `descriptor_table[avail_ring[next_avail]]`.
         //
@@ -1910,7 +1912,7 @@
         </span><span class="kw">let </span>index_offset = <span class="number">4 </span>+ <span class="number">2 </span>* (<span class="self">self</span>.next_avail.<span class="number">0 </span>% <span class="self">self</span>.actual_size());
 
         <span class="comment">// `self.is_valid()` already performed all the bound checks on the descriptor table
-        // and virtq rings, so it&#39;s safe to unwrap guest memory reads and to use unchecked
+        // and virtq rings, so it's safe to unwrap guest memory reads and to use unchecked
         // offsets.
         </span><span class="kw">let </span>desc_index: u16 = mem
             .read_obj(<span class="self">self</span>.avail_ring.unchecked_add(u64::from(index_offset)))
@@ -1941,7 +1943,7 @@
 
         <span class="kw">if </span>desc_index &gt;= <span class="self">self</span>.actual_size() {
             <span class="macro">error!</span>(
-                <span class="string">&quot;attempted to add out of bounds descriptor to used ring: {}&quot;</span>,
+                <span class="string">"attempted to add out of bounds descriptor to used ring: {}"</span>,
                 desc_index
             );
             <span class="kw">return </span><span class="prelude-val">Err</span>(QueueError::DescIndexOutOfBounds(desc_index));
@@ -1972,7 +1974,7 @@
     /// ring.
     </span><span class="kw">pub fn </span>avail_idx&lt;M: GuestMemory&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, mem: <span class="kw-2">&amp;</span>M) -&gt; Wrapping&lt;u16&gt; {
         <span class="comment">// Bound checks for queue inner data have already been performed, at device activation time,
-        // via `self.is_valid()`, so it&#39;s safe to unwrap and use unchecked offsets here.
+        // via `self.is_valid()`, so it's safe to unwrap and use unchecked offsets here.
         // Note: the `MmioTransport` code ensures that queue addresses cannot be changed by the
         // guest       after device activation, so we can be certain that no change has
         // occurred since the last `self.is_valid()` check.
@@ -2006,12 +2008,12 @@
 
     <span class="doccomment">/// Try to enable notification events from the guest driver. Returns true if notifications were
     /// successfully enabled. Otherwise it means that one or more descriptors can still be consumed
-    /// from the available ring and we can&#39;t guarantee that there will be a notification. In this
+    /// from the available ring and we can't guarantee that there will be a notification. In this
     /// case the caller might want to consume the mentioned descriptors and call this method again.
     </span><span class="kw">pub fn </span>try_enable_notification&lt;M: GuestMemory&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, mem: <span class="kw-2">&amp;</span>M) -&gt; bool {
         <span class="macro">debug_assert!</span>(<span class="self">self</span>.is_layout_valid(mem));
 
-        <span class="comment">// If the device doesn&#39;t use notification suppression, we&#39;ll continue to get notifications
+        <span class="comment">// If the device doesn't use notification suppression, we'll continue to get notifications
         // no matter what.
         </span><span class="kw">if </span>!<span class="self">self</span>.uses_notif_suppression {
             <span class="kw">return </span><span class="bool-val">true</span>;
@@ -2026,7 +2028,7 @@
                 // driver scenario. This way we also eliminate the risk of
                 // repeatedly logging and potentially clogging the microVM through
                 // the log system.
-                </span><span class="macro">panic!</span>(<span class="string">&quot;The number of available virtio descriptors is greater than queue size!&quot;</span>);
+                </span><span class="macro">panic!</span>(<span class="string">"The number of available virtio descriptors is greater than queue size!"</span>);
             }
             <span class="kw">return </span><span class="bool-val">false</span>;
         }
@@ -2050,14 +2052,14 @@
     <span class="doccomment">/// Check if we need to kick the guest.
     ///
     /// Please note this method has side effects: once it returns `true`, it considers the
-    /// driver will actually be notified, and won&#39;t return `true` again until the driver
+    /// driver will actually be notified, and won't return `true` again until the driver
     /// updates `used_event` and/or the notification conditions hold once more.
     ///
     /// This is similar to the `vring_need_event()` method implemented by the Linux kernel.
     </span><span class="kw">pub fn </span>prepare_kick&lt;M: GuestMemory&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, mem: <span class="kw-2">&amp;</span>M) -&gt; bool {
         <span class="macro">debug_assert!</span>(<span class="self">self</span>.is_layout_valid(mem));
 
-        <span class="comment">// If the device doesn&#39;t use notification suppression, always return true
+        <span class="comment">// If the device doesn't use notification suppression, always return true
         </span><span class="kw">if </span>!<span class="self">self</span>.uses_notif_suppression {
             <span class="kw">return </span><span class="bool-val">true</span>;
         }
@@ -2100,8 +2102,8 @@
         the_region: vm_memory::GuestRegionMmap,
     }
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; GuestMemoryIterator&lt;<span class="lifetime">&#39;a</span>, vm_memory::GuestRegionMmap&gt; <span class="kw">for </span>ProofGuestMemory {
-        <span class="kw">type </span>Iter = std::iter::Once&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>vm_memory::GuestRegionMmap&gt;;
+    <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; GuestMemoryIterator&lt;<span class="lifetime">'a</span>, vm_memory::GuestRegionMmap&gt; <span class="kw">for </span>ProofGuestMemory {
+        <span class="kw">type </span>Iter = std::iter::Once&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>vm_memory::GuestRegionMmap&gt;;
     }
 
     <span class="kw">impl </span>GuestMemory <span class="kw">for </span>ProofGuestMemory {
@@ -2174,7 +2176,7 @@
     </span><span class="kw">const </span>GUEST_MEMORY_SIZE: usize = QUEUE_END <span class="kw">as </span>usize + <span class="number">30</span>;
 
     <span class="kw">fn </span>guest_memory(memory: <span class="kw-2">*mut </span>u8) -&gt; ProofGuestMemory {
-        <span class="comment">// Ideally, we&#39;d want to do
+        <span class="comment">// Ideally, we'd want to do
         // let region = unsafe {MmapRegionBuilder::new(GUEST_MEMORY_SIZE)
         //    .with_raw_mmap_pointer(bytes.as_mut_ptr())
         //    .build()
@@ -2212,11 +2214,11 @@
         }
     }
 
-    <span class="comment">// can&#39;t implement kani::Arbitrary for the relevant types due to orphan rules
+    <span class="comment">// can't implement kani::Arbitrary for the relevant types due to orphan rules
     </span><span class="kw">fn </span>setup_kani_guest_memory() -&gt; ProofGuestMemory {
         <span class="comment">// Non-deterministic Vec that will be used as the guest memory. We use `exact_vec` for now
         // as `any_vec` will likely result in worse performance. We do not loose much from
-        // `exact_vec`, as our proofs do not make any assumptions about &quot;filling&quot; guest
+        // `exact_vec`, as our proofs do not make any assumptions about "filling" guest
         // memory: Since everything is placed at non-deterministic addresses with
         // non-deterministic lengths, we still cover all scenarios that would be covered by
         // smaller guest memory closely. We leak the memory allocated here, so that it
@@ -2353,7 +2355,7 @@
 
     <span class="attr">#[kani::proof]
     #[kani::unwind(<span class="number">0</span>)] </span><span class="comment">// There are no loops anywhere, but kani really enjoys getting stuck in std::ptr::drop_in_place.
-                       // This is a compiler intrinsic that has a &quot;dummy&quot; implementation in stdlib that just
+                       // This is a compiler intrinsic that has a "dummy" implementation in stdlib that just
                        // recursively calls itself. Kani will generally unwind this recursion infinitely
     </span><span class="kw">fn </span>verify_spec_2_6_7_2() {
         <span class="comment">// Section 2.6.7.2 deals with device-to-driver notification suppression.
@@ -2361,8 +2363,8 @@
         // want notifications (IRQs) about the device finishing processing individual buffers
         // (descriptor chain heads) from the avail ring until a specific number of descriptors
         // has been processed. This is done by the driver
-        // defining a &quot;used_event&quot; index, which tells the device &quot;please do not notify me until
-        // used.ring[used_event] has been written to by you&quot;.
+        // defining a "used_event" index, which tells the device "please do not notify me until
+        // used.ring[used_event] has been written to by you".
         </span><span class="kw">let </span>ProofContext(<span class="kw-2">mut </span>queue, mem) = ProofContext::bounded_queue();
 
         <span class="kw">let </span>num_added_old = queue.num_added.<span class="number">0</span>;
@@ -2388,7 +2390,7 @@
                 <span class="macro">kani::cover!</span>();
             }
 
-            <span class="comment">// The other case is handled by a &quot;SHOULD NOT send a notification&quot; in the spec.
+            <span class="comment">// The other case is handled by a "SHOULD NOT send a notification" in the spec.
             // So we do not care
         </span>}
     }
@@ -2396,26 +2398,26 @@
     <span class="attr">#[kani::proof]
     #[kani::unwind(<span class="number">0</span>)]
     </span><span class="kw">fn </span>verify_prepare_kick() {
-        <span class="comment">// Firecracker&#39;s virtio queue implementation is not completely spec conform:
+        <span class="comment">// Firecracker's virtio queue implementation is not completely spec conform:
         // According to the spec, we have to check whether to notify the driver after every call
-        // to add_used. We don&#39;t do that. Instead, we call add_used a bunch of times (with the
+        // to add_used. We don't do that. Instead, we call add_used a bunch of times (with the
         // number of added descriptors being counted in Queue.num_added), and then use
-        // &quot;prepare_kick&quot; to check if any of those descriptors should have triggered a
+        // "prepare_kick" to check if any of those descriptors should have triggered a
         // notification.
         </span><span class="kw">let </span>ProofContext(<span class="kw-2">mut </span>queue, mem) = ProofContext::bounded_queue();
 
         queue.enable_notif_suppression();
         <span class="macro">assert!</span>(queue.uses_notif_suppression);
 
-        <span class="comment">// With firecracker&#39;s batching of used IRQs, we need to check if addition of the last
+        <span class="comment">// With firecracker's batching of used IRQs, we need to check if addition of the last
         // queue.num_added buffers is what caused us to cross the used_event index (e.g. if the
         // index used_event was written to since the last call to prepare_kick). We have to
         // take various ring-wrapping behavior into consideration here. This is the case if
         // used_event in [next_used - num_added, next_used - 1]. However, intervals
         // in modular arithmetic are a finicky thing, as we do not have a notion of order
         // (consider for example u16::MAX + 1 = 0. Clearly, x + 1 &gt; x, but that would imply 0 &gt;
-        // u16::MAX) This gives us some interesting corner cases: What if our &quot;interval&quot; is
-        // &quot;[u16::MAX - 1, 1]&quot;? For these &quot;wrapped&quot; intervals, we can instead consider
+        // u16::MAX) This gives us some interesting corner cases: What if our "interval" is
+        // "[u16::MAX - 1, 1]"? For these "wrapped" intervals, we can instead consider
         // [next_used - num_added - 1, u16::MAX] ∪ [0, next_used - 1]. Since queue size is at most
         // 2^15, intervals can only wrap at most once. This gives us the following logic:
 
@@ -2502,7 +2504,7 @@
         <span class="kw">let </span>next_avail = queue.next_avail;
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw">_</span>) = queue.pop(<span class="kw-2">&amp;</span>mem) {
-            <span class="comment">// Can&#39;t get anything out of an empty queue, assert queue_len != 0
+            <span class="comment">// Can't get anything out of an empty queue, assert queue_len != 0
             </span><span class="macro">assert_ne!</span>(queue_len, <span class="number">0</span>);
             <span class="macro">assert_eq!</span>(queue.next_avail, next_avail + Wrapping(<span class="number">1</span>));
         }
@@ -2522,7 +2524,7 @@
             queue.undo_pop();
             <span class="macro">assert_eq!</span>(queue, queue_clone);
 
-            <span class="comment">// TODO: can we somehow check that guest memory wasn&#39;t touched?
+            <span class="comment">// TODO: can we somehow check that guest memory wasn't touched?
         </span>}
     }
 
@@ -2535,8 +2537,8 @@
         kani::assume(queue.len(<span class="kw-2">&amp;</span>mem) &lt;= queue.actual_size());
 
         <span class="kw">if </span>queue.try_enable_notification(<span class="kw-2">&amp;</span>mem) &amp;&amp; queue.uses_notif_suppression {
-            <span class="comment">// We only require new notifications if the queue is empty (e.g. we&#39;ve processed
-            // everything we&#39;ve been notified about), or if suppression is disabled.
+            <span class="comment">// We only require new notifications if the queue is empty (e.g. we've processed
+            // everything we've been notified about), or if suppression is disabled.
             </span><span class="macro">assert!</span>(queue.is_empty(<span class="kw-2">&amp;</span>mem));
 
             <span class="macro">assert_eq!</span>(queue.avail_idx(<span class="kw-2">&amp;</span>mem), queue.next_avail)
@@ -2567,7 +2569,7 @@
 
             <span class="kw">match </span>maybe_chain {
                 <span class="prelude-val">None </span>=&gt; {
-                    <span class="comment">// This assert is the negation of the &quot;is_valid&quot; check in checked_new
+                    <span class="comment">// This assert is the negation of the "is_valid" check in checked_new
                     </span><span class="macro">assert!</span>(desc.flags &amp; VIRTQ_DESC_F_NEXT == <span class="number">1 </span>&amp;&amp; desc.next &gt;= queue.actual_size())
                 }
                 <span class="prelude-val">Some</span>(head) =&gt; {
@@ -2613,7 +2615,7 @@
         <span class="comment">// desc_table address is way off
         </span><span class="macro">assert!</span>(DescriptorChain::checked_new(m, GuestAddress(<span class="number">0x00ff_ffff_ffff</span>), <span class="number">16</span>, <span class="number">0</span>).is_none());
 
-        <span class="comment">// Let&#39;s create an invalid chain.
+        <span class="comment">// Let's create an invalid chain.
         </span>{
             <span class="comment">// The first desc has a normal len, and the next_descriptor flag is set.
             </span>vq.dtable[<span class="number">0</span>].addr.set(<span class="number">0x1000</span>);
@@ -2625,7 +2627,7 @@
             <span class="macro">assert!</span>(DescriptorChain::checked_new(m, vq.dtable_start(), <span class="number">16</span>, <span class="number">0</span>).is_none());
         }
 
-        <span class="comment">// Finally, let&#39;s test an ok chain.
+        <span class="comment">// Finally, let's test an ok chain.
         </span>{
             vq.dtable[<span class="number">0</span>].next.set(<span class="number">1</span>);
             vq.dtable[<span class="number">1</span>].set(<span class="number">0x2000</span>, <span class="number">0x1000</span>, <span class="number">0</span>, <span class="number">0</span>);
@@ -2656,7 +2658,7 @@
         <span class="comment">// q is currently valid
         </span><span class="macro">assert!</span>(q.is_valid(m));
 
-        <span class="comment">// shouldn&#39;t be valid when not marked as ready
+        <span class="comment">// shouldn't be valid when not marked as ready
         </span>q.ready = <span class="bool-val">false</span>;
         <span class="macro">assert!</span>(!q.is_valid(m));
         q.ready = <span class="bool-val">true</span>;
@@ -2723,7 +2725,7 @@
 
         q.ready = <span class="bool-val">true</span>;
 
-        <span class="comment">// Let&#39;s create two simple descriptor chains.
+        <span class="comment">// Let's create two simple descriptor chains.
 
         </span><span class="kw">for </span>j <span class="kw">in </span><span class="number">0</span>..<span class="number">5 </span>{
             vq.dtable[j <span class="kw">as </span>usize].set(<span class="number">0x1000 </span>* u64::from(j + <span class="number">1</span>), <span class="number">0x1000</span>, VIRTQ_DESC_F_NEXT, j + <span class="number">1</span>);
@@ -2736,7 +2738,7 @@
         vq.avail.ring[<span class="number">1</span>].set(<span class="number">2</span>);
         vq.avail.idx.set(<span class="number">2</span>);
 
-        <span class="comment">// We&#39;ve just set up two chains.
+        <span class="comment">// We've just set up two chains.
         </span><span class="macro">assert_eq!</span>(q.len(m), <span class="number">2</span>);
 
         <span class="comment">// The first chain should hold exactly two descriptors.
@@ -2758,7 +2760,7 @@
         <span class="macro">assert!</span>(!d.has_next());
         <span class="macro">assert!</span>(d.next_descriptor().is_none());
 
-        <span class="comment">// We&#39;ve popped both chains, so the queue should be empty.
+        <span class="comment">// We've popped both chains, so the queue should be empty.
         </span><span class="macro">assert!</span>(q.is_empty(m));
         <span class="macro">assert!</span>(q.pop(m).is_none());
 
@@ -2807,7 +2809,7 @@
 
     <span class="attr">#[test]
     #[should_panic(
-        expected = <span class="string">&quot;The number of available virtio descriptors is greater than queue size!&quot;
+        expected = <span class="string">"The number of available virtio descriptors is greater than queue size!"
     </span>)]
     </span><span class="kw">fn </span>test_invalid_avail_idx_no_notification() {
         <span class="comment">// This test ensures constructing a descriptor chain succeeds
@@ -2832,7 +2834,7 @@
         vq.avail.ring[<span class="number">1</span>].set(<span class="number">2</span>);
         vq.avail.idx.set(<span class="number">2</span>);
 
-        <span class="comment">// We&#39;ve just set up two chains.
+        <span class="comment">// We've just set up two chains.
         </span><span class="macro">assert_eq!</span>(q.len(m), <span class="number">2</span>);
 
         <span class="comment">// We process the first descriptor.
@@ -2841,7 +2843,7 @@
         <span class="comment">// We confuse the device and set the available index as being 6.
         </span>vq.avail.idx.set(<span class="number">6</span>);
 
-        <span class="comment">// We&#39;ve actually just popped a descriptor so 6 - 1 = 5.
+        <span class="comment">// We've actually just popped a descriptor so 6 - 1 = 5.
         </span><span class="macro">assert_eq!</span>(q.len(m), <span class="number">5</span>);
 
         <span class="comment">// However, since the apparent length set by the driver is more than the queue size,
@@ -2852,7 +2854,7 @@
 
     <span class="attr">#[test]
     #[should_panic(
-        expected = <span class="string">&quot;The number of available virtio descriptors is greater than queue size!&quot;
+        expected = <span class="string">"The number of available virtio descriptors is greater than queue size!"
     </span>)]
     </span><span class="kw">fn </span>test_invalid_avail_idx_with_notification() {
         <span class="comment">// This test ensures constructing a descriptor chain succeeds
@@ -2943,7 +2945,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>q = vq.create_queue();
 
         {
-            <span class="comment">// If the device doesn&#39;t have notification suppression support,
+            <span class="comment">// If the device doesn't have notification suppression support,
             // `needs_notification()` should always return true.
             </span>q.uses_notif_suppression = <span class="bool-val">false</span>;
             <span class="kw">for </span>used_idx <span class="kw">in </span><span class="number">0</span>..<span class="number">10 </span>{
@@ -2999,7 +3001,7 @@
 
         <span class="macro">assert_eq!</span>(q.len(m), <span class="number">1</span>);
 
-        <span class="comment">// Notification suppression is disabled. try_enable_notification shouldn&#39;t do anything.
+        <span class="comment">// Notification suppression is disabled. try_enable_notification shouldn't do anything.
         </span><span class="macro">assert!</span>(q.try_enable_notification(m));
         <span class="macro">assert_eq!</span>(q.avail_event(m), <span class="number">0</span>);
 
@@ -3020,10 +3022,10 @@
         <span class="kw">let </span>err = UsedRing(vm_memory::GuestMemoryError::InvalidGuestAddress(
             GuestAddress(<span class="number">0</span>),
         ));
-        <span class="kw">let _ </span>= <span class="macro">format!</span>(<span class="string">&quot;{}{:?}&quot;</span>, err, err);
+        <span class="kw">let _ </span>= <span class="macro">format!</span>(<span class="string">"{}{:?}"</span>, err, err);
 
         <span class="kw">let </span>err = DescIndexOutOfBounds(<span class="number">1</span>);
-        <span class="kw">let _ </span>= <span class="macro">format!</span>(<span class="string">&quot;{}{:?}&quot;</span>, err, err);
+        <span class="kw">let _ </span>= <span class="macro">format!</span>(<span class="string">"{}{:?}"</span>, err, err);
     }
 }
 </code></pre></div></section></main></body></html>

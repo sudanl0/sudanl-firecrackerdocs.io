@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["flush_metrics"]};
+window.SIDEBAR_ITEMS = {"fn":["flush_metrics"],"static":["METRICS"],"struct":["EntropyDeviceMetrics"]};

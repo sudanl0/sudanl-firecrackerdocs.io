@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["PersistError"],"struct":["MmioTransportConstructorArgs","MmioTransportState","QueueState","VirtioDeviceState"]};
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_PersistError"],"enum":["PersistError"],"struct":["MmioTransportConstructorArgs","MmioTransportState","QueueState","VirtioDeviceState"]};

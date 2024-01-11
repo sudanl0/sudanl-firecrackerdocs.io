@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["ConfigSpace","Net"]};
+window.SIDEBAR_ITEMS = {"constant":["FRAME_HEADER_MAX_LEN","_DERIVE_Display_FOR_FrontendError"],"enum":["FrontendError"],"fn":["frame_bytes_from_buf","frame_bytes_from_buf_mut","frame_hdr_len","init_vnet_hdr","vnet_hdr_len"],"struct":["ConfigSpace","Net"]};

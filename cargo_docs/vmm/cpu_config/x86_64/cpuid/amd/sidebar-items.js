@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["ExtendedApicIdError","ExtendedCacheTopologyError","FeatureEntryError","NormalizeCpuidError"],"mod":["normalize"],"struct":["AmdCpuid"]};

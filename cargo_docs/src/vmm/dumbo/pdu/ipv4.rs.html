@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/dumbo/pdu/ipv4.rs`."><title>ipv4.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../vmm/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/dumbo/pdu/ipv4.rs`."><title>ipv4.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -749,12 +751,12 @@
 
 <span class="doccomment">/// Interprets the inner bytes as an IPv4 packet.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>IPv4Packet&lt;<span class="lifetime">&#39;a</span>, T: <span class="lifetime">&#39;a</span>&gt; {
-    bytes: InnerBytes&lt;<span class="lifetime">&#39;a</span>, T&gt;,
+</span><span class="kw">pub struct </span>IPv4Packet&lt;<span class="lifetime">'a</span>, T: <span class="lifetime">'a</span>&gt; {
+    bytes: InnerBytes&lt;<span class="lifetime">'a</span>, T&gt;,
 }
 
 <span class="attr">#[allow(clippy::len_without_is_empty)]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: NetworkBytes + Debug&gt; IPv4Packet&lt;<span class="lifetime">&#39;a</span>, T&gt; {
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: NetworkBytes + Debug&gt; IPv4Packet&lt;<span class="lifetime">'a</span>, T&gt; {
     <span class="doccomment">/// Interpret `bytes` as an IPv4Packet without checking the validity of the header fields, and
     /// the length of the inner byte sequence.
     ///
@@ -836,7 +838,7 @@
         (x &gt;&gt; <span class="number">2</span>, x &amp; <span class="number">0b11</span>)
     }
 
-    <span class="doccomment">/// Returns the value of the &#39;total length&#39; header field.
+    <span class="doccomment">/// Returns the value of the 'total length' header field.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>total_len(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u16 {
         <span class="self">self</span>.bytes.ntohs_unchecked(TOTAL_LEN_OFFSET)
@@ -942,7 +944,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: NetworkBytesMut + Debug&gt; IPv4Packet&lt;<span class="lifetime">&#39;a</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: NetworkBytesMut + Debug&gt; IPv4Packet&lt;<span class="lifetime">'a</span>, T&gt; {
     <span class="doccomment">/// Attempts to write an IPv4 packet header to `buf`, making sure there is enough space.
     ///
     /// This method returns an incomplete packet, because the size of the payload might be unknown
@@ -1064,7 +1066,7 @@
     <span class="doccomment">/// Returns a mutable byte slice representing the payload of the packet.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>payload_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>[u8] {
-        <span class="comment">// Can&#39;t use self.header_len() as a fn parameter on the following line, because
+        <span class="comment">// Can't use self.header_len() as a fn parameter on the following line, because
         // the borrow checker complains. This may change when it becomes smarter.
         </span><span class="kw">let </span>header_len = <span class="self">self</span>.header_len();
         <span class="self">self</span>.payload_mut_unchecked(header_len.into())
@@ -1076,7 +1078,7 @@
 /// It can be transformed into an `IPv4Packet` by specifying the size of the payload, and
 /// shrinking the inner byte sequence to be as large as the packet itself (this includes setting
 /// the `total length` header field).
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: NetworkBytesMut + Debug&gt; Incomplete&lt;IPv4Packet&lt;<span class="lifetime">&#39;a</span>, T&gt;&gt; {
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: NetworkBytesMut + Debug&gt; Incomplete&lt;IPv4Packet&lt;<span class="lifetime">'a</span>, T&gt;&gt; {
     <span class="doccomment">/// Transforms `self` into an `IPv4Packet` based on the supplied header and payload length. May
     /// panic for invalid values of the input parameters.
     ///
@@ -1090,7 +1092,7 @@
         header_len: u8,
         payload_len: u16,
         compute_checksum: bool,
-    ) -&gt; IPv4Packet&lt;<span class="lifetime">&#39;a</span>, T&gt; {
+    ) -&gt; IPv4Packet&lt;<span class="lifetime">'a</span>, T&gt; {
         <span class="kw">let </span>total_len = u16::from(header_len) + payload_len;
         {
             <span class="kw">let </span>packet = <span class="kw-2">&amp;mut </span><span class="self">self</span>.inner;
@@ -1123,7 +1125,7 @@
         options_len: u8,
         payload_len: u16,
         compute_checksum: bool,
-    ) -&gt; IPv4Packet&lt;<span class="lifetime">&#39;a</span>, T&gt; {
+    ) -&gt; IPv4Packet&lt;<span class="lifetime">'a</span>, T&gt; {
         <span class="kw">let </span>header_len = OPTIONS_OFFSET + options_len;
         <span class="self">self</span>.with_header_and_payload_len_unchecked(header_len, payload_len, compute_checksum)
     }
@@ -1139,7 +1141,7 @@
         <span class="self">self</span>,
         payload_len: u16,
         compute_checksum: bool,
-    ) -&gt; IPv4Packet&lt;<span class="lifetime">&#39;a</span>, T&gt; {
+    ) -&gt; IPv4Packet&lt;<span class="lifetime">'a</span>, T&gt; {
         <span class="kw">let </span>header_len = <span class="self">self</span>.inner().header_len();
         <span class="self">self</span>.with_header_and_payload_len_unchecked(header_len, payload_len, compute_checksum)
     }
@@ -1256,9 +1258,9 @@
 
         IPv4Packet::from_bytes(buf.as_ref(), <span class="bool-val">true</span>).unwrap();
 
-        <span class="comment">// Now let&#39;s check some error conditions.
+        <span class="comment">// Now let's check some error conditions.
 
-        // Using a helper function here instead of a closure because it&#39;s hard (impossible?) to
+        // Using a helper function here instead of a closure because it's hard (impossible?) to
         // specify lifetime bounds for closure arguments.
         </span><span class="kw">fn </span>p(buf: <span class="kw-2">&amp;mut </span>[u8]) -&gt; IPv4Packet&lt;<span class="kw-2">&amp;mut </span>[u8]&gt; {
             IPv4Packet::from_bytes_unchecked(buf)
@@ -1280,7 +1282,7 @@
         <span class="comment">// Header length too large. We have to add at least 4 here, because the setter converts
         // header_len into the ihl field via division by 4, so anything less will lead to a valid
         // result (the ihl corresponding to IPV4_MAX_HEADER_LEN). When decoding the header_len back
-        // from the packet, we&#39;ll get a smaller value than OPTIONS_OFFSET, because it wraps around
+        // from the packet, we'll get a smaller value than OPTIONS_OFFSET, because it wraps around
         // modulo 60, since the ihl field is only four bits wide, and then gets multiplied with 4.
         </span>p(buf.as_mut()).set_version_and_header_len(IPV4_VERSION, MAX_HEADER_LEN + <span class="number">4</span>);
         look_for_error(buf.as_ref(), Error::HeaderLen);
@@ -1298,7 +1300,7 @@
         <span class="comment">// The original packet header should contain a valid checksum.
         </span><span class="macro">assert_eq!</span>(p(buf.as_mut()).set_total_len(buf_len).compute_checksum(), <span class="number">0</span>);
 
-        <span class="comment">// Let&#39;s make it invalid.
+        <span class="comment">// Let's make it invalid.
         </span><span class="kw">let </span>checksum = p(buf.as_mut()).header_checksum();
         p(buf.as_mut()).set_header_checksum(checksum.wrapping_add(<span class="number">1</span>));
         look_for_error(buf.as_ref(), Error::Checksum);
@@ -1320,7 +1322,7 @@
         <span class="kw">let </span>src = Ipv4Addr::new(<span class="number">10</span>, <span class="number">100</span>, <span class="number">11</span>, <span class="number">21</span>);
         <span class="kw">let </span>dst = Ipv4Addr::new(<span class="number">192</span>, <span class="number">168</span>, <span class="number">121</span>, <span class="number">35</span>);
         <span class="kw">let </span>payload_len = <span class="number">30</span>;
-        <span class="comment">// This is kinda mandatory, since we don&#39;t implement options support yet.
+        <span class="comment">// This is kinda mandatory, since we don't implement options support yet.
         </span><span class="kw">let </span>options_len = <span class="number">0</span>;
         <span class="kw">let </span>header_len = OPTIONS_OFFSET + options_len;
 

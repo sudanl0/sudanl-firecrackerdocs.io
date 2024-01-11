@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["TYPE_VSOCK","VSOCK_DEV_ID"],"enum":["VsockError","VsockUnixBackendError"],"mod":["metrics","persist"],"struct":["Vsock","VsockUnixBackend"],"trait":["VsockBackend","VsockChannel","VsockEpollListener"]};
+window.SIDEBAR_ITEMS = {"constant":["TYPE_VSOCK","VSOCK_DEV_ID","_DERIVE_Display_FOR_VsockError"],"enum":["VsockError","VsockUnixBackendError"],"mod":["csm","defs","device","event_handler","metrics","packet","persist","unix"],"struct":["Vsock","VsockUnixBackend"],"trait":["VsockBackend","VsockChannel","VsockEpollListener"]};

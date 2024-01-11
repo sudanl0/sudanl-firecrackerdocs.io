@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/vstate/vcpu/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../vmm/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/vstate/vcpu/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1159,6 +1161,8 @@
 <a href="#1159" id="1159">1159</a>
 <a href="#1160" id="1160">1160</a>
 <a href="#1161" id="1161">1161</a>
+<a href="#1162" id="1162">1162</a>
+<a href="#1163" id="1163">1163</a>
 </pre></div><pre class="rust"><code><span class="comment">// Copyright 2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 //
@@ -1190,15 +1194,15 @@
 <span class="kw">use </span><span class="kw">crate</span>::FcExitCode;
 
 <span class="doccomment">/// Module with aarch64 vCPU implementation.
-</span><span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+</span><span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
 </span><span class="kw">pub mod </span>aarch64;
 <span class="doccomment">/// Module with x86_64 vCPU implementation.
-</span><span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+</span><span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
 </span><span class="kw">pub mod </span>x86_64;
 
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
 </span><span class="kw">pub use </span>aarch64::{KvmVcpuError, <span class="kw-2">*</span>};
-<span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+<span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
 </span><span class="kw">pub use </span>x86_64::{KvmVcpuError, <span class="kw-2">*</span>};
 
 <span class="doccomment">/// Signal number (SIGRTMIN) used to kick Vcpus.
@@ -1241,7 +1245,7 @@
 
 <span class="doccomment">/// Error type for [`Vcpu::start_threaded`].
 </span><span class="attr">#[derive(Debug, derive_more::From, thiserror::Error)]
-#[error(<span class="string">&quot;Failed to spawn vCPU thread: {0}&quot;</span>)]
+#[error(<span class="string">"Failed to spawn vCPU thread: {0}"</span>)]
 </span><span class="kw">pub struct </span>StartThreadedError(std::io::Error);
 
 <span class="doccomment">/// A wrapper around creating and using a vcpu.
@@ -1263,7 +1267,7 @@
 
     <span class="doccomment">/// Exit reason used to test run_emulation function.
     </span><span class="attr">#[cfg(test)]
-    </span>test_vcpu_exit_reason: Mutex&lt;<span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Result</span>&lt;VcpuExit&lt;<span class="lifetime">&#39;static</span>&gt;, errno::Error&gt;&gt;&gt;,
+    </span>test_vcpu_exit_reason: Mutex&lt;<span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Result</span>&lt;VcpuExit&lt;<span class="lifetime">'static</span>&gt;, errno::Error&gt;&gt;&gt;,
 }
 
 <span class="kw">impl </span>Vcpu {
@@ -1334,8 +1338,8 @@
     <span class="doccomment">/// Registers a signal handler which makes use of TLS and kvm immediate exit to
     /// kick the vcpu running on the current thread, if there is one.
     </span><span class="kw">pub fn </span>register_kick_signal_handler() {
-        <span class="kw">extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>handle_signal(<span class="kw">_</span>: c_int, <span class="kw">_</span>: <span class="kw-2">*mut </span>siginfo_t, <span class="kw">_</span>: <span class="kw-2">*mut </span>c_void) {
-            <span class="comment">// SAFETY: This is safe because it&#39;s temporarily aliasing the `Vcpu` object, but we are
+        <span class="kw">extern </span><span class="string">"C" </span><span class="kw">fn </span>handle_signal(<span class="kw">_</span>: c_int, <span class="kw">_</span>: <span class="kw-2">*mut </span>siginfo_t, <span class="kw">_</span>: <span class="kw-2">*mut </span>c_void) {
+            <span class="comment">// SAFETY: This is safe because it's temporarily aliasing the `Vcpu` object, but we are
             // only reading `vcpu.fd` which does not change for the lifetime of the `Vcpu`.
             </span><span class="kw">unsafe </span>{
                 <span class="kw">let _ </span>= Vcpu::run_on_thread_local(|vcpu| {
@@ -1346,7 +1350,7 @@
         }
 
         register_signal_handler(sigrtmin() + VCPU_RTSIG_OFFSET, handle_signal)
-            .expect(<span class="string">&quot;Failed to register vcpu signal handler&quot;</span>);
+            .expect(<span class="string">"Failed to register vcpu signal handler"</span>);
     }
 
     <span class="doccomment">/// Constructs a new VCPU for `vm`.
@@ -1385,14 +1389,14 @@
         seccomp_filter: Arc&lt;BpfProgram&gt;,
         barrier: Arc&lt;Barrier&gt;,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;VcpuHandle, StartThreadedError&gt; {
-        <span class="kw">let </span>event_sender = <span class="self">self</span>.event_sender.take().expect(<span class="string">&quot;vCPU already started&quot;</span>);
+        <span class="kw">let </span>event_sender = <span class="self">self</span>.event_sender.take().expect(<span class="string">"vCPU already started"</span>);
         <span class="kw">let </span>response_receiver = <span class="self">self</span>.response_receiver.take().unwrap();
         <span class="kw">let </span>vcpu_thread = thread::Builder::new()
-            .name(<span class="macro">format!</span>(<span class="string">&quot;fc_vcpu {}&quot;</span>, <span class="self">self</span>.kvm_vcpu.index))
+            .name(<span class="macro">format!</span>(<span class="string">"fc_vcpu {}"</span>, <span class="self">self</span>.kvm_vcpu.index))
             .spawn(<span class="kw">move </span>|| {
                 <span class="kw">let </span>filter = <span class="kw-2">&amp;*</span>seccomp_filter;
                 <span class="self">self</span>.init_thread_local_data()
-                    .expect(<span class="string">&quot;Cannot cleanly initialize vcpu TLS.&quot;</span>);
+                    .expect(<span class="string">"Cannot cleanly initialize vcpu TLS."</span>);
                 <span class="comment">// Synchronization to make sure thread local data is initialized.
                 </span>barrier.wait();
                 <span class="self">self</span>.run(filter);
@@ -1416,7 +1420,7 @@
         // altogether is the desired behaviour.
         </span><span class="kw">if let </span><span class="prelude-val">Err</span>(err) = seccompiler::apply_filter(seccomp_filter) {
             <span class="macro">panic!</span>(
-                <span class="string">&quot;Failed to set the requested seccomp filters on vCPU {}: Error: {}&quot;</span>,
+                <span class="string">"Failed to set the requested seccomp filters on vCPU {}: Error: {}"</span>,
                 <span class="self">self</span>.kvm_vcpu.index, err
             );
         }
@@ -1437,7 +1441,7 @@
                 </span><span class="prelude-val">Ok</span>(VcpuEmulation::Interrupted) =&gt; <span class="kw">break</span>,
                 <span class="comment">// If the guest was rebooted or halted:
                 // - vCPU0 will always exit out of `KVM_RUN` with KVM_EXIT_SHUTDOWN or KVM_EXIT_HLT.
-                // - the other vCPUs won&#39;t ever exit out of `KVM_RUN`, but they won&#39;t consume CPU.
+                // - the other vCPUs won't ever exit out of `KVM_RUN`, but they won't consume CPU.
                 // So we pause vCPU0 and send a signal to the emulation thread to stop the VMM.
                 </span><span class="prelude-val">Ok</span>(VcpuEmulation::Stopped) =&gt; <span class="kw">return </span><span class="self">self</span>.exit(FcExitCode::Ok),
                 <span class="comment">// Emulation errors lead to vCPU exit.
@@ -1445,7 +1449,7 @@
             }
         }
 
-        <span class="comment">// By default don&#39;t change state.
+        <span class="comment">// By default don't change state.
         </span><span class="kw">let </span><span class="kw-2">mut </span>state = StateMachine::next(<span class="self">Self</span>::running);
 
         <span class="comment">// Break this emulation loop on any transition request/external event.
@@ -1455,42 +1459,42 @@
                 <span class="comment">// Nothing special to do.
                 </span><span class="self">self</span>.response_sender
                     .send(VcpuResponse::Paused)
-                    .expect(<span class="string">&quot;failed to send pause status&quot;</span>);
+                    .expect(<span class="string">"vcpu channel unexpectedly closed"</span>);
 
                 <span class="comment">// TODO: we should call `KVM_KVMCLOCK_CTRL` here to make sure
                 // TODO continued: the guest soft lockup watchdog does not panic on Resume.
 
-                // Move to &#39;paused&#39; state.
+                // Move to 'paused' state.
                 </span>state = StateMachine::next(<span class="self">Self</span>::paused);
             }
             <span class="prelude-val">Ok</span>(VcpuEvent::Resume) =&gt; {
                 <span class="self">self</span>.response_sender
                     .send(VcpuResponse::Resumed)
-                    .expect(<span class="string">&quot;failed to send resume status&quot;</span>);
+                    .expect(<span class="string">"vcpu channel unexpectedly closed"</span>);
             }
             <span class="comment">// SaveState cannot be performed on a running Vcpu.
             </span><span class="prelude-val">Ok</span>(VcpuEvent::SaveState) =&gt; {
                 <span class="self">self</span>.response_sender
                     .send(VcpuResponse::NotAllowed(String::from(
-                        <span class="string">&quot;save/restore unavailable while running&quot;</span>,
+                        <span class="string">"save/restore unavailable while running"</span>,
                     )))
-                    .expect(<span class="string">&quot;failed to send save not allowed status&quot;</span>);
+                    .expect(<span class="string">"vcpu channel unexpectedly closed"</span>);
             }
             <span class="comment">// DumpCpuConfig cannot be performed on a running Vcpu.
             </span><span class="prelude-val">Ok</span>(VcpuEvent::DumpCpuConfig) =&gt; {
                 <span class="self">self</span>.response_sender
                     .send(VcpuResponse::NotAllowed(String::from(
-                        <span class="string">&quot;cpu config dump is unavailable while running&quot;</span>,
+                        <span class="string">"cpu config dump is unavailable while running"</span>,
                     )))
-                    .expect(<span class="string">&quot;failed to send save not allowed status&quot;</span>);
+                    .expect(<span class="string">"vcpu channel unexpectedly closed"</span>);
             }
             <span class="prelude-val">Ok</span>(VcpuEvent::Finish) =&gt; <span class="kw">return </span>StateMachine::finish(),
             <span class="comment">// Unhandled exit of the other end.
             </span><span class="prelude-val">Err</span>(TryRecvError::Disconnected) =&gt; {
-                <span class="comment">// Move to &#39;exited&#39; state.
+                <span class="comment">// Move to 'exited' state.
                 </span>state = <span class="self">self</span>.exit(FcExitCode::GenericError);
             }
-            <span class="comment">// All other events or lack thereof have no effect on current &#39;running&#39; state.
+            <span class="comment">// All other events or lack thereof have no effect on current 'running' state.
             </span><span class="prelude-val">Err</span>(TryRecvError::Empty) =&gt; (),
         }
 
@@ -1505,14 +1509,14 @@
                 <span class="comment">// Nothing special to do.
                 </span><span class="self">self</span>.response_sender
                     .send(VcpuResponse::Resumed)
-                    .expect(<span class="string">&quot;vcpu channel unexpectedly closed&quot;</span>);
-                <span class="comment">// Move to &#39;running&#39; state.
+                    .expect(<span class="string">"vcpu channel unexpectedly closed"</span>);
+                <span class="comment">// Move to 'running' state.
                 </span>StateMachine::next(<span class="self">Self</span>::running)
             }
             <span class="prelude-val">Ok</span>(VcpuEvent::Pause) =&gt; {
                 <span class="self">self</span>.response_sender
                     .send(VcpuResponse::Paused)
-                    .expect(<span class="string">&quot;vcpu channel unexpectedly closed&quot;</span>);
+                    .expect(<span class="string">"vcpu channel unexpectedly closed"</span>);
                 StateMachine::next(<span class="self">Self</span>::paused)
             }
             <span class="prelude-val">Ok</span>(VcpuEvent::SaveState) =&gt; {
@@ -1522,12 +1526,12 @@
                     .map(|vcpu_state| {
                         <span class="self">self</span>.response_sender
                             .send(VcpuResponse::SavedState(Box::new(vcpu_state)))
-                            .expect(<span class="string">&quot;vcpu channel unexpectedly closed&quot;</span>);
+                            .expect(<span class="string">"vcpu channel unexpectedly closed"</span>);
                     })
                     .unwrap_or_else(|err| {
                         <span class="self">self</span>.response_sender
                             .send(VcpuResponse::Error(VcpuError::VcpuResponse(err)))
-                            .expect(<span class="string">&quot;vcpu channel unexpectedly closed&quot;</span>);
+                            .expect(<span class="string">"vcpu channel unexpectedly closed"</span>);
                     });
 
                 StateMachine::next(<span class="self">Self</span>::paused)
@@ -1538,12 +1542,12 @@
                     .map(|cpu_config| {
                         <span class="self">self</span>.response_sender
                             .send(VcpuResponse::DumpedCpuConfig(Box::new(cpu_config)))
-                            .expect(<span class="string">&quot;vcpu channel unexpectedly closed&quot;</span>);
+                            .expect(<span class="string">"vcpu channel unexpectedly closed"</span>);
                     })
                     .unwrap_or_else(|err| {
                         <span class="self">self</span>.response_sender
                             .send(VcpuResponse::Error(VcpuError::VcpuResponse(err)))
-                            .expect(<span class="string">&quot;vcpu channel unnexpectedly closed&quot;</span>);
+                            .expect(<span class="string">"vcpu channel unexpectedly closed"</span>);
                     });
 
                 StateMachine::next(<span class="self">Self</span>::paused)
@@ -1551,7 +1555,7 @@
             <span class="prelude-val">Ok</span>(VcpuEvent::Finish) =&gt; StateMachine::finish(),
             <span class="comment">// Unhandled exit of the other end.
             </span><span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
-                <span class="comment">// Move to &#39;exited&#39; state.
+                <span class="comment">// Move to 'exited' state.
                 </span><span class="self">self</span>.exit(FcExitCode::GenericError)
             }
         }
@@ -1560,9 +1564,9 @@
     <span class="comment">// Transition to the exited state and finish on command.
     </span><span class="kw">fn </span>exit(<span class="kw-2">&amp;mut </span><span class="self">self</span>, exit_code: FcExitCode) -&gt; StateMachine&lt;<span class="self">Self</span>&gt; {
         <span class="comment">// To avoid cycles, all teardown paths take the following route:
-        // +------------------------+----------------------------+------------------------+
-        // |        Vmm             |           Action           |           Vcpu         |
-        // +------------------------+----------------------------+------------------------+
+        //   +------------------------+----------------------------+------------------------+
+        //   |        Vmm             |           Action           |           Vcpu         |
+        //   +------------------------+----------------------------+------------------------+
         // 1 |                        |                            | vcpu.exit(exit_code)   |
         // 2 |                        |                            | vcpu.exit_evt.write(1) |
         // 3 |                        | &lt;--- EventFd::exit_evt --- |                        |
@@ -1571,22 +1575,22 @@
         // 6 |                        |                            | StateMachine::finish() |
         // 7 | VcpuHandle::join()     |                            |                        |
         // 8 | vmm.shutdown_exit_code becomes Some(exit_code) breaking the main event loop  |
-        // +------------------------+----------------------------+------------------------+
+        //   +------------------------+----------------------------+------------------------+
         // Vcpu initiated teardown starts from `fn Vcpu::exit()` (step 1).
         // Vmm initiated teardown starts from `pub fn Vmm::stop()` (step 4).
-        // Once `vmm.shutdown_exit_code` becomes `Some(exit_code)`, it is the upper layer&#39;s
+        // Once `vmm.shutdown_exit_code` becomes `Some(exit_code)`, it is the upper layer's
         // responsibility to break main event loop and propagate the exit code value.
         // Signal Vmm of Vcpu exit.
         </span><span class="kw">if let </span><span class="prelude-val">Err</span>(err) = <span class="self">self</span>.exit_evt.write(<span class="number">1</span>) {
             METRICS.vcpu.failures.inc();
-            <span class="macro">error!</span>(<span class="string">&quot;Failed signaling vcpu exit event: {}&quot;</span>, err);
+            <span class="macro">error!</span>(<span class="string">"Failed signaling vcpu exit event: {}"</span>, err);
         }
         <span class="comment">// From this state we only accept going to finished.
         </span><span class="kw">loop </span>{
             <span class="self">self</span>.response_sender
                 .send(VcpuResponse::Exited(exit_code))
-                .expect(<span class="string">&quot;vcpu channel unexpectedly closed&quot;</span>);
-            <span class="comment">// Wait for and only accept &#39;VcpuEvent::Finish&#39;.
+                .expect(<span class="string">"vcpu channel unexpectedly closed"</span>);
+            <span class="comment">// Wait for and only accept 'VcpuEvent::Finish'.
             </span><span class="kw">if let </span><span class="prelude-val">Ok</span>(VcpuEvent::Finish) = <span class="self">self</span>.event_receiver.recv() {
                 <span class="kw">break</span>;
             }
@@ -1595,7 +1599,7 @@
     }
 
     <span class="attr">#[cfg(not(test))]
-    </span><span class="doccomment">/// Calls `KVM_RUN` with this [`Vcpu`]&#39;s underlying file descriptor.
+    </span><span class="doccomment">/// Calls `KVM_RUN` with this [`Vcpu`]'s underlying file descriptor.
     ///
     /// Blocks until a `VM_EXIT` is received, in which case this function returns a [`VcpuExit`]
     /// containing the reason.
@@ -1611,6 +1615,7 @@
             <span class="prelude-val">Ok</span>(run) =&gt; <span class="kw">match </span>run {
                 VcpuExit::MmioRead(addr, data) =&gt; {
                     <span class="kw">if let </span><span class="prelude-val">Some</span>(mmio_bus) = <span class="kw-2">&amp;</span><span class="self">self</span>.kvm_vcpu.mmio_bus {
+                        <span class="kw">let </span>_metric = METRICS.vcpu.exit_mmio_read_agg.record_latency_metrics();
                         mmio_bus.read(addr, data);
                         METRICS.vcpu.exit_mmio_read.inc();
                     }
@@ -1618,17 +1623,18 @@
                 }
                 VcpuExit::MmioWrite(addr, data) =&gt; {
                     <span class="kw">if let </span><span class="prelude-val">Some</span>(mmio_bus) = <span class="kw-2">&amp;</span><span class="self">self</span>.kvm_vcpu.mmio_bus {
+                        <span class="kw">let </span>_metric = METRICS.vcpu.exit_mmio_write_agg.record_latency_metrics();
                         mmio_bus.write(addr, data);
                         METRICS.vcpu.exit_mmio_write.inc();
                     }
                     <span class="prelude-val">Ok</span>(VcpuEmulation::Handled)
                 }
                 VcpuExit::Hlt =&gt; {
-                    <span class="macro">info!</span>(<span class="string">&quot;Received KVM_EXIT_HLT signal&quot;</span>);
+                    <span class="macro">info!</span>(<span class="string">"Received KVM_EXIT_HLT signal"</span>);
                     <span class="prelude-val">Ok</span>(VcpuEmulation::Stopped)
                 }
                 VcpuExit::Shutdown =&gt; {
-                    <span class="macro">info!</span>(<span class="string">&quot;Received KVM_EXIT_SHUTDOWN signal&quot;</span>);
+                    <span class="macro">info!</span>(<span class="string">"Received KVM_EXIT_SHUTDOWN signal"</span>);
                     <span class="prelude-val">Ok</span>(VcpuEmulation::Stopped)
                 }
                 <span class="comment">// Documentation specifies that below kvm exits are considered
@@ -1637,27 +1643,27 @@
                     <span class="comment">// Hardware entry failure.
                     </span>METRICS.vcpu.failures.inc();
                     <span class="macro">error!</span>(
-                        <span class="string">&quot;Received KVM_EXIT_FAIL_ENTRY signal: {} on cpu {}&quot;</span>,
+                        <span class="string">"Received KVM_EXIT_FAIL_ENTRY signal: {} on cpu {}"</span>,
                         hardware_entry_failure_reason, cpu
                     );
                     <span class="prelude-val">Err</span>(VcpuError::FaultyKvmExit(<span class="macro">format!</span>(
-                        <span class="string">&quot;{:?}&quot;</span>,
+                        <span class="string">"{:?}"</span>,
                         VcpuExit::FailEntry(hardware_entry_failure_reason, cpu)
                     )))
                 }
                 VcpuExit::InternalError =&gt; {
                     <span class="comment">// Failure from the Linux KVM subsystem rather than from the hardware.
                     </span>METRICS.vcpu.failures.inc();
-                    <span class="macro">error!</span>(<span class="string">&quot;Received KVM_EXIT_INTERNAL_ERROR signal&quot;</span>);
+                    <span class="macro">error!</span>(<span class="string">"Received KVM_EXIT_INTERNAL_ERROR signal"</span>);
                     <span class="prelude-val">Err</span>(VcpuError::FaultyKvmExit(<span class="macro">format!</span>(
-                        <span class="string">&quot;{:?}&quot;</span>,
+                        <span class="string">"{:?}"</span>,
                         VcpuExit::InternalError
                     )))
                 }
                 VcpuExit::SystemEvent(event_type, event_flags) =&gt; <span class="kw">match </span>event_type {
                     KVM_SYSTEM_EVENT_RESET | KVM_SYSTEM_EVENT_SHUTDOWN =&gt; {
                         <span class="macro">info!</span>(
-                            <span class="string">&quot;Received KVM_SYSTEM_EVENT: type: {}, event: {}&quot;</span>,
+                            <span class="string">"Received KVM_SYSTEM_EVENT: type: {}, event: {:?}"</span>,
                             event_type, event_flags
                         );
                         <span class="prelude-val">Ok</span>(VcpuEmulation::Stopped)
@@ -1665,11 +1671,11 @@
                     <span class="kw">_ </span>=&gt; {
                         METRICS.vcpu.failures.inc();
                         <span class="macro">error!</span>(
-                            <span class="string">&quot;Received KVM_SYSTEM_EVENT signal type: {}, flag: {}&quot;</span>,
+                            <span class="string">"Received KVM_SYSTEM_EVENT signal type: {}, flag: {:?}"</span>,
                             event_type, event_flags
                         );
                         <span class="prelude-val">Err</span>(VcpuError::FaultyKvmExit(<span class="macro">format!</span>(
-                            <span class="string">&quot;{:?}&quot;</span>,
+                            <span class="string">"{:?}"</span>,
                             VcpuExit::SystemEvent(event_type, event_flags)
                         )))
                     }
@@ -1692,17 +1698,17 @@
                     libc::ENOSYS =&gt; {
                         METRICS.vcpu.failures.inc();
                         <span class="macro">error!</span>(
-                            <span class="string">&quot;Received ENOSYS error because KVM failed to emulate an instruction.&quot;
+                            <span class="string">"Received ENOSYS error because KVM failed to emulate an instruction."
                         </span>);
                         <span class="prelude-val">Err</span>(VcpuError::FaultyKvmExit(
-                            <span class="string">&quot;Received ENOSYS error because KVM failed to emulate an instruction.&quot;
+                            <span class="string">"Received ENOSYS error because KVM failed to emulate an instruction."
                                 </span>.to_string(),
                         ))
                     }
                     <span class="kw">_ </span>=&gt; {
                         METRICS.vcpu.failures.inc();
-                        <span class="macro">error!</span>(<span class="string">&quot;Failure during vcpu run: {}&quot;</span>, err);
-                        <span class="prelude-val">Err</span>(VcpuError::FaultyKvmExit(<span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, err)))
+                        <span class="macro">error!</span>(<span class="string">"Failure during vcpu run: {}"</span>, err);
+                        <span class="prelude-val">Err</span>(VcpuError::FaultyKvmExit(<span class="macro">format!</span>(<span class="string">"{}"</span>, err)))
                     }
                 }
             }
@@ -1753,13 +1759,13 @@
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
         <span class="kw">use </span><span class="kw">crate</span>::VcpuResponse::<span class="kw-2">*</span>;
         <span class="kw">match </span><span class="self">self </span>{
-            Paused =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;VcpuResponse::Paused&quot;</span>),
-            Resumed =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;VcpuResponse::Resumed&quot;</span>),
-            Exited(code) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;VcpuResponse::Exited({:?})&quot;</span>, code),
-            SavedState(<span class="kw">_</span>) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;VcpuResponse::SavedState&quot;</span>),
-            Error(<span class="kw-2">ref </span>err) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;VcpuResponse::Error({:?})&quot;</span>, err),
-            NotAllowed(<span class="kw-2">ref </span>reason) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;VcpuResponse::NotAllowed({})&quot;</span>, reason),
-            DumpedCpuConfig(<span class="kw">_</span>) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;VcpuResponse::DumpedCpuConfig&quot;</span>),
+            Paused =&gt; <span class="macro">write!</span>(f, <span class="string">"VcpuResponse::Paused"</span>),
+            Resumed =&gt; <span class="macro">write!</span>(f, <span class="string">"VcpuResponse::Resumed"</span>),
+            Exited(code) =&gt; <span class="macro">write!</span>(f, <span class="string">"VcpuResponse::Exited({:?})"</span>, code),
+            SavedState(<span class="kw">_</span>) =&gt; <span class="macro">write!</span>(f, <span class="string">"VcpuResponse::SavedState"</span>),
+            Error(<span class="kw-2">ref </span>err) =&gt; <span class="macro">write!</span>(f, <span class="string">"VcpuResponse::Error({:?})"</span>, err),
+            NotAllowed(<span class="kw-2">ref </span>reason) =&gt; <span class="macro">write!</span>(f, <span class="string">"VcpuResponse::NotAllowed({})"</span>, reason),
+            DumpedCpuConfig(<span class="kw">_</span>) =&gt; <span class="macro">write!</span>(f, <span class="string">"VcpuResponse::DumpedCpuConfig"</span>),
         }
     }
 }
@@ -1769,14 +1775,14 @@
 </span><span class="kw">pub struct </span>VcpuHandle {
     event_sender: Sender&lt;VcpuEvent&gt;,
     response_receiver: Receiver&lt;VcpuResponse&gt;,
-    <span class="comment">// Rust JoinHandles have to be wrapped in Option if you ever plan on &#39;join()&#39;ing them.
+    <span class="comment">// Rust JoinHandles have to be wrapped in Option if you ever plan on 'join()'ing them.
     // We want to be able to join these threads in tests.
     </span>vcpu_thread: <span class="prelude-ty">Option</span>&lt;thread::JoinHandle&lt;()&gt;&gt;,
 }
 
 <span class="doccomment">/// Error type for [`VcpuHandle::send_event`].
 </span><span class="attr">#[derive(Debug, derive_more::From, thiserror::Error)]
-#[error(<span class="string">&quot;Failed to signal vCPU: {0}&quot;</span>)]
+#[error(<span class="string">"Failed to signal vCPU: {0}"</span>)]
 </span><span class="kw">pub struct </span>VcpuSendEventError(<span class="kw">pub </span>utils::errno::Error);
 
 <span class="kw">impl </span>VcpuHandle {
@@ -1784,7 +1790,7 @@
     ///
     /// # Arguments
     /// + `event_sender`: [`Sender`] to communicate [`VcpuEvent`] to control the vcpu.
-    /// + `response_received`: [`Received`] from which the vcpu&#39;s responses can be read.
+    /// + `response_received`: [`Received`] from which the vcpu's responses can be read.
     /// + `vcpu_thread`: A [`JoinHandle`] for the vcpu thread.
     </span><span class="kw">pub fn </span>new(
         event_sender: Sender&lt;VcpuEvent&gt;,
@@ -1806,17 +1812,17 @@
         <span class="comment">// Use expect() to crash if the other thread closed this channel.
         </span><span class="self">self</span>.event_sender
             .send(event)
-            .expect(<span class="string">&quot;event sender channel closed on vcpu end.&quot;</span>);
+            .expect(<span class="string">"event sender channel closed on vcpu end."</span>);
         <span class="comment">// Kick the vcpu so it picks up the message.
         </span><span class="self">self</span>.vcpu_thread
             .as_ref()
-            <span class="comment">// Safe to unwrap since constructor make this &#39;Some&#39;.
+            <span class="comment">// Safe to unwrap since constructor make this 'Some'.
             </span>.unwrap()
             .kill(sigrtmin() + VCPU_RTSIG_OFFSET)<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="doccomment">/// Returns a reference to the [`Received`] from which the vcpu&#39;s responses can be read.
+    <span class="doccomment">/// Returns a reference to the [`Received`] from which the vcpu's responses can be read.
     </span><span class="kw">pub fn </span>response_receiver(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Receiver&lt;VcpuResponse&gt; {
         <span class="kw-2">&amp;</span><span class="self">self</span>.response_receiver
     }
@@ -1892,38 +1898,38 @@
         <span class="kw-2">*</span>(vcpu.test_vcpu_exit_reason.lock().unwrap()) = <span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(VcpuExit::FailEntry(<span class="number">0</span>, <span class="number">0</span>)));
         <span class="kw">let </span>res = vcpu.run_emulation();
         <span class="macro">assert_eq!</span>(
-            <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, res.unwrap_err()),
+            <span class="macro">format!</span>(<span class="string">"{:?}"</span>, res.unwrap_err()),
             <span class="macro">format!</span>(
-                <span class="string">&quot;{:?}&quot;</span>,
-                EmulationError::FaultyKvmExit(<span class="string">&quot;FailEntry(0, 0)&quot;</span>.to_string())
+                <span class="string">"{:?}"</span>,
+                EmulationError::FaultyKvmExit(<span class="string">"FailEntry(0, 0)"</span>.to_string())
             )
         );
 
         <span class="kw-2">*</span>(vcpu.test_vcpu_exit_reason.lock().unwrap()) = <span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(VcpuExit::InternalError));
         <span class="kw">let </span>res = vcpu.run_emulation();
         <span class="macro">assert_eq!</span>(
-            <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, res.unwrap_err()),
+            <span class="macro">format!</span>(<span class="string">"{:?}"</span>, res.unwrap_err()),
             <span class="macro">format!</span>(
-                <span class="string">&quot;{:?}&quot;</span>,
-                EmulationError::FaultyKvmExit(<span class="string">&quot;InternalError&quot;</span>.to_string())
+                <span class="string">"{:?}"</span>,
+                EmulationError::FaultyKvmExit(<span class="string">"InternalError"</span>.to_string())
             )
         );
 
-        <span class="kw-2">*</span>(vcpu.test_vcpu_exit_reason.lock().unwrap()) = <span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(VcpuExit::SystemEvent(<span class="number">2</span>, <span class="number">0</span>)));
+        <span class="kw-2">*</span>(vcpu.test_vcpu_exit_reason.lock().unwrap()) = <span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(VcpuExit::SystemEvent(<span class="number">2</span>, <span class="kw-2">&amp;</span>[])));
         <span class="kw">let </span>res = vcpu.run_emulation();
         <span class="macro">assert_eq!</span>(res.unwrap(), VcpuEmulation::Stopped);
 
-        <span class="kw-2">*</span>(vcpu.test_vcpu_exit_reason.lock().unwrap()) = <span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(VcpuExit::SystemEvent(<span class="number">1</span>, <span class="number">0</span>)));
+        <span class="kw-2">*</span>(vcpu.test_vcpu_exit_reason.lock().unwrap()) = <span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(VcpuExit::SystemEvent(<span class="number">1</span>, <span class="kw-2">&amp;</span>[])));
         <span class="kw">let </span>res = vcpu.run_emulation();
         <span class="macro">assert_eq!</span>(res.unwrap(), VcpuEmulation::Stopped);
 
-        <span class="kw-2">*</span>(vcpu.test_vcpu_exit_reason.lock().unwrap()) = <span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(VcpuExit::SystemEvent(<span class="number">3</span>, <span class="number">0</span>)));
+        <span class="kw-2">*</span>(vcpu.test_vcpu_exit_reason.lock().unwrap()) = <span class="prelude-val">Some</span>(<span class="prelude-val">Ok</span>(VcpuExit::SystemEvent(<span class="number">3</span>, <span class="kw-2">&amp;</span>[])));
         <span class="kw">let </span>res = vcpu.run_emulation();
         <span class="macro">assert_eq!</span>(
-            <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, res.unwrap_err()),
+            <span class="macro">format!</span>(<span class="string">"{:?}"</span>, res.unwrap_err()),
             <span class="macro">format!</span>(
-                <span class="string">&quot;{:?}&quot;</span>,
-                EmulationError::FaultyKvmExit(<span class="string">&quot;SystemEvent(3, 0)&quot;</span>.to_string())
+                <span class="string">"{:?}"</span>,
+                EmulationError::FaultyKvmExit(<span class="string">"SystemEvent(3, [])"</span>.to_string())
             )
         );
 
@@ -1932,7 +1938,7 @@
         <span class="kw">let </span>res = vcpu.run_emulation();
         <span class="macro">assert_eq!</span>(
             res.unwrap_err().to_string(),
-            <span class="string">&quot;Unexpected kvm exit received: Unknown&quot;</span>.to_string()
+            <span class="string">"Unexpected kvm exit received: Unknown"</span>.to_string()
         );
 
         <span class="kw-2">*</span>(vcpu.test_vcpu_exit_reason.lock().unwrap()) = <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(errno::Error::new(libc::EAGAIN)));
@@ -1942,11 +1948,11 @@
         <span class="kw-2">*</span>(vcpu.test_vcpu_exit_reason.lock().unwrap()) = <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(errno::Error::new(libc::ENOSYS)));
         <span class="kw">let </span>res = vcpu.run_emulation();
         <span class="macro">assert_eq!</span>(
-            <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, res.unwrap_err()),
+            <span class="macro">format!</span>(<span class="string">"{:?}"</span>, res.unwrap_err()),
             <span class="macro">format!</span>(
-                <span class="string">&quot;{:?}&quot;</span>,
+                <span class="string">"{:?}"</span>,
                 EmulationError::FaultyKvmExit(
-                    <span class="string">&quot;Received ENOSYS error because KVM failed to emulate an instruction.&quot;
+                    <span class="string">"Received ENOSYS error because KVM failed to emulate an instruction."
                         </span>.to_string()
                 )
             )
@@ -1959,10 +1965,10 @@
         <span class="kw-2">*</span>(vcpu.test_vcpu_exit_reason.lock().unwrap()) = <span class="prelude-val">Some</span>(<span class="prelude-val">Err</span>(errno::Error::new(libc::EINVAL)));
         <span class="kw">let </span>res = vcpu.run_emulation();
         <span class="macro">assert_eq!</span>(
-            <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, res.unwrap_err()),
+            <span class="macro">format!</span>(<span class="string">"{:?}"</span>, res.unwrap_err()),
             <span class="macro">format!</span>(
-                <span class="string">&quot;{:?}&quot;</span>,
-                EmulationError::FaultyKvmExit(<span class="string">&quot;Invalid argument (os error 22)&quot;</span>.to_string())
+                <span class="string">"{:?}"</span>,
+                EmulationError::FaultyKvmExit(<span class="string">"Invalid argument (os error 22)"</span>.to_string())
             )
         );
 
@@ -2003,7 +2009,7 @@
                 | (SavedState(<span class="kw">_</span>), SavedState(<span class="kw">_</span>))
                 | (DumpedCpuConfig(<span class="kw">_</span>), DumpedCpuConfig(<span class="kw">_</span>)) =&gt; <span class="bool-val">true</span>,
                 (Error(<span class="kw-2">ref </span>err), Error(<span class="kw-2">ref </span>other_err)) =&gt; {
-                    <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, err) == <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, other_err)
+                    <span class="macro">format!</span>(<span class="string">"{:?}"</span>, err) == <span class="macro">format!</span>(<span class="string">"{:?}"</span>, other_err)
                 }
                 <span class="kw">_ </span>=&gt; <span class="bool-val">false</span>,
             }
@@ -2017,14 +2023,14 @@
 
         <span class="kw">let </span>exit_evt = EventFd::new(libc::EFD_NONBLOCK).unwrap();
 
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
         </span><span class="kw">let </span>vcpu = {
             <span class="kw">let </span><span class="kw-2">mut </span>vcpu = Vcpu::new(<span class="number">1</span>, <span class="kw-2">&amp;</span>vm, exit_evt).unwrap();
             vcpu.kvm_vcpu.init(vm.fd(), <span class="kw-2">&amp;</span>[]).unwrap();
             vm.setup_irqchip(<span class="number">1</span>).unwrap();
             vcpu
         };
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
         </span><span class="kw">let </span>vcpu = {
             vm.setup_irqchip().unwrap();
             Vcpu::new(<span class="number">1</span>, <span class="kw-2">&amp;</span>vm, exit_evt).unwrap()
@@ -2036,16 +2042,16 @@
         <span class="kw">use </span>std::fs::File;
         <span class="kw">use </span>std::path::PathBuf;
 
-        <span class="kw">let </span><span class="kw-2">mut </span>path = PathBuf::from(<span class="macro">env!</span>(<span class="string">&quot;CARGO_MANIFEST_DIR&quot;</span>));
+        <span class="kw">let </span><span class="kw-2">mut </span>path = PathBuf::from(<span class="macro">env!</span>(<span class="string">"CARGO_MANIFEST_DIR"</span>));
 
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
-        </span>path.push(<span class="string">&quot;src/utilities/mock_resources/test_elf.bin&quot;</span>);
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
-        </span>path.push(<span class="string">&quot;src/utilities/mock_resources/test_pe.bin&quot;</span>);
+        <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
+        </span>path.push(<span class="string">"src/utilities/mock_resources/test_elf.bin"</span>);
+        <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
+        </span>path.push(<span class="string">"src/utilities/mock_resources/test_pe.bin"</span>);
 
-        <span class="kw">let </span><span class="kw-2">mut </span>kernel_file = File::open(path).expect(<span class="string">&quot;Cannot open kernel file&quot;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>kernel_file = File::open(path).expect(<span class="string">"Cannot open kernel file"</span>);
 
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
         </span><span class="kw">let </span>entry_addr = linux_loader::loader::elf::Elf::load(
             vm_memory,
             <span class="prelude-val">Some</span>(GuestAddress(<span class="kw">crate</span>::arch::get_kernel_start())),
@@ -2053,7 +2059,7 @@
             <span class="prelude-val">Some</span>(GuestAddress(<span class="kw">crate</span>::arch::get_kernel_start())),
         )
         .map_err(StartMicrovmError::KernelLoader);
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
         </span><span class="kw">let </span>entry_addr =
             linux_loader::loader::pe::PE::load(vm_memory, <span class="prelude-val">None</span>, <span class="kw-2">&amp;mut </span>kernel_file, <span class="prelude-val">None</span>)
                 .map_err(StartMicrovmError::KernelLoader);
@@ -2068,10 +2074,10 @@
 
         <span class="kw">let </span>vcpu_exit_evt = vcpu.exit_evt.try_clone().unwrap();
 
-        <span class="comment">// Needs a kernel since we&#39;ll actually run this vcpu.
+        <span class="comment">// Needs a kernel since we'll actually run this vcpu.
         </span><span class="kw">let </span>entry_addr = load_good_kernel(<span class="kw-2">&amp;</span>vm_mem);
 
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
         </span>{
             <span class="kw">use </span><span class="kw">crate</span>::cpu_config::x86_64::cpuid::Cpuid;
             vcpu.kvm_vcpu
@@ -2087,10 +2093,10 @@
                         },
                     },
                 )
-                .expect(<span class="string">&quot;failed to configure vcpu&quot;</span>);
+                .expect(<span class="string">"failed to configure vcpu"</span>);
         }
 
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
         </span>vcpu.kvm_vcpu
             .configure(
                 <span class="kw-2">&amp;</span>vm_mem,
@@ -2101,13 +2107,13 @@
                     cpu_config: <span class="kw">crate</span>::cpu_config::aarch64::CpuConfiguration::default(),
                 },
             )
-            .expect(<span class="string">&quot;failed to configure vcpu&quot;</span>);
+            .expect(<span class="string">"failed to configure vcpu"</span>);
 
         <span class="kw">let </span><span class="kw-2">mut </span>seccomp_filters = get_empty_filters();
         <span class="kw">let </span>barrier = Arc::new(Barrier::new(<span class="number">2</span>));
         <span class="kw">let </span>vcpu_handle = vcpu
-            .start_threaded(seccomp_filters.remove(<span class="string">&quot;vcpu&quot;</span>).unwrap(), barrier.clone())
-            .expect(<span class="string">&quot;failed to start vcpu&quot;</span>);
+            .start_threaded(seccomp_filters.remove(<span class="string">"vcpu"</span>).unwrap(), barrier.clone())
+            .expect(<span class="string">"failed to start vcpu"</span>);
         <span class="comment">// Wait for vCPUs to initialize their TLS before moving forward.
         </span>barrier.wait();
 
@@ -2169,14 +2175,14 @@
 
         <span class="kw">let </span>kvm_run =
             kvm_ioctls::KvmRunWrapper::mmap_from_fd(<span class="kw-2">&amp;</span>vcpu.kvm_vcpu.fd, vm.fd().run_size())
-                .expect(<span class="string">&quot;cannot mmap kvm-run&quot;</span>);
+                .expect(<span class="string">"cannot mmap kvm-run"</span>);
         <span class="kw">let </span>success = Arc::new(std::sync::atomic::AtomicBool::new(<span class="bool-val">false</span>));
         <span class="kw">let </span>vcpu_success = success.clone();
         <span class="kw">let </span>barrier = Arc::new(Barrier::new(<span class="number">2</span>));
         <span class="kw">let </span>vcpu_barrier = barrier.clone();
         <span class="comment">// Start Vcpu thread which will be kicked with a signal.
         </span><span class="kw">let </span>handle = std::thread::Builder::new()
-            .name(<span class="string">&quot;test_vcpu_kick&quot;</span>.to_string())
+            .name(<span class="string">"test_vcpu_kick"</span>.to_string())
             .spawn(<span class="kw">move </span>|| {
                 vcpu.init_thread_local_data().unwrap();
                 <span class="comment">// Notify TLS was populated.
@@ -2191,15 +2197,15 @@
                     std::thread::sleep(std::time::Duration::from_millis(<span class="number">100</span>));
                 }
             })
-            .expect(<span class="string">&quot;cannot start thread&quot;</span>);
+            .expect(<span class="string">"cannot start thread"</span>);
 
         <span class="comment">// Wait for the vcpu to initialize its TLS.
         </span>barrier.wait();
         <span class="comment">// Kick the Vcpu using the custom signal.
         </span>handle
             .kill(sigrtmin() + VCPU_RTSIG_OFFSET)
-            .expect(<span class="string">&quot;failed to signal thread&quot;</span>);
-        handle.join().expect(<span class="string">&quot;failed to join thread&quot;</span>);
+            .expect(<span class="string">"failed to signal thread"</span>);
+        handle.join().expect(<span class="string">"failed to join thread"</span>);
         <span class="comment">// Verify that the Vcpu saw its kvm immediate-exit as set.
         </span><span class="macro">assert!</span>(success.load(Ordering::Acquire));
     }
@@ -2208,12 +2214,12 @@
     </span><span class="kw">fn </span>queue_event_expect_response(handle: <span class="kw-2">&amp;</span>VcpuHandle, event: VcpuEvent, response: VcpuResponse) {
         handle
             .send_event(event)
-            .expect(<span class="string">&quot;failed to send event to vcpu&quot;</span>);
+            .expect(<span class="string">"failed to send event to vcpu"</span>);
         <span class="macro">assert_eq!</span>(
             handle
                 .response_receiver()
                 .recv_timeout(RECV_TIMEOUT_SEC)
-                .expect(<span class="string">&quot;did not receive event response from vcpu&quot;</span>),
+                .expect(<span class="string">"did not receive event response from vcpu"</span>),
             response
         );
     }
@@ -2228,7 +2234,7 @@
         <span class="comment">// Queue a Pause event, expect a response.
         </span>queue_event_expect_response(<span class="kw-2">&amp;</span>vcpu_handle, VcpuEvent::Pause, VcpuResponse::Paused);
 
-        <span class="comment">// Validate vcpu handled the EINTR gracefully and didn&#39;t exit.
+        <span class="comment">// Validate vcpu handled the EINTR gracefully and didn't exit.
         </span><span class="kw">let </span>err = vcpu_exit_evt.read().unwrap_err();
         <span class="macro">assert_eq!</span>(err.raw_os_error().unwrap(), libc::EAGAIN);
 
@@ -2270,14 +2276,14 @@
         <span class="comment">// Queue a SaveState event, get the response.
         </span>vcpu_handle
             .send_event(VcpuEvent::SaveState)
-            .expect(<span class="string">&quot;failed to send event to vcpu&quot;</span>);
+            .expect(<span class="string">"failed to send event to vcpu"</span>);
         <span class="kw">match </span>vcpu_handle
             .response_receiver()
             .recv_timeout(RECV_TIMEOUT_SEC)
-            .expect(<span class="string">&quot;did not receive event response from vcpu&quot;</span>)
+            .expect(<span class="string">"did not receive event response from vcpu"</span>)
         {
             VcpuResponse::SavedState(<span class="kw">_</span>) =&gt; {}
-            <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;unexpected response&quot;</span>),
+            <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">"unexpected response"</span>),
         };
 
         vcpu_handle.send_event(VcpuEvent::Finish).unwrap();
@@ -2290,15 +2296,15 @@
         <span class="comment">// Queue a DumpCpuConfig event, expect a DumpedCpuConfig response.
         </span>vcpu_handle
             .send_event(VcpuEvent::DumpCpuConfig)
-            .expect(<span class="string">&quot;Failed to send an event to vcpu.&quot;</span>);
+            .expect(<span class="string">"Failed to send an event to vcpu."</span>);
         <span class="kw">match </span>vcpu_handle
             .response_receiver()
             .recv_timeout(RECV_TIMEOUT_SEC)
-            .expect(<span class="string">&quot;Could not receive a response from vcpu.&quot;</span>)
+            .expect(<span class="string">"Could not receive a response from vcpu."</span>)
         {
             VcpuResponse::DumpedCpuConfig(<span class="kw">_</span>) =&gt; (),
-            VcpuResponse::Error(err) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;Got an error: {err}&quot;</span>),
-            <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;Got an unexpected response.&quot;</span>),
+            VcpuResponse::Error(err) =&gt; <span class="macro">panic!</span>(<span class="string">"Got an error: {err}"</span>),
+            <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">"Got an unexpected response."</span>),
         }
 
         <span class="comment">// Queue a Resume event, expect a response.

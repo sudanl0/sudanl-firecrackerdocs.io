@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/mmds/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../vmm/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/mmds/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -742,7 +744,7 @@
     </span>MethodNotAllowed,
     <span class="doccomment">/// No MMDS token provided. Use `X-metadata-token` header to specify the session token.
     </span>NoTokenProvided,
-    <span class="doccomment">/// Token time to live value not found. Use `X-metadata-token-ttl-seconds` header to specify the token&#39;s lifetime.
+    <span class="doccomment">/// Token time to live value not found. Use `X-metadata-token-ttl-seconds` header to specify the token's lifetime.
     </span>NoTtlProvided,
     <span class="doccomment">/// Resource not found: {0}.
     </span>ResourceNotFound(String),
@@ -781,7 +783,7 @@
                 </span>doc.remove(key.as_str());
             } <span class="kw">else </span>{
                 <span class="comment">// Recursive call to update target document.
-                // If `key` is not in the target document (it&#39;s a new field defined in `patch`)
+                // If `key` is not in the target document (it's a new field defined in `patch`)
                 // insert a null placeholder and pass it as the new target
                 // so we can insert new values recursively.
                 </span>json_patch(doc.entry(key.as_str()).or_insert(Value::Null), value);
@@ -796,10 +798,10 @@
 </span><span class="kw">fn </span>sanitize_uri(<span class="kw-2">mut </span>uri: String) -&gt; String {
     <span class="kw">let </span><span class="kw-2">mut </span>len = u32::MAX <span class="kw">as </span>usize;
     <span class="comment">// Loop while the deduping decreases the sanitized len.
-    // Each iteration will attempt to dedup &quot;//&quot;.
+    // Each iteration will attempt to dedup "//".
     </span><span class="kw">while </span>uri.len() &lt; len {
         len = uri.len();
-        uri = uri.replace(<span class="string">&quot;//&quot;</span>, <span class="string">&quot;/&quot;</span>);
+        uri = uri.replace(<span class="string">"//"</span>, <span class="string">"/"</span>);
     }
 
     uri
@@ -816,7 +818,7 @@
         );
     }
 
-    <span class="kw">let </span><span class="kw-2">mut </span>mmds_guard = mmds.lock().expect(<span class="string">&quot;Poisoned lock&quot;</span>);
+    <span class="kw">let </span><span class="kw-2">mut </span>mmds_guard = mmds.lock().expect(<span class="string">"Poisoned lock"</span>);
 
     <span class="kw">match </span>mmds_guard.version() {
         MmdsVersion::V1 =&gt; respond_to_request_mmdsv1(<span class="kw-2">&amp;</span>mmds_guard, request),
@@ -1010,63 +1012,63 @@
     <span class="kw">use </span><span class="kw">crate</span>::mmds::token::{MAX_TOKEN_TTL_SECONDS, MIN_TOKEN_TTL_SECONDS};
 
     <span class="kw">fn </span>populate_mmds() -&gt; Arc&lt;Mutex&lt;Mmds&gt;&gt; {
-        <span class="kw">let </span>data = <span class="string">r#&quot;{
-            &quot;name&quot;: {
-                &quot;first&quot;: &quot;John&quot;,
-                &quot;second&quot;: &quot;Doe&quot;
+        <span class="kw">let </span>data = <span class="string">r#"{
+            "name": {
+                "first": "John",
+                "second": "Doe"
             },
-            &quot;age&quot;: 43,
-            &quot;phones&quot;: {
-                &quot;home&quot;: {
-                    &quot;RO&quot;: &quot;+401234567&quot;,
-                    &quot;UK&quot;: &quot;+441234567&quot;
+            "age": 43,
+            "phones": {
+                "home": {
+                    "RO": "+401234567",
+                    "UK": "+441234567"
                 },
-                &quot;mobile&quot;: &quot;+442345678&quot;
+                "mobile": "+442345678"
             }
-        }&quot;#</span>;
+        }"#</span>;
         <span class="kw">let </span>mmds = Arc::new(Mutex::new(Mmds::default()));
         mmds.lock()
-            .expect(<span class="string">&quot;Poisoned lock&quot;</span>)
+            .expect(<span class="string">"Poisoned lock"</span>)
             .put_data(serde_json::from_str(data).unwrap())
             .unwrap();
 
         mmds
     }
 
-    <span class="kw">fn </span>get_json_data() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str {
-        <span class="string">r#&quot;{
-            &quot;age&quot;: 43,
-            &quot;name&quot;: {
-                &quot;first&quot;: &quot;John&quot;,
-                &quot;second&quot;: &quot;Doe&quot;
+    <span class="kw">fn </span>get_json_data() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str {
+        <span class="string">r#"{
+            "age": 43,
+            "name": {
+                "first": "John",
+                "second": "Doe"
             },
-            &quot;phones&quot;: {
-                &quot;home&quot;: {
-                    &quot;RO&quot;: &quot;+401234567&quot;,
-                    &quot;UK&quot;: &quot;+441234567&quot;
+            "phones": {
+                "home": {
+                    "RO": "+401234567",
+                    "UK": "+441234567"
                 },
-                &quot;mobile&quot;: &quot;+442345678&quot;
+                "mobile": "+442345678"
             }
-        }&quot;#
+        }"#
     </span>}
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_sanitize_uri() {
-        <span class="kw">let </span>sanitized = <span class="string">&quot;/a/b/c/d&quot;</span>;
-        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">&quot;/a/b/c/d&quot;</span>.to_owned()), sanitized);
-        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">&quot;/a////b/c//d&quot;</span>.to_owned()), sanitized);
-        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">&quot;/a///b/c///d&quot;</span>.to_owned()), sanitized);
-        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">&quot;/a//b/c////d&quot;</span>.to_owned()), sanitized);
-        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">&quot;///////a//b///c//d&quot;</span>.to_owned()), sanitized);
-        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">&quot;a&quot;</span>.to_owned()), <span class="string">&quot;a&quot;</span>);
-        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">&quot;a/&quot;</span>.to_owned()), <span class="string">&quot;a/&quot;</span>);
-        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">&quot;aa//&quot;</span>.to_owned()), <span class="string">&quot;aa/&quot;</span>);
-        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">&quot;aa&quot;</span>.to_owned()), <span class="string">&quot;aa&quot;</span>);
-        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">&quot;/&quot;</span>.to_owned()), <span class="string">&quot;/&quot;</span>);
-        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">&quot;&quot;</span>.to_owned()), <span class="string">&quot;&quot;</span>);
-        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">&quot;////&quot;</span>.to_owned()), <span class="string">&quot;/&quot;</span>);
-        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">&quot;aa//bb///cc//d&quot;</span>.to_owned()), <span class="string">&quot;aa/bb/cc/d&quot;</span>);
-        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">&quot;//aa//bb///cc//d&quot;</span>.to_owned()), <span class="string">&quot;/aa/bb/cc/d&quot;</span>);
+        <span class="kw">let </span>sanitized = <span class="string">"/a/b/c/d"</span>;
+        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">"/a/b/c/d"</span>.to_owned()), sanitized);
+        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">"/a////b/c//d"</span>.to_owned()), sanitized);
+        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">"/a///b/c///d"</span>.to_owned()), sanitized);
+        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">"/a//b/c////d"</span>.to_owned()), sanitized);
+        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">"///////a//b///c//d"</span>.to_owned()), sanitized);
+        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">"a"</span>.to_owned()), <span class="string">"a"</span>);
+        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">"a/"</span>.to_owned()), <span class="string">"a/"</span>);
+        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">"aa//"</span>.to_owned()), <span class="string">"aa/"</span>);
+        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">"aa"</span>.to_owned()), <span class="string">"aa"</span>);
+        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">"/"</span>.to_owned()), <span class="string">"/"</span>);
+        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">""</span>.to_owned()), <span class="string">""</span>);
+        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">"////"</span>.to_owned()), <span class="string">"/"</span>);
+        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">"aa//bb///cc//d"</span>.to_owned()), <span class="string">"aa/bb/cc/d"</span>);
+        <span class="macro">assert_eq!</span>(sanitize_uri(<span class="string">"//aa//bb///cc//d"</span>.to_owned()), <span class="string">"/aa/bb/cc/d"</span>);
     }
 
     <span class="attr">#[test]
@@ -1076,37 +1078,37 @@
 
         <span class="comment">// Set version to V1.
         </span>mmds.lock()
-            .expect(<span class="string">&quot;Poisoned lock&quot;</span>)
+            .expect(<span class="string">"Poisoned lock"</span>)
             .set_version(MmdsVersion::V1)
             .unwrap();
         <span class="macro">assert_eq!</span>(
-            mmds.lock().expect(<span class="string">&quot;Poisoned lock&quot;</span>).version(),
+            mmds.lock().expect(<span class="string">"Poisoned lock"</span>).version(),
             MmdsVersion::V1
         );
 
         <span class="comment">// Test resource not found.
-        </span><span class="kw">let </span>request_bytes = <span class="string">b&quot;GET http://169.254.169.254/invalid HTTP/1.0\r\n\r\n&quot;</span>;
+        </span><span class="kw">let </span>request_bytes = <span class="string">b"GET http://169.254.169.254/invalid HTTP/1.0\r\n\r\n"</span>;
         <span class="kw">let </span>request = Request::try_from(request_bytes, <span class="prelude-val">None</span>).unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>expected_response = Response::new(Version::Http10, StatusCode::NotFound);
         expected_response.set_body(Body::new(
-            Error::ResourceNotFound(String::from(<span class="string">&quot;/invalid&quot;</span>)).to_string(),
+            Error::ResourceNotFound(String::from(<span class="string">"/invalid"</span>)).to_string(),
         ));
         <span class="kw">let </span>actual_response = convert_to_response(mmds.clone(), request);
         <span class="macro">assert_eq!</span>(actual_response, expected_response);
 
         <span class="comment">// Test NotImplemented.
-        </span><span class="kw">let </span>request_bytes = <span class="string">b&quot;GET /age HTTP/1.1\r\n\r\n&quot;</span>;
+        </span><span class="kw">let </span>request_bytes = <span class="string">b"GET /age HTTP/1.1\r\n\r\n"</span>;
         <span class="kw">let </span>request = Request::try_from(request_bytes, <span class="prelude-val">None</span>).unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>expected_response = Response::new(Version::Http11, StatusCode::NotImplemented);
-        <span class="kw">let </span>body = <span class="string">&quot;Cannot retrieve value. The value has an unsupported type.&quot;</span>.to_string();
+        <span class="kw">let </span>body = <span class="string">"Cannot retrieve value. The value has an unsupported type."</span>.to_string();
         expected_response.set_body(Body::new(body));
         <span class="kw">let </span>actual_response = convert_to_response(mmds.clone(), request);
         <span class="macro">assert_eq!</span>(actual_response, expected_response);
 
         <span class="comment">// Test not allowed HTTP Method.
-        </span><span class="kw">let </span>not_allowed_methods = [<span class="string">&quot;PUT&quot;</span>, <span class="string">&quot;PATCH&quot;</span>];
+        </span><span class="kw">let </span>not_allowed_methods = [<span class="string">"PUT"</span>, <span class="string">"PATCH"</span>];
         <span class="kw">for </span>method <span class="kw">in </span>not_allowed_methods.iter() {
-            <span class="kw">let </span>request_bytes = <span class="macro">format!</span>(<span class="string">&quot;{} http://169.254.169.255/ HTTP/1.0\r\n\r\n&quot;</span>, method);
+            <span class="kw">let </span>request_bytes = <span class="macro">format!</span>(<span class="string">"{} http://169.254.169.255/ HTTP/1.0\r\n\r\n"</span>, method);
             <span class="kw">let </span>request = Request::try_from(request_bytes.as_bytes(), <span class="prelude-val">None</span>).unwrap();
             <span class="kw">let </span><span class="kw-2">mut </span>expected_response =
                 Response::new(Version::Http10, StatusCode::MethodNotAllowed);
@@ -1117,7 +1119,7 @@
         }
 
         <span class="comment">// Test invalid (empty absolute path) URI.
-        </span><span class="kw">let </span>request_bytes = <span class="string">b&quot;GET http:// HTTP/1.0\r\n\r\n&quot;</span>;
+        </span><span class="kw">let </span>request_bytes = <span class="string">b"GET http:// HTTP/1.0\r\n\r\n"</span>;
         <span class="kw">let </span>request = Request::try_from(request_bytes, <span class="prelude-val">None</span>).unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>expected_response = Response::new(Version::Http10, StatusCode::BadRequest);
         expected_response.set_body(Body::new(Error::InvalidURI.to_string()));
@@ -1125,18 +1127,18 @@
         <span class="macro">assert_eq!</span>(actual_response, expected_response);
 
         <span class="comment">// Test invalid custom header value is ignored when V1 is configured.
-        </span><span class="kw">let </span>request_bytes = <span class="string">b&quot;GET http://169.254.169.254/name/first HTTP/1.0\r\n\
+        </span><span class="kw">let </span>request_bytes = <span class="string">b"GET http://169.254.169.254/name/first HTTP/1.0\r\n\
                                     Accept: application/json\r\n
-                                    X-metadata-token-ttl-seconds: application/json\r\n\r\n&quot;</span>;
+                                    X-metadata-token-ttl-seconds: application/json\r\n\r\n"</span>;
         <span class="kw">let </span>request = Request::try_from(request_bytes, <span class="prelude-val">None</span>).unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>expected_response = Response::new(Version::Http10, StatusCode::OK);
-        expected_response.set_body(Body::new(<span class="string">&quot;\&quot;John\&quot;&quot;</span>));
+        expected_response.set_body(Body::new(<span class="string">"\"John\""</span>));
         <span class="kw">let </span>actual_response = convert_to_response(mmds.clone(), request);
         <span class="macro">assert_eq!</span>(actual_response, expected_response);
 
         <span class="comment">// Test Ok path.
-        </span><span class="kw">let </span>request_bytes = <span class="string">b&quot;GET http://169.254.169.254/ HTTP/1.0\r\n\
-                                    Accept: application/json\r\n\r\n&quot;</span>;
+        </span><span class="kw">let </span>request_bytes = <span class="string">b"GET http://169.254.169.254/ HTTP/1.0\r\n\
+                                    Accept: application/json\r\n\r\n"</span>;
         <span class="kw">let </span>request = Request::try_from(request_bytes, <span class="prelude-val">None</span>).unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>expected_response = Response::new(Version::Http10, StatusCode::OK);
         <span class="kw">let </span><span class="kw-2">mut </span>body = get_json_data().to_string();
@@ -1153,16 +1155,16 @@
 
         <span class="comment">// Set version to V2.
         </span>mmds.lock()
-            .expect(<span class="string">&quot;Poisoned lock&quot;</span>)
+            .expect(<span class="string">"Poisoned lock"</span>)
             .set_version(MmdsVersion::V2)
             .unwrap();
         <span class="macro">assert_eq!</span>(
-            mmds.lock().expect(<span class="string">&quot;Poisoned lock&quot;</span>).version(),
+            mmds.lock().expect(<span class="string">"Poisoned lock"</span>).version(),
             MmdsVersion::V2
         );
 
         <span class="comment">// Test not allowed PATCH HTTP Method.
-        </span><span class="kw">let </span>request_bytes = <span class="string">b&quot;PATCH http://169.254.169.255/ HTTP/1.0\r\n\r\n&quot;</span>;
+        </span><span class="kw">let </span>request_bytes = <span class="string">b"PATCH http://169.254.169.255/ HTTP/1.0\r\n\r\n"</span>;
         <span class="kw">let </span>request = Request::try_from(request_bytes, <span class="prelude-val">None</span>).unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>expected_response = Response::new(Version::Http10, StatusCode::MethodNotAllowed);
         expected_response.set_body(Body::new(Error::MethodNotAllowed.to_string()));
@@ -1172,14 +1174,14 @@
         <span class="macro">assert_eq!</span>(actual_response, expected_response);
 
         <span class="comment">// Test invalid value for custom header.
-        </span><span class="kw">let </span>request_bytes = <span class="string">b&quot;GET http://169.254.169.254/ HTTP/1.0\r\n\
+        </span><span class="kw">let </span>request_bytes = <span class="string">b"GET http://169.254.169.254/ HTTP/1.0\r\n\
                                     Accept: application/json\r\n
-                                    X-metadata-token-ttl-seconds: application/json\r\n\r\n&quot;</span>;
+                                    X-metadata-token-ttl-seconds: application/json\r\n\r\n"</span>;
         <span class="kw">let </span>request = Request::try_from(request_bytes, <span class="prelude-val">None</span>).unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>expected_response = Response::new(Version::Http10, StatusCode::BadRequest);
         expected_response.set_body(Body::new(
-            <span class="string">&quot;Invalid header. Reason: Invalid value. Key:X-metadata-token-ttl-seconds; \
-             Value:application/json&quot;
+            <span class="string">"Invalid header. Reason: Invalid value. Key:X-metadata-token-ttl-seconds; \
+             Value:application/json"
                 </span>.to_string(),
         ));
         <span class="kw">let </span>actual_response = convert_to_response(mmds.clone(), request);
@@ -1187,23 +1189,23 @@
 
         <span class="comment">// Test PUT requests.
         // Unsupported `X-Forwarded-For` header present.
-        </span><span class="kw">let </span>request_bytes = <span class="string">b&quot;PUT http://169.254.169.254/latest/api/token HTTP/1.0\r\n\
-                                    X-Forwarded-For: 203.0.113.195\r\n\r\n&quot;</span>;
+        </span><span class="kw">let </span>request_bytes = <span class="string">b"PUT http://169.254.169.254/latest/api/token HTTP/1.0\r\n\
+                                    X-Forwarded-For: 203.0.113.195\r\n\r\n"</span>;
         <span class="kw">let </span>request = Request::try_from(request_bytes, <span class="prelude-val">None</span>).unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>expected_response = Response::new(Version::Http10, StatusCode::BadRequest);
         expected_response.set_body(Body::new(
-            <span class="string">&quot;Invalid header. Reason: Unsupported header name. Key: X-Forwarded-For&quot;</span>.to_string(),
+            <span class="string">"Invalid header. Reason: Unsupported header name. Key: X-Forwarded-For"</span>.to_string(),
         ));
         <span class="kw">let </span>actual_response = convert_to_response(mmds.clone(), request);
         <span class="macro">assert_eq!</span>(actual_response, expected_response);
 
         <span class="comment">// Test invalid path.
-        </span><span class="kw">let </span>request_bytes = <span class="string">b&quot;PUT http://169.254.169.254/token HTTP/1.0\r\n\
-                                    X-metadata-token-ttl-seconds: 60\r\n\r\n&quot;</span>;
+        </span><span class="kw">let </span>request_bytes = <span class="string">b"PUT http://169.254.169.254/token HTTP/1.0\r\n\
+                                    X-metadata-token-ttl-seconds: 60\r\n\r\n"</span>;
         <span class="kw">let </span>request = Request::try_from(request_bytes, <span class="prelude-val">None</span>).unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>expected_response = Response::new(Version::Http10, StatusCode::NotFound);
         expected_response.set_body(Body::new(
-            Error::ResourceNotFound(String::from(<span class="string">&quot;/token&quot;</span>)).to_string(),
+            Error::ResourceNotFound(String::from(<span class="string">"/token"</span>)).to_string(),
         ));
         <span class="kw">let </span>actual_response = convert_to_response(mmds.clone(), request);
         <span class="macro">assert_eq!</span>(actual_response, expected_response);
@@ -1212,15 +1214,15 @@
         </span><span class="kw">let </span>invalid_values = [MIN_TOKEN_TTL_SECONDS - <span class="number">1</span>, MAX_TOKEN_TTL_SECONDS + <span class="number">1</span>];
         <span class="kw">for </span>invalid_value <span class="kw">in </span>invalid_values.iter() {
             <span class="kw">let </span>request_bytes = <span class="macro">format!</span>(
-                <span class="string">&quot;PUT http://169.254.169.254/latest/api/token \
-                 HTTP/1.0\r\nX-metadata-token-ttl-seconds: {}\r\n\r\n&quot;</span>,
+                <span class="string">"PUT http://169.254.169.254/latest/api/token \
+                 HTTP/1.0\r\nX-metadata-token-ttl-seconds: {}\r\n\r\n"</span>,
                 invalid_value
             );
             <span class="kw">let </span>request = Request::try_from(request_bytes.as_bytes(), <span class="prelude-val">None</span>).unwrap();
             <span class="kw">let </span><span class="kw-2">mut </span>expected_response = Response::new(Version::Http10, StatusCode::BadRequest);
             <span class="kw">let </span>error_msg = <span class="macro">format!</span>(
-                <span class="string">&quot;Invalid time to live value provided for token: {}. Please provide a value \
-                 between {} and {}.&quot;</span>,
+                <span class="string">"Invalid time to live value provided for token: {}. Please provide a value \
+                 between {} and {}."</span>,
                 invalid_value, MIN_TOKEN_TTL_SECONDS, MAX_TOKEN_TTL_SECONDS
             );
             expected_response.set_body(Body::new(error_msg));
@@ -1229,7 +1231,7 @@
         }
 
         <span class="comment">// Test no lifetime value provided for token.
-        </span><span class="kw">let </span>request_bytes = <span class="string">b&quot;PUT http://169.254.169.254/latest/api/token HTTP/1.0\r\n\r\n&quot;</span>;
+        </span><span class="kw">let </span>request_bytes = <span class="string">b"PUT http://169.254.169.254/latest/api/token HTTP/1.0\r\n\r\n"</span>;
         <span class="kw">let </span>request = Request::try_from(request_bytes, <span class="prelude-val">None</span>).unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>expected_response = Response::new(Version::Http10, StatusCode::BadRequest);
         expected_response.set_body(Body::new(Error::NoTtlProvided.to_string()));
@@ -1237,8 +1239,8 @@
         <span class="macro">assert_eq!</span>(actual_response, expected_response);
 
         <span class="comment">// Test valid PUT.
-        </span><span class="kw">let </span>request_bytes = <span class="string">b&quot;PUT http://169.254.169.254/latest/api/token HTTP/1.0\r\n\
-                                    X-metadata-token-ttl-seconds: 60\r\n\r\n&quot;</span>;
+        </span><span class="kw">let </span>request_bytes = <span class="string">b"PUT http://169.254.169.254/latest/api/token HTTP/1.0\r\n\
+                                    X-metadata-token-ttl-seconds: 60\r\n\r\n"</span>;
         <span class="kw">let </span>request = Request::try_from(request_bytes, <span class="prelude-val">None</span>).unwrap();
         <span class="kw">let </span>actual_response = convert_to_response(mmds.clone(), request);
         <span class="macro">assert_eq!</span>(actual_response.status(), StatusCode::OK);
@@ -1247,8 +1249,8 @@
         <span class="comment">// Test valid GET.
         </span><span class="kw">let </span>valid_token = String::from_utf8(actual_response.body().unwrap().body).unwrap();
         <span class="kw">let </span>request_bytes = <span class="macro">format!</span>(
-            <span class="string">&quot;GET http://169.254.169.254/ HTTP/1.0\r\nAccept: \
-             application/json\r\nX-metadata-token: {}\r\n\r\n&quot;</span>,
+            <span class="string">"GET http://169.254.169.254/ HTTP/1.0\r\nAccept: \
+             application/json\r\nX-metadata-token: {}\r\n\r\n"</span>,
             valid_token
         );
         <span class="kw">let </span>request = Request::try_from(request_bytes.as_bytes(), <span class="prelude-val">None</span>).unwrap();
@@ -1261,31 +1263,31 @@
 
         <span class="comment">// Test GET request towards unsupported value type.
         </span><span class="kw">let </span>request_bytes = <span class="macro">format!</span>(
-            <span class="string">&quot;GET /age HTTP/1.1\r\nX-metadata-token: {}\r\n\r\n&quot;</span>,
+            <span class="string">"GET /age HTTP/1.1\r\nX-metadata-token: {}\r\n\r\n"</span>,
             valid_token
         );
         <span class="kw">let </span>request = Request::try_from(request_bytes.as_bytes(), <span class="prelude-val">None</span>).unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>expected_response = Response::new(Version::Http11, StatusCode::NotImplemented);
-        <span class="kw">let </span>body = <span class="string">&quot;Cannot retrieve value. The value has an unsupported type.&quot;</span>.to_string();
+        <span class="kw">let </span>body = <span class="string">"Cannot retrieve value. The value has an unsupported type."</span>.to_string();
         expected_response.set_body(Body::new(body));
         <span class="kw">let </span>actual_response = convert_to_response(mmds.clone(), request);
         <span class="macro">assert_eq!</span>(actual_response, expected_response);
 
         <span class="comment">// Test GET request towards invalid resource.
         </span><span class="kw">let </span>request_bytes = <span class="macro">format!</span>(
-            <span class="string">&quot;GET http://169.254.169.254/invalid HTTP/1.0\r\nX-metadata-token: {}\r\n\r\n&quot;</span>,
+            <span class="string">"GET http://169.254.169.254/invalid HTTP/1.0\r\nX-metadata-token: {}\r\n\r\n"</span>,
             valid_token
         );
         <span class="kw">let </span>request = Request::try_from(request_bytes.as_bytes(), <span class="prelude-val">None</span>).unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>expected_response = Response::new(Version::Http10, StatusCode::NotFound);
         expected_response.set_body(Body::new(
-            Error::ResourceNotFound(String::from(<span class="string">&quot;/invalid&quot;</span>)).to_string(),
+            Error::ResourceNotFound(String::from(<span class="string">"/invalid"</span>)).to_string(),
         ));
         <span class="kw">let </span>actual_response = convert_to_response(mmds.clone(), request);
         <span class="macro">assert_eq!</span>(actual_response, expected_response);
 
         <span class="comment">// Test GET request without token should return Unauthorized status code.
-        </span><span class="kw">let </span>request_bytes = <span class="string">b&quot;GET http://169.254.169.254/ HTTP/1.0\r\n\r\n&quot;</span>;
+        </span><span class="kw">let </span>request_bytes = <span class="string">b"GET http://169.254.169.254/ HTTP/1.0\r\n\r\n"</span>;
         <span class="kw">let </span>request = Request::try_from(request_bytes, <span class="prelude-val">None</span>).unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>expected_response = Response::new(Version::Http10, StatusCode::Unauthorized);
         expected_response.set_body(Body::new(Error::NoTokenProvided.to_string()));
@@ -1293,8 +1295,8 @@
         <span class="macro">assert_eq!</span>(actual_response, expected_response);
 
         <span class="comment">// Test GET request with invalid token should return Unauthorized status code.
-        </span><span class="kw">let </span>request_bytes = <span class="string">b&quot;GET http://169.254.169.254/ HTTP/1.0\r\n\
-                                    X-metadata-token: foo\r\n\r\n&quot;</span>;
+        </span><span class="kw">let </span>request_bytes = <span class="string">b"GET http://169.254.169.254/ HTTP/1.0\r\n\
+                                    X-metadata-token: foo\r\n\r\n"</span>;
         <span class="kw">let </span>request = Request::try_from(request_bytes, <span class="prelude-val">None</span>).unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>expected_response = Response::new(Version::Http10, StatusCode::Unauthorized);
         expected_response.set_body(Body::new(Error::InvalidToken.to_string()));
@@ -1302,8 +1304,8 @@
         <span class="macro">assert_eq!</span>(actual_response, expected_response);
 
         <span class="comment">// Create a new MMDS token that expires in one second.
-        </span><span class="kw">let </span>request_bytes = <span class="string">b&quot;PUT http://169.254.169.254/latest/api/token HTTP/1.0\r\n\
-                                    X-metadata-token-ttl-seconds: 1\r\n\r\n&quot;</span>;
+        </span><span class="kw">let </span>request_bytes = <span class="string">b"PUT http://169.254.169.254/latest/api/token HTTP/1.0\r\n\
+                                    X-metadata-token-ttl-seconds: 1\r\n\r\n"</span>;
         <span class="kw">let </span>request = Request::try_from(request_bytes, <span class="prelude-val">None</span>).unwrap();
         <span class="kw">let </span>actual_response = convert_to_response(mmds.clone(), request);
         <span class="macro">assert_eq!</span>(actual_response.status(), StatusCode::OK);
@@ -1312,11 +1314,11 @@
         <span class="comment">// Test GET request with invalid tokens.
         // `valid_token` will become invalid after one second, when it expires.
         </span><span class="kw">let </span>valid_token = String::from_utf8(actual_response.body().unwrap().body).unwrap();
-        <span class="kw">let </span>invalid_token = <span class="string">&quot;a&quot;</span>.repeat(<span class="number">58</span>);
+        <span class="kw">let </span>invalid_token = <span class="string">"a"</span>.repeat(<span class="number">58</span>);
         <span class="kw">let </span>tokens = [invalid_token, valid_token];
         <span class="kw">for </span>token <span class="kw">in </span>tokens.iter() {
             <span class="kw">let </span>request_bytes = <span class="macro">format!</span>(
-                <span class="string">&quot;GET http://169.254.169.254/ HTTP/1.0\r\nX-metadata-token: {}\r\n\r\n&quot;</span>,
+                <span class="string">"GET http://169.254.169.254/ HTTP/1.0\r\nX-metadata-token: {}\r\n\r\n"</span>,
                 token
             );
             <span class="kw">let </span>request = Request::try_from(request_bytes.as_bytes(), <span class="prelude-val">None</span>).unwrap();
@@ -1333,82 +1335,82 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_json_patch() {
         <span class="kw">let </span><span class="kw-2">mut </span>data = <span class="macro">serde_json::json!</span>({
-            <span class="string">&quot;name&quot;</span>: {
-                <span class="string">&quot;first&quot;</span>: <span class="string">&quot;John&quot;</span>,
-                <span class="string">&quot;second&quot;</span>: <span class="string">&quot;Doe&quot;
+            <span class="string">"name"</span>: {
+                <span class="string">"first"</span>: <span class="string">"John"</span>,
+                <span class="string">"second"</span>: <span class="string">"Doe"
             </span>},
-            <span class="string">&quot;age&quot;</span>: <span class="string">&quot;43&quot;</span>,
-            <span class="string">&quot;phones&quot;</span>: {
-                <span class="string">&quot;home&quot;</span>: {
-                    <span class="string">&quot;RO&quot;</span>: <span class="string">&quot;+40 1234567&quot;</span>,
-                    <span class="string">&quot;UK&quot;</span>: <span class="string">&quot;+44 1234567&quot;
+            <span class="string">"age"</span>: <span class="string">"43"</span>,
+            <span class="string">"phones"</span>: {
+                <span class="string">"home"</span>: {
+                    <span class="string">"RO"</span>: <span class="string">"+40 1234567"</span>,
+                    <span class="string">"UK"</span>: <span class="string">"+44 1234567"
                 </span>},
-                <span class="string">&quot;mobile&quot;</span>: <span class="string">&quot;+44 2345678&quot;
+                <span class="string">"mobile"</span>: <span class="string">"+44 2345678"
             </span>}
         });
 
         <span class="kw">let </span>patch = <span class="macro">serde_json::json!</span>({
-            <span class="string">&quot;name&quot;</span>: {
-                <span class="string">&quot;second&quot;</span>: null,
-                <span class="string">&quot;last&quot;</span>: <span class="string">&quot;Kennedy&quot;
+            <span class="string">"name"</span>: {
+                <span class="string">"second"</span>: null,
+                <span class="string">"last"</span>: <span class="string">"Kennedy"
             </span>},
-            <span class="string">&quot;age&quot;</span>: <span class="string">&quot;44&quot;</span>,
-            <span class="string">&quot;phones&quot;</span>: {
-                <span class="string">&quot;home&quot;</span>: <span class="string">&quot;+44 1234567&quot;</span>,
-                <span class="string">&quot;mobile&quot;</span>: {
-                    <span class="string">&quot;RO&quot;</span>: <span class="string">&quot;+40 2345678&quot;</span>,
-                    <span class="string">&quot;UK&quot;</span>: <span class="string">&quot;+44 2345678&quot;
+            <span class="string">"age"</span>: <span class="string">"44"</span>,
+            <span class="string">"phones"</span>: {
+                <span class="string">"home"</span>: <span class="string">"+44 1234567"</span>,
+                <span class="string">"mobile"</span>: {
+                    <span class="string">"RO"</span>: <span class="string">"+40 2345678"</span>,
+                    <span class="string">"UK"</span>: <span class="string">"+44 2345678"
                 </span>}
             }
         });
         json_patch(<span class="kw-2">&amp;mut </span>data, <span class="kw-2">&amp;</span>patch);
 
         <span class="comment">// Test value replacement in target document.
-        </span><span class="macro">assert_eq!</span>(data[<span class="string">&quot;age&quot;</span>], patch[<span class="string">&quot;age&quot;</span>]);
+        </span><span class="macro">assert_eq!</span>(data[<span class="string">"age"</span>], patch[<span class="string">"age"</span>]);
 
         <span class="comment">// Test null value removal from target document.
-        </span><span class="macro">assert_eq!</span>(data[<span class="string">&quot;name&quot;</span>][<span class="string">&quot;second&quot;</span>], Value::Null);
+        </span><span class="macro">assert_eq!</span>(data[<span class="string">"name"</span>][<span class="string">"second"</span>], Value::Null);
 
         <span class="comment">// Test add value to target document.
-        </span><span class="macro">assert_eq!</span>(data[<span class="string">&quot;name&quot;</span>][<span class="string">&quot;last&quot;</span>], patch[<span class="string">&quot;name&quot;</span>][<span class="string">&quot;last&quot;</span>]);
-        <span class="macro">assert!</span>(!data[<span class="string">&quot;phones&quot;</span>][<span class="string">&quot;home&quot;</span>].is_object());
-        <span class="macro">assert_eq!</span>(data[<span class="string">&quot;phones&quot;</span>][<span class="string">&quot;home&quot;</span>], patch[<span class="string">&quot;phones&quot;</span>][<span class="string">&quot;home&quot;</span>]);
-        <span class="macro">assert!</span>(data[<span class="string">&quot;phones&quot;</span>][<span class="string">&quot;mobile&quot;</span>].is_object());
+        </span><span class="macro">assert_eq!</span>(data[<span class="string">"name"</span>][<span class="string">"last"</span>], patch[<span class="string">"name"</span>][<span class="string">"last"</span>]);
+        <span class="macro">assert!</span>(!data[<span class="string">"phones"</span>][<span class="string">"home"</span>].is_object());
+        <span class="macro">assert_eq!</span>(data[<span class="string">"phones"</span>][<span class="string">"home"</span>], patch[<span class="string">"phones"</span>][<span class="string">"home"</span>]);
+        <span class="macro">assert!</span>(data[<span class="string">"phones"</span>][<span class="string">"mobile"</span>].is_object());
         <span class="macro">assert_eq!</span>(
-            data[<span class="string">&quot;phones&quot;</span>][<span class="string">&quot;mobile&quot;</span>][<span class="string">&quot;RO&quot;</span>],
-            patch[<span class="string">&quot;phones&quot;</span>][<span class="string">&quot;mobile&quot;</span>][<span class="string">&quot;RO&quot;</span>]
+            data[<span class="string">"phones"</span>][<span class="string">"mobile"</span>][<span class="string">"RO"</span>],
+            patch[<span class="string">"phones"</span>][<span class="string">"mobile"</span>][<span class="string">"RO"</span>]
         );
         <span class="macro">assert_eq!</span>(
-            data[<span class="string">&quot;phones&quot;</span>][<span class="string">&quot;mobile&quot;</span>][<span class="string">&quot;UK&quot;</span>],
-            patch[<span class="string">&quot;phones&quot;</span>][<span class="string">&quot;mobile&quot;</span>][<span class="string">&quot;UK&quot;</span>]
+            data[<span class="string">"phones"</span>][<span class="string">"mobile"</span>][<span class="string">"UK"</span>],
+            patch[<span class="string">"phones"</span>][<span class="string">"mobile"</span>][<span class="string">"UK"</span>]
         );
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_error_display() {
-        <span class="macro">assert_eq!</span>(Error::InvalidToken.to_string(), <span class="string">&quot;MMDS token not valid.&quot;</span>);
+        <span class="macro">assert_eq!</span>(Error::InvalidToken.to_string(), <span class="string">"MMDS token not valid."</span>);
 
-        <span class="macro">assert_eq!</span>(Error::InvalidURI.to_string(), <span class="string">&quot;Invalid URI.&quot;</span>);
+        <span class="macro">assert_eq!</span>(Error::InvalidURI.to_string(), <span class="string">"Invalid URI."</span>);
 
         <span class="macro">assert_eq!</span>(
             Error::MethodNotAllowed.to_string(),
-            <span class="string">&quot;Not allowed HTTP method.&quot;
+            <span class="string">"Not allowed HTTP method."
         </span>);
 
         <span class="macro">assert_eq!</span>(
             Error::NoTokenProvided.to_string(),
-            <span class="string">&quot;No MMDS token provided. Use `X-metadata-token` header to specify the session token.&quot;
+            <span class="string">"No MMDS token provided. Use `X-metadata-token` header to specify the session token."
         </span>);
 
         <span class="macro">assert_eq!</span>(
             Error::NoTtlProvided.to_string(),
-            <span class="string">&quot;Token time to live value not found. Use `X-metadata-token-ttl-seconds` header to \
-             specify the token&#39;s lifetime.&quot;
+            <span class="string">"Token time to live value not found. Use `X-metadata-token-ttl-seconds` header to \
+             specify the token's lifetime."
         </span>);
 
         <span class="macro">assert_eq!</span>(
-            Error::ResourceNotFound(String::from(<span class="string">&quot;invalid/&quot;</span>)).to_string(),
-            <span class="string">&quot;Resource not found: invalid/.&quot;
+            Error::ResourceNotFound(String::from(<span class="string">"invalid/"</span>)).to_string(),
+            <span class="string">"Resource not found: invalid/."
         </span>)
     }
 }

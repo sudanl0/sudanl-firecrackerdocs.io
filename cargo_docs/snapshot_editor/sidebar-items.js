@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_SnapEditorError"],"enum":["Command","SnapEditorError"],"fn":["main","main_exec"],"mod":["edit_memory","edit_vmstate","info","utils"],"struct":["Cli"]};
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_SnapEditorError"],"enum":["Command","SnapEditorError"],"fn":["main","main_exec"],"mod":["edit_memory","info","utils"],"struct":["Cli"]};

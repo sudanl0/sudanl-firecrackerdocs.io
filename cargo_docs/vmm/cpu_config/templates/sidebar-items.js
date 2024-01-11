@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["CpuTemplateType","GetCpuTemplateError","KvmCapability"],"struct":["RegisterValueFilter"],"trait":["GetCpuTemplate","Numeric"]};
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_GetCpuTemplateError"],"enum":["CpuTemplateType","GetCpuTemplateError","KvmCapability"],"macro":["impl_numeric"],"mod":["common_types"],"struct":["RegisterValueFilter"],"trait":["GetCpuTemplate","Numeric"]};

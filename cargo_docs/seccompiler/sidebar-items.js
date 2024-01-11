@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["DeserializationError","InstallationError"],"fn":["apply_filter","deserialize_binary"],"mod":["backend","common","compiler","syscall_table"],"type":["BpfProgramRef","BpfThreadMap"]};
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_DeserializationError","_DERIVE_Display_FOR_InstallationError"],"enum":["DeserializationError","InstallationError"],"fn":["apply_filter","deserialize_binary"],"mod":["backend","common","compiler","syscall_table"],"struct":["sock_fprog"],"type":["BpfProgramRef","BpfThreadMap"]};

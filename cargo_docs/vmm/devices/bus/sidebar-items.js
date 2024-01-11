@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["BusDevice","BusError"],"struct":["Bus"]};
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_BusError"],"enum":["BusDevice","BusError"],"struct":["Bus","BusRange"]};

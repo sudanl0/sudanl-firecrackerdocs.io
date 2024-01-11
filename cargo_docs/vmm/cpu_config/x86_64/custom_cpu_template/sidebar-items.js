@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["CpuidRegister"],"fn":["deserialize_cpuid_register","deserialize_kvm_cpuid_flags","serialize_cpuid_register"],"struct":["CpuidLeafModifier","CpuidRegisterModifier","CustomCpuTemplate","RegisterModifier"]};

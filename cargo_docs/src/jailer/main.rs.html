@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/jailer/src/main.rs`."><title>main.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="jailer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../jailer/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/jailer/src/main.rs`."><title>main.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="jailer" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../jailer/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -500,221 +502,221 @@
 <span class="kw">mod </span>env;
 <span class="kw">mod </span>resource_limits;
 
-<span class="kw">const </span>JAILER_VERSION: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>);
+<span class="kw">const </span>JAILER_VERSION: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">"CARGO_PKG_VERSION"</span>);
 
 <span class="attr">#[derive(Debug, thiserror::Error)]
 </span><span class="kw">pub enum </span>JailerError {
-    <span class="attr">#[error(<span class="string">&quot;Failed to parse arguments: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to parse arguments: {0}"</span>)]
     </span>ArgumentParsing(ParsingError),
-    <span class="attr">#[error(<span class="string">&quot;{}&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;Failed to canonicalize path {:?}: {}&quot;</span>, .<span class="number">0</span>, .<span class="number">1</span>).replace(<span class="string">&#39;\&quot;&#39;</span>, <span class="string">&quot;&quot;</span>))]
+    <span class="attr">#[error(<span class="string">"{}"</span>, <span class="macro">format!</span>(<span class="string">"Failed to canonicalize path {:?}: {}"</span>, .<span class="number">0</span>, .<span class="number">1</span>).replace(<span class="string">'\"'</span>, <span class="string">""</span>))]
     </span>Canonicalize(PathBuf, io::Error),
-    <span class="attr">#[error(<span class="string">&quot;{}&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;Failed to inherit cgroups configurations from file {} in path {:?}&quot;</span>, .<span class="number">1</span>, .<span class="number">0</span>).replace(<span class="string">&#39;\&quot;&#39;</span>, <span class="string">&quot;&quot;</span>))]
+    <span class="attr">#[error(<span class="string">"{}"</span>, <span class="macro">format!</span>(<span class="string">"Failed to inherit cgroups configurations from file {} in path {:?}"</span>, .<span class="number">1</span>, .<span class="number">0</span>).replace(<span class="string">'\"'</span>, <span class="string">""</span>))]
     </span>CgroupInheritFromParent(PathBuf, String),
-    <span class="attr">#[error(<span class="string">&quot;{1} configurations not found in {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"{1} configurations not found in {0}"</span>)]
     </span>CgroupLineNotFound(String, String),
-    <span class="attr">#[error(<span class="string">&quot;Cgroup invalid file: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Cgroup invalid file: {0}"</span>)]
     </span>CgroupInvalidFile(String),
-    <span class="attr">#[error(<span class="string">&quot;Invalid format for cgroups: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Invalid format for cgroups: {0}"</span>)]
     </span>CgroupFormat(String),
-    <span class="attr">#[error(<span class="string">&quot;Hierarchy not found: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Hierarchy not found: {0}"</span>)]
     </span>CgroupHierarchyMissing(String),
-    <span class="attr">#[error(<span class="string">&quot;Controller {0} is unavailable&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Controller {0} is unavailable"</span>)]
     </span>CgroupControllerUnavailable(String),
-    <span class="attr">#[error(<span class="string">&quot;{0} is an invalid cgroup version specifier&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"{0} is an invalid cgroup version specifier"</span>)]
     </span>CgroupInvalidVersion(String),
-    <span class="attr">#[error(<span class="string">&quot;Parent cgroup path is invalid. Path should not be absolute or contain &#39;..&#39; or &#39;.&#39;&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Parent cgroup path is invalid. Path should not be absolute or contain '..' or '.'"</span>)]
     </span>CgroupInvalidParentPath(),
-    <span class="attr">#[error(<span class="string">&quot;Failed to write to cgroups file: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to write to cgroups file: {0}"</span>)]
     </span>CgroupWrite(io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Failed to change owner for {0:?}: {1}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to change owner for {0:?}: {1}"</span>)]
     </span>ChangeFileOwner(PathBuf, io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Failed to chdir into chroot directory: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to chdir into chroot directory: {0}"</span>)]
     </span>ChdirNewRoot(io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Failed to change permissions on {0:?}: {1}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to change permissions on {0:?}: {1}"</span>)]
     </span>Chmod(PathBuf, io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Failed cloning into a new child process: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed cloning into a new child process: {0}"</span>)]
     </span>Clone(io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Failed to close netns fd: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to close netns fd: {0}"</span>)]
     </span>CloseNetNsFd(io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Failed to close /dev/null fd: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to close /dev/null fd: {0}"</span>)]
     </span>CloseDevNullFd(io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Failed to call close range syscall: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to call close range syscall: {0}"</span>)]
     </span>CloseRange(io::Error),
-    <span class="attr">#[error(<span class="string">&quot;{}&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;Failed to copy {:?} to {:?}: {}&quot;</span>, .<span class="number">0</span>, .<span class="number">1</span>, .<span class="number">2</span>).replace(<span class="string">&#39;\&quot;&#39;</span>, <span class="string">&quot;&quot;</span>))]
+    <span class="attr">#[error(<span class="string">"{}"</span>, <span class="macro">format!</span>(<span class="string">"Failed to copy {:?} to {:?}: {}"</span>, .<span class="number">0</span>, .<span class="number">1</span>, .<span class="number">2</span>).replace(<span class="string">'\"'</span>, <span class="string">""</span>))]
     </span>Copy(PathBuf, PathBuf, io::Error),
-    <span class="attr">#[error(<span class="string">&quot;{}&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;Failed to create directory {:?}: {}&quot;</span>, .<span class="number">0</span>, .<span class="number">1</span>).replace(<span class="string">&#39;\&quot;&#39;</span>, <span class="string">&quot;&quot;</span>))]
+    <span class="attr">#[error(<span class="string">"{}"</span>, <span class="macro">format!</span>(<span class="string">"Failed to create directory {:?}: {}"</span>, .<span class="number">0</span>, .<span class="number">1</span>).replace(<span class="string">'\"'</span>, <span class="string">""</span>))]
     </span>CreateDir(PathBuf, io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Encountered interior \\0 while parsing a string&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Encountered interior \\0 while parsing a string"</span>)]
     </span>CStringParsing(NulError),
-    <span class="attr">#[error(<span class="string">&quot;Failed to daemonize: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to daemonize: {0}"</span>)]
     </span>Daemonize(io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Failed to open directory {0}: {1}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to open directory {0}: {1}"</span>)]
     </span>DirOpen(String, String),
-    <span class="attr">#[error(<span class="string">&quot;Failed to duplicate fd: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to duplicate fd: {0}"</span>)]
     </span>Dup2(io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Failed to exec into Firecracker: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to exec into Firecracker: {0}"</span>)]
     </span>Exec(io::Error),
     <span class="attr">#[error(
-        <span class="string">&quot;Invalid filename. The filename of `--exec-file` option must contain \&quot;firecracker\&quot;: {0}&quot;
+        <span class="string">"Invalid filename. The filename of `--exec-file` option must contain \"firecracker\": {0}"
     </span>)]
     </span>ExecFileName(String),
-    <span class="attr">#[error(<span class="string">&quot;{}&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;Failed to extract filename from path {:?}&quot;</span>, .<span class="number">0</span>).replace(<span class="string">&#39;\&quot;&#39;</span>, <span class="string">&quot;&quot;</span>))]
+    <span class="attr">#[error(<span class="string">"{}"</span>, <span class="macro">format!</span>(<span class="string">"Failed to extract filename from path {:?}"</span>, .<span class="number">0</span>).replace(<span class="string">'\"'</span>, <span class="string">""</span>))]
     </span>ExtractFileName(PathBuf),
-    <span class="attr">#[error(<span class="string">&quot;{}&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;Failed to open file {:?}: {}&quot;</span>, .<span class="number">0</span>, .<span class="number">1</span>).replace(<span class="string">&#39;\&quot;&#39;</span>, <span class="string">&quot;&quot;</span>))]
+    <span class="attr">#[error(<span class="string">"{}"</span>, <span class="macro">format!</span>(<span class="string">"Failed to open file {:?}: {}"</span>, .<span class="number">0</span>, .<span class="number">1</span>).replace(<span class="string">'\"'</span>, <span class="string">""</span>))]
     </span>FileOpen(PathBuf, io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Failed to decode string from byte array: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to decode string from byte array: {0}"</span>)]
     </span>FromBytesWithNul(std::ffi::FromBytesWithNulError),
-    <span class="attr">#[error(<span class="string">&quot;Failed to get flags from fd: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to get flags from fd: {0}"</span>)]
     </span>GetOldFdFlags(io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Invalid gid: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Invalid gid: {0}"</span>)]
     </span>Gid(String),
-    <span class="attr">#[error(<span class="string">&quot;Invalid instance ID: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Invalid instance ID: {0}"</span>)]
     </span>InvalidInstanceId(validators::Error),
-    <span class="attr">#[error(<span class="string">&quot;{}&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;File {:?} doesn&#39;t have a parent&quot;</span>, .<span class="number">0</span>).replace(<span class="string">&#39;\&quot;&#39;</span>, <span class="string">&quot;&quot;</span>))]
+    <span class="attr">#[error(<span class="string">"{}"</span>, <span class="macro">format!</span>(<span class="string">"File {:?} doesn't have a parent"</span>, .<span class="number">0</span>).replace(<span class="string">'\"'</span>, <span class="string">""</span>))]
     </span>MissingParent(PathBuf),
-    <span class="attr">#[error(<span class="string">&quot;Failed to create the jail root directory before pivoting root: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to create the jail root directory before pivoting root: {0}"</span>)]
     </span>MkdirOldRoot(io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Failed to create {1} via mknod inside the jail: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to create {1} via mknod inside the jail: {0}"</span>)]
     </span>MknodDev(io::Error, String),
-    <span class="attr">#[error(<span class="string">&quot;Failed to bind mount the jail root directory: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to bind mount the jail root directory: {0}"</span>)]
     </span>MountBind(io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Failed to change the propagation type to slave: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to change the propagation type to slave: {0}"</span>)]
     </span>MountPropagationSlave(io::Error),
-    <span class="attr">#[error(<span class="string">&quot;{}&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;{:?} is not a file&quot;</span>, .<span class="number">0</span>).replace(<span class="string">&#39;\&quot;&#39;</span>, <span class="string">&quot;&quot;</span>))]
+    <span class="attr">#[error(<span class="string">"{}"</span>, <span class="macro">format!</span>(<span class="string">"{:?} is not a file"</span>, .<span class="number">0</span>).replace(<span class="string">'\"'</span>, <span class="string">""</span>))]
     </span>NotAFile(PathBuf),
-    <span class="attr">#[error(<span class="string">&quot;{}&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;{:?} is not a directory&quot;</span>, .<span class="number">0</span>).replace(<span class="string">&#39;\&quot;&#39;</span>, <span class="string">&quot;&quot;</span>))]
+    <span class="attr">#[error(<span class="string">"{}"</span>, <span class="macro">format!</span>(<span class="string">"{:?} is not a directory"</span>, .<span class="number">0</span>).replace(<span class="string">'\"'</span>, <span class="string">""</span>))]
     </span>NotADirectory(PathBuf),
-    <span class="attr">#[error(<span class="string">&quot;Failed to open /dev/null: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to open /dev/null: {0}"</span>)]
     </span>OpenDevNull(io::Error),
-    <span class="attr">#[error(<span class="string">&quot;{}&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;Failed to parse path {:?} into an OsString&quot;</span>, .<span class="number">0</span>).replace(<span class="string">&#39;\&quot;&#39;</span>, <span class="string">&quot;&quot;</span>))]
+    <span class="attr">#[error(<span class="string">"{}"</span>, <span class="macro">format!</span>(<span class="string">"Failed to parse path {:?} into an OsString"</span>, .<span class="number">0</span>).replace(<span class="string">'\"'</span>, <span class="string">""</span>))]
     </span>OsStringParsing(PathBuf, OsString),
-    <span class="attr">#[error(<span class="string">&quot;Failed to pivot root: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to pivot root: {0}"</span>)]
     </span>PivotRoot(io::Error),
-    <span class="attr">#[error(<span class="string">&quot;{}&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;Failed to read line from {:?}: {}&quot;</span>, .<span class="number">0</span>, .<span class="number">1</span>).replace(<span class="string">&#39;\&quot;&#39;</span>, <span class="string">&quot;&quot;</span>))]
+    <span class="attr">#[error(<span class="string">"{}"</span>, <span class="macro">format!</span>(<span class="string">"Failed to read line from {:?}: {}"</span>, .<span class="number">0</span>, .<span class="number">1</span>).replace(<span class="string">'\"'</span>, <span class="string">""</span>))]
     </span>ReadLine(PathBuf, io::Error),
-    <span class="attr">#[error(<span class="string">&quot;{}&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;Failed to read file {:?} into a string: {}&quot;</span>, .<span class="number">0</span>, .<span class="number">1</span>).replace(<span class="string">&#39;\&quot;&#39;</span>, <span class="string">&quot;&quot;</span>))]
+    <span class="attr">#[error(<span class="string">"{}"</span>, <span class="macro">format!</span>(<span class="string">"Failed to read file {:?} into a string: {}"</span>, .<span class="number">0</span>, .<span class="number">1</span>).replace(<span class="string">'\"'</span>, <span class="string">""</span>))]
     </span>ReadToString(PathBuf, io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Regex failed: {0:?}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Regex failed: {0:?}"</span>)]
     </span>RegEx(regex::Error),
-    <span class="attr">#[error(<span class="string">&quot;Invalid resource argument: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Invalid resource argument: {0}"</span>)]
     </span>ResLimitArgument(String),
-    <span class="attr">#[error(<span class="string">&quot;Invalid format for resources limits: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Invalid format for resources limits: {0}"</span>)]
     </span>ResLimitFormat(String),
-    <span class="attr">#[error(<span class="string">&quot;Invalid limit value for resource: {0}: {1}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Invalid limit value for resource: {0}: {1}"</span>)]
     </span>ResLimitValue(String, String),
-    <span class="attr">#[error(<span class="string">&quot;Failed to remove old jail root directory: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to remove old jail root directory: {0}"</span>)]
     </span>RmOldRootDir(io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Failed to change current directory: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to change current directory: {0}"</span>)]
     </span>SetCurrentDir(io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Failed to join network namespace: netns: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to join network namespace: netns: {0}"</span>)]
     </span>SetNetNs(io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Failed to set limit for resource: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to set limit for resource: {0}"</span>)]
     </span>Setrlimit(String),
-    <span class="attr">#[error(<span class="string">&quot;Failed to daemonize: setsid: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to daemonize: setsid: {0}"</span>)]
     </span>SetSid(io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Invalid uid: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Invalid uid: {0}"</span>)]
     </span>Uid(String),
-    <span class="attr">#[error(<span class="string">&quot;Failed to unmount the old jail root: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to unmount the old jail root: {0}"</span>)]
     </span>UmountOldRoot(io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Unexpected value for the socket listener fd: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Unexpected value for the socket listener fd: {0}"</span>)]
     </span>UnexpectedListenerFd(i32),
-    <span class="attr">#[error(<span class="string">&quot;Failed to unshare into new mount namespace: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to unshare into new mount namespace: {0}"</span>)]
     </span>UnshareNewNs(io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Failed to unset the O_CLOEXEC flag on the socket fd: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Failed to unset the O_CLOEXEC flag on the socket fd: {0}"</span>)]
     </span>UnsetCloexec(io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Slice contains invalid UTF-8 data : {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Slice contains invalid UTF-8 data : {0}"</span>)]
     </span>UTF8Parsing(std::str::Utf8Error),
-    <span class="attr">#[error(<span class="string">&quot;{}&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;Failed to write to {:?}: {}&quot;</span>, .<span class="number">0</span>, .<span class="number">1</span>).replace(<span class="string">&#39;\&quot;&#39;</span>, <span class="string">&quot;&quot;</span>))]
+    <span class="attr">#[error(<span class="string">"{}"</span>, <span class="macro">format!</span>(<span class="string">"Failed to write to {:?}: {}"</span>, .<span class="number">0</span>, .<span class="number">1</span>).replace(<span class="string">'\"'</span>, <span class="string">""</span>))]
     </span>Write(PathBuf, io::Error),
 }
 
 <span class="doccomment">/// Create an ArgParser object which contains info about the command line argument parser and
 /// populate it with the expected arguments and their characteristics.
-</span><span class="kw">pub fn </span>build_arg_parser() -&gt; ArgParser&lt;<span class="lifetime">&#39;static</span>&gt; {
+</span><span class="kw">pub fn </span>build_arg_parser() -&gt; ArgParser&lt;<span class="lifetime">'static</span>&gt; {
     ArgParser::new()
         .arg(
-            Argument::new(<span class="string">&quot;id&quot;</span>)
+            Argument::new(<span class="string">"id"</span>)
                 .required(<span class="bool-val">true</span>)
                 .takes_value(<span class="bool-val">true</span>)
-                .help(<span class="string">&quot;Jail ID.&quot;</span>),
+                .help(<span class="string">"Jail ID."</span>),
         )
         .arg(
-            Argument::new(<span class="string">&quot;exec-file&quot;</span>)
+            Argument::new(<span class="string">"exec-file"</span>)
                 .required(<span class="bool-val">true</span>)
                 .takes_value(<span class="bool-val">true</span>)
-                .help(<span class="string">&quot;File path to exec into.&quot;</span>),
+                .help(<span class="string">"File path to exec into."</span>),
         )
         .arg(
-            Argument::new(<span class="string">&quot;uid&quot;</span>)
+            Argument::new(<span class="string">"uid"</span>)
                 .required(<span class="bool-val">true</span>)
                 .takes_value(<span class="bool-val">true</span>)
-                .help(<span class="string">&quot;The user identifier the jailer switches to after exec.&quot;</span>),
+                .help(<span class="string">"The user identifier the jailer switches to after exec."</span>),
         )
         .arg(
-            Argument::new(<span class="string">&quot;gid&quot;</span>)
+            Argument::new(<span class="string">"gid"</span>)
                 .required(<span class="bool-val">true</span>)
                 .takes_value(<span class="bool-val">true</span>)
-                .help(<span class="string">&quot;The group identifier the jailer switches to after exec.&quot;</span>),
+                .help(<span class="string">"The group identifier the jailer switches to after exec."</span>),
         )
         .arg(
-            Argument::new(<span class="string">&quot;chroot-base-dir&quot;</span>)
+            Argument::new(<span class="string">"chroot-base-dir"</span>)
                 .takes_value(<span class="bool-val">true</span>)
-                .default_value(<span class="string">&quot;/srv/jailer&quot;</span>)
-                .help(<span class="string">&quot;The base folder where chroot jails are located.&quot;</span>),
+                .default_value(<span class="string">"/srv/jailer"</span>)
+                .help(<span class="string">"The base folder where chroot jails are located."</span>),
         )
         .arg(
-            Argument::new(<span class="string">&quot;netns&quot;</span>)
+            Argument::new(<span class="string">"netns"</span>)
                 .takes_value(<span class="bool-val">true</span>)
-                .help(<span class="string">&quot;Path to the network namespace this microVM should join.&quot;</span>),
+                .help(<span class="string">"Path to the network namespace this microVM should join."</span>),
         )
-        .arg(Argument::new(<span class="string">&quot;daemonize&quot;</span>).takes_value(<span class="bool-val">false</span>).help(
-            <span class="string">&quot;Daemonize the jailer before exec, by invoking setsid(), and redirecting the standard \
-             I/O file descriptors to /dev/null.&quot;</span>,
+        .arg(Argument::new(<span class="string">"daemonize"</span>).takes_value(<span class="bool-val">false</span>).help(
+            <span class="string">"Daemonize the jailer before exec, by invoking setsid(), and redirecting the standard \
+             I/O file descriptors to /dev/null."</span>,
         ))
         .arg(
-            Argument::new(<span class="string">&quot;new-pid-ns&quot;</span>)
+            Argument::new(<span class="string">"new-pid-ns"</span>)
                 .takes_value(<span class="bool-val">false</span>)
-                .help(<span class="string">&quot;Exec into a new PID namespace.&quot;</span>),
+                .help(<span class="string">"Exec into a new PID namespace."</span>),
         )
-        .arg(Argument::new(<span class="string">&quot;cgroup&quot;</span>).allow_multiple(<span class="bool-val">true</span>).help(
-            <span class="string">&quot;Cgroup and value to be set by the jailer. It must follow this format: \
+        .arg(Argument::new(<span class="string">"cgroup"</span>).allow_multiple(<span class="bool-val">true</span>).help(
+            <span class="string">"Cgroup and value to be set by the jailer. It must follow this format: \
              &lt;cgroup_file&gt;=&lt;value&gt; (e.g cpu.shares=10). This argument can be used multiple times \
-             to add multiple cgroups.&quot;</span>,
+             to add multiple cgroups."</span>,
         ))
-        .arg(Argument::new(<span class="string">&quot;resource-limit&quot;</span>).allow_multiple(<span class="bool-val">true</span>).help(
-            <span class="string">&quot;Resource limit values to be set by the jailer. It must follow this format: \
+        .arg(Argument::new(<span class="string">"resource-limit"</span>).allow_multiple(<span class="bool-val">true</span>).help(
+            <span class="string">"Resource limit values to be set by the jailer. It must follow this format: \
              &lt;resource&gt;=&lt;value&gt; (e.g no-file=1024). This argument can be used multiple times to \
              add multiple resource limits. Current available resource values are:\n\t\tfsize: The \
              maximum size in bytes for files created by the process.\n\t\tno-file: Specifies a \
              value one greater than the maximum file descriptor number that can be opened by this \
-             process.&quot;</span>,
+             process."</span>,
         ))
         .arg(
-            Argument::new(<span class="string">&quot;cgroup-version&quot;</span>)
+            Argument::new(<span class="string">"cgroup-version"</span>)
                 .takes_value(<span class="bool-val">true</span>)
-                .default_value(<span class="string">&quot;1&quot;</span>)
-                .help(<span class="string">&quot;Select the cgroup version used by the jailer.&quot;</span>),
+                .default_value(<span class="string">"1"</span>)
+                .help(<span class="string">"Select the cgroup version used by the jailer."</span>),
         )
         .arg(
-            Argument::new(<span class="string">&quot;parent-cgroup&quot;</span>)
+            Argument::new(<span class="string">"parent-cgroup"</span>)
                 .takes_value(<span class="bool-val">true</span>)
-                .help(<span class="string">&quot;Parent cgroup in which the cgroup of this microvm will be placed.&quot;</span>),
+                .help(<span class="string">"Parent cgroup in which the cgroup of this microvm will be placed."</span>),
         )
         .arg(
-            Argument::new(<span class="string">&quot;version&quot;</span>)
+            Argument::new(<span class="string">"version"</span>)
                 .takes_value(<span class="bool-val">false</span>)
-                .help(<span class="string">&quot;Print the binary version number.&quot;</span>),
+                .help(<span class="string">"Print the binary version number."</span>),
         )
 }
 
-<span class="comment">// It&#39;s called writeln_special because we have to use this rather convoluted way of writing
+<span class="comment">// It's called writeln_special because we have to use this rather convoluted way of writing
 // to special cgroup files, to avoid getting errors. It would be nice to know why that happens :-s
 </span><span class="kw">pub fn </span>writeln_special&lt;T, V&gt;(file_path: <span class="kw-2">&amp;</span>T, value: V) -&gt; <span class="prelude-ty">Result</span>&lt;(), JailerError&gt;
 <span class="kw">where
     </span>T: AsRef&lt;Path&gt; + Debug,
     V: Display + Debug,
 {
-    fs::write(file_path, <span class="macro">format!</span>(<span class="string">&quot;{}\n&quot;</span>, value))
+    fs::write(file_path, <span class="macro">format!</span>(<span class="string">"{}\n"</span>, value))
         .map_err(|err| JailerError::Write(PathBuf::from(file_path.as_ref()), err))
 }
 
@@ -745,9 +747,9 @@
 
 <span class="kw">fn </span>close_fds_by_reading_proc() -&gt; <span class="prelude-ty">Result</span>&lt;(), JailerError&gt; {
     <span class="comment">// Calling this method means that close_range failed (we might be on kernel &lt; 5.9).
-    // We can&#39;t use std::fs::ReadDir here as under the hood we need access to the dirfd in order to
+    // We can't use std::fs::ReadDir here as under the hood we need access to the dirfd in order to
     // not close it twice
-    </span><span class="kw">let </span>path = <span class="string">&quot;/proc/self/fd&quot;</span>;
+    </span><span class="kw">let </span>path = <span class="string">"/proc/self/fd"</span>;
     <span class="kw">let </span><span class="kw-2">mut </span>dir = nix::dir::Dir::open(
         path,
         nix::fcntl::OFlag::O_DIRECTORY | nix::fcntl::OFlag::O_NOATIME,
@@ -785,7 +787,7 @@
 }
 
 <span class="kw">fn </span>sanitize_process() -&gt; <span class="prelude-ty">Result</span>&lt;(), JailerError&gt; {
-    <span class="comment">// First thing to do is make sure we don&#39;t keep any inherited FDs
+    <span class="comment">// First thing to do is make sure we don't keep any inherited FDs
     // other that IN, OUT and ERR.
     </span>close_inherited_fds()<span class="question-mark">?</span>;
 
@@ -803,7 +805,7 @@
     }
 }
 
-<span class="doccomment">/// Turns an AsRef&lt;Path&gt; into a CString (c style string).
+<span class="doccomment">/// Turns an [`AsRef&lt;Path&gt;`] into a [`CString`] (c style string).
 /// The expect should not fail, since Linux paths only contain valid Unicode chars (do they?),
 /// and do not contain null bytes (do they?).
 </span><span class="kw">pub fn </span>to_cstring&lt;T: AsRef&lt;Path&gt; + Debug&gt;(path: T) -&gt; <span class="prelude-ty">Result</span>&lt;CString, JailerError&gt; {
@@ -819,7 +821,7 @@
 <span class="kw">fn </span>main() -&gt; <span class="prelude-ty">Result</span>&lt;(), JailerError&gt; {
     <span class="kw">let </span>result = main_exec();
     <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = result {
-        <span class="macro">eprintln!</span>(<span class="string">&quot;{}&quot;</span>, e);
+        <span class="macro">eprintln!</span>(<span class="string">"{}"</span>, e);
         <span class="prelude-val">Err</span>(e)
     } <span class="kw">else </span>{
         <span class="prelude-val">Ok</span>(())
@@ -828,7 +830,7 @@
 
 <span class="kw">fn </span>main_exec() -&gt; <span class="prelude-ty">Result</span>&lt;(), JailerError&gt; {
     sanitize_process()
-        .unwrap_or_else(|err| <span class="macro">panic!</span>(<span class="string">&quot;Failed to sanitize the Jailer process: {}&quot;</span>, err));
+        .unwrap_or_else(|err| <span class="macro">panic!</span>(<span class="string">"Failed to sanitize the Jailer process: {}"</span>, err));
 
     <span class="kw">let </span><span class="kw-2">mut </span>arg_parser = build_arg_parser();
     arg_parser
@@ -836,15 +838,15 @@
         .map_err(JailerError::ArgumentParsing)<span class="question-mark">?</span>;
     <span class="kw">let </span>arguments = arg_parser.arguments();
 
-    <span class="kw">if </span>arguments.flag_present(<span class="string">&quot;help&quot;</span>) {
-        <span class="macro">println!</span>(<span class="string">&quot;Jailer v{}\n&quot;</span>, JAILER_VERSION);
-        <span class="macro">println!</span>(<span class="string">&quot;{}\n&quot;</span>, arg_parser.formatted_help());
-        <span class="macro">println!</span>(<span class="string">&quot;Any arguments after the -- separator will be supplied to the jailed binary.\n&quot;</span>);
+    <span class="kw">if </span>arguments.flag_present(<span class="string">"help"</span>) {
+        <span class="macro">println!</span>(<span class="string">"Jailer v{}\n"</span>, JAILER_VERSION);
+        <span class="macro">println!</span>(<span class="string">"{}\n"</span>, arg_parser.formatted_help());
+        <span class="macro">println!</span>(<span class="string">"Any arguments after the -- separator will be supplied to the jailed binary.\n"</span>);
         <span class="kw">return </span><span class="prelude-val">Ok</span>(());
     }
 
-    <span class="kw">if </span>arguments.flag_present(<span class="string">&quot;version&quot;</span>) {
-        <span class="macro">println!</span>(<span class="string">&quot;Jailer v{}\n&quot;</span>, JAILER_VERSION);
+    <span class="kw">if </span>arguments.flag_present(<span class="string">"version"</span>) {
+        <span class="macro">println!</span>(<span class="string">"Jailer v{}\n"</span>, JAILER_VERSION);
         <span class="kw">return </span><span class="prelude-val">Ok</span>(());
     }
 
@@ -858,7 +860,7 @@
             .map_err(|err| JailerError::CreateDir(env.chroot_dir().to_owned(), err))<span class="question-mark">?</span>;
         env.run()
     })
-    .unwrap_or_else(|err| <span class="macro">panic!</span>(<span class="string">&quot;Jailer error: {}&quot;</span>, err));
+    .unwrap_or_else(|err| <span class="macro">panic!</span>(<span class="string">"Jailer error: {}"</span>, err));
     <span class="prelude-val">Ok</span>(())
 }
 
@@ -879,14 +881,14 @@
         <span class="kw">let </span>n = <span class="number">100</span>;
 
         <span class="kw">let </span>tmp_dir_path = <span class="macro">format!</span>(
-            <span class="string">&quot;/tmp/jailer/tests/close_fds/_{}&quot;</span>,
+            <span class="string">"/tmp/jailer/tests/close_fds/_{}"</span>,
             rand::rand_alphanumerics(<span class="number">4</span>).into_string().unwrap()
         );
         fs::create_dir_all(<span class="kw-2">&amp;</span>tmp_dir_path).unwrap();
 
         <span class="kw">let </span><span class="kw-2">mut </span>fds = Vec::new();
         <span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..n {
-            <span class="kw">let </span>maybe_file = File::create(<span class="macro">format!</span>(<span class="string">&quot;{}/{}&quot;</span>, <span class="kw-2">&amp;</span>tmp_dir_path, i));
+            <span class="kw">let </span>maybe_file = File::create(<span class="macro">format!</span>(<span class="string">"{}/{}"</span>, <span class="kw-2">&amp;</span>tmp_dir_path, i));
             fds.push(maybe_file.unwrap().into_raw_fd());
         }
 
@@ -911,11 +913,11 @@
             .to_string_lossy()
             .into_owned();
         <span class="comment">// Parse the major and minor version of the kernel
-        </span><span class="kw">let </span><span class="kw-2">mut </span>r = release.split(<span class="string">&#39;.&#39;</span>);
+        </span><span class="kw">let </span><span class="kw-2">mut </span>r = release.split(<span class="string">'.'</span>);
         <span class="kw">let </span>major: i32 = str::parse(r.next().unwrap()).unwrap();
         <span class="kw">let </span>minor: i32 = str::parse(r.next().unwrap()).unwrap();
 
-        <span class="comment">// Skip this test if we&#39;re running on a too old kernel
+        <span class="comment">// Skip this test if we're running on a too old kernel
         </span><span class="kw">if </span>major &gt; <span class="number">5 </span>|| (major == <span class="number">5 </span>&amp;&amp; minor &gt;= <span class="number">9</span>) {
             run_close_fds_test(close_fds_by_close_range);
         }
@@ -933,11 +935,11 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_clean_env_vars() {
-        <span class="kw">let </span>env_vars: [<span class="kw-2">&amp;</span>str; <span class="number">5</span>] = [<span class="string">&quot;VAR1&quot;</span>, <span class="string">&quot;VAR2&quot;</span>, <span class="string">&quot;VAR3&quot;</span>, <span class="string">&quot;VAR4&quot;</span>, <span class="string">&quot;VAR5&quot;</span>];
+        <span class="kw">let </span>env_vars: [<span class="kw-2">&amp;</span>str; <span class="number">5</span>] = [<span class="string">"VAR1"</span>, <span class="string">"VAR2"</span>, <span class="string">"VAR3"</span>, <span class="string">"VAR4"</span>, <span class="string">"VAR5"</span>];
 
         <span class="comment">// Set environment variables
         </span><span class="kw">for </span>env_var <span class="kw">in </span>env_vars.iter() {
-            env::set_var(env_var, <span class="string">&quot;0&quot;</span>);
+            env::set_var(env_var, <span class="string">"0"</span>);
         }
 
         <span class="comment">// Cleanup the environment
@@ -952,13 +954,13 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_to_cstring() {
-        <span class="kw">let </span>path = Path::new(<span class="string">&quot;some_path&quot;</span>);
+        <span class="kw">let </span>path = Path::new(<span class="string">"some_path"</span>);
         <span class="kw">let </span>cstring_path = to_cstring(path).unwrap();
-        <span class="macro">assert_eq!</span>(cstring_path, CString::new(<span class="string">&quot;some_path&quot;</span>).unwrap());
-        <span class="kw">let </span>path_with_nul = Path::new(<span class="string">&quot;some_path\0&quot;</span>);
+        <span class="macro">assert_eq!</span>(cstring_path, CString::new(<span class="string">"some_path"</span>).unwrap());
+        <span class="kw">let </span>path_with_nul = Path::new(<span class="string">"some_path\0"</span>);
         <span class="macro">assert_eq!</span>(
-            <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, to_cstring(path_with_nul).unwrap_err()),
-            <span class="string">&quot;Encountered interior \\0 while parsing a string&quot;
+            <span class="macro">format!</span>(<span class="string">"{}"</span>, to_cstring(path_with_nul).unwrap_err()),
+            <span class="string">"Encountered interior \\0 while parsing a string"
         </span>);
     }
 }

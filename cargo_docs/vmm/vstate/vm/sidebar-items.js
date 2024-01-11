@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["RestoreStateError","VmError"],"struct":["Vm","VmState"]};
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_RestoreStateError","_DERIVE_Display_FOR_VmError"],"enum":["RestoreStateError","VmError"],"struct":["Vm","VmState"]};

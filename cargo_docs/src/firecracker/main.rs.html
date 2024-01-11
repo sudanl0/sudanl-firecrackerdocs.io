@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/firecracker/src/main.rs`."><title>main.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="firecracker" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../firecracker/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/firecracker/src/main.rs`."><title>main.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="firecracker" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../firecracker/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -669,9 +671,9 @@
 <span class="comment">// The reason we place default API socket under /run is that API socket is a
 // runtime file.
 // see https://refspecs.linuxfoundation.org/FHS_3.0/fhs/ch03s15.html for more information.
-</span><span class="kw">const </span>DEFAULT_API_SOCK_PATH: <span class="kw-2">&amp;</span>str = <span class="string">&quot;/run/firecracker.socket&quot;</span>;
-<span class="kw">const </span>FIRECRACKER_VERSION: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>);
-<span class="kw">const </span>MMDS_CONTENT_ARG: <span class="kw-2">&amp;</span>str = <span class="string">&quot;metadata&quot;</span>;
+</span><span class="kw">const </span>DEFAULT_API_SOCK_PATH: <span class="kw-2">&amp;</span>str = <span class="string">"/run/firecracker.socket"</span>;
+<span class="kw">const </span>FIRECRACKER_VERSION: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">"CARGO_PKG_VERSION"</span>);
+<span class="kw">const </span>MMDS_CONTENT_ARG: <span class="kw-2">&amp;</span>str = <span class="string">"metadata"</span>;
 
 <span class="attr">#[derive(Debug, thiserror::Error, displaydoc::Display)]
 </span><span class="kw">enum </span>MainError {
@@ -705,7 +707,7 @@
     </span>GetRlimit,
     <span class="doccomment">/// Failed to call dup2 to resize fdtable
     </span>Dup2(io::Error),
-    <span class="doccomment">/// Failed to close dup2&#39;d file descriptor
+    <span class="doccomment">/// Failed to close dup2'd file descriptor
     </span>Close(io::Error),
 }
 
@@ -724,13 +726,13 @@
 <span class="kw">fn </span>main() -&gt; ExitCode {
     <span class="kw">let </span>result = main_exec();
     <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = result {
-        <span class="macro">error!</span>(<span class="string">&quot;{err}&quot;</span>);
-        <span class="macro">eprintln!</span>(<span class="string">&quot;Error: {err:?}&quot;</span>);
+        <span class="macro">error!</span>(<span class="string">"{err}"</span>);
+        <span class="macro">eprintln!</span>(<span class="string">"Error: {err:?}"</span>);
         <span class="kw">let </span>exit_code = FcExitCode::from(err) <span class="kw">as </span>u8;
-        <span class="macro">error!</span>(<span class="string">&quot;Firecracker exiting with error. exit_code={exit_code}&quot;</span>);
+        <span class="macro">error!</span>(<span class="string">"Firecracker exiting with error. exit_code={exit_code}"</span>);
         ExitCode::from(exit_code)
     } <span class="kw">else </span>{
-        <span class="macro">info!</span>(<span class="string">&quot;Firecracker exiting successfully. exit_code=0&quot;</span>);
+        <span class="macro">info!</span>(<span class="string">"Firecracker exiting successfully. exit_code=0"</span>);
         ExitCode::SUCCESS
     }
 }
@@ -743,16 +745,16 @@
     </span><span class="kw">let </span>stdin = io::stdin();
 
     <span class="comment">// Start firecracker by setting up a panic hook, which will be called before
-    // terminating as we&#39;re building with panic = &quot;abort&quot;.
-    // It&#39;s worth noting that the abort is caused by sending a SIG_ABORT signal to the process.
+    // terminating as we're building with panic = "abort".
+    // It's worth noting that the abort is caused by sending a SIG_ABORT signal to the process.
     </span>panic::set_hook(Box::new(<span class="kw">move </span>|info| {
-        <span class="comment">// We&#39;re currently using the closure parameter, which is a &amp;PanicInfo, for printing the
+        <span class="comment">// We're currently using the closure parameter, which is a &amp;PanicInfo, for printing the
         // origin of the panic, including the payload passed to panic! and the source code location
         // from which the panic originated.
-        </span><span class="macro">error!</span>(<span class="string">&quot;Firecracker {}&quot;</span>, info);
+        </span><span class="macro">error!</span>(<span class="string">"Firecracker {}"</span>, info);
         <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = stdin.lock().set_canon_mode() {
             <span class="macro">error!</span>(
-                <span class="string">&quot;Failure while trying to reset stdin to canonical mode: {}&quot;</span>,
+                <span class="string">"Failure while trying to reset stdin to canonical mode: {}"</span>,
                 err
             );
         }
@@ -761,7 +763,7 @@
 
         <span class="comment">// Write the metrics before aborting.
         </span><span class="kw">if let </span><span class="prelude-val">Err</span>(err) = METRICS.write() {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to write metrics while panicking: {}&quot;</span>, err);
+            <span class="macro">error!</span>(<span class="string">"Failed to write metrics while panicking: {}"</span>, err);
         }
     }));
 
@@ -770,154 +772,154 @@
     <span class="kw">let </span><span class="kw-2">mut </span>arg_parser =
         ArgParser::new()
             .arg(
-                Argument::new(<span class="string">&quot;api-sock&quot;</span>)
+                Argument::new(<span class="string">"api-sock"</span>)
                     .takes_value(<span class="bool-val">true</span>)
                     .default_value(DEFAULT_API_SOCK_PATH)
-                    .help(<span class="string">&quot;Path to unix domain socket used by the API.&quot;</span>),
+                    .help(<span class="string">"Path to unix domain socket used by the API."</span>),
             )
             .arg(
-                Argument::new(<span class="string">&quot;id&quot;</span>)
+                Argument::new(<span class="string">"id"</span>)
                     .takes_value(<span class="bool-val">true</span>)
                     .default_value(vmm::logger::DEFAULT_INSTANCE_ID)
-                    .help(<span class="string">&quot;MicroVM unique identifier.&quot;</span>),
+                    .help(<span class="string">"MicroVM unique identifier."</span>),
             )
             .arg(
-                Argument::new(<span class="string">&quot;seccomp-filter&quot;</span>)
+                Argument::new(<span class="string">"seccomp-filter"</span>)
                     .takes_value(<span class="bool-val">true</span>)
-                    .forbids(<span class="macro">vec!</span>[<span class="string">&quot;no-seccomp&quot;</span>])
+                    .forbids(<span class="macro">vec!</span>[<span class="string">"no-seccomp"</span>])
                     .help(
-                        <span class="string">&quot;Optional parameter which allows specifying the path to a custom seccomp \
-                         filter. For advanced users.&quot;</span>,
+                        <span class="string">"Optional parameter which allows specifying the path to a custom seccomp \
+                         filter. For advanced users."</span>,
                     ),
             )
             .arg(
-                Argument::new(<span class="string">&quot;no-seccomp&quot;</span>)
+                Argument::new(<span class="string">"no-seccomp"</span>)
                     .takes_value(<span class="bool-val">false</span>)
-                    .forbids(<span class="macro">vec!</span>[<span class="string">&quot;seccomp-filter&quot;</span>])
+                    .forbids(<span class="macro">vec!</span>[<span class="string">"seccomp-filter"</span>])
                     .help(
-                        <span class="string">&quot;Optional parameter which allows starting and using a microVM without \
-                         seccomp filtering. Not recommended.&quot;</span>,
+                        <span class="string">"Optional parameter which allows starting and using a microVM without \
+                         seccomp filtering. Not recommended."</span>,
                     ),
             )
             .arg(
-                Argument::new(<span class="string">&quot;start-time-us&quot;</span>).takes_value(<span class="bool-val">true</span>).help(
-                    <span class="string">&quot;Process start time (wall clock, microseconds). This parameter is optional.&quot;</span>,
+                Argument::new(<span class="string">"start-time-us"</span>).takes_value(<span class="bool-val">true</span>).help(
+                    <span class="string">"Process start time (wall clock, microseconds). This parameter is optional."</span>,
                 ),
             )
-            .arg(Argument::new(<span class="string">&quot;start-time-cpu-us&quot;</span>).takes_value(<span class="bool-val">true</span>).help(
-                <span class="string">&quot;Process start CPU time (wall clock, microseconds). This parameter is optional.&quot;</span>,
+            .arg(Argument::new(<span class="string">"start-time-cpu-us"</span>).takes_value(<span class="bool-val">true</span>).help(
+                <span class="string">"Process start CPU time (wall clock, microseconds). This parameter is optional."</span>,
             ))
-            .arg(Argument::new(<span class="string">&quot;parent-cpu-time-us&quot;</span>).takes_value(<span class="bool-val">true</span>).help(
-                <span class="string">&quot;Parent process CPU time (wall clock, microseconds). This parameter is optional.&quot;</span>,
+            .arg(Argument::new(<span class="string">"parent-cpu-time-us"</span>).takes_value(<span class="bool-val">true</span>).help(
+                <span class="string">"Parent process CPU time (wall clock, microseconds). This parameter is optional."</span>,
             ))
             .arg(
-                Argument::new(<span class="string">&quot;config-file&quot;</span>)
+                Argument::new(<span class="string">"config-file"</span>)
                     .takes_value(<span class="bool-val">true</span>)
-                    .help(<span class="string">&quot;Path to a file that contains the microVM configuration in JSON format.&quot;</span>),
+                    .help(<span class="string">"Path to a file that contains the microVM configuration in JSON format."</span>),
             )
             .arg(
                 Argument::new(MMDS_CONTENT_ARG).takes_value(<span class="bool-val">true</span>).help(
-                    <span class="string">&quot;Path to a file that contains metadata in JSON format to add to the mmds.&quot;</span>,
+                    <span class="string">"Path to a file that contains metadata in JSON format to add to the mmds."</span>,
                 ),
             )
             .arg(
-                Argument::new(<span class="string">&quot;no-api&quot;</span>)
+                Argument::new(<span class="string">"no-api"</span>)
                     .takes_value(<span class="bool-val">false</span>)
-                    .requires(<span class="string">&quot;config-file&quot;</span>)
+                    .requires(<span class="string">"config-file"</span>)
                     .help(
-                        <span class="string">&quot;Optional parameter which allows starting and using a microVM without an \
-                         active API socket.&quot;</span>,
+                        <span class="string">"Optional parameter which allows starting and using a microVM without an \
+                         active API socket."</span>,
                     ),
             )
             .arg(
-                Argument::new(<span class="string">&quot;log-path&quot;</span>)
+                Argument::new(<span class="string">"log-path"</span>)
                     .takes_value(<span class="bool-val">true</span>)
-                    .help(<span class="string">&quot;Path to a fifo or a file used for configuring the logger on startup.&quot;</span>),
+                    .help(<span class="string">"Path to a fifo or a file used for configuring the logger on startup."</span>),
             )
             .arg(
-                Argument::new(<span class="string">&quot;level&quot;</span>)
+                Argument::new(<span class="string">"level"</span>)
                     .takes_value(<span class="bool-val">true</span>)
-                    .help(<span class="string">&quot;Set the logger level.&quot;</span>),
+                    .help(<span class="string">"Set the logger level."</span>),
             )
             .arg(
-                Argument::new(<span class="string">&quot;module&quot;</span>)
+                Argument::new(<span class="string">"module"</span>)
                     .takes_value(<span class="bool-val">true</span>)
-                    .help(<span class="string">&quot;Set the logger module filter.&quot;</span>),
+                    .help(<span class="string">"Set the logger module filter."</span>),
             )
             .arg(
-                Argument::new(<span class="string">&quot;show-level&quot;</span>)
+                Argument::new(<span class="string">"show-level"</span>)
                     .takes_value(<span class="bool-val">false</span>)
-                    .help(<span class="string">&quot;Whether or not to output the level in the logs.&quot;</span>),
+                    .help(<span class="string">"Whether or not to output the level in the logs."</span>),
             )
-            .arg(Argument::new(<span class="string">&quot;show-log-origin&quot;</span>).takes_value(<span class="bool-val">false</span>).help(
-                <span class="string">&quot;Whether or not to include the file path and line number of the log&#39;s origin.&quot;</span>,
+            .arg(Argument::new(<span class="string">"show-log-origin"</span>).takes_value(<span class="bool-val">false</span>).help(
+                <span class="string">"Whether or not to include the file path and line number of the log's origin."</span>,
             ))
             .arg(
-                Argument::new(<span class="string">&quot;metrics-path&quot;</span>)
+                Argument::new(<span class="string">"metrics-path"</span>)
                     .takes_value(<span class="bool-val">true</span>)
-                    .help(<span class="string">&quot;Path to a fifo or a file used for configuring the metrics on startup.&quot;</span>),
+                    .help(<span class="string">"Path to a fifo or a file used for configuring the metrics on startup."</span>),
             )
-            .arg(Argument::new(<span class="string">&quot;boot-timer&quot;</span>).takes_value(<span class="bool-val">false</span>).help(
-                <span class="string">&quot;Whether or not to load boot timer device for logging elapsed time since \
-                 InstanceStart command.&quot;</span>,
+            .arg(Argument::new(<span class="string">"boot-timer"</span>).takes_value(<span class="bool-val">false</span>).help(
+                <span class="string">"Whether or not to load boot timer device for logging elapsed time since \
+                 InstanceStart command."</span>,
             ))
-            .arg(Argument::new(<span class="string">&quot;version&quot;</span>).takes_value(<span class="bool-val">false</span>).help(
-                <span class="string">&quot;Print the binary version number and a list of supported snapshot data format \
-                 versions.&quot;</span>,
+            .arg(Argument::new(<span class="string">"version"</span>).takes_value(<span class="bool-val">false</span>).help(
+                <span class="string">"Print the binary version number and a list of supported snapshot data format \
+                 versions."</span>,
             ))
             .arg(
-                Argument::new(<span class="string">&quot;describe-snapshot&quot;</span>)
+                Argument::new(<span class="string">"describe-snapshot"</span>)
                     .takes_value(<span class="bool-val">true</span>)
-                    .help(<span class="string">&quot;Print the data format version of the provided snapshot state file.&quot;</span>),
+                    .help(<span class="string">"Print the data format version of the provided snapshot state file."</span>),
             )
             .arg(
-                Argument::new(<span class="string">&quot;http-api-max-payload-size&quot;</span>)
+                Argument::new(<span class="string">"http-api-max-payload-size"</span>)
                     .takes_value(<span class="bool-val">true</span>)
                     .default_value(<span class="kw-2">&amp;</span>http_max_payload_size_str)
-                    .help(<span class="string">&quot;Http API request payload max size, in bytes.&quot;</span>),
+                    .help(<span class="string">"Http API request payload max size, in bytes."</span>),
             )
             .arg(
-                Argument::new(<span class="string">&quot;mmds-size-limit&quot;</span>)
+                Argument::new(<span class="string">"mmds-size-limit"</span>)
                     .takes_value(<span class="bool-val">true</span>)
-                    .help(<span class="string">&quot;Mmds data store limit, in bytes.&quot;</span>),
+                    .help(<span class="string">"Mmds data store limit, in bytes."</span>),
             );
 
     arg_parser.parse_from_cmdline()<span class="question-mark">?</span>;
     <span class="kw">let </span>arguments = arg_parser.arguments();
 
-    <span class="kw">if </span>arguments.flag_present(<span class="string">&quot;help&quot;</span>) {
-        <span class="macro">println!</span>(<span class="string">&quot;Firecracker v{}\n&quot;</span>, FIRECRACKER_VERSION);
-        <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, arg_parser.formatted_help());
+    <span class="kw">if </span>arguments.flag_present(<span class="string">"help"</span>) {
+        <span class="macro">println!</span>(<span class="string">"Firecracker v{}\n"</span>, FIRECRACKER_VERSION);
+        <span class="macro">println!</span>(<span class="string">"{}"</span>, arg_parser.formatted_help());
         <span class="kw">return </span><span class="prelude-val">Ok</span>(());
     }
 
-    <span class="kw">if </span>arguments.flag_present(<span class="string">&quot;version&quot;</span>) {
-        <span class="macro">println!</span>(<span class="string">&quot;Firecracker v{}\n&quot;</span>, FIRECRACKER_VERSION);
+    <span class="kw">if </span>arguments.flag_present(<span class="string">"version"</span>) {
+        <span class="macro">println!</span>(<span class="string">"Firecracker v{}\n"</span>, FIRECRACKER_VERSION);
         <span class="kw">return </span><span class="prelude-val">Ok</span>(());
     }
 
-    <span class="kw">if let </span><span class="prelude-val">Some</span>(snapshot_path) = arguments.single_value(<span class="string">&quot;describe-snapshot&quot;</span>) {
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(snapshot_path) = arguments.single_value(<span class="string">"describe-snapshot"</span>) {
         print_snapshot_data_format(snapshot_path)<span class="question-mark">?</span>;
         <span class="kw">return </span><span class="prelude-val">Ok</span>(());
     }
 
-    <span class="comment">// It&#39;s safe to unwrap here because the field&#39;s been provided with a default value.
-    </span><span class="kw">let </span>instance_id = arguments.single_value(<span class="string">&quot;id&quot;</span>).unwrap();
-    validate_instance_id(instance_id.as_str()).expect(<span class="string">&quot;Invalid instance ID&quot;</span>);
+    <span class="comment">// It's safe to unwrap here because the field's been provided with a default value.
+    </span><span class="kw">let </span>instance_id = arguments.single_value(<span class="string">"id"</span>).unwrap();
+    validate_instance_id(instance_id.as_str()).expect(<span class="string">"Invalid instance ID"</span>);
 
     <span class="comment">// Apply the logger configuration.
     </span>vmm::logger::INSTANCE_ID
         .set(String::from(instance_id))
         .unwrap();
-    <span class="kw">let </span>log_path = arguments.single_value(<span class="string">&quot;log-path&quot;</span>).map(PathBuf::from);
+    <span class="kw">let </span>log_path = arguments.single_value(<span class="string">"log-path"</span>).map(PathBuf::from);
     <span class="kw">let </span>level = arguments
-        .single_value(<span class="string">&quot;level&quot;</span>)
+        .single_value(<span class="string">"level"</span>)
         .map(|s| vmm::logger::LevelFilter::from_str(s))
         .transpose()
         .map_err(MainError::InvalidLogLevel)<span class="question-mark">?</span>;
-    <span class="kw">let </span>show_level = arguments.flag_present(<span class="string">&quot;show-level&quot;</span>).then_some(<span class="bool-val">true</span>);
-    <span class="kw">let </span>show_log_origin = arguments.flag_present(<span class="string">&quot;show-log-origin&quot;</span>).then_some(<span class="bool-val">true</span>);
-    <span class="kw">let </span>module = arguments.single_value(<span class="string">&quot;module&quot;</span>).cloned();
+    <span class="kw">let </span>show_level = arguments.flag_present(<span class="string">"show-level"</span>).then_some(<span class="bool-val">true</span>);
+    <span class="kw">let </span>show_log_origin = arguments.flag_present(<span class="string">"show-log-origin"</span>).then_some(<span class="bool-val">true</span>);
+    <span class="kw">let </span>module = arguments.single_value(<span class="string">"module"</span>).cloned();
     LOGGER
         .update(LoggerConfig {
             log_path,
@@ -927,11 +929,11 @@
             module,
         })
         .map_err(MainError::LoggerInitialization)<span class="question-mark">?</span>;
-    <span class="macro">info!</span>(<span class="string">&quot;Running Firecracker v{FIRECRACKER_VERSION}&quot;</span>);
+    <span class="macro">info!</span>(<span class="string">"Running Firecracker v{FIRECRACKER_VERSION}"</span>);
 
     register_signal_handlers().map_err(MainError::RegisterSignalHandlers)<span class="question-mark">?</span>;
 
-    <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+    <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
     </span>enable_ssbd_mitigation();
 
     <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = resize_fdtable() {
@@ -939,7 +941,7 @@
             <span class="comment">// These errors are non-critical: In the worst case we have worse snapshot restore
             // performance.
             </span>ResizeFdTableError::GetRlimit | ResizeFdTableError::Dup2(<span class="kw">_</span>) =&gt; {
-                <span class="macro">debug!</span>(<span class="string">&quot;Failed to resize fdtable: {err}&quot;</span>)
+                <span class="macro">debug!</span>(<span class="string">"Failed to resize fdtable: {err}"</span>)
             }
             <span class="comment">// This error means that we now have a random file descriptor lying around, abort to be
             // cautious.
@@ -956,10 +958,10 @@
         id: instance_id.clone(),
         state: VmState::NotStarted,
         vmm_version: FIRECRACKER_VERSION.to_string(),
-        app_name: <span class="string">&quot;Firecracker&quot;</span>.to_string(),
+        app_name: <span class="string">"Firecracker"</span>.to_string(),
     };
 
-    <span class="kw">if let </span><span class="prelude-val">Some</span>(metrics_path) = arguments.single_value(<span class="string">&quot;metrics-path&quot;</span>) {
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(metrics_path) = arguments.single_value(<span class="string">"metrics-path"</span>) {
         <span class="kw">let </span>metrics_config = MetricsConfig {
             metrics_path: PathBuf::from(metrics_path),
         };
@@ -967,30 +969,30 @@
     }
 
     <span class="kw">let </span><span class="kw-2">mut </span>seccomp_filters: BpfThreadMap = SeccompConfig::from_args(
-        arguments.flag_present(<span class="string">&quot;no-seccomp&quot;</span>),
-        arguments.single_value(<span class="string">&quot;seccomp-filter&quot;</span>),
+        arguments.flag_present(<span class="string">"no-seccomp"</span>),
+        arguments.single_value(<span class="string">"seccomp-filter"</span>),
     )
     .and_then(seccomp::get_filters)
     .map_err(MainError::SeccompFilter)<span class="question-mark">?</span>;
 
     <span class="kw">let </span>vmm_config_json = arguments
-        .single_value(<span class="string">&quot;config-file&quot;</span>)
+        .single_value(<span class="string">"config-file"</span>)
         .map(fs::read_to_string)
-        .map(|x| x.expect(<span class="string">&quot;Unable to open or read from the configuration file&quot;</span>));
+        .map(|x| x.expect(<span class="string">"Unable to open or read from the configuration file"</span>));
 
     <span class="kw">let </span>metadata_json = arguments
         .single_value(MMDS_CONTENT_ARG)
         .map(fs::read_to_string)
-        .map(|x| x.expect(<span class="string">&quot;Unable to open or read from the mmds content file&quot;</span>));
+        .map(|x| x.expect(<span class="string">"Unable to open or read from the mmds content file"</span>));
 
-    <span class="kw">let </span>boot_timer_enabled = arguments.flag_present(<span class="string">&quot;boot-timer&quot;</span>);
-    <span class="kw">let </span>api_enabled = !arguments.flag_present(<span class="string">&quot;no-api&quot;</span>);
+    <span class="kw">let </span>boot_timer_enabled = arguments.flag_present(<span class="string">"boot-timer"</span>);
+    <span class="kw">let </span>api_enabled = !arguments.flag_present(<span class="string">"no-api"</span>);
     <span class="kw">let </span>api_payload_limit = arg_parser
         .arguments()
-        .single_value(<span class="string">&quot;http-api-max-payload-size&quot;</span>)
+        .single_value(<span class="string">"http-api-max-payload-size"</span>)
         .map(|lim| {
             lim.parse::&lt;usize&gt;()
-                .expect(<span class="string">&quot;&#39;http-api-max-payload-size&#39; parameter expected to be of &#39;usize&#39; type.&quot;</span>)
+                .expect(<span class="string">"'http-api-max-payload-size' parameter expected to be of 'usize' type."</span>)
         })
         <span class="comment">// Safe to unwrap as we provide a default value.
         </span>.unwrap();
@@ -999,32 +1001,32 @@
     // `http-api-max-payload-size` value.
     </span><span class="kw">let </span>mmds_size_limit = arg_parser
         .arguments()
-        .single_value(<span class="string">&quot;mmds-size-limit&quot;</span>)
+        .single_value(<span class="string">"mmds-size-limit"</span>)
         .map(|lim| {
             lim.parse::&lt;usize&gt;()
-                .expect(<span class="string">&quot;&#39;mmds-size-limit&#39; parameter expected to be of &#39;usize&#39; type.&quot;</span>)
+                .expect(<span class="string">"'mmds-size-limit' parameter expected to be of 'usize' type."</span>)
         })
         .unwrap_or_else(|| api_payload_limit);
 
     <span class="kw">if </span>api_enabled {
         <span class="kw">let </span>bind_path = arguments
-            .single_value(<span class="string">&quot;api-sock&quot;</span>)
+            .single_value(<span class="string">"api-sock"</span>)
             .map(PathBuf::from)
-            .expect(<span class="string">&quot;Missing argument: api-sock&quot;</span>);
+            .expect(<span class="string">"Missing argument: api-sock"</span>);
 
-        <span class="kw">let </span>start_time_us = arguments.single_value(<span class="string">&quot;start-time-us&quot;</span>).map(|s| {
+        <span class="kw">let </span>start_time_us = arguments.single_value(<span class="string">"start-time-us"</span>).map(|s| {
             s.parse::&lt;u64&gt;()
-                .expect(<span class="string">&quot;&#39;start-time-us&#39; parameter expected to be of &#39;u64&#39; type.&quot;</span>)
+                .expect(<span class="string">"'start-time-us' parameter expected to be of 'u64' type."</span>)
         });
 
-        <span class="kw">let </span>start_time_cpu_us = arguments.single_value(<span class="string">&quot;start-time-cpu-us&quot;</span>).map(|s| {
+        <span class="kw">let </span>start_time_cpu_us = arguments.single_value(<span class="string">"start-time-cpu-us"</span>).map(|s| {
             s.parse::&lt;u64&gt;()
-                .expect(<span class="string">&quot;&#39;start-time-cpu-us&#39; parameter expected to be of &#39;u64&#39; type.&quot;</span>)
+                .expect(<span class="string">"'start-time-cpu-us' parameter expected to be of 'u64' type."</span>)
         });
 
-        <span class="kw">let </span>parent_cpu_time_us = arguments.single_value(<span class="string">&quot;parent-cpu-time-us&quot;</span>).map(|s| {
+        <span class="kw">let </span>parent_cpu_time_us = arguments.single_value(<span class="string">"parent-cpu-time-us"</span>).map(|s| {
             s.parse::&lt;u64&gt;()
-                .expect(<span class="string">&quot;&#39;parent-cpu-time-us&#39; parameter expected to be of &#39;u64&#39; type.&quot;</span>)
+                .expect(<span class="string">"'parent-cpu-time-us' parameter expected to be of 'u64' type."</span>)
         });
 
         <span class="kw">let </span>process_time_reporter =
@@ -1045,7 +1047,7 @@
     } <span class="kw">else </span>{
         <span class="kw">let </span>seccomp_filters: BpfThreadMap = seccomp_filters
             .into_iter()
-            .filter(|(k, <span class="kw">_</span>)| k != <span class="string">&quot;api&quot;</span>)
+            .filter(|(k, <span class="kw">_</span>)| k != <span class="string">"api"</span>)
             .collect();
         run_without_api(
             <span class="kw-2">&amp;</span>seccomp_filters,
@@ -1108,7 +1110,7 @@
 }
 
 <span class="doccomment">/// Enable SSBD mitigation through `prctl`.
-</span><span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+</span><span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
 </span><span class="kw">pub fn </span>enable_ssbd_mitigation() {
     <span class="comment">// Parameters for `prctl`
     // TODO: generate bindings for these from the kernel sources.
@@ -1118,8 +1120,8 @@
     <span class="kw">const </span>PR_SPEC_FORCE_DISABLE: u64 = <span class="number">1u64 </span>&lt;&lt; <span class="number">3</span>;
 
     <span class="comment">// SAFETY: Parameters are valid since they are copied verbatim
-    // from the kernel&#39;s UAPI.
-    // PR_SET_SPECULATION_CTRL only uses those 2 parameters, so it&#39;s ok
+    // from the kernel's UAPI.
+    // PR_SET_SPECULATION_CTRL only uses those 2 parameters, so it's ok
     // to leave the latter 2 as zero.
     </span><span class="kw">let </span>ret = <span class="kw">unsafe </span>{
         libc::prctl(
@@ -1134,11 +1136,11 @@
     <span class="kw">if </span>ret &lt; <span class="number">0 </span>{
         <span class="kw">let </span>last_error = std::io::Error::last_os_error().raw_os_error().unwrap();
         <span class="macro">error!</span>(
-            <span class="string">&quot;Could not enable SSBD mitigation through prctl, error {}&quot;</span>,
+            <span class="string">"Could not enable SSBD mitigation through prctl, error {}"</span>,
             last_error
         );
         <span class="kw">if </span>last_error == libc::EINVAL {
-            <span class="macro">error!</span>(<span class="string">&quot;The host does not support SSBD mitigation through prctl.&quot;</span>);
+            <span class="macro">error!</span>(<span class="string">"The host does not support SSBD mitigation through prctl."</span>);
         }
     }
 }
@@ -1170,7 +1172,7 @@
         .find(|(<span class="kw">_</span>, <span class="kw-2">&amp;</span>val)| val == data_format_version)
         .ok_or_else(|| SnapshotVersionError::FirecrackerVersion(data_format_version))<span class="question-mark">?</span>;
 
-    <span class="macro">println!</span>(<span class="string">&quot;v{}&quot;</span>, key);
+    <span class="macro">println!</span>(<span class="string">"v{}"</span>, key);
     <span class="prelude-val">Ok</span>(())
 }
 
@@ -1204,7 +1206,7 @@
     )
     .map_err(BuildFromJsonError::StartMicroVM)<span class="question-mark">?</span>;
 
-    <span class="macro">info!</span>(<span class="string">&quot;Successfully started microvm that was configured from one single json&quot;</span>);
+    <span class="macro">info!</span>(<span class="string">"Successfully started microvm that was configured from one single json"</span>);
 
     <span class="prelude-val">Ok</span>((vm_resources, vmm))
 }
@@ -1225,17 +1227,17 @@
     mmds_size_limit: usize,
     metadata_json: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
 ) -&gt; <span class="prelude-ty">Result</span>&lt;(), RunWithoutApiError&gt; {
-    <span class="kw">let </span><span class="kw-2">mut </span>event_manager = EventManager::new().expect(<span class="string">&quot;Unable to create EventManager&quot;</span>);
+    <span class="kw">let </span><span class="kw-2">mut </span>event_manager = EventManager::new().expect(<span class="string">"Unable to create EventManager"</span>);
 
     <span class="comment">// Create the firecracker metrics object responsible for periodically printing metrics.
     </span><span class="kw">let </span>firecracker_metrics = Arc::new(Mutex::new(metrics::PeriodicMetrics::new()));
     event_manager.add_subscriber(firecracker_metrics.clone());
 
-    <span class="comment">// Build the microVm. We can ignore VmResources since it&#39;s not used without api.
+    <span class="comment">// Build the microVm. We can ignore VmResources since it's not used without api.
     </span><span class="kw">let </span>(<span class="kw">_</span>, vmm) = build_microvm_from_json(
         seccomp_filters,
         <span class="kw-2">&amp;mut </span>event_manager,
-        <span class="comment">// Safe to unwrap since &#39;--no-api&#39; requires this to be set.
+        <span class="comment">// Safe to unwrap since '--no-api' requires this to be set.
         </span>config_json.unwrap(),
         instance_info,
         bool_timer_enabled,
@@ -1247,14 +1249,14 @@
     <span class="comment">// Start the metrics.
     </span>firecracker_metrics
         .lock()
-        .expect(<span class="string">&quot;Poisoned lock&quot;</span>)
+        .expect(<span class="string">"Poisoned lock"</span>)
         .start(metrics::WRITE_METRICS_PERIOD_MS);
 
     <span class="comment">// Run the EventManager that drives everything in the microVM.
     </span><span class="kw">loop </span>{
         event_manager
             .run()
-            .expect(<span class="string">&quot;Failed to start the event manager&quot;</span>);
+            .expect(<span class="string">"Failed to start the event manager"</span>);
 
         <span class="kw">match </span>vmm.lock().unwrap().shutdown_exit_code() {
             <span class="prelude-val">Some</span>(FcExitCode::Ok) =&gt; <span class="kw">break</span>,

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["NUM_QUEUES","QUEUE_SIZE"],"enum":["VhostUserBlockError"],"mod":["device","event_handler","persist"]};
+window.SIDEBAR_ITEMS = {"constant":["NUM_QUEUES","QUEUE_SIZE","_DERIVE_Display_FOR_VhostUserBlockError"],"enum":["VhostUserBlockError"],"mod":["device","event_handler","persist"]};

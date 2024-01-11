@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["ENTROPY_DEV_ID"],"enum":["EntropyError"],"struct":["Entropy"]};
+window.SIDEBAR_ITEMS = {"constant":["ENTROPY_DEV_ID","_DERIVE_Display_FOR_EntropyError"],"enum":["EntropyError"],"struct":["Entropy"]};

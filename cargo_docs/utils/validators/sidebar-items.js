@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["Error"],"fn":["validate_instance_id"]};
+window.SIDEBAR_ITEMS = {"constant":["MAX_INSTANCE_ID_LEN","MIN_INSTANCE_ID_LEN","_DERIVE_Display_FOR_Error"],"enum":["Error"],"fn":["validate_instance_id"]};

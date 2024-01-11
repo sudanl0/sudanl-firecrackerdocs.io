@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/devices/virtio/virtio_block/device.rs`."><title>device.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../../vmm/index.html"><img class="rust-logo" src="../../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/devices/virtio/virtio_block/device.rs`."><title>device.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1903,8 +1905,8 @@
         // If the image is not a multiple of the sector size, the tail bits are not exposed.
         </span><span class="kw">if </span>disk_size % u64::from(SECTOR_SIZE) != <span class="number">0 </span>{
             <span class="macro">warn!</span>(
-                <span class="string">&quot;Disk size {} is not a multiple of sector size {}; the remainder will not be \
-                 visible to the guest.&quot;</span>,
+                <span class="string">"Disk size {} is not a multiple of sector size {}; the remainder will not be \
+                 visible to the guest."</span>,
                 disk_size, SECTOR_SIZE
             );
         }
@@ -1956,7 +1958,7 @@
             .map_err(VirtioBlockError::GetFileMetadata)<span class="question-mark">?</span>;
         <span class="comment">// This is how kvmtool does it.
         </span><span class="kw">let </span>device_id = <span class="macro">format!</span>(
-            <span class="string">&quot;{}{}{}&quot;</span>,
+            <span class="string">"{}{}{}"</span>,
             blk_metadata.st_dev(),
             blk_metadata.st_rdev(),
             blk_metadata.st_ino()
@@ -1968,7 +1970,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>default_id = [<span class="number">0</span>; VIRTIO_BLK_ID_BYTES <span class="kw">as </span>usize];
         <span class="kw">match </span><span class="self">Self</span>::build_device_id(disk_file) {
             <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; {
-                <span class="macro">warn!</span>(<span class="string">&quot;Could not generate device id. We&#39;ll use a default.&quot;</span>);
+                <span class="macro">warn!</span>(<span class="string">"Could not generate device id. We'll use a default."</span>);
             }
             <span class="prelude-val">Ok</span>(disk_id_string) =&gt; {
                 <span class="comment">// The kernel only knows to read a maximum of VIRTIO_BLK_ID_BYTES.
@@ -2021,7 +2023,7 @@
     </span><span class="kw">pub </span>rate_limiter: <span class="prelude-ty">Option</span>&lt;RateLimiterConfig&gt;,
     <span class="doccomment">/// The type of IO engine used by the device.
     </span><span class="attr">#[serde(default)]
-    #[serde(rename = <span class="string">&quot;io_engine&quot;</span>)]
+    #[serde(rename = <span class="string">"io_engine"</span>)]
     </span><span class="kw">pub </span>file_engine_type: FileEngineType,
 }
 
@@ -2099,7 +2101,7 @@
         <span class="kw">match </span><span class="macro-nonterminal">$file_engine </span>{
             FileEngine::Async(engine) =&gt; engine,
             FileEngine::Sync(<span class="kw">_</span>) =&gt; {
-                <span class="macro">error!</span>(<span class="string">&quot;The block device doesn&#39;t use an async IO engine&quot;</span>);
+                <span class="macro">error!</span>(<span class="string">"The block device doesn't use an async IO engine"</span>);
                 <span class="kw">return</span>;
             }
         }
@@ -2184,7 +2186,7 @@
     </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>process_queue_event(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="self">self</span>.metrics.queue_event_count.inc();
         <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = <span class="self">self</span>.queue_evts[<span class="number">0</span>].read() {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to get queue event: {:?}&quot;</span>, err);
+            <span class="macro">error!</span>(<span class="string">"Failed to get queue event: {:?}"</span>, err);
             <span class="self">self</span>.metrics.event_fails.inc();
         } <span class="kw">else if </span><span class="self">self</span>.rate_limiter.is_blocked() {
             <span class="self">self</span>.metrics.rate_limiter_throttled_events.inc();
@@ -2218,7 +2220,7 @@
         block_metrics: <span class="kw-2">&amp;</span>BlockDeviceMetrics,
     ) {
         queue.add_used(mem, index, len).unwrap_or_else(|err| {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to add available descriptor head {}: {}&quot;</span>, index, err)
+            <span class="macro">error!</span>(<span class="string">"Failed to add available descriptor head {}: {}"</span>, index, err)
         });
 
         <span class="kw">if </span>queue.prepare_kick(mem) {
@@ -2251,7 +2253,7 @@
                     request.process(<span class="kw-2">&amp;mut </span><span class="self">self</span>.disk, head.index, mem, <span class="kw-2">&amp;</span><span class="self">self</span>.metrics)
                 }
                 <span class="prelude-val">Err</span>(err) =&gt; {
-                    <span class="macro">error!</span>(<span class="string">&quot;Failed to parse available descriptor chain: {:?}&quot;</span>, err);
+                    <span class="macro">error!</span>(<span class="string">"Failed to parse available descriptor chain: {:?}"</span>, err);
                     <span class="self">self</span>.metrics.execute_fails.inc();
                     ProcessingResult::Executed(FinishedRequest {
                         num_bytes_to_mem: <span class="number">0</span>,
@@ -2282,7 +2284,7 @@
 
         <span class="kw">if let </span>FileEngine::Async(<span class="kw-2">ref mut </span>engine) = <span class="self">self</span>.disk.file_engine {
             <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = engine.kick_submission_queue() {
-                <span class="macro">error!</span>(<span class="string">&quot;BlockError submitting pending block requests: {:?}&quot;</span>, err);
+                <span class="macro">error!</span>(<span class="string">"BlockError submitting pending block requests: {:?}"</span>, err);
             }
         }
 
@@ -2301,7 +2303,7 @@
         <span class="kw">loop </span>{
             <span class="kw">match </span>engine.pop(mem) {
                 <span class="prelude-val">Err</span>(error) =&gt; {
-                    <span class="macro">error!</span>(<span class="string">&quot;Failed to read completed io_uring entry: {:?}&quot;</span>, error);
+                    <span class="macro">error!</span>(<span class="string">"Failed to read completed io_uring entry: {:?}"</span>, error);
                     <span class="kw">break</span>;
                 }
                 <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="kw">break</span>,
@@ -2337,7 +2339,7 @@
         <span class="kw">let </span>engine = <span class="macro">unwrap_async_file_engine_or_return!</span>(<span class="kw-2">&amp;mut </span><span class="self">self</span>.disk.file_engine);
 
         <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = engine.completion_evt().read() {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to get async completion event: {:?}&quot;</span>, err);
+            <span class="macro">error!</span>(<span class="string">"Failed to get async completion event: {:?}"</span>, err);
         } <span class="kw">else </span>{
             <span class="self">self</span>.process_async_completion_queue();
 
@@ -2375,7 +2377,7 @@
 
     <span class="kw">fn </span>drain_and_flush(<span class="kw-2">&amp;mut </span><span class="self">self</span>, discard: bool) {
         <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = <span class="self">self</span>.disk.file_engine.drain_and_flush(discard) {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to drain ops and flush block data: {:?}&quot;</span>, err);
+            <span class="macro">error!</span>(<span class="string">"Failed to drain ops and flush block data: {:?}"</span>, err);
         }
     }
 
@@ -2433,12 +2435,12 @@
     <span class="kw">fn </span>read_config(<span class="kw-2">&amp;</span><span class="self">self</span>, offset: u64, <span class="kw-2">mut </span>data: <span class="kw-2">&amp;mut </span>[u8]) {
         <span class="kw">let </span>config_len = <span class="self">self</span>.config_space.len() <span class="kw">as </span>u64;
         <span class="kw">if </span>offset &gt;= config_len {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to read config space&quot;</span>);
+            <span class="macro">error!</span>(<span class="string">"Failed to read config space"</span>);
             <span class="self">self</span>.metrics.cfg_fails.inc();
             <span class="kw">return</span>;
         }
         <span class="kw">if let </span><span class="prelude-val">Some</span>(end) = offset.checked_add(data.len() <span class="kw">as </span>u64) {
-            <span class="comment">// This write can&#39;t fail, offset and end are checked against config_len.
+            <span class="comment">// This write can't fail, offset and end are checked against config_len.
             </span>data.write_all(
                 <span class="kw-2">&amp;</span><span class="self">self</span>.config_space[u64_to_usize(offset)..u64_to_usize(cmp::min(end, config_len))],
             )
@@ -2453,7 +2455,7 @@
             .zip(end)
             .and_then(|(start, end)| <span class="self">self</span>.config_space.get_mut(start..end))
         <span class="kw">else </span>{
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to write config space&quot;</span>);
+            <span class="macro">error!</span>(<span class="string">"Failed to write config space"</span>);
             <span class="self">self</span>.metrics.cfg_fails.inc();
             <span class="kw">return</span>;
         };
@@ -2470,7 +2472,7 @@
         }
 
         <span class="kw">if </span><span class="self">self</span>.activate_evt.write(<span class="number">1</span>).is_err() {
-            <span class="macro">error!</span>(<span class="string">&quot;Block: Cannot write to activate_evt&quot;</span>);
+            <span class="macro">error!</span>(<span class="string">"Block: Cannot write to activate_evt"</span>);
             <span class="kw">return </span><span class="prelude-val">Err</span>(<span class="kw">super</span>::<span class="kw">super</span>::ActivateError::BadActivate);
         }
         <span class="self">self</span>.device_state = DeviceState::Activated(mem);
@@ -2487,7 +2489,7 @@
         <span class="kw">match </span><span class="self">self</span>.cache_type {
             CacheType::Unsafe =&gt; {
                 <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = <span class="self">self</span>.disk.file_engine.drain(<span class="bool-val">true</span>) {
-                    <span class="macro">error!</span>(<span class="string">&quot;Failed to drain ops on drop: {:?}&quot;</span>, err);
+                    <span class="macro">error!</span>(<span class="string">"Failed to drain ops on drop: {:?}"</span>, err);
                 }
             }
             CacheType::Writeback =&gt; {
@@ -2524,13 +2526,13 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_from_config() {
         <span class="kw">let </span>block_config = BlockDeviceConfig {
-            drive_id: <span class="string">&quot;&quot;</span>.to_string(),
+            drive_id: <span class="string">""</span>.to_string(),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">false</span>,
             cache_type: CacheType::Unsafe,
 
             is_read_only: <span class="prelude-val">Some</span>(<span class="bool-val">true</span>),
-            path_on_host: <span class="prelude-val">Some</span>(<span class="string">&quot;path&quot;</span>.to_string()),
+            path_on_host: <span class="prelude-val">Some</span>(<span class="string">"path"</span>.to_string()),
             rate_limiter: <span class="prelude-val">None</span>,
             file_engine_type: Default::default(),
 
@@ -2539,7 +2541,7 @@
         VirtioBlockConfig::try_from(<span class="kw-2">&amp;</span>block_config).unwrap();
 
         <span class="kw">let </span>block_config = BlockDeviceConfig {
-            drive_id: <span class="string">&quot;&quot;</span>.to_string(),
+            drive_id: <span class="string">""</span>.to_string(),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">false</span>,
             cache_type: CacheType::Unsafe,
@@ -2549,22 +2551,22 @@
             rate_limiter: <span class="prelude-val">None</span>,
             file_engine_type: Default::default(),
 
-            socket: <span class="prelude-val">Some</span>(<span class="string">&quot;sock&quot;</span>.to_string()),
+            socket: <span class="prelude-val">Some</span>(<span class="string">"sock"</span>.to_string()),
         };
         VirtioBlockConfig::try_from(<span class="kw-2">&amp;</span>block_config).unwrap_err();
 
         <span class="kw">let </span>block_config = BlockDeviceConfig {
-            drive_id: <span class="string">&quot;&quot;</span>.to_string(),
+            drive_id: <span class="string">""</span>.to_string(),
             partuuid: <span class="prelude-val">None</span>,
             is_root_device: <span class="bool-val">false</span>,
             cache_type: CacheType::Unsafe,
 
             is_read_only: <span class="prelude-val">Some</span>(<span class="bool-val">true</span>),
-            path_on_host: <span class="prelude-val">Some</span>(<span class="string">&quot;path&quot;</span>.to_string()),
+            path_on_host: <span class="prelude-val">Some</span>(<span class="string">"path"</span>.to_string()),
             rate_limiter: <span class="prelude-val">None</span>,
             file_engine_type: Default::default(),
 
-            socket: <span class="prelude-val">Some</span>(<span class="string">&quot;sock&quot;</span>.to_string()),
+            socket: <span class="prelude-val">Some</span>(<span class="string">"sock"</span>.to_string()),
         };
         VirtioBlockConfig::try_from(<span class="kw-2">&amp;</span>block_config).unwrap_err();
     }
@@ -2594,13 +2596,13 @@
         // duplicating that logic in tests, so skipping it.
 
         </span><span class="kw">let </span>res = DiskProperties::new(
-            <span class="string">&quot;invalid-disk-path&quot;</span>.to_string(),
+            <span class="string">"invalid-disk-path"</span>.to_string(),
             <span class="bool-val">true</span>,
             default_engine_type_for_kv(),
         );
         <span class="macro">assert!</span>(
             <span class="macro">matches!</span>(res, <span class="prelude-val">Err</span>(VirtioBlockError::BackingFile(<span class="kw">_</span>, <span class="kw">_</span>))),
-            <span class="string">&quot;{:?}&quot;</span>,
+            <span class="string">"{:?}"</span>,
             res
         );
     }
@@ -2636,7 +2638,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>actual_config_space = [<span class="number">0u8</span>; BLOCK_CONFIG_SPACE_SIZE];
         block.read_config(<span class="number">0</span>, <span class="kw-2">&amp;mut </span>actual_config_space);
         <span class="comment">// This will read the number of sectors.
-        // The block&#39;s backing file size is 0x1000, so there are 8 (4096/512) sectors.
+        // The block's backing file size is 0x1000, so there are 8 (4096/512) sectors.
         // The config space is little endian.
         </span><span class="kw">let </span>expected_config_space: [u8; BLOCK_CONFIG_SPACE_SIZE] =
             [<span class="number">0x08</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>, <span class="number">0x00</span>];
@@ -2916,7 +2918,7 @@
             <span class="macro">assert_eq!</span>(vq.used.ring[<span class="number">0</span>].get().id, <span class="number">0</span>);
             <span class="macro">assert_eq!</span>(vq.used.ring[<span class="number">0</span>].get().len, <span class="number">0</span>);
 
-            <span class="comment">// Check that the data wasn&#39;t written to the file
+            <span class="comment">// Check that the data wasn't written to the file
             </span><span class="kw">let </span><span class="kw-2">mut </span>buf = [<span class="number">0u8</span>; <span class="number">512</span>];
             block
                 .disk
@@ -3108,14 +3110,14 @@
             <span class="macro">assert_eq!</span>(vq.used.idx.get(), <span class="number">1</span>);
             <span class="macro">assert_eq!</span>(vq.used.ring[<span class="number">0</span>].get().id, <span class="number">0</span>);
 
-            <span class="comment">// No data since can&#39;t read past end of file, only status byte length.
+            <span class="comment">// No data since can't read past end of file, only status byte length.
             </span><span class="macro">assert_eq!</span>(vq.used.ring[<span class="number">0</span>].get().len, <span class="number">1</span>);
             <span class="macro">assert_eq!</span>(
                 mem.read_obj::&lt;u32&gt;(status_addr).unwrap(),
                 VIRTIO_BLK_S_IOERR
             );
 
-            <span class="comment">// Check that no data was read since we can&#39;t read past the end of the file.
+            <span class="comment">// Check that no data was read since we can't read past the end of the file.
             </span><span class="kw">let </span><span class="kw-2">mut </span>buf = [<span class="number">0u8</span>; <span class="number">512</span>];
             mem.read_slice(<span class="kw-2">&amp;mut </span>buf, data_addr).unwrap();
             <span class="macro">assert_eq!</span>(buf, empty_data.as_slice());
@@ -3280,7 +3282,7 @@
 
             <span class="kw">let </span>blk_meta = blk_metadata.unwrap();
             <span class="kw">let </span>expected_device_id = <span class="macro">format!</span>(
-                <span class="string">&quot;{}{}{}&quot;</span>,
+                <span class="string">"{}{}{}"</span>,
                 blk_meta.st_dev(),
                 blk_meta.st_rdev(),
                 blk_meta.st_ino()
@@ -3288,7 +3290,7 @@
 
             <span class="kw">let </span><span class="kw-2">mut </span>buf = [<span class="number">0</span>; VIRTIO_BLK_ID_BYTES <span class="kw">as </span>usize];
             mem.read_slice(<span class="kw-2">&amp;mut </span>buf, data_addr).unwrap();
-            <span class="kw">let </span>chars_to_trim: <span class="kw-2">&amp;</span>[char] = <span class="kw-2">&amp;</span>[<span class="string">&#39;\u{0}&#39;</span>];
+            <span class="kw">let </span>chars_to_trim: <span class="kw-2">&amp;</span>[char] = <span class="kw-2">&amp;</span>[<span class="string">'\u{0}'</span>];
             <span class="kw">let </span>received_device_id = String::from_utf8(buf.to_ascii_lowercase())
                 .unwrap()
                 .trim_matches(chars_to_trim)
@@ -3384,7 +3386,7 @@
             <span class="kw">let </span>vq = VirtQueue::new(GuestAddress(<span class="number">0</span>), <span class="kw-2">&amp;</span>mem, IO_URING_NUM_ENTRIES * <span class="number">4</span>);
             block.activate(mem.clone()).unwrap();
 
-            <span class="comment">// Run scenario that doesn&#39;t trigger FullSq BlockError: Add sq_size flush requests.
+            <span class="comment">// Run scenario that doesn't trigger FullSq BlockError: Add sq_size flush requests.
             </span>add_flush_requests_batch(<span class="kw-2">&amp;mut </span>block, <span class="kw-2">&amp;</span>vq, IO_URING_NUM_ENTRIES);
             simulate_queue_event(<span class="kw-2">&amp;mut </span>block, <span class="prelude-val">Some</span>(<span class="bool-val">false</span>));
             <span class="macro">assert!</span>(!block.is_io_engine_throttled);
@@ -3608,7 +3610,7 @@
         <span class="kw">let </span>path = f.as_path();
         <span class="kw">let </span>mdata = metadata(path).unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>id = <span class="macro">vec!</span>[<span class="number">0</span>; VIRTIO_BLK_ID_BYTES <span class="kw">as </span>usize];
-        <span class="kw">let </span>str_id = <span class="macro">format!</span>(<span class="string">&quot;{}{}{}&quot;</span>, mdata.st_dev(), mdata.st_rdev(), mdata.st_ino());
+        <span class="kw">let </span>str_id = <span class="macro">format!</span>(<span class="string">"{}{}{}"</span>, mdata.st_dev(), mdata.st_rdev(), mdata.st_ino());
         <span class="kw">let </span>part_id = str_id.as_bytes();
         id[..cmp::min(part_id.len(), VIRTIO_BLK_ID_BYTES <span class="kw">as </span>usize)]
             .clone_from_slice(<span class="kw-2">&amp;</span>part_id[..cmp::min(part_id.len(), VIRTIO_BLK_ID_BYTES <span class="kw">as </span>usize)]);

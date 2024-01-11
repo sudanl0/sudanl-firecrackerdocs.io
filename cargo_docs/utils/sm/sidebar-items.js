@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["StateMachine"]};
+window.SIDEBAR_ITEMS = {"struct":["StateMachine"],"type":["StateFn"]};

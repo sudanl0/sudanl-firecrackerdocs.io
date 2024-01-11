@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["balloon","boot_source","drive","entropy","instance_info","machine_config","metrics","mmds","net","snapshot","vsock"],"struct":["RateLimiterConfig","RateLimiterUpdate","TokenBucketConfig"]};
+window.SIDEBAR_ITEMS = {"fn":["get_bucket_update","open_file_nonblock"],"mod":["balloon","boot_source","drive","entropy","instance_info","machine_config","metrics","mmds","net","snapshot","vsock"],"struct":["RateLimiterConfig","RateLimiterUpdate","TokenBucketConfig"]};

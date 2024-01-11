@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["parse_get_mmds","parse_patch_mmds","parse_put_mmds","parse_put_mmds_config"]};

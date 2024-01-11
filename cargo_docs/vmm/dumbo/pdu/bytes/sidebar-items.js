@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"trait":["NetworkBytes","NetworkBytesMut"]};
+window.SIDEBAR_ITEMS = {"struct":["InnerBytes"],"trait":["NetworkBytes","NetworkBytesMut"]};

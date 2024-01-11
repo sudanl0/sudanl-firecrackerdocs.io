@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_GetCpuidError"],"enum":["GetCpuidError"],"fn":["get_cpuid","get_vendor_id_from_host","msrs_to_save_by_cpuid"]};

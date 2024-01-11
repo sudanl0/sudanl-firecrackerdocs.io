@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["QueueError"],"struct":["DescriptorChain","DescriptorIterator","Queue"]};
+window.SIDEBAR_ITEMS = {"constant":["FIRECRACKER_MAX_QUEUE_SIZE","VIRTQ_DESC_F_NEXT","VIRTQ_DESC_F_WRITE","_DERIVE_Display_FOR_QueueError"],"enum":["QueueError"],"struct":["Descriptor","DescriptorChain","DescriptorIterator","Queue"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["arp","bytes","ethernet","ipv4","tcp","udp"],"struct":["Incomplete"]};
+window.SIDEBAR_ITEMS = {"enum":["ChecksumProto"],"fn":["compute_checksum"],"mod":["arp","bytes","ethernet","ipv4","tcp","udp"],"struct":["Incomplete"]};

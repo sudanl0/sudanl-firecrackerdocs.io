@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/api_server/src/request/machine_configuration.rs`."><title>machine_configuration.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="api_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../api_server/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/api_server/src/request/machine_configuration.rs`."><title>machine_configuration.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="api_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../api_server/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -319,7 +321,7 @@
     <span class="kw">if </span>config.cpu_template.is_some() {
         <span class="comment">// `cpu_template` field in request is deprecated.
         </span>METRICS.deprecated_api.deprecated_http_api_calls.inc();
-        deprecation_message = <span class="prelude-val">Some</span>(<span class="string">&quot;PUT /machine-config: cpu_template field is deprecated.&quot;</span>);
+        deprecation_message = <span class="prelude-val">Some</span>(<span class="string">"PUT /machine-config: cpu_template field is deprecated."</span>);
     }
 
     <span class="comment">// Convert `MachineConfig` to `MachineConfigUpdate`.
@@ -352,7 +354,7 @@
     <span class="kw">if </span>config_update.cpu_template.is_some() {
         <span class="comment">// `cpu_template` field in request is deprecated.
         </span>METRICS.deprecated_api.deprecated_http_api_calls.inc();
-        deprecation_message = <span class="prelude-val">Some</span>(<span class="string">&quot;PATCH /machine-config: cpu_template field is deprecated.&quot;</span>);
+        deprecation_message = <span class="prelude-val">Some</span>(<span class="string">"PATCH /machine-config: cpu_template field is deprecated."</span>);
     }
 
     <span class="comment">// Construct the `ParsedRequest` object.
@@ -381,25 +383,25 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_put_machine_config_request() {
         <span class="comment">// 1. Test case for invalid payload.
-        </span>parse_put_machine_config(<span class="kw-2">&amp;</span>Body::new(<span class="string">&quot;invalid_payload&quot;</span>)).unwrap_err();
+        </span>parse_put_machine_config(<span class="kw-2">&amp;</span>Body::new(<span class="string">"invalid_payload"</span>)).unwrap_err();
         <span class="macro">assert!</span>(METRICS.put_api_requests.machine_cfg_fails.count() &gt; <span class="number">0</span>);
 
         <span class="comment">// 2. Test case for mandatory fields.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;mem_size_mib&quot;: 1024
-        }&quot;#</span>;
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "mem_size_mib": 1024
+        }"#</span>;
         parse_put_machine_config(<span class="kw-2">&amp;</span>Body::new(body)).unwrap_err();
 
-        <span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;vcpu_count&quot;: 8
-        }&quot;#</span>;
+        <span class="kw">let </span>body = <span class="string">r#"{
+            "vcpu_count": 8
+        }"#</span>;
         parse_put_machine_config(<span class="kw-2">&amp;</span>Body::new(body)).unwrap_err();
 
         <span class="comment">// 3. Test case for success scenarios for both architectures.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;vcpu_count&quot;: 8,
-            &quot;mem_size_mib&quot;: 1024
-        }&quot;#</span>;
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "vcpu_count": 8,
+            "mem_size_mib": 1024
+        }"#</span>;
         <span class="kw">let </span>expected_config = MachineConfigUpdate {
             vcpu_count: <span class="prelude-val">Some</span>(<span class="number">8</span>),
             mem_size_mib: <span class="prelude-val">Some</span>(<span class="number">1024</span>),
@@ -412,11 +414,11 @@
             VmmAction::UpdateVmConfiguration(expected_config)
         );
 
-        <span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;vcpu_count&quot;: 8,
-            &quot;mem_size_mib&quot;: 1024,
-            &quot;cpu_template&quot;: &quot;None&quot;
-        }&quot;#</span>;
+        <span class="kw">let </span>body = <span class="string">r#"{
+            "vcpu_count": 8,
+            "mem_size_mib": 1024,
+            "cpu_template": "None"
+        }"#</span>;
         <span class="kw">let </span>expected_config = MachineConfigUpdate {
             vcpu_count: <span class="prelude-val">Some</span>(<span class="number">8</span>),
             mem_size_mib: <span class="prelude-val">Some</span>(<span class="number">1024</span>),
@@ -429,12 +431,12 @@
             VmmAction::UpdateVmConfiguration(expected_config)
         );
 
-        <span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;vcpu_count&quot;: 8,
-            &quot;mem_size_mib&quot;: 1024,
-            &quot;smt&quot;: false,
-            &quot;track_dirty_pages&quot;: true
-        }&quot;#</span>;
+        <span class="kw">let </span>body = <span class="string">r#"{
+            "vcpu_count": 8,
+            "mem_size_mib": 1024,
+            "smt": false,
+            "track_dirty_pages": true
+        }"#</span>;
         <span class="kw">let </span>expected_config = MachineConfigUpdate {
             vcpu_count: <span class="prelude-val">Some</span>(<span class="number">8</span>),
             mem_size_mib: <span class="prelude-val">Some</span>(<span class="number">1024</span>),
@@ -448,14 +450,14 @@
         );
 
         <span class="comment">// 4. Test that applying a CPU template is successful on x86_64 while on aarch64, it is not.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;vcpu_count&quot;: 8,
-            &quot;mem_size_mib&quot;: 1024,
-            &quot;smt&quot;: false,
-            &quot;cpu_template&quot;: &quot;T2&quot;,
-            &quot;track_dirty_pages&quot;: true
-        }&quot;#</span>;
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "vcpu_count": 8,
+            "mem_size_mib": 1024,
+            "smt": false,
+            "cpu_template": "T2",
+            "track_dirty_pages": true
+        }"#</span>;
+        <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
         </span>{
             <span class="kw">let </span>expected_config = MachineConfigUpdate {
                 vcpu_count: <span class="prelude-val">Some</span>(<span class="number">8</span>),
@@ -469,19 +471,19 @@
                 VmmAction::UpdateVmConfiguration(expected_config)
             );
         }
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
         </span>{
             parse_put_machine_config(<span class="kw-2">&amp;</span>Body::new(body)).unwrap_err();
         }
 
         <span class="comment">// 5. Test that setting `smt: true` is successful on x86_64 while on aarch64, it is not.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;vcpu_count&quot;: 8,
-            &quot;mem_size_mib&quot;: 1024,
-            &quot;smt&quot;: true,
-            &quot;track_dirty_pages&quot;: true
-        }&quot;#</span>;
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "vcpu_count": 8,
+            "mem_size_mib": 1024,
+            "smt": true,
+            "track_dirty_pages": true
+        }"#</span>;
+        <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
         </span>{
             <span class="kw">let </span>expected_config = MachineConfigUpdate {
                 vcpu_count: <span class="prelude-val">Some</span>(<span class="number">8</span>),
@@ -495,7 +497,7 @@
                 VmmAction::UpdateVmConfiguration(expected_config)
             );
         }
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
         </span>{
             parse_put_machine_config(<span class="kw-2">&amp;</span>Body::new(body)).unwrap_err();
         }
@@ -504,60 +506,60 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_patch_machine_config_request() {
         <span class="comment">// 1. Test cases for invalid payload.
-        </span>parse_patch_machine_config(<span class="kw-2">&amp;</span>Body::new(<span class="string">&quot;invalid_payload&quot;</span>)).unwrap_err();
+        </span>parse_patch_machine_config(<span class="kw-2">&amp;</span>Body::new(<span class="string">"invalid_payload"</span>)).unwrap_err();
 
         <span class="comment">// 2. Check currently supported fields that can be patched.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;track_dirty_pages&quot;: true
-        }&quot;#</span>;
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "track_dirty_pages": true
+        }"#</span>;
         parse_patch_machine_config(<span class="kw-2">&amp;</span>Body::new(body)).unwrap();
 
         <span class="comment">// On aarch64, CPU template is also not patch compatible.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;cpu_template&quot;: &quot;T2&quot;
-        }&quot;#</span>;
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "cpu_template": "T2"
+        }"#</span>;
+        <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
         </span>parse_patch_machine_config(<span class="kw-2">&amp;</span>Body::new(body)).unwrap_err();
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
         </span>parse_patch_machine_config(<span class="kw-2">&amp;</span>Body::new(body)).unwrap();
 
-        <span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;vcpu_count&quot;: 8,
-            &quot;mem_size_mib&quot;: 1024
-        }&quot;#</span>;
+        <span class="kw">let </span>body = <span class="string">r#"{
+            "vcpu_count": 8,
+            "mem_size_mib": 1024
+        }"#</span>;
         parse_patch_machine_config(<span class="kw-2">&amp;</span>Body::new(body)).unwrap();
 
         <span class="comment">// On aarch64, we allow `smt` to be configured to `false` but not `true`.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;vcpu_count&quot;: 8,
-            &quot;mem_size_mib&quot;: 1024,
-            &quot;smt&quot;: false
-        }&quot;#</span>;
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "vcpu_count": 8,
+            "mem_size_mib": 1024,
+            "smt": false
+        }"#</span>;
         parse_patch_machine_config(<span class="kw-2">&amp;</span>Body::new(body)).unwrap();
 
         <span class="comment">// 3. Check to see if an empty body returns an error.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{}&quot;#</span>;
+        </span><span class="kw">let </span>body = <span class="string">r#"{}"#</span>;
         parse_patch_machine_config(<span class="kw-2">&amp;</span>Body::new(body)).unwrap_err();
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_depr_cpu_template_in_put_req() {
         <span class="comment">// Test that the deprecation message is shown when `cpu_template` is specified.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;vcpu_count&quot;: 8,
-            &quot;mem_size_mib&quot;: 1024,
-            &quot;cpu_template&quot;: &quot;None&quot;
-        }&quot;#</span>;
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "vcpu_count": 8,
+            "mem_size_mib": 1024,
+            "cpu_template": "None"
+        }"#</span>;
         depr_action_from_req(
             parse_put_machine_config(<span class="kw-2">&amp;</span>Body::new(body)).unwrap(),
-            <span class="prelude-val">Some</span>(<span class="string">&quot;PUT /machine-config: cpu_template field is deprecated.&quot;</span>.to_string()),
+            <span class="prelude-val">Some</span>(<span class="string">"PUT /machine-config: cpu_template field is deprecated."</span>.to_string()),
         );
 
         <span class="comment">// Test that the deprecation message is not shown when `cpu_template` is not specified.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;vcpu_count&quot;: 8,
-            &quot;mem_size_mib&quot;: 1024
-        }&quot;#</span>;
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "vcpu_count": 8,
+            "mem_size_mib": 1024
+        }"#</span>;
         <span class="kw">let </span>(<span class="kw">_</span>, <span class="kw-2">mut </span>parsing_info) = parse_put_machine_config(<span class="kw-2">&amp;</span>Body::new(body))
             .unwrap()
             .into_parts();
@@ -567,19 +569,19 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_depr_cpu_template_in_patch_req() {
         <span class="comment">// Test that the deprecation message is shown when `cpu_template` is specified.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;vcpu_count&quot;: 8,
-            &quot;cpu_template&quot;: &quot;None&quot;
-        }&quot;#</span>;
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "vcpu_count": 8,
+            "cpu_template": "None"
+        }"#</span>;
         depr_action_from_req(
             parse_patch_machine_config(<span class="kw-2">&amp;</span>Body::new(body)).unwrap(),
-            <span class="prelude-val">Some</span>(<span class="string">&quot;PATCH /machine-config: cpu_template field is deprecated.&quot;</span>.to_string()),
+            <span class="prelude-val">Some</span>(<span class="string">"PATCH /machine-config: cpu_template field is deprecated."</span>.to_string()),
         );
 
         <span class="comment">// Test that the deprecation message is not shown when `cpu_template` is not specified.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;vcpu_count&quot;: 8
-        }&quot;#</span>;
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "vcpu_count": 8
+        }"#</span>;
         <span class="kw">let </span>(<span class="kw">_</span>, <span class="kw-2">mut </span>parsing_info) = parse_patch_machine_config(<span class="kw-2">&amp;</span>Body::new(body))
             .unwrap()
             .into_parts();

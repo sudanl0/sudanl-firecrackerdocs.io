@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["Error","Value"],"struct":["ArgParser","Argument","Arguments"],"type":["Result"]};
+window.SIDEBAR_ITEMS = {"constant":["ARG_PREFIX","ARG_SEPARATOR","HELP_ARG","VERSION_ARG","_DERIVE_Display_FOR_Error"],"enum":["Error","Value"],"struct":["ArgParser","Argument","Arguments"],"type":["Result"]};

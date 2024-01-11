@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"fn":["compact_page_frame_numbers","remove_range"]};

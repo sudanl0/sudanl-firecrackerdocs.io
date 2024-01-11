@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/dumbo/pdu/bytes.rs`."><title>bytes.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../vmm/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/dumbo/pdu/bytes.rs`."><title>bytes.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -262,16 +264,16 @@
 //!
 //! The first solution looks more appealing at first, but it requires some unsafe code. Moreover,
 //! de-referencing unaligned pointers or references is considered undefined behaviour in Rust, and
-//! it&#39;s not clear whether this undermines the approach or not. Until any further developments,
+//! it's not clear whether this undermines the approach or not. Until any further developments,
 //! the second option is used, based on the `NetworkBytes` implementation.
 //!
-//! What&#39;s with the `T: Deref&lt;Target = [u8]&gt;`? Is there really a need to be that generic?
+//! What's with the `T: Deref&lt;Target = [u8]&gt;`? Is there really a need to be that generic?
 //! Not really. The logic in this crate currently expects to work with byte slices (`&amp;[u8]` and
-//! `&amp;mut [u8]`), but there&#39;s a significant inconvenience. Consider `NetworkBytes` is defined as:
+//! `&amp;mut [u8]`), but there's a significant inconvenience. Consider `NetworkBytes` is defined as:
 //!
 //! ```
-//! struct NetworkBytes&lt;&#39;a&gt; {
-//!     bytes: &amp;&#39;a [u8],
+//! struct NetworkBytes&lt;'a&gt; {
+//!     bytes: &amp;'a [u8],
 //! }
 //! ```
 //!
@@ -281,14 +283,14 @@
 //! hand, `NetworkBytes` can be defined as:
 //!
 //! ```
-//! struct NetworkBytes&lt;&#39;a&gt; {
-//!     bytes: &amp;&#39;a mut [u8],
+//! struct NetworkBytes&lt;'a&gt; {
+//!     bytes: &amp;'a mut [u8],
 //! }
 //! ```
 //!
 //! This allows both reads and writes, but requires a mutable reference at all times (and it looks
 //! weird to use one for immutable operations). This is where one interesting feature of Rust
-//! comes in handy; given a type `Something&lt;T&gt;`, it&#39;s possible to  implement different features
+//! comes in handy; given a type `Something&lt;T&gt;`, it's possible to  implement different features
 //! depending on trait bounds on `T`. For `NetworkBytes`, if `T` implements `Deref&lt;Target = [u8]&gt;`
 //! (which `&amp;[u8]` does), read operations are possible to define. If `T` implements
 //! `DerefMut&lt;Target = [u8]&gt;`, write operations are also a possibility. Since
@@ -296,7 +298,7 @@
 //! both read and write operations.
 //!
 //! This can theoretically lead to code bloat when using both `&amp;[u8]` and `&amp;mut [u8]` (as opposed
-//! to just `&amp;mut [u8]`), but most calls should be inlined anyway, so it probably doesn&#39;t matter
+//! to just `&amp;mut [u8]`), but most calls should be inlined anyway, so it probably doesn't matter
 //! in the end. `NetworkBytes` itself implements `Deref` (and `DerefMut` when `T: DerefMut`), so
 //! this line of reasoning can be extended to structs which represent different kinds of protocol
 //! data units (such as IPv4 packets, Ethernet frames, etc.).
@@ -326,8 +328,8 @@
     /// This method will panic if `offset` is invalid.
     </span><span class="attr">#[inline]
     </span><span class="kw">fn </span>ntohs_unchecked(<span class="kw-2">&amp;</span><span class="self">self</span>, offset: usize) -&gt; u16 {
-        <span class="comment">// The unwrap() can fail when the offset is invalid, or there aren&#39;t enough bytes (2 in this
-        // case) left until the end of the slice. The caller must ensure this doesn&#39;t happen (hence
+        <span class="comment">// The unwrap() can fail when the offset is invalid, or there aren't enough bytes (2 in this
+        // case) left until the end of the slice. The caller must ensure this doesn't happen (hence
         // the `unchecked` suffix).
         </span>byte_order::read_be_u16(<span class="kw-2">&amp;</span><span class="self">self</span>[offset..])
     }
@@ -359,8 +361,8 @@
     ///
     /// # Panics
     ///
-    /// If `value` cannot be written into `self` at the given `offset` (e.g. if `offset &gt; self.len()
-    /// - size_of::&lt;u16&gt;()`).
+    /// If `value` cannot be written into `self` at the given `offset`
+    /// (e.g. if `offset &gt; self.len() - size_of::&lt;u16&gt;()`).
     </span><span class="attr">#[inline]
     </span><span class="kw">fn </span>htons_unchecked(<span class="kw-2">&amp;mut </span><span class="self">self</span>, offset: usize, value: u16) {
         <span class="macro">assert!</span>(offset &lt;= <span class="self">self</span>.len() - std::mem::size_of::&lt;u16&gt;());
@@ -371,8 +373,8 @@
     ///
     /// # Panics
     ///
-    /// If `value` cannot be written into `self` at the given `offset` (e.g. if `offset &gt; self.len()
-    /// - size_of::&lt;u32&gt;()`).
+    /// If `value` cannot be written into `self` at the given `offset`
+    /// (e.g. if `offset &gt; self.len() - size_of::&lt;u32&gt;()`).
     </span><span class="attr">#[inline]
     </span><span class="kw">fn </span>htonl_unchecked(<span class="kw-2">&amp;mut </span><span class="self">self</span>, offset: usize, value: u32) {
         <span class="macro">assert!</span>(offset &lt;= <span class="self">self</span>.len() - std::mem::size_of::&lt;u32&gt;());
@@ -380,31 +382,31 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; NetworkBytes <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[u8] {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; NetworkBytes <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span>[u8] {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>shrink_unchecked(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: usize) {
         <span class="kw-2">*</span><span class="self">self </span>= <span class="kw-2">&amp;</span><span class="self">self</span>[..len];
     }
 }
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; NetworkBytes <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>[u8] {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; NetworkBytes <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[u8] {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>shrink_unchecked(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: usize) {
         <span class="kw-2">*</span><span class="self">self </span>= <span class="kw-2">&amp;mut </span>std::mem::take(<span class="self">self</span>)[..len];
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; NetworkBytesMut <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw-2">mut </span>[u8] {}
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; NetworkBytesMut <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="kw-2">mut </span>[u8] {}
 
 <span class="comment">// This struct is used as a convenience for any type which contains a generic member implementing
-// NetworkBytes with a lifetime, so we don&#39;t have to also add the PhantomData member each time. We
+// NetworkBytes with a lifetime, so we don't have to also add the PhantomData member each time. We
 // use pub(super) here because we only want this to be usable by the child modules of `pdu`.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct </span>InnerBytes&lt;<span class="lifetime">&#39;a</span>, T: <span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">struct </span>InnerBytes&lt;<span class="lifetime">'a</span>, T: <span class="lifetime">'a</span>&gt; {
     bytes: T,
-    phantom: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T&gt;,
+    phantom: PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">'a </span>T&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: Debug&gt; InnerBytes&lt;<span class="lifetime">&#39;a</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: Debug&gt; InnerBytes&lt;<span class="lifetime">'a</span>, T&gt; {
     <span class="doccomment">/// Creates a new instance as a wrapper around `bytes`.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>new(bytes: T) -&gt; <span class="self">Self </span>{
@@ -415,7 +417,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: Deref&lt;Target = [u8]&gt; + Debug&gt; Deref <span class="kw">for </span>InnerBytes&lt;<span class="lifetime">&#39;a</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: Deref&lt;Target = [u8]&gt; + Debug&gt; Deref <span class="kw">for </span>InnerBytes&lt;<span class="lifetime">'a</span>, T&gt; {
     <span class="kw">type </span>Target = [u8];
 
     <span class="attr">#[inline]
@@ -424,21 +426,21 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: DerefMut&lt;Target = [u8]&gt; + Debug&gt; DerefMut <span class="kw">for </span>InnerBytes&lt;<span class="lifetime">&#39;a</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: DerefMut&lt;Target = [u8]&gt; + Debug&gt; DerefMut <span class="kw">for </span>InnerBytes&lt;<span class="lifetime">'a</span>, T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>deref_mut(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;mut </span>[u8] {
         <span class="self">self</span>.bytes.deref_mut()
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: NetworkBytes + Debug&gt; NetworkBytes <span class="kw">for </span>InnerBytes&lt;<span class="lifetime">&#39;a</span>, T&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: NetworkBytes + Debug&gt; NetworkBytes <span class="kw">for </span>InnerBytes&lt;<span class="lifetime">'a</span>, T&gt; {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>shrink_unchecked(<span class="kw-2">&amp;mut </span><span class="self">self</span>, len: usize) {
         <span class="self">self</span>.bytes.shrink_unchecked(len);
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: NetworkBytesMut + Debug&gt; NetworkBytesMut <span class="kw">for </span>InnerBytes&lt;<span class="lifetime">&#39;a</span>, T&gt; {}
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T: NetworkBytesMut + Debug&gt; NetworkBytesMut <span class="kw">for </span>InnerBytes&lt;<span class="lifetime">'a</span>, T&gt; {}
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {

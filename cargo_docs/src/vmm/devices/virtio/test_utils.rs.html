@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/devices/virtio/test_utils.rs`."><title>test_utils.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../vmm/index.html"><img class="rust-logo" src="../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/devices/virtio/test_utils.rs`."><title>test_utils.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../../" data-static-root-path="../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../src-files.js"></script><script defer src="../../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -514,7 +516,7 @@
     (<span class="macro-nonterminal">$metric</span>:expr, <span class="macro-nonterminal">$delta</span>:expr, <span class="macro-nonterminal">$block</span>:expr) =&gt; {{
         <span class="kw">let </span>before = <span class="macro-nonterminal">$metric</span>.count();
         <span class="kw">let _ </span>= <span class="macro-nonterminal">$block</span>;
-        <span class="macro">assert_eq!</span>(<span class="macro-nonterminal">$metric</span>.count(), before + <span class="macro-nonterminal">$delta</span>, <span class="string">&quot;unexpected metric value&quot;</span>);
+        <span class="macro">assert_eq!</span>(<span class="macro-nonterminal">$metric</span>.count(), before + <span class="macro-nonterminal">$delta</span>, <span class="string">"unexpected metric value"</span>);
     }};
 }
 
@@ -545,18 +547,18 @@
 
 <span class="comment">// Represents a location in GuestMemoryMmap which holds a given type.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>SomeplaceInMemory&lt;<span class="lifetime">&#39;a</span>, T&gt; {
+</span><span class="kw">pub struct </span>SomeplaceInMemory&lt;<span class="lifetime">'a</span>, T&gt; {
     <span class="kw">pub </span>location: GuestAddress,
-    mem: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>GuestMemoryMmap,
+    mem: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>GuestMemoryMmap,
     phantom: PhantomData&lt;<span class="kw-2">*const </span>T&gt;,
 }
 
 <span class="comment">// The ByteValued trait is required to use mem.read_obj_from_addr and write_obj_at_addr.
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T&gt; SomeplaceInMemory&lt;<span class="lifetime">&#39;a</span>, T&gt;
+</span><span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; SomeplaceInMemory&lt;<span class="lifetime">'a</span>, T&gt;
 <span class="kw">where
     </span>T: Debug + <span class="kw">crate</span>::vstate::memory::ByteValued,
 {
-    <span class="kw">fn </span>new(location: GuestAddress, mem: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>GuestMemoryMmap) -&gt; <span class="self">Self </span>{
+    <span class="kw">fn </span>new(location: GuestAddress, mem: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>GuestMemoryMmap) -&gt; <span class="self">Self </span>{
         SomeplaceInMemory {
             location,
             mem,
@@ -576,7 +578,7 @@
 
     <span class="comment">// This function returns a place in memory which holds a value of type U, and starts
     // offset bytes after the current location.
-    </span><span class="kw">fn </span>map_offset&lt;U: Debug&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, offset: usize) -&gt; SomeplaceInMemory&lt;<span class="lifetime">&#39;a</span>, U&gt; {
+    </span><span class="kw">fn </span>map_offset&lt;U: Debug&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, offset: usize) -&gt; SomeplaceInMemory&lt;<span class="lifetime">'a</span>, U&gt; {
         SomeplaceInMemory {
             location: <span class="self">self</span>.location.checked_add(offset <span class="kw">as </span>u64).unwrap(),
             mem: <span class="self">self</span>.mem,
@@ -586,7 +588,7 @@
 
     <span class="comment">// This function returns a place in memory which holds a value of type U, and starts
     // immediately after the end of self (which is location + sizeof(T)).
-    </span><span class="kw">fn </span>next_place&lt;U: Debug&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; SomeplaceInMemory&lt;<span class="lifetime">&#39;a</span>, U&gt; {
+    </span><span class="kw">fn </span>next_place&lt;U: Debug&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; SomeplaceInMemory&lt;<span class="lifetime">'a</span>, U&gt; {
         <span class="self">self</span>.map_offset::&lt;U&gt;(mem::size_of::&lt;T&gt;())
     }
 
@@ -599,17 +601,17 @@
 
 <span class="comment">// Represents a virtio descriptor in guest memory.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>VirtqDesc&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">pub </span>addr: SomeplaceInMemory&lt;<span class="lifetime">&#39;a</span>, u64&gt;,
-    <span class="kw">pub </span>len: SomeplaceInMemory&lt;<span class="lifetime">&#39;a</span>, u32&gt;,
-    <span class="kw">pub </span>flags: SomeplaceInMemory&lt;<span class="lifetime">&#39;a</span>, u16&gt;,
-    <span class="kw">pub </span>next: SomeplaceInMemory&lt;<span class="lifetime">&#39;a</span>, u16&gt;,
+</span><span class="kw">pub struct </span>VirtqDesc&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">pub </span>addr: SomeplaceInMemory&lt;<span class="lifetime">'a</span>, u64&gt;,
+    <span class="kw">pub </span>len: SomeplaceInMemory&lt;<span class="lifetime">'a</span>, u32&gt;,
+    <span class="kw">pub </span>flags: SomeplaceInMemory&lt;<span class="lifetime">'a</span>, u16&gt;,
+    <span class="kw">pub </span>next: SomeplaceInMemory&lt;<span class="lifetime">'a</span>, u16&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; VirtqDesc&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; VirtqDesc&lt;<span class="lifetime">'a</span>&gt; {
     <span class="kw">pub const </span>ALIGNMENT: u64 = <span class="number">16</span>;
 
-    <span class="kw">fn </span>new(start: GuestAddress, mem: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>GuestMemoryMmap) -&gt; <span class="self">Self </span>{
+    <span class="kw">fn </span>new(start: GuestAddress, mem: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>GuestMemoryMmap) -&gt; <span class="self">Self </span>{
         <span class="macro">assert_eq!</span>(start.<span class="number">0 </span>&amp; (<span class="self">Self</span>::ALIGNMENT - <span class="number">1</span>), <span class="number">0</span>);
 
         <span class="kw">let </span>addr = SomeplaceInMemory::new(start, mem);
@@ -640,7 +642,7 @@
         <span class="self">self</span>.next.set(next);
     }
 
-    <span class="kw">pub fn </span>memory(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>GuestMemoryMmap {
+    <span class="kw">pub fn </span>memory(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span>GuestMemoryMmap {
         <span class="self">self</span>.addr.mem
     }
 
@@ -664,18 +666,18 @@
 <span class="comment">// Represents a virtio queue ring. The only difference between the used and available rings,
 // is the ring element type.
 </span><span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>VirtqRing&lt;<span class="lifetime">&#39;a</span>, T&gt; {
-    <span class="kw">pub </span>flags: SomeplaceInMemory&lt;<span class="lifetime">&#39;a</span>, u16&gt;,
-    <span class="kw">pub </span>idx: SomeplaceInMemory&lt;<span class="lifetime">&#39;a</span>, u16&gt;,
-    <span class="kw">pub </span>ring: Vec&lt;SomeplaceInMemory&lt;<span class="lifetime">&#39;a</span>, T&gt;&gt;,
-    <span class="kw">pub </span>event: SomeplaceInMemory&lt;<span class="lifetime">&#39;a</span>, u16&gt;,
+</span><span class="kw">pub struct </span>VirtqRing&lt;<span class="lifetime">'a</span>, T&gt; {
+    <span class="kw">pub </span>flags: SomeplaceInMemory&lt;<span class="lifetime">'a</span>, u16&gt;,
+    <span class="kw">pub </span>idx: SomeplaceInMemory&lt;<span class="lifetime">'a</span>, u16&gt;,
+    <span class="kw">pub </span>ring: Vec&lt;SomeplaceInMemory&lt;<span class="lifetime">'a</span>, T&gt;&gt;,
+    <span class="kw">pub </span>event: SomeplaceInMemory&lt;<span class="lifetime">'a</span>, u16&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T&gt; VirtqRing&lt;<span class="lifetime">&#39;a</span>, T&gt;
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; VirtqRing&lt;<span class="lifetime">'a</span>, T&gt;
 <span class="kw">where
     </span>T: Debug + <span class="kw">crate</span>::vstate::memory::ByteValued,
 {
-    <span class="kw">fn </span>new(start: GuestAddress, mem: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>GuestMemoryMmap, qsize: u16, alignment: usize) -&gt; <span class="self">Self </span>{
+    <span class="kw">fn </span>new(start: GuestAddress, mem: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>GuestMemoryMmap, qsize: u16, alignment: usize) -&gt; <span class="self">Self </span>{
         <span class="macro">assert_eq!</span>(start.<span class="number">0 </span>&amp; (alignment <span class="kw">as </span>u64 - <span class="number">1</span>), <span class="number">0</span>);
 
         <span class="kw">let </span>flags = SomeplaceInMemory::new(start, mem);
@@ -719,19 +721,19 @@
 <span class="comment">// SAFETY: `VirtqUsedElem` is a POD and contains no padding.
 </span><span class="kw">unsafe impl </span><span class="kw">crate</span>::vstate::memory::ByteValued <span class="kw">for </span>VirtqUsedElem {}
 
-<span class="kw">pub type </span>VirtqAvail&lt;<span class="lifetime">&#39;a</span>&gt; = VirtqRing&lt;<span class="lifetime">&#39;a</span>, u16&gt;;
-<span class="kw">pub type </span>VirtqUsed&lt;<span class="lifetime">&#39;a</span>&gt; = VirtqRing&lt;<span class="lifetime">&#39;a</span>, VirtqUsedElem&gt;;
+<span class="kw">pub type </span>VirtqAvail&lt;<span class="lifetime">'a</span>&gt; = VirtqRing&lt;<span class="lifetime">'a</span>, u16&gt;;
+<span class="kw">pub type </span>VirtqUsed&lt;<span class="lifetime">'a</span>&gt; = VirtqRing&lt;<span class="lifetime">'a</span>, VirtqUsedElem&gt;;
 
 <span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>VirtQueue&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">pub </span>dtable: Vec&lt;VirtqDesc&lt;<span class="lifetime">&#39;a</span>&gt;&gt;,
-    <span class="kw">pub </span>avail: VirtqAvail&lt;<span class="lifetime">&#39;a</span>&gt;,
-    <span class="kw">pub </span>used: VirtqUsed&lt;<span class="lifetime">&#39;a</span>&gt;,
+</span><span class="kw">pub struct </span>VirtQueue&lt;<span class="lifetime">'a</span>&gt; {
+    <span class="kw">pub </span>dtable: Vec&lt;VirtqDesc&lt;<span class="lifetime">'a</span>&gt;&gt;,
+    <span class="kw">pub </span>avail: VirtqAvail&lt;<span class="lifetime">'a</span>&gt;,
+    <span class="kw">pub </span>used: VirtqUsed&lt;<span class="lifetime">'a</span>&gt;,
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; VirtQueue&lt;<span class="lifetime">&#39;a</span>&gt; {
+<span class="kw">impl</span>&lt;<span class="lifetime">'a</span>&gt; VirtQueue&lt;<span class="lifetime">'a</span>&gt; {
     <span class="comment">// We try to make sure things are aligned properly :-s
-    </span><span class="kw">pub fn </span>new(start: GuestAddress, mem: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>GuestMemoryMmap, qsize: u16) -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new(start: GuestAddress, mem: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>GuestMemoryMmap, qsize: u16) -&gt; <span class="self">Self </span>{
         <span class="comment">// power of 2?
         </span><span class="macro">assert!</span>(qsize &gt; <span class="number">0 </span>&amp;&amp; qsize &amp; (qsize - <span class="number">1</span>) == <span class="number">0</span>);
 
@@ -763,7 +765,7 @@
         }
     }
 
-    <span class="kw">pub fn </span>memory(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>GuestMemoryMmap {
+    <span class="kw">pub fn </span>memory(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'a </span>GuestMemoryMmap {
         <span class="self">self</span>.used.flags.mem
     }
 
@@ -848,35 +850,35 @@
     /// It creates and handles a guest memory address space, which uses for keeping the
     /// Virtqueues of the device and storing data, i.e. storing data described by DescriptorChains
     /// that the guest would pass to the device during normal operation
-    </span><span class="kw">pub struct </span>VirtioTestHelper&lt;<span class="lifetime">&#39;a</span>, T&gt;
+    </span><span class="kw">pub struct </span>VirtioTestHelper&lt;<span class="lifetime">'a</span>, T&gt;
     <span class="kw">where
         </span>T: VirtioTestDevice + MutEventSubscriber,
     {
         event_manager: EventManager&lt;Arc&lt;Mutex&lt;T&gt;&gt;&gt;,
         _subscriber_id: SubscriberId,
         device: Arc&lt;Mutex&lt;T&gt;&gt;,
-        virtqueues: Vec&lt;VirtQueue&lt;<span class="lifetime">&#39;a</span>&gt;&gt;,
+        virtqueues: Vec&lt;VirtQueue&lt;<span class="lifetime">'a</span>&gt;&gt;,
     }
 
-    <span class="kw">impl</span>&lt;T: VirtioTestDevice + MutEventSubscriber + Debug&gt; fmt::Debug <span class="kw">for </span>VirtioTestHelper&lt;<span class="lifetime">&#39;_</span>, T&gt; {
-        <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
-            f.debug_struct(<span class="string">&quot;VirtioTestHelper&quot;</span>)
-                .field(<span class="string">&quot;event_manager&quot;</span>, <span class="kw-2">&amp;</span><span class="string">&quot;?&quot;</span>)
-                .field(<span class="string">&quot;_subscriber_id&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>._subscriber_id)
-                .field(<span class="string">&quot;device&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.device)
-                .field(<span class="string">&quot;virtqueues&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.virtqueues)
+    <span class="kw">impl</span>&lt;T: VirtioTestDevice + MutEventSubscriber + Debug&gt; fmt::Debug <span class="kw">for </span>VirtioTestHelper&lt;<span class="lifetime">'_</span>, T&gt; {
+        <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+            f.debug_struct(<span class="string">"VirtioTestHelper"</span>)
+                .field(<span class="string">"event_manager"</span>, <span class="kw-2">&amp;</span><span class="string">"?"</span>)
+                .field(<span class="string">"_subscriber_id"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>._subscriber_id)
+                .field(<span class="string">"device"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.device)
+                .field(<span class="string">"virtqueues"</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.virtqueues)
                 .finish()
         }
     }
 
-    <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T&gt; VirtioTestHelper&lt;<span class="lifetime">&#39;a</span>, T&gt;
+    <span class="kw">impl</span>&lt;<span class="lifetime">'a</span>, T&gt; VirtioTestHelper&lt;<span class="lifetime">'a</span>, T&gt;
     <span class="kw">where
         </span>T: VirtioTestDevice + MutEventSubscriber + Debug,
     {
         <span class="kw">const </span>QUEUE_SIZE: u16 = <span class="number">16</span>;
 
         <span class="comment">// Helper function to create a set of Virtqueues for the device
-        </span><span class="kw">fn </span>create_virtqueues(mem: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>GuestMemoryMmap, num_queues: usize) -&gt; Vec&lt;VirtQueue&gt; {
+        </span><span class="kw">fn </span>create_virtqueues(mem: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>GuestMemoryMmap, num_queues: usize) -&gt; Vec&lt;VirtQueue&gt; {
             (<span class="number">0</span>..num_queues)
                 .scan(GuestAddress(<span class="number">0</span>), |next_addr, <span class="kw">_</span>| {
                     <span class="kw">let </span>vqueue = VirtQueue::new(<span class="kw-2">*</span>next_addr, mem, <span class="self">Self</span>::QUEUE_SIZE);
@@ -889,7 +891,7 @@
         }
 
         <span class="doccomment">/// Create a new Virtio Device test helper
-        </span><span class="kw">pub fn </span>new(mem: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>GuestMemoryMmap, <span class="kw-2">mut </span>device: T) -&gt; VirtioTestHelper&lt;<span class="lifetime">&#39;a</span>, T&gt; {
+        </span><span class="kw">pub fn </span>new(mem: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>GuestMemoryMmap, <span class="kw-2">mut </span>device: T) -&gt; VirtioTestHelper&lt;<span class="lifetime">'a</span>, T&gt; {
             <span class="kw">let </span><span class="kw-2">mut </span>event_manager = EventManager::new().unwrap();
 
             <span class="kw">let </span>virtqueues = <span class="self">Self</span>::create_virtqueues(mem, T::num_queues());
@@ -912,7 +914,7 @@
         }
 
         <span class="doccomment">/// Activate the device
-        </span><span class="kw">pub fn </span>activate_device(<span class="kw-2">&amp;mut </span><span class="self">self</span>, mem: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>GuestMemoryMmap) {
+        </span><span class="kw">pub fn </span>activate_device(<span class="kw-2">&amp;mut </span><span class="self">self</span>, mem: <span class="kw-2">&amp;</span><span class="lifetime">'a </span>GuestMemoryMmap) {
             <span class="self">self</span>.device.lock().unwrap().activate(mem.clone()).unwrap();
             <span class="comment">// Process the activate event
             </span><span class="kw">let </span>ev_count = <span class="self">self</span>.event_manager.run_with_timeout(<span class="number">100</span>).unwrap();
@@ -928,10 +930,10 @@
             <span class="self">self</span>.virtqueues.last().unwrap().end().raw_value()
         }
 
-        <span class="doccomment">/// Add a new Descriptor in one of the device&#39;s queues
+        <span class="doccomment">/// Add a new Descriptor in one of the device's queues
         ///
         /// This function adds in one of the queues of the device a DescriptorChain at some offset
-        /// in the &quot;data range&quot; of the guest memory. The number of descriptors to create is passed
+        /// in the "data range" of the guest memory. The number of descriptors to create is passed
         /// as a list of descriptors (a triple of (index, length, flags)).
         ///
         /// The total size of the buffer is the sum of all lengths of this list of descriptors.
@@ -967,7 +969,7 @@
 
                 addr += u64::from(len);
                 <span class="comment">// Add small random gaps between descriptor addresses in order to make sure we
-                // don&#39;t blindly read contiguous memory.
+                // don't blindly read contiguous memory.
                 </span>addr += u64::from(utils::rand::xor_pseudo_rng_u32()) % <span class="number">10</span>;
             }
 

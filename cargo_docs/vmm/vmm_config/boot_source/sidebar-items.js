@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["DEFAULT_KERNEL_CMDLINE"],"enum":["BootSourceConfigError"],"struct":["BootConfig","BootSource","BootSourceConfig"]};
+window.SIDEBAR_ITEMS = {"constant":["DEFAULT_KERNEL_CMDLINE","_DERIVE_Display_FOR_BootSourceConfigError"],"enum":["BootSourceConfigError"],"struct":["BootConfig","BootSource","BootSourceConfig"]};

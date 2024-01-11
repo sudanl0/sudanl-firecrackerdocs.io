@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/clippy-tracing/src/main.rs`."><title>main.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="clippy_tracing" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../clippy_tracing/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/clippy-tracing/src/main.rs`."><title>main.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="clippy_tracing" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../clippy_tracing/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -482,12 +484,12 @@
     </span><span class="attr">#[arg(long)]
     </span>suffix: <span class="prelude-ty">Option</span>&lt;String&gt;,
     <span class="doccomment">/// Whether to add a `cfg_attr` condition e.g.
-    /// `#[cfg_attr(feature = &quot;tracing&quot;, log_instrument::instrument)]` vs
+    /// `#[cfg_attr(feature = "tracing", log_instrument::instrument)]` vs
     /// `#[log_instrument::instrument]`.
     </span><span class="attr">#[arg(long)]
     </span>cfg_attr: <span class="prelude-ty">Option</span>&lt;String&gt;,
     <span class="doccomment">/// Sub-paths which contain any of the strings from this list will be ignored.
-    </span><span class="attr">#[arg(long, value_delimiter = <span class="string">&#39;,&#39;</span>)]
+    </span><span class="attr">#[arg(long, value_delimiter = <span class="string">','</span>)]
     </span>exclude: Vec&lt;String&gt;,
 }
 
@@ -529,12 +531,12 @@
         <span class="kw">let </span>iter = list
             .inner
             .into_iter()
-            .map(|(x, y)| <span class="macro">format!</span>(<span class="string">&quot;{x}{}{y}&quot;</span>, <span class="kw">if </span>y.is_empty() { <span class="string">&quot;&quot; </span>} <span class="kw">else </span>{ <span class="string">&quot;\n&quot; </span>}));
+            .map(|(x, y)| <span class="macro">format!</span>(<span class="string">"{x}{}{y}"</span>, <span class="kw">if </span>y.is_empty() { <span class="string">"" </span>} <span class="kw">else </span>{ <span class="string">"\n" </span>}));
         <span class="macro">format!</span>(
-            <span class="string">&quot;{}{}{}&quot;</span>,
+            <span class="string">"{}{}{}"</span>,
             list.first,
-            <span class="kw">if </span>list.first.is_empty() { <span class="string">&quot;&quot; </span>} <span class="kw">else </span>{ <span class="string">&quot;\n&quot; </span>},
-            itertools::intersperse(iter, String::from(<span class="string">&quot;\n&quot;</span>)).collect::&lt;String&gt;()
+            <span class="kw">if </span>list.first.is_empty() { <span class="string">"" </span>} <span class="kw">else </span>{ <span class="string">"\n" </span>},
+            itertools::intersperse(iter, String::from(<span class="string">"\n"</span>)).collect::&lt;String&gt;()
         )
     }
 }
@@ -545,7 +547,7 @@
     <span class="kw">fn </span>from(visitor: StripVisitor) -&gt; String {
         <span class="kw">let </span><span class="kw-2">mut </span>vec = visitor.<span class="number">0</span>.into_iter().collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
         vec.sort_by_key(|(i, <span class="kw">_</span>)| <span class="kw-2">*</span>i);
-        itertools::intersperse(vec.into_iter().map(|(<span class="kw">_</span>, x)| x), String::from(<span class="string">&quot;\n&quot;</span>))
+        itertools::intersperse(vec.into_iter().map(|(<span class="kw">_</span>, x)| x), String::from(<span class="string">"\n"</span>))
             .collect::&lt;String&gt;()
     }
 }
@@ -565,7 +567,7 @@
     };
 }
 
-<span class="kw">impl </span>syn::visit::Visit&lt;<span class="lifetime">&#39;_</span>&gt; <span class="kw">for </span>StripVisitor {
+<span class="kw">impl </span>syn::visit::Visit&lt;<span class="lifetime">'_</span>&gt; <span class="kw">for </span>StripVisitor {
     <span class="macro">create_strip_visitor_function!</span>(visit_impl_item_fn, ImplItemFn);
     <span class="macro">create_strip_visitor_function!</span>(visit_item_fn, ItemFn);
 }
@@ -586,21 +588,21 @@
     };
 }
 
-<span class="kw">impl </span>syn::visit::Visit&lt;<span class="lifetime">&#39;_</span>&gt; <span class="kw">for </span>CheckVisitor {
+<span class="kw">impl </span>syn::visit::Visit&lt;<span class="lifetime">'_</span>&gt; <span class="kw">for </span>CheckVisitor {
     <span class="macro">create_check_visitor_function!</span>(visit_impl_item_fn, ImplItemFn);
     <span class="macro">create_check_visitor_function!</span>(visit_item_fn, ItemFn);
 }
 
 <span class="doccomment">/// Visitor for the `fix` action.
-</span><span class="kw">struct </span>FixVisitor&lt;<span class="lifetime">&#39;a</span>&gt; {
+</span><span class="kw">struct </span>FixVisitor&lt;<span class="lifetime">'a</span>&gt; {
     <span class="doccomment">/// A custom path suffix.
-    </span>suffix: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="prelude-ty">Option</span>&lt;String&gt;,
+    </span>suffix: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="prelude-ty">Option</span>&lt;String&gt;,
     <span class="doccomment">/// A `cfg_attr` condition.
-    </span>cfg_attr: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="prelude-ty">Option</span>&lt;String&gt;,
+    </span>cfg_attr: <span class="kw-2">&amp;</span><span class="lifetime">'a </span><span class="prelude-ty">Option</span>&lt;String&gt;,
     <span class="doccomment">/// Source
     </span>list: SegmentedList,
 }
-<span class="kw">impl </span>From&lt;FixVisitor&lt;<span class="lifetime">&#39;_</span>&gt;&gt; <span class="kw">for </span>String {
+<span class="kw">impl </span>From&lt;FixVisitor&lt;<span class="lifetime">'_</span>&gt;&gt; <span class="kw">for </span>String {
     <span class="kw">fn </span>from(visitor: FixVisitor) -&gt; String {
         String::from(visitor.list)
     }
@@ -616,7 +618,7 @@
 
                 <span class="kw">let </span>attr_string = instrument(<span class="kw-2">&amp;</span>i.sig, <span class="self">self</span>.suffix, <span class="self">self</span>.cfg_attr);
                 <span class="kw">let </span>indent = i.span().start().column;
-                <span class="kw">let </span>indent_attr = <span class="macro">format!</span>(<span class="string">&quot;{}{attr_string}&quot;</span>, <span class="string">&quot; &quot;</span>.repeat(indent));
+                <span class="kw">let </span>indent_attr = <span class="macro">format!</span>(<span class="string">"{}{attr_string}"</span>, <span class="string">" "</span>.repeat(indent));
                 <span class="self">self</span>.list.set_before(line - <span class="number">1</span>, indent_attr);
             }
             <span class="self">self</span>.visit_block(<span class="kw-2">&amp;</span>i.block);
@@ -624,7 +626,7 @@
     };
 }
 
-<span class="kw">impl </span>syn::visit::Visit&lt;<span class="lifetime">&#39;_</span>&gt; <span class="kw">for </span>FixVisitor&lt;<span class="lifetime">&#39;_</span>&gt; {
+<span class="kw">impl </span>syn::visit::Visit&lt;<span class="lifetime">'_</span>&gt; <span class="kw">for </span>FixVisitor&lt;<span class="lifetime">'_</span>&gt; {
     <span class="macro">create_fix_visitor_function!</span>(visit_impl_item_fn, ImplItemFn);
     <span class="macro">create_fix_visitor_function!</span>(visit_item_fn, ItemFn);
 }
@@ -632,17 +634,17 @@
 <span class="kw">fn </span>instrument(sig: <span class="kw-2">&amp;</span>syn::Signature, suffix: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span>&lt;String&gt;, cfg_attr: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span>&lt;String&gt;) -&gt; String {
     <span class="kw">let </span>instr = inner_instrument(sig, suffix);
     <span class="kw">if let </span><span class="prelude-val">Some</span>(cfg_attr) = cfg_attr {
-        <span class="macro">format!</span>(<span class="string">&quot;#[cfg_attr({cfg_attr}, {instr})]&quot;</span>)
+        <span class="macro">format!</span>(<span class="string">"#[cfg_attr({cfg_attr}, {instr})]"</span>)
     } <span class="kw">else </span>{
-        <span class="macro">format!</span>(<span class="string">&quot;#[{instr}]&quot;</span>)
+        <span class="macro">format!</span>(<span class="string">"#[{instr}]"</span>)
     }
 }
 
 <span class="doccomment">/// Returns the instrument macro for a given function signature.
 </span><span class="kw">fn </span>inner_instrument(_sig: <span class="kw-2">&amp;</span>syn::Signature, suffix: <span class="kw-2">&amp;</span><span class="prelude-ty">Option</span>&lt;String&gt;) -&gt; String {
     <span class="macro">format!</span>(
-        <span class="string">&quot;{}instrument&quot;</span>,
-        suffix.as_ref().map_or(<span class="string">&quot;log_instrument::&quot;</span>, String::as_str)
+        <span class="string">"{}instrument"</span>,
+        suffix.as_ref().map_or(<span class="string">"log_instrument::"</span>, String::as_str)
     )
 }
 
@@ -666,13 +668,13 @@
 <span class="kw">fn </span>main() -&gt; Exit {
     <span class="kw">match </span>exec() {
         <span class="prelude-val">Err</span>(err) =&gt; {
-            <span class="macro">eprintln!</span>(<span class="string">&quot;Error: {err}&quot;</span>);
+            <span class="macro">eprintln!</span>(<span class="string">"Error: {err}"</span>);
             Exit::Error
         }
         <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; Exit::Ok,
         <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>((path, line, column))) =&gt; {
             <span class="macro">println!</span>(
-                <span class="string">&quot;Missing instrumentation at {}:{line}:{column}.&quot;</span>,
+                <span class="string">"Missing instrumentation at {}:{line}:{column}."</span>,
                 path.display()
             );
             Exit::Check
@@ -693,12 +695,12 @@
     </span>Apply(ApplyError),
 }
 <span class="kw">impl </span>fmt::Display <span class="kw">for </span>ExecError {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="kw">match </span><span class="self">self </span>{
-            <span class="self">Self</span>::Entry(entry) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;Failed to read entry in file path: {entry}&quot;</span>),
-            <span class="self">Self</span>::String =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;Failed to parse file path to string.&quot;</span>),
-            <span class="self">Self</span>::File(file) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;Failed to open file: {file}&quot;</span>),
-            <span class="self">Self</span>::Apply(apply) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;Failed to run apply function: {apply}&quot;</span>),
+            <span class="self">Self</span>::Entry(entry) =&gt; <span class="macro">write!</span>(f, <span class="string">"Failed to read entry in file path: {entry}"</span>),
+            <span class="self">Self</span>::String =&gt; <span class="macro">write!</span>(f, <span class="string">"Failed to parse file path to string."</span>),
+            <span class="self">Self</span>::File(file) =&gt; <span class="macro">write!</span>(f, <span class="string">"Failed to open file: {file}"</span>),
+            <span class="self">Self</span>::Apply(apply) =&gt; <span class="macro">write!</span>(f, <span class="string">"Failed to run apply function: {apply}"</span>),
         }
     }
 }
@@ -709,7 +711,7 @@
 </span><span class="kw">fn </span>exec() -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;(PathBuf, usize, usize)&gt;, ExecError&gt; {
     <span class="kw">let </span>args = CommandLineArgs::parse();
 
-    <span class="kw">let </span>path = args.path.unwrap_or(PathBuf::from(<span class="string">&quot;.&quot;</span>));
+    <span class="kw">let </span>path = args.path.unwrap_or(PathBuf::from(<span class="string">"."</span>));
     <span class="kw">for </span>entry_res <span class="kw">in </span>WalkDir::new(path).follow_links(<span class="bool-val">true</span>) {
         <span class="kw">let </span>entry = entry_res.map_err(ExecError::Entry)<span class="question-mark">?</span>;
         <span class="kw">let </span>entry_path = entry.into_path();
@@ -718,9 +720,9 @@
         <span class="comment">// File paths must not contain any excluded strings.
         </span><span class="kw">let </span>no_excluded_strings = !args.exclude.iter().any(|e| path_str.contains(e));
         <span class="comment">// The file must not be a `build.rs` file.
-        </span><span class="kw">let </span>not_build_file = !entry_path.ends_with(<span class="string">&quot;build.rs&quot;</span>);
+        </span><span class="kw">let </span>not_build_file = !entry_path.ends_with(<span class="string">"build.rs"</span>);
         <span class="comment">// The file must be a `.rs` file.
-        </span><span class="kw">let </span>is_rs_file = entry_path.extension().map_or(<span class="bool-val">false</span>, |ext| ext == <span class="string">&quot;rs&quot;</span>);
+        </span><span class="kw">let </span>is_rs_file = entry_path.extension().map_or(<span class="bool-val">false</span>, |ext| ext == <span class="string">"rs"</span>);
 
         <span class="kw">if </span>no_excluded_strings &amp;&amp; not_build_file &amp;&amp; is_rs_file {
             <span class="kw">let </span>file = OpenOptions::new()
@@ -758,13 +760,13 @@
     </span>Write(std::io::Error),
 }
 <span class="kw">impl </span>fmt::Display <span class="kw">for </span>ApplyError {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
         <span class="kw">match </span><span class="self">self </span>{
-            <span class="self">Self</span>::Read(read) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;Failed to read file: {read}&quot;</span>),
-            <span class="self">Self</span>::Utf(utf) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;Failed to parse file to utf8: {utf}&quot;</span>),
-            <span class="self">Self</span>::Syn(syn) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;Failed to parse file to syn ast: {syn}&quot;</span>),
-            <span class="self">Self</span>::Target(target) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;Failed to get write target: {target}&quot;</span>),
-            <span class="self">Self</span>::Write(write) =&gt; <span class="macro">write!</span>(f, <span class="string">&quot;Failed to write result to target: {write}&quot;</span>),
+            <span class="self">Self</span>::Read(read) =&gt; <span class="macro">write!</span>(f, <span class="string">"Failed to read file: {read}"</span>),
+            <span class="self">Self</span>::Utf(utf) =&gt; <span class="macro">write!</span>(f, <span class="string">"Failed to parse file to utf8: {utf}"</span>),
+            <span class="self">Self</span>::Syn(syn) =&gt; <span class="macro">write!</span>(f, <span class="string">"Failed to parse file to syn ast: {syn}"</span>),
+            <span class="self">Self</span>::Target(target) =&gt; <span class="macro">write!</span>(f, <span class="string">"Failed to get write target: {target}"</span>),
+            <span class="self">Self</span>::Write(write) =&gt; <span class="macro">write!</span>(f, <span class="string">"Failed to write result to target: {write}"</span>),
         }
     }
 }
@@ -789,7 +791,7 @@
     <span class="kw">match </span>action {
         Action::Strip =&gt; {
             <span class="kw">let </span><span class="kw-2">mut </span>visitor = StripVisitor(
-                text.split(<span class="string">&#39;\n&#39;</span>)
+                text.split(<span class="string">'\n'</span>)
                     .enumerate()
                     .map(|(i, x)| (i, String::from(x)))
                     .collect(),
@@ -814,7 +816,7 @@
                 list: SegmentedList {
                     first: String::new(),
                     inner: text
-                        .split(<span class="string">&#39;\n&#39;</span>)
+                        .split(<span class="string">'\n'</span>)
                         .map(|x| (String::from(x), String::new()))
                         .collect(),
                 },
@@ -840,14 +842,14 @@
     <span class="kw">match </span><span class="kw-2">&amp;</span>attr.meta {
         syn::Meta::List(syn::MetaList { path, tokens, .. }) =&gt; {
             <span class="comment">// `#[instrument]`
-            </span><span class="kw">let </span>instrumented = <span class="macro">matches!</span>(path.segments.last(), <span class="prelude-val">Some</span>(syn::PathSegment { ident, .. }) <span class="kw">if </span>ident == <span class="string">&quot;instrument&quot;</span>);
+            </span><span class="kw">let </span>instrumented = <span class="macro">matches!</span>(path.segments.last(), <span class="prelude-val">Some</span>(syn::PathSegment { ident, .. }) <span class="kw">if </span>ident == <span class="string">"instrument"</span>);
             <span class="comment">// `#[cfg_attr(.. , instrument)]`
-            </span><span class="kw">let </span>attr_instrumented = <span class="macro">matches!</span>(path.segments.last(), <span class="prelude-val">Some</span>(syn::PathSegment { ident, .. }) <span class="kw">if </span>ident == <span class="string">&quot;cfg_attr&quot;</span>) &amp;&amp; tokens.clone().into_iter().any(|token| <span class="macro">matches!</span>(token, proc_macro2::TokenTree::Ident(ident) <span class="kw">if </span>ident == <span class="string">&quot;instrument&quot;</span>));
+            </span><span class="kw">let </span>attr_instrumented = <span class="macro">matches!</span>(path.segments.last(), <span class="prelude-val">Some</span>(syn::PathSegment { ident, .. }) <span class="kw">if </span>ident == <span class="string">"cfg_attr"</span>) &amp;&amp; tokens.clone().into_iter().any(|token| <span class="macro">matches!</span>(token, proc_macro2::TokenTree::Ident(ident) <span class="kw">if </span>ident == <span class="string">"instrument"</span>));
 
             (instrumented || attr_instrumented).then_some(attr)
         }
         syn::Meta::Path(syn::Path { segments, .. }) =&gt; {
-            <span class="kw">let </span>x = <span class="macro">matches!</span>(segments.last(), <span class="prelude-val">Some</span>(syn::PathSegment { ident, .. }) <span class="kw">if </span>ident == <span class="string">&quot;instrument&quot;</span>);
+            <span class="kw">let </span>x = <span class="macro">matches!</span>(segments.last(), <span class="prelude-val">Some</span>(syn::PathSegment { ident, .. }) <span class="kw">if </span>ident == <span class="string">"instrument"</span>);
             x.then_some(attr)
         }
         syn::Meta::NameValue(<span class="kw">_</span>) =&gt; <span class="prelude-val">None</span>,
@@ -880,10 +882,10 @@
         <span class="comment">// Match `#[test]` or `#[kani::proof]`.
         </span><span class="kw">if match </span><span class="kw-2">&amp;</span>attr.meta {
             syn::Meta::List(syn::MetaList { path, .. }) =&gt; {
-                <span class="macro">matches!</span>(path.segments.last(), <span class="prelude-val">Some</span>(syn::PathSegment { ident, .. }) <span class="kw">if </span>ident == <span class="string">&quot;proof&quot;</span>)
+                <span class="macro">matches!</span>(path.segments.last(), <span class="prelude-val">Some</span>(syn::PathSegment { ident, .. }) <span class="kw">if </span>ident == <span class="string">"proof"</span>)
             }
             syn::Meta::Path(syn::Path { segments, .. }) =&gt; {
-                <span class="macro">matches!</span>(segments.last(), <span class="prelude-val">Some</span>(syn::PathSegment { ident, .. }) <span class="kw">if </span>ident == <span class="string">&quot;test&quot; </span>|| ident == <span class="string">&quot;proof&quot;</span>)
+                <span class="macro">matches!</span>(segments.last(), <span class="prelude-val">Some</span>(syn::PathSegment { ident, .. }) <span class="kw">if </span>ident == <span class="string">"test" </span>|| ident == <span class="string">"proof"</span>)
             }
             syn::Meta::NameValue(<span class="kw">_</span>) =&gt; <span class="bool-val">false</span>,
         } {

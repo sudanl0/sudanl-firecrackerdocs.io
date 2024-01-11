@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["ResourcesError"],"struct":["VmResources","VmmConfig"]};
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_ResourcesError"],"enum":["ResourcesError"],"struct":["VmResources","VmmConfig"]};

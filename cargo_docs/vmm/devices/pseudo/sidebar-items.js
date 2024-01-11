@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["BootTimer"]};
+window.SIDEBAR_ITEMS = {"mod":["boot_timer"],"struct":["BootTimer"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["VhostUserBlockConfig","VhostUserBlockImpl"],"type":["VhostUserBlock"]};
+window.SIDEBAR_ITEMS = {"constant":["AVAILABLE_FEATURES","BLOCK_CONFIG_SPACE_SIZE"],"struct":["VhostUserBlockConfig","VhostUserBlockImpl"],"type":["VhostUserBlock"]};

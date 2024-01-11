@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["create_tmp_socket","create_vmm","default_vmm","default_vmm_no_boot"]};
+window.SIDEBAR_ITEMS = {"fn":["create_tmp_socket","create_vmm","default_vmm","default_vmm_no_boot","dirty_tracking_vmm"]};

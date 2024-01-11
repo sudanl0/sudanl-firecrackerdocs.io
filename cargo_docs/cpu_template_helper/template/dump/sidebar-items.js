@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_DumpError"],"enum":["DumpError"],"fn":["dump"],"mod":["aarch64"]};
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_DumpError"],"enum":["DumpError"],"fn":["dump"],"mod":["x86_64"]};

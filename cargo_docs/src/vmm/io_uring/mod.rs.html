@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/io_uring/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../vmm/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/io_uring/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -681,9 +683,9 @@
     <span class="doccomment">/// Error originating in the submission queue: {0}
     </span>SQueue(SQueueError),
     <span class="doccomment">/// Required feature is not supported on the host kernel: {0}
-    </span>UnsupportedFeature(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str),
+    </span>UnsupportedFeature(<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str),
     <span class="doccomment">/// Required operation is not supported on the host kernel: {0}
-    </span>UnsupportedOperation(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str),
+    </span>UnsupportedOperation(<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str),
 }
 
 <span class="kw">impl </span>IoUringError {
@@ -702,14 +704,14 @@
     registered_fds_count: u32,
     squeue: SubmissionQueue,
     cqueue: CompletionQueue,
-    <span class="comment">// Make sure the fd is declared after the queues, so that it isn&#39;t dropped before them.
+    <span class="comment">// Make sure the fd is declared after the queues, so that it isn't dropped before them.
     // If we drop the queues after the File, the associated kernel mem will never be freed.
     // The correct cleanup order is munmap(rings) -&gt; close(fd).
-    // We don&#39;t need to manually drop the fields in order,since Rust has a well defined drop order.
+    // We don't need to manually drop the fields in order,since Rust has a well defined drop order.
     </span>fd: File,
 
     <span class="comment">// The total number of ops. These includes the ops on the submission queue, the in-flight ops
-    // and the ops that are in the CQ, but haven&#39;t been popped yet.
+    // and the ops that are in the CQ, but haven't been popped yet.
     </span>num_ops: u32,
 }
 
@@ -784,7 +786,7 @@
     ///
     /// # Safety
     /// Unsafe because we pass a raw user_data pointer to the kernel.
-    /// It&#39;s up to the caller to make sure that this value is ever freed (not leaked).
+    /// It's up to the caller to make sure that this value is ever freed (not leaked).
     </span><span class="kw">pub unsafe fn </span>push&lt;T: Debug&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>, op: Operation&lt;T&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), (IoUringError, T)&gt; {
         <span class="comment">// validate that we actually did register fds
         </span><span class="kw">let </span>fd = op.fd();
@@ -814,7 +816,7 @@
     ///
     /// # Safety
     /// Unsafe because we reconstruct the `user_data` from a raw pointer passed by the kernel.
-    /// It&#39;s up to the caller to make sure that `T` is the correct type of the `user_data`, that
+    /// It's up to the caller to make sure that `T` is the correct type of the `user_data`, that
     /// the raw pointer is valid and that we have full ownership of that address.
     </span><span class="kw">pub unsafe fn </span>pop&lt;T: Debug&gt;(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;Cqe&lt;T&gt;&gt;, IoUringError&gt; {
         <span class="self">self</span>.cqueue
@@ -836,7 +838,7 @@
             .map_err(IoUringError::SQueue)
     }
 
-    <span class="doccomment">/// Submit all operations but don&#39;t wait for any completions.
+    <span class="doccomment">/// Submit all operations but don't wait for any completions.
     </span><span class="kw">pub fn </span>submit(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;u32, IoUringError&gt; {
         <span class="self">self</span>.do_submit(<span class="number">0</span>)
     }
@@ -950,10 +952,10 @@
         // overflow in the completion queue.
         // This feature is supported for kernels greater than 5.7.
         // An alternative fix would be to keep an internal counter that tracks the number of
-        // submitted entries that haven&#39;t been completed and makes sure it doesn&#39;t exceed
+        // submitted entries that haven't been completed and makes sure it doesn't exceed
         // (2 * num_entries).
         </span><span class="kw">if </span>(params.features &amp; bindings::IORING_FEAT_NODROP) == <span class="number">0 </span>{
-            <span class="kw">return </span><span class="prelude-val">Err</span>(IoUringError::UnsupportedFeature(<span class="string">&quot;IORING_FEAT_NODROP&quot;</span>));
+            <span class="kw">return </span><span class="prelude-val">Err</span>(IoUringError::UnsupportedFeature(<span class="string">"IORING_FEAT_NODROP"</span>));
         }
 
         <span class="prelude-val">Ok</span>(())
@@ -1029,7 +1031,7 @@
         <span class="kw">let </span>ptr = <span class="kw">unsafe </span>{ libc::mmap(std::ptr::null_mut(), len, PROT, FLAGS, -<span class="number">1</span>, <span class="number">0</span>) };
 
         <span class="kw">if </span>(ptr <span class="kw">as </span>isize) &lt; <span class="number">0 </span>{
-            <span class="macro">panic!</span>(<span class="string">&quot;Mmap failed with {}&quot;</span>, std::io::Error::last_os_error());
+            <span class="macro">panic!</span>(<span class="string">"Mmap failed with {}"</span>, std::io::Error::last_os_error());
         }
 
         <span class="kw">unsafe </span>{
@@ -1123,10 +1125,10 @@
         <span class="comment">// Create a custom test runner since we had to add some state buildup to the test.
         // (Referring to the the above initializations).
         </span><span class="kw">let </span><span class="kw-2">mut </span>runner = TestRunner::new(Config {
-            <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+            <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
             </span>cases: <span class="number">1000</span>, <span class="comment">// Should run for about a minute.
             // Lower the cases on ARM since they take longer and cause coverage test timeouts.
-            </span><span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+            </span><span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
             </span>cases: <span class="number">500</span>,
             ..Config::default()
         });
@@ -1175,7 +1177,7 @@
                         };
 
                         <span class="kw">if </span>count &lt; operation.len.unwrap() {
-                            <span class="macro">panic!</span>(<span class="string">&quot;Synchronous partial operation: {:?}&quot;</span>, operation);
+                            <span class="macro">panic!</span>(<span class="string">"Synchronous partial operation: {:?}"</span>, operation);
                         }
 
                         <span class="comment">// Perform the async op.

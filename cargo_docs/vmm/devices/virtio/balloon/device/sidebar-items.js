@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["Balloon","BalloonConfig","BalloonStats"]};
+window.SIDEBAR_ITEMS = {"constant":["SIZE_OF_STAT","SIZE_OF_U32"],"fn":["mib_to_pages","pages_to_mib"],"struct":["Balloon","BalloonConfig","BalloonStat","BalloonStats","ConfigSpace"]};

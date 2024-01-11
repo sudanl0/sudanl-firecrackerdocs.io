@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["aarch64","templates","templates_serde"]};
+window.SIDEBAR_ITEMS = {"mod":["templates","templates_serde","x86_64"]};

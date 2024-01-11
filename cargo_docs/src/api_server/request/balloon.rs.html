@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/api_server/src/request/balloon.rs`."><title>balloon.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="api_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../api_server/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/api_server/src/request/balloon.rs`."><title>balloon.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="api_server" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../api_server/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -182,10 +184,10 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn </span>parse_get_balloon(path_second_token: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;ParsedRequest, Error&gt; {
     <span class="kw">match </span>path_second_token {
         <span class="prelude-val">Some</span>(stats_path) =&gt; <span class="kw">match </span>stats_path {
-            <span class="string">&quot;statistics&quot; </span>=&gt; <span class="prelude-val">Ok</span>(ParsedRequest::new_sync(VmmAction::GetBalloonStats)),
+            <span class="string">"statistics" </span>=&gt; <span class="prelude-val">Ok</span>(ParsedRequest::new_sync(VmmAction::GetBalloonStats)),
             <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(Error::Generic(
                 StatusCode::BadRequest,
-                <span class="macro">format!</span>(<span class="string">&quot;Unrecognized GET request path `{}`.&quot;</span>, stats_path),
+                <span class="macro">format!</span>(<span class="string">"Unrecognized GET request path `{}`."</span>, stats_path),
             )),
         },
         <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Ok</span>(ParsedRequest::new_sync(VmmAction::GetBalloonConfig)),
@@ -204,12 +206,12 @@
 ) -&gt; <span class="prelude-ty">Result</span>&lt;ParsedRequest, Error&gt; {
     <span class="kw">match </span>path_second_token {
         <span class="prelude-val">Some</span>(config_path) =&gt; <span class="kw">match </span>config_path {
-            <span class="string">&quot;statistics&quot; </span>=&gt; <span class="prelude-val">Ok</span>(ParsedRequest::new_sync(VmmAction::UpdateBalloonStatistics(
+            <span class="string">"statistics" </span>=&gt; <span class="prelude-val">Ok</span>(ParsedRequest::new_sync(VmmAction::UpdateBalloonStatistics(
                 serde_json::from_slice::&lt;BalloonUpdateStatsConfig&gt;(body.raw())<span class="question-mark">?</span>,
             ))),
             <span class="kw">_ </span>=&gt; <span class="prelude-val">Err</span>(Error::Generic(
                 StatusCode::BadRequest,
-                <span class="macro">format!</span>(<span class="string">&quot;Unrecognized PATCH request path `{}`.&quot;</span>, config_path),
+                <span class="macro">format!</span>(<span class="string">"Unrecognized PATCH request path `{}`."</span>, config_path),
             )),
         },
         <span class="prelude-val">None </span>=&gt; <span class="prelude-val">Ok</span>(ParsedRequest::new_sync(VmmAction::UpdateBalloon(
@@ -227,90 +229,90 @@
     </span><span class="kw">fn </span>test_parse_get_balloon_request() {
         parse_get_balloon(<span class="prelude-val">None</span>).unwrap();
 
-        parse_get_balloon(<span class="prelude-val">Some</span>(<span class="string">&quot;unrelated&quot;</span>)).unwrap_err();
+        parse_get_balloon(<span class="prelude-val">Some</span>(<span class="string">"unrelated"</span>)).unwrap_err();
 
-        parse_get_balloon(<span class="prelude-val">Some</span>(<span class="string">&quot;statistics&quot;</span>)).unwrap();
+        parse_get_balloon(<span class="prelude-val">Some</span>(<span class="string">"statistics"</span>)).unwrap();
     }
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_patch_balloon_request() {
-        parse_patch_balloon(<span class="kw-2">&amp;</span>Body::new(<span class="string">&quot;invalid_payload&quot;</span>), <span class="prelude-val">None</span>).unwrap_err();
+        parse_patch_balloon(<span class="kw-2">&amp;</span>Body::new(<span class="string">"invalid_payload"</span>), <span class="prelude-val">None</span>).unwrap_err();
 
         <span class="comment">// PATCH with invalid fields.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;amount_mib&quot;: &quot;bar&quot;,
-            &quot;foo&quot;: &quot;bar&quot;
-        }&quot;#</span>;
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "amount_mib": "bar",
+            "foo": "bar"
+        }"#</span>;
         parse_patch_balloon(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">None</span>).unwrap_err();
 
         <span class="comment">// PATCH with invalid types on fields. Adding a polling interval as string instead of bool.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;amount_mib&quot;: 1000,
-            &quot;stats_polling_interval_s&quot;: &quot;false&quot;
-        }&quot;#</span>;
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "amount_mib": 1000,
+            "stats_polling_interval_s": "false"
+        }"#</span>;
         <span class="kw">let </span>res = parse_patch_balloon(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">None</span>);
         res.unwrap_err();
 
         <span class="comment">// PATCH with invalid types on fields. Adding a amount_mib as a negative number.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;amount_mib&quot;: -1000,
-            &quot;stats_polling_interval_s&quot;: true
-        }&quot;#</span>;
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "amount_mib": -1000,
+            "stats_polling_interval_s": true
+        }"#</span>;
         <span class="kw">let </span>res = parse_patch_balloon(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">None</span>);
         res.unwrap_err();
 
         <span class="comment">// PATCH on statistics with missing ppolling interval field.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;amount_mib&quot;: 100
-        }&quot;#</span>;
-        <span class="kw">let </span>res = parse_patch_balloon(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">&quot;statistics&quot;</span>));
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "amount_mib": 100
+        }"#</span>;
+        <span class="kw">let </span>res = parse_patch_balloon(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">"statistics"</span>));
         res.unwrap_err();
 
         <span class="comment">// PATCH with missing amount_mib field.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;stats_polling_interval_s&quot;: 0
-        }&quot;#</span>;
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "stats_polling_interval_s": 0
+        }"#</span>;
         <span class="kw">let </span>res = parse_patch_balloon(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">None</span>);
         res.unwrap_err();
 
         <span class="comment">// PATCH that tries to update something else other than allowed fields.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;amount_mib&quot;: &quot;dummy_id&quot;,
-            &quot;stats_polling_interval_s&quot;: &quot;dummy_host&quot;
-        }&quot;#</span>;
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "amount_mib": "dummy_id",
+            "stats_polling_interval_s": "dummy_host"
+        }"#</span>;
         <span class="kw">let </span>res = parse_patch_balloon(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">None</span>);
         res.unwrap_err();
 
         <span class="comment">// PATCH with payload that is not a json.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;fields&quot;: &quot;dummy_field&quot;
-        }&quot;#</span>;
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "fields": "dummy_field"
+        }"#</span>;
         parse_patch_balloon(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">None</span>).unwrap_err();
 
         <span class="comment">// PATCH on unrecognized path.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;fields&quot;: &quot;dummy_field&quot;
-        }&quot;#</span>;
-        parse_patch_balloon(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">&quot;config&quot;</span>)).unwrap_err();
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "fields": "dummy_field"
+        }"#</span>;
+        parse_patch_balloon(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">"config"</span>)).unwrap_err();
 
-        <span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;amount_mib&quot;: 1
-        }&quot;#</span>;
+        <span class="kw">let </span>body = <span class="string">r#"{
+            "amount_mib": 1
+        }"#</span>;
         <span class="kw">let </span>expected_config = BalloonUpdateConfig { amount_mib: <span class="number">1 </span>};
         <span class="macro">assert_eq!</span>(
             vmm_action_from_request(parse_patch_balloon(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">None</span>).unwrap()),
             VmmAction::UpdateBalloon(expected_config)
         );
 
-        <span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;stats_polling_interval_s&quot;: 1
-        }&quot;#</span>;
+        <span class="kw">let </span>body = <span class="string">r#"{
+            "stats_polling_interval_s": 1
+        }"#</span>;
         <span class="kw">let </span>expected_config = BalloonUpdateStatsConfig {
             stats_polling_interval_s: <span class="number">1</span>,
         };
         <span class="macro">assert_eq!</span>(
             vmm_action_from_request(
-                parse_patch_balloon(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">&quot;statistics&quot;</span>)).unwrap()
+                parse_patch_balloon(<span class="kw-2">&amp;</span>Body::new(body), <span class="prelude-val">Some</span>(<span class="string">"statistics"</span>)).unwrap()
             ),
             VmmAction::UpdateBalloonStatistics(expected_config)
         );
@@ -318,21 +320,21 @@
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_parse_put_balloon_request() {
-        parse_put_balloon(<span class="kw-2">&amp;</span>Body::new(<span class="string">&quot;invalid_payload&quot;</span>)).unwrap_err();
+        parse_put_balloon(<span class="kw-2">&amp;</span>Body::new(<span class="string">"invalid_payload"</span>)).unwrap_err();
 
         <span class="comment">// PUT with invalid fields.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;amount_mib&quot;: &quot;bar&quot;,
-            &quot;is_read_only&quot;: false
-        }&quot;#</span>;
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "amount_mib": "bar",
+            "is_read_only": false
+        }"#</span>;
         parse_put_balloon(<span class="kw-2">&amp;</span>Body::new(body)).unwrap_err();
 
         <span class="comment">// PUT with valid input fields.
-        </span><span class="kw">let </span>body = <span class="string">r#&quot;{
-            &quot;amount_mib&quot;: 1000,
-            &quot;deflate_on_oom&quot;: true,
-            &quot;stats_polling_interval_s&quot;: 0
-        }&quot;#</span>;
+        </span><span class="kw">let </span>body = <span class="string">r#"{
+            "amount_mib": 1000,
+            "deflate_on_oom": true,
+            "stats_polling_interval_s": 0
+        }"#</span>;
         parse_put_balloon(<span class="kw-2">&amp;</span>Body::new(body)).unwrap();
     }
 }

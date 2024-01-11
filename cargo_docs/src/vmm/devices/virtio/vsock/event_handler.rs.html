@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/devices/virtio/vsock/event_handler.rs`."><title>event_handler.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../../../vmm/index.html"><img class="rust-logo" src="../../../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/devices/virtio/vsock/event_handler.rs`."><title>event_handler.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -600,18 +602,18 @@
 
 <span class="kw">impl</span>&lt;B&gt; Vsock&lt;B&gt;
 <span class="kw">where
-    </span>B: Debug + VsockBackend + <span class="lifetime">&#39;static</span>,
+    </span>B: Debug + VsockBackend + <span class="lifetime">'static</span>,
 {
     <span class="kw">pub fn </span>handle_rxq_event(<span class="kw-2">&amp;mut </span><span class="self">self</span>, evset: EventSet) -&gt; bool {
         <span class="kw">if </span>evset != EventSet::IN {
-            <span class="macro">warn!</span>(<span class="string">&quot;vsock: rxq unexpected event {:?}&quot;</span>, evset);
+            <span class="macro">warn!</span>(<span class="string">"vsock: rxq unexpected event {:?}"</span>, evset);
             METRICS.rx_queue_event_fails.inc();
             <span class="kw">return </span><span class="bool-val">false</span>;
         }
 
         <span class="kw">let </span><span class="kw-2">mut </span>raise_irq = <span class="bool-val">false</span>;
         <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = <span class="self">self</span>.queue_events[RXQ_INDEX].read() {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to get vsock rx queue event: {:?}&quot;</span>, err);
+            <span class="macro">error!</span>(<span class="string">"Failed to get vsock rx queue event: {:?}"</span>, err);
             METRICS.rx_queue_event_fails.inc();
         } <span class="kw">else if </span><span class="self">self</span>.backend.has_pending_rx() {
             raise_irq |= <span class="self">self</span>.process_rx();
@@ -622,14 +624,14 @@
 
     <span class="kw">pub fn </span>handle_txq_event(<span class="kw-2">&amp;mut </span><span class="self">self</span>, evset: EventSet) -&gt; bool {
         <span class="kw">if </span>evset != EventSet::IN {
-            <span class="macro">warn!</span>(<span class="string">&quot;vsock: txq unexpected event {:?}&quot;</span>, evset);
+            <span class="macro">warn!</span>(<span class="string">"vsock: txq unexpected event {:?}"</span>, evset);
             METRICS.tx_queue_event_fails.inc();
             <span class="kw">return </span><span class="bool-val">false</span>;
         }
 
         <span class="kw">let </span><span class="kw-2">mut </span>raise_irq = <span class="bool-val">false</span>;
         <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = <span class="self">self</span>.queue_events[TXQ_INDEX].read() {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to get vsock tx queue event: {:?}&quot;</span>, err);
+            <span class="macro">error!</span>(<span class="string">"Failed to get vsock tx queue event: {:?}"</span>, err);
             METRICS.tx_queue_event_fails.inc();
         } <span class="kw">else </span>{
             raise_irq |= <span class="self">self</span>.process_tx();
@@ -646,13 +648,13 @@
 
     <span class="kw">pub fn </span>handle_evq_event(<span class="kw-2">&amp;mut </span><span class="self">self</span>, evset: EventSet) -&gt; bool {
         <span class="kw">if </span>evset != EventSet::IN {
-            <span class="macro">warn!</span>(<span class="string">&quot;vsock: evq unexpected event {:?}&quot;</span>, evset);
+            <span class="macro">warn!</span>(<span class="string">"vsock: evq unexpected event {:?}"</span>, evset);
             METRICS.ev_queue_event_fails.inc();
             <span class="kw">return </span><span class="bool-val">false</span>;
         }
 
         <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = <span class="self">self</span>.queue_events[EVQ_INDEX].read() {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to consume vsock evq event: {:?}&quot;</span>, err);
+            <span class="macro">error!</span>(<span class="string">"Failed to consume vsock evq event: {:?}"</span>, err);
             METRICS.ev_queue_event_fails.inc();
         }
         <span class="bool-val">false
@@ -661,7 +663,7 @@
     <span class="doccomment">/// Notify backend of new events.
     </span><span class="kw">pub fn </span>notify_backend(<span class="kw-2">&amp;mut </span><span class="self">self</span>, evset: EventSet) -&gt; bool {
         <span class="self">self</span>.backend.notify(evset);
-        <span class="comment">// After the backend has been kicked, it might&#39;ve freed up some resources, so we
+        <span class="comment">// After the backend has been kicked, it might've freed up some resources, so we
         // can attempt to send it more data to process.
         // In particular, if `self.backend.send_pkt()` halted the TX queue processing (by
         // returning an error) at some point in the past, now is the time to try walking the
@@ -675,39 +677,39 @@
 
     <span class="kw">fn </span>register_runtime_events(<span class="kw-2">&amp;</span><span class="self">self</span>, ops: <span class="kw-2">&amp;mut </span>EventOps) {
         <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = ops.add(Events::new(<span class="kw-2">&amp;</span><span class="self">self</span>.queue_events[RXQ_INDEX], EventSet::IN)) {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to register rx queue event: {}&quot;</span>, err);
+            <span class="macro">error!</span>(<span class="string">"Failed to register rx queue event: {}"</span>, err);
         }
         <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = ops.add(Events::new(<span class="kw-2">&amp;</span><span class="self">self</span>.queue_events[TXQ_INDEX], EventSet::IN)) {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to register tx queue event: {}&quot;</span>, err);
+            <span class="macro">error!</span>(<span class="string">"Failed to register tx queue event: {}"</span>, err);
         }
         <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = ops.add(Events::new(<span class="kw-2">&amp;</span><span class="self">self</span>.queue_events[EVQ_INDEX], EventSet::IN)) {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to register ev queue event: {}&quot;</span>, err);
+            <span class="macro">error!</span>(<span class="string">"Failed to register ev queue event: {}"</span>, err);
         }
         <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = ops.add(Events::new(<span class="kw-2">&amp;</span><span class="self">self</span>.backend, <span class="self">self</span>.backend.get_polled_evset())) {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to register vsock backend event: {}&quot;</span>, err);
+            <span class="macro">error!</span>(<span class="string">"Failed to register vsock backend event: {}"</span>, err);
         }
     }
 
     <span class="kw">fn </span>register_activate_event(<span class="kw-2">&amp;</span><span class="self">self</span>, ops: <span class="kw-2">&amp;mut </span>EventOps) {
         <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = ops.add(Events::new(<span class="kw-2">&amp;</span><span class="self">self</span>.activate_evt, EventSet::IN)) {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to register activate event: {}&quot;</span>, err);
+            <span class="macro">error!</span>(<span class="string">"Failed to register activate event: {}"</span>, err);
         }
     }
 
     <span class="kw">fn </span>handle_activate_event(<span class="kw-2">&amp;</span><span class="self">self</span>, ops: <span class="kw-2">&amp;mut </span>EventOps) {
         <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = <span class="self">self</span>.activate_evt.read() {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to consume net activate event: {:?}&quot;</span>, err);
+            <span class="macro">error!</span>(<span class="string">"Failed to consume net activate event: {:?}"</span>, err);
         }
         <span class="self">self</span>.register_runtime_events(ops);
         <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = ops.remove(Events::new(<span class="kw-2">&amp;</span><span class="self">self</span>.activate_evt, EventSet::IN)) {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to un-register activate event: {}&quot;</span>, err);
+            <span class="macro">error!</span>(<span class="string">"Failed to un-register activate event: {}"</span>, err);
         }
     }
 }
 
 <span class="kw">impl</span>&lt;B&gt; MutEventSubscriber <span class="kw">for </span>Vsock&lt;B&gt;
 <span class="kw">where
-    </span>B: Debug + VsockBackend + <span class="lifetime">&#39;static</span>,
+    </span>B: Debug + VsockBackend + <span class="lifetime">'static</span>,
 {
     <span class="kw">fn </span>process(<span class="kw-2">&amp;mut </span><span class="self">self</span>, event: Events, ops: <span class="kw-2">&amp;mut </span>EventOps) {
         <span class="kw">let </span>source = event.fd();
@@ -730,14 +732,14 @@
                 <span class="kw">_ if </span>source == activate_evt =&gt; {
                     <span class="self">self</span>.handle_activate_event(ops);
                 }
-                <span class="kw">_ </span>=&gt; <span class="macro">warn!</span>(<span class="string">&quot;Unexpected vsock event received: {:?}&quot;</span>, source),
+                <span class="kw">_ </span>=&gt; <span class="macro">warn!</span>(<span class="string">"Unexpected vsock event received: {:?}"</span>, source),
             }
             <span class="kw">if </span>raise_irq {
                 <span class="self">self</span>.signal_used_queue().unwrap_or_default();
             }
         } <span class="kw">else </span>{
             <span class="macro">warn!</span>(
-                <span class="string">&quot;Vsock: The device is not yet activated. Spurious event received: {:?}&quot;</span>,
+                <span class="string">"Vsock: The device is not yet activated. Spurious event received: {:?}"</span>,
                 source
             );
         }
@@ -771,7 +773,7 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_txq_event() {
         <span class="comment">// Test case:
-        // - the driver has something to send (there&#39;s data in the TX queue); and
+        // - the driver has something to send (there's data in the TX queue); and
         // - the backend has no pending RX data.
         </span>{
             <span class="kw">let </span>test_ctx = TestContext::new();
@@ -788,7 +790,7 @@
         }
 
         <span class="comment">// Test case:
-        // - the driver has something to send (there&#39;s data in the TX queue); and
+        // - the driver has something to send (there's data in the TX queue); and
         // - the backend also has some pending RX data.
         </span>{
             <span class="kw">let </span>test_ctx = TestContext::new();
@@ -804,7 +806,7 @@
         }
 
         <span class="comment">// Test case:
-        // - the driver has something to send (there&#39;s data in the TX queue); and
+        // - the driver has something to send (there's data in the TX queue); and
         // - the backend errors out and cannot process the TX queue.
         </span>{
             <span class="kw">let </span>test_ctx = TestContext::new();
@@ -863,7 +865,7 @@
             ctx.device.backend.set_rx_err(<span class="prelude-val">Some</span>(VsockError::NoData));
             ctx.signal_rxq_event();
 
-            <span class="comment">// The available RX buffer should&#39;ve been left untouched.
+            <span class="comment">// The available RX buffer should've been left untouched.
             </span><span class="macro">assert_eq!</span>(ctx.guest_rxvq.used.idx.get(), <span class="number">0</span>);
         }
 
@@ -893,7 +895,7 @@
             </span>ctx.guest_rxvq.dtable[<span class="number">0</span>].len.set(<span class="number">0</span>);
             ctx.guest_rxvq.dtable[<span class="number">1</span>].len.set(<span class="number">0</span>);
 
-            <span class="comment">// The chain should&#39;ve been processed, without employing the backend.
+            <span class="comment">// The chain should've been processed, without employing the backend.
             </span><span class="macro">assert!</span>(ctx.device.process_rx());
             <span class="macro">assert_eq!</span>(ctx.guest_rxvq.used.idx.get(), <span class="number">1</span>);
             <span class="macro">assert_eq!</span>(ctx.device.backend.rx_ok_cnt, <span class="number">0</span>);
@@ -933,17 +935,17 @@
             ctx.device.backend.set_pending_rx(<span class="bool-val">true</span>);
             ctx.device.notify_backend(EventSet::IN);
 
-            <span class="comment">// The backend should&#39;ve received this event.
+            <span class="comment">// The backend should've received this event.
             </span><span class="macro">assert_eq!</span>(ctx.device.backend.evset, <span class="prelude-val">Some</span>(EventSet::IN));
-            <span class="comment">// TX queue processing should&#39;ve been triggered.
+            <span class="comment">// TX queue processing should've been triggered.
             </span><span class="macro">assert_eq!</span>(ctx.guest_txvq.used.idx.get(), <span class="number">1</span>);
-            <span class="comment">// RX queue processing should&#39;ve been triggered.
+            <span class="comment">// RX queue processing should've been triggered.
             </span><span class="macro">assert_eq!</span>(ctx.guest_rxvq.used.idx.get(), <span class="number">1</span>);
         }
 
         <span class="comment">// Test case:
         // - a backend event is received; and
-        // - the backend doesn&#39;t have any pending RX data.
+        // - the backend doesn't have any pending RX data.
         </span>{
             <span class="kw">let </span>test_ctx = TestContext::new();
             <span class="kw">let </span><span class="kw-2">mut </span>ctx = test_ctx.create_event_handler_context();
@@ -952,11 +954,11 @@
             ctx.device.backend.set_pending_rx(<span class="bool-val">false</span>);
             ctx.device.notify_backend(EventSet::IN);
 
-            <span class="comment">// The backend should&#39;ve received this event.
+            <span class="comment">// The backend should've received this event.
             </span><span class="macro">assert_eq!</span>(ctx.device.backend.evset, <span class="prelude-val">Some</span>(EventSet::IN));
-            <span class="comment">// TX queue processing should&#39;ve been triggered.
+            <span class="comment">// TX queue processing should've been triggered.
             </span><span class="macro">assert_eq!</span>(ctx.guest_txvq.used.idx.get(), <span class="number">1</span>);
-            <span class="comment">// The RX queue should&#39;ve been left untouched.
+            <span class="comment">// The RX queue should've been left untouched.
             </span><span class="macro">assert_eq!</span>(ctx.guest_rxvq.used.idx.get(), <span class="number">0</span>);
         }
     }
@@ -976,7 +978,7 @@
             <span class="kw">let </span><span class="kw-2">mut </span>ctx = test_ctx.create_event_handler_context();
             ctx.guest_rxvq.dtable[desc_idx].addr.set(addr);
             ctx.guest_rxvq.dtable[desc_idx].len.set(len);
-            <span class="comment">// If the descriptor chain is already declared invalid, there&#39;s no reason to assemble
+            <span class="comment">// If the descriptor chain is already declared invalid, there's no reason to assemble
             // a packet.
             </span><span class="kw">if let </span><span class="prelude-val">Some</span>(rx_desc) = ctx.device.queues[RXQ_INDEX].pop(<span class="kw-2">&amp;</span>test_ctx.mem) {
                 VsockPacket::from_rx_virtq_head(rx_desc).unwrap_err();
@@ -1039,7 +1041,7 @@
             VsockPacket::from_tx_virtq_head(tx_desc).unwrap();
         }
 
-        <span class="comment">// Let&#39;s check what happens when the header descriptor is right before the gap.
+        <span class="comment">// Let's check what happens when the header descriptor is right before the gap.
         </span>vsock_bof_helper(
             <span class="kw-2">&amp;mut </span>test_ctx,
             <span class="number">0</span>,
@@ -1047,11 +1049,11 @@
             VSOCK_PKT_HDR_SIZE,
         );
 
-        <span class="comment">// Let&#39;s check what happens when the buffer descriptor crosses into the gap, but does
+        <span class="comment">// Let's check what happens when the buffer descriptor crosses into the gap, but does
         // not go past its right edge.
         </span>vsock_bof_helper(<span class="kw-2">&amp;mut </span>test_ctx, <span class="number">1</span>, GAP_START_ADDR <span class="kw">as </span>u64 - <span class="number">4</span>, GAP_SIZE + <span class="number">4</span>);
 
-        <span class="comment">// Let&#39;s modify the buffer descriptor addr and len such that it crosses over the MMIO gap,
+        <span class="comment">// Let's modify the buffer descriptor addr and len such that it crosses over the MMIO gap,
         // and check we cannot assemble the VsockPkts.
         </span>vsock_bof_helper(<span class="kw-2">&amp;mut </span>test_ctx, <span class="number">1</span>, GAP_START_ADDR <span class="kw">as </span>u64 - <span class="number">4</span>, GAP_SIZE + <span class="number">100</span>);
     }
@@ -1071,7 +1073,7 @@
         <span class="kw">let </span>_id = event_manager.add_subscriber(vsock.clone());
 
         <span class="comment">// Push a queue event
-        // - the driver has something to send (there&#39;s data in the TX queue); and
+        // - the driver has something to send (there's data in the TX queue); and
         // - the backend also has some pending RX data.
         </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>device = vsock.lock().unwrap();
@@ -1084,7 +1086,7 @@
         </span><span class="kw">let </span>ev_count = event_manager.run_with_timeout(<span class="number">50</span>).unwrap();
         <span class="macro">assert_eq!</span>(ev_count, <span class="number">0</span>);
 
-        <span class="comment">// Manually force a queue event and check it&#39;s ignored pre-activation.
+        <span class="comment">// Manually force a queue event and check it's ignored pre-activation.
         </span>{
             <span class="kw">let </span>device = vsock.lock().unwrap();
 
@@ -1112,7 +1114,7 @@
         </span>{
             <span class="kw">let </span>ev_count = event_manager
                 .run_with_timeout(<span class="number">100</span>)
-                .expect(<span class="string">&quot;Metrics event timeout or error.&quot;</span>);
+                .expect(<span class="string">"Metrics event timeout or error."</span>);
             <span class="macro">assert_eq!</span>(ev_count, <span class="number">1</span>);
             <span class="comment">// Both available RX and TX descriptors should have been used.
             </span><span class="macro">assert_eq!</span>(guest_rxvq.used.idx.get(), <span class="number">1</span>);

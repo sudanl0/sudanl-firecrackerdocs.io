@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"attr":["instrument"],"struct":["__Instrument"]};
+window.SIDEBAR_ITEMS = {"attr":["instrument"],"fn":["path"],"static":["PATH"],"struct":["__Instrument"],"type":["InnerPath"]};

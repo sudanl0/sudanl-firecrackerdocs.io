@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["UDP_HEADER_SIZE"],"enum":["Error"],"struct":["UdpDatagram"]};
+window.SIDEBAR_ITEMS = {"constant":["CHECKSUM_OFFSET","DESTINATION_PORT_OFFSET","IPV4_MAX_UDP_PACKET_SIZE","LENGTH_OFFSET","PAYLOAD_OFFSET","SOURCE_PORT_OFFSET","UDP_HEADER_SIZE","_DERIVE_Display_FOR_Error"],"enum":["Error"],"struct":["UdpDatagram"]};

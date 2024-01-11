@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/seccompiler/src/seccompiler_bin.rs`."><title>seccompiler_bin.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="seccompiler_bin" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../seccompiler_bin/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/seccompiler/src/seccompiler_bin.rs`."><title>seccompiler_bin.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="seccompiler_bin" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../seccompiler_bin/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -628,24 +630,24 @@
 <span class="kw">use </span>serde_json::error::Error <span class="kw">as </span>JSONError;
 <span class="kw">use </span>utils::arg_parser::{ArgParser, Argument, Arguments <span class="kw">as </span>ArgumentsBag, Error <span class="kw">as </span>ArgParserError};
 
-<span class="kw">const </span>SECCOMPILER_VERSION: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">&quot;CARGO_PKG_VERSION&quot;</span>);
-<span class="kw">const </span>DEFAULT_OUTPUT_FILENAME: <span class="kw-2">&amp;</span>str = <span class="string">&quot;seccomp_binary_filter.out&quot;</span>;
+<span class="kw">const </span>SECCOMPILER_VERSION: <span class="kw-2">&amp;</span>str = <span class="macro">env!</span>(<span class="string">"CARGO_PKG_VERSION"</span>);
+<span class="kw">const </span>DEFAULT_OUTPUT_FILENAME: <span class="kw-2">&amp;</span>str = <span class="string">"seccomp_binary_filter.out"</span>;
 
 <span class="attr">#[derive(Debug, thiserror::Error)]
 </span><span class="kw">enum </span>SeccompError {
-    <span class="attr">#[error(<span class="string">&quot;Bincode (de)serialization failed: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Bincode (de)serialization failed: {0}"</span>)]
     </span>Bincode(BincodeError),
-    <span class="attr">#[error(<span class="string">&quot;{0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"{0}"</span>)]
     </span>Compilation(CompilationError),
-    <span class="attr">#[error(<span class="string">&quot;{}&quot;</span>, <span class="macro">format!</span>(<span class="string">&quot;Failed to open file {:?}: {1}&quot;</span>, .<span class="number">0</span>, .<span class="number">1</span>).replace(<span class="string">&#39;\&quot;&#39;</span>, <span class="string">&quot;&quot;</span>))]
+    <span class="attr">#[error(<span class="string">"{}"</span>, <span class="macro">format!</span>(<span class="string">"Failed to open file {:?}: {1}"</span>, .<span class="number">0</span>, .<span class="number">1</span>).replace(<span class="string">'\"'</span>, <span class="string">""</span>))]
     </span>FileOpen(PathBuf, std::io::Error),
-    <span class="attr">#[error(<span class="string">&quot;Error parsing JSON: {0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Error parsing JSON: {0}"</span>)]
     </span>Json(JSONError),
-    <span class="attr">#[error(<span class="string">&quot;Missing input file.&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Missing input file."</span>)]
     </span>MissingInputFile,
-    <span class="attr">#[error(<span class="string">&quot;Missing target arch.&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"Missing target arch."</span>)]
     </span>MissingTargetArch,
-    <span class="attr">#[error(<span class="string">&quot;{0}&quot;</span>)]
+    <span class="attr">#[error(<span class="string">"{0}"</span>)]
     </span>Arch(<span class="attr">#[from] </span>TargetArchError),
 }
 
@@ -657,53 +659,53 @@
     is_basic: bool,
 }
 
-<span class="kw">fn </span>build_arg_parser() -&gt; ArgParser&lt;<span class="lifetime">&#39;static</span>&gt; {
+<span class="kw">fn </span>build_arg_parser() -&gt; ArgParser&lt;<span class="lifetime">'static</span>&gt; {
     ArgParser::new()
         .arg(
-            Argument::new(<span class="string">&quot;input-file&quot;</span>)
+            Argument::new(<span class="string">"input-file"</span>)
                 .required(<span class="bool-val">true</span>)
                 .takes_value(<span class="bool-val">true</span>)
-                .help(<span class="string">&quot;File path of the JSON input.&quot;</span>),
+                .help(<span class="string">"File path of the JSON input."</span>),
         )
         .arg(
-            Argument::new(<span class="string">&quot;output-file&quot;</span>)
+            Argument::new(<span class="string">"output-file"</span>)
                 .required(<span class="bool-val">false</span>)
                 .takes_value(<span class="bool-val">true</span>)
                 .default_value(DEFAULT_OUTPUT_FILENAME)
-                .help(<span class="string">&quot;Optional path of the output file.&quot;</span>),
+                .help(<span class="string">"Optional path of the output file."</span>),
         )
         .arg(
-            Argument::new(<span class="string">&quot;target-arch&quot;</span>)
+            Argument::new(<span class="string">"target-arch"</span>)
                 .required(<span class="bool-val">true</span>)
                 .takes_value(<span class="bool-val">true</span>)
                 .help(
-                    <span class="string">&quot;The computer architecture where the BPF program runs. Supported \
-                     architectures: x86_64, aarch64.&quot;</span>,
+                    <span class="string">"The computer architecture where the BPF program runs. Supported \
+                     architectures: x86_64, aarch64."</span>,
                 ),
         )
-        .arg(Argument::new(<span class="string">&quot;basic&quot;</span>).takes_value(<span class="bool-val">false</span>).help(
-            <span class="string">&quot;Deprecated! Transforms the filters into basic filters. Drops all argument checks and \
-             rule-level actions. Not recommended.&quot;</span>,
+        .arg(Argument::new(<span class="string">"basic"</span>).takes_value(<span class="bool-val">false</span>).help(
+            <span class="string">"Deprecated! Transforms the filters into basic filters. Drops all argument checks and \
+             rule-level actions. Not recommended."</span>,
         ))
 }
 
 <span class="kw">fn </span>get_argument_values(arguments: <span class="kw-2">&amp;</span>ArgumentsBag) -&gt; <span class="prelude-ty">Result</span>&lt;Arguments, SeccompError&gt; {
-    <span class="kw">let </span>arch_string = arguments.single_value(<span class="string">&quot;target-arch&quot;</span>);
+    <span class="kw">let </span>arch_string = arguments.single_value(<span class="string">"target-arch"</span>);
     <span class="kw">if </span>arch_string.is_none() {
         <span class="kw">return </span><span class="prelude-val">Err</span>(SeccompError::MissingTargetArch);
     }
     <span class="kw">let </span>target_arch: TargetArch = arch_string.unwrap().as_str().try_into()<span class="question-mark">?</span>;
 
-    <span class="kw">let </span>input_file = arguments.single_value(<span class="string">&quot;input-file&quot;</span>);
+    <span class="kw">let </span>input_file = arguments.single_value(<span class="string">"input-file"</span>);
     <span class="kw">if </span>input_file.is_none() {
         <span class="kw">return </span><span class="prelude-val">Err</span>(SeccompError::MissingInputFile);
     }
 
-    <span class="kw">let </span>is_basic = arguments.flag_present(<span class="string">&quot;basic&quot;</span>);
+    <span class="kw">let </span>is_basic = arguments.flag_present(<span class="string">"basic"</span>);
     <span class="kw">if </span>is_basic {
         <span class="macro">println!</span>(
-            <span class="string">&quot;Warning! You are using a deprecated parameter: --basic, that will be removed in a \
-             future version.\n&quot;
+            <span class="string">"Warning! You are using a deprecated parameter: --basic, that will be removed in a \
+             future version.\n"
         </span>);
     }
 
@@ -711,7 +713,7 @@
         target_arch,
         input_file: input_file.unwrap().to_owned(),
         <span class="comment">// Safe to unwrap because it has a default value
-        </span>output_file: arguments.single_value(<span class="string">&quot;output-file&quot;</span>).unwrap().to_owned(),
+        </span>output_file: arguments.single_value(<span class="string">"output-file"</span>).unwrap().to_owned(),
         is_basic,
     })
 }
@@ -750,7 +752,7 @@
 <span class="kw">fn </span>main() -&gt; core::result::Result&lt;(), SeccompilerError&gt; {
     <span class="kw">let </span>result = main_exec();
     <span class="kw">if let </span><span class="prelude-val">Err</span>(e) = result {
-        <span class="macro">eprintln!</span>(<span class="string">&quot;{}&quot;</span>, e);
+        <span class="macro">eprintln!</span>(<span class="string">"{}"</span>, e);
         <span class="prelude-val">Err</span>(e)
     } <span class="kw">else </span>{
         <span class="prelude-val">Ok</span>(())
@@ -764,13 +766,13 @@
         .parse_from_cmdline()
         .map_err(SeccompilerError::ArgParsing)<span class="question-mark">?</span>;
 
-    <span class="kw">if </span>arg_parser.arguments().flag_present(<span class="string">&quot;help&quot;</span>) {
-        <span class="macro">println!</span>(<span class="string">&quot;Seccompiler-bin v{}\n&quot;</span>, SECCOMPILER_VERSION);
-        <span class="macro">println!</span>(<span class="string">&quot;{}&quot;</span>, arg_parser.formatted_help());
+    <span class="kw">if </span>arg_parser.arguments().flag_present(<span class="string">"help"</span>) {
+        <span class="macro">println!</span>(<span class="string">"Seccompiler-bin v{}\n"</span>, SECCOMPILER_VERSION);
+        <span class="macro">println!</span>(<span class="string">"{}"</span>, arg_parser.formatted_help());
         <span class="kw">return </span><span class="prelude-val">Ok</span>(());
     }
-    <span class="kw">if </span>arg_parser.arguments().flag_present(<span class="string">&quot;version&quot;</span>) {
-        <span class="macro">println!</span>(<span class="string">&quot;Seccompiler-bin v{}\n&quot;</span>, SECCOMPILER_VERSION);
+    <span class="kw">if </span>arg_parser.arguments().flag_present(<span class="string">"version"</span>) {
+        <span class="macro">println!</span>(<span class="string">"Seccompiler-bin v{}\n"</span>, SECCOMPILER_VERSION);
         <span class="kw">return </span><span class="prelude-val">Ok</span>(());
     }
 
@@ -779,7 +781,7 @@
 
     compile(<span class="kw-2">&amp;</span>args).map_err(SeccompilerError::Error)<span class="question-mark">?</span>;
 
-    <span class="macro">println!</span>(<span class="string">&quot;Filter successfully compiled into: {}&quot;</span>, args.output_file);
+    <span class="macro">println!</span>(<span class="string">"Filter successfully compiled into: {}"</span>, args.output_file);
     <span class="prelude-val">Ok</span>(())
 }
 
@@ -802,165 +804,165 @@
     <span class="kw">use </span><span class="kw">crate</span>::backend::{TargetArch, TargetArchError};
 
     <span class="comment">// Correct JSON input data
-    </span><span class="kw">static </span>CORRECT_JSON_INPUT: <span class="kw-2">&amp;</span>str = <span class="string">r#&quot;
+    </span><span class="kw">static </span>CORRECT_JSON_INPUT: <span class="kw-2">&amp;</span>str = <span class="string">r#"
         {
-            &quot;thread_1&quot;: {
-                &quot;default_action&quot;: {
-                    &quot;errno&quot;: 12
+            "thread_1": {
+                "default_action": {
+                    "errno": 12
                 },
-                &quot;filter_action&quot;: &quot;allow&quot;,
-                &quot;filter&quot;: [
+                "filter_action": "allow",
+                "filter": [
                     {
-                        &quot;syscall&quot;: &quot;open&quot;
+                        "syscall": "open"
                     },
                     {
-                        &quot;syscall&quot;: &quot;close&quot;
+                        "syscall": "close"
                     },
                     {
-                        &quot;syscall&quot;: &quot;stat&quot;
+                        "syscall": "stat"
                     },
                     {
-                        &quot;syscall&quot;: &quot;futex&quot;,
-                        &quot;args&quot;: [
+                        "syscall": "futex",
+                        "args": [
                             {
-                                &quot;index&quot;: 2,
-                                &quot;type&quot;: &quot;dword&quot;,
-                                &quot;op&quot;: &quot;le&quot;,
-                                &quot;val&quot;: 65
+                                "index": 2,
+                                "type": "dword",
+                                "op": "le",
+                                "val": 65
                             },
                             {
-                                &quot;index&quot;: 1,
-                                &quot;type&quot;: &quot;qword&quot;,
-                                &quot;op&quot;: &quot;ne&quot;,
-                                &quot;val&quot;: 80
+                                "index": 1,
+                                "type": "qword",
+                                "op": "ne",
+                                "val": 80
                             }
                         ]
                     },
                     {
-                        &quot;syscall&quot;: &quot;futex&quot;,
-                        &quot;args&quot;: [
+                        "syscall": "futex",
+                        "args": [
                             {
-                                &quot;index&quot;: 3,
-                                &quot;type&quot;: &quot;qword&quot;,
-                                &quot;op&quot;: &quot;gt&quot;,
-                                &quot;val&quot;: 65
+                                "index": 3,
+                                "type": "qword",
+                                "op": "gt",
+                                "val": 65
                             },
                             {
-                                &quot;index&quot;: 1,
-                                &quot;type&quot;: &quot;qword&quot;,
-                                &quot;op&quot;: &quot;lt&quot;,
-                                &quot;val&quot;: 80
+                                "index": 1,
+                                "type": "qword",
+                                "op": "lt",
+                                "val": 80
                             }
                         ]
                     },
                     {
-                        &quot;syscall&quot;: &quot;futex&quot;,
-                        &quot;args&quot;: [
+                        "syscall": "futex",
+                        "args": [
                             {
-                                &quot;index&quot;: 3,
-                                &quot;type&quot;: &quot;qword&quot;,
-                                &quot;op&quot;: &quot;ge&quot;,
-                                &quot;val&quot;: 65
+                                "index": 3,
+                                "type": "qword",
+                                "op": "ge",
+                                "val": 65
                             }
                         ]
                     },
                     {
-                        &quot;syscall&quot;: &quot;ioctl&quot;,
-                        &quot;args&quot;: [
+                        "syscall": "ioctl",
+                        "args": [
                             {
-                                &quot;index&quot;: 3,
-                                &quot;type&quot;: &quot;dword&quot;,
-                                &quot;op&quot;: {
-                                    &quot;masked_eq&quot;: 100
+                                "index": 3,
+                                "type": "dword",
+                                "op": {
+                                    "masked_eq": 100
                                 },
-                                &quot;val&quot;: 65
+                                "val": 65
                             }
                         ]
                     }
                 ]
             },
-            &quot;thread_2&quot;: {
-                &quot;default_action&quot;: &quot;trap&quot;,
-                &quot;filter_action&quot;: &quot;allow&quot;,
-                &quot;filter&quot;: [
+            "thread_2": {
+                "default_action": "trap",
+                "filter_action": "allow",
+                "filter": [
                     {
-                        &quot;syscall&quot;: &quot;ioctl&quot;,
-                        &quot;args&quot;: [
+                        "syscall": "ioctl",
+                        "args": [
                             {
-                                &quot;index&quot;: 3,
-                                &quot;type&quot;: &quot;dword&quot;,
-                                &quot;op&quot;: &quot;eq&quot;,
-                                &quot;val&quot;: 65
+                                "index": 3,
+                                "type": "dword",
+                                "op": "eq",
+                                "val": 65
                             }
                         ]
                     }
                 ]
             }
         }
-    &quot;#</span>;
+    "#</span>;
 
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_error_messages() {
-        <span class="kw">let </span>path = PathBuf::from(<span class="string">&quot;/path&quot;</span>);
+        <span class="kw">let </span>path = PathBuf::from(<span class="string">"/path"</span>);
         <span class="macro">assert_eq!</span>(
             <span class="macro">format!</span>(
-                <span class="string">&quot;{}&quot;</span>,
+                <span class="string">"{}"</span>,
                 SeccompError::Bincode(BincodeError::new(bincode::ErrorKind::SizeLimit))
             ),
             <span class="macro">format!</span>(
-                <span class="string">&quot;Bincode (de)serialization failed: {}&quot;</span>,
+                <span class="string">"Bincode (de)serialization failed: {}"</span>,
                 BincodeError::new(bincode::ErrorKind::SizeLimit)
             )
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">format!</span>(
-                <span class="string">&quot;{}&quot;</span>,
+                <span class="string">"{}"</span>,
                 SeccompError::Compilation(FilterFormatError::SyscallName(
-                    <span class="string">&quot;dsaa&quot;</span>.to_string(),
+                    <span class="string">"dsaa"</span>.to_string(),
                     TargetArch::aarch64
                 ))
             ),
             <span class="macro">format!</span>(
-                <span class="string">&quot;{}&quot;</span>,
-                FilterFormatError::SyscallName(<span class="string">&quot;dsaa&quot;</span>.to_string(), TargetArch::aarch64)
+                <span class="string">"{}"</span>,
+                FilterFormatError::SyscallName(<span class="string">"dsaa"</span>.to_string(), TargetArch::aarch64)
             )
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">format!</span>(
-                <span class="string">&quot;{}&quot;</span>,
+                <span class="string">"{}"</span>,
                 SeccompError::FileOpen(path.clone(), io::Error::from_raw_os_error(<span class="number">2</span>))
             ),
             <span class="macro">format!</span>(
-                <span class="string">&quot;Failed to open file {:?}: {}&quot;</span>,
+                <span class="string">"Failed to open file {:?}: {}"</span>,
                 path,
                 io::Error::from_raw_os_error(<span class="number">2</span>)
             )
-            .replace(<span class="string">&#39;\&quot;&#39;</span>, <span class="string">&quot;&quot;</span>)
+            .replace(<span class="string">'\"'</span>, <span class="string">""</span>)
         );
         <span class="macro">assert_eq!</span>(
             <span class="macro">format!</span>(
-                <span class="string">&quot;{}&quot;</span>,
-                SeccompError::Json(serde_json::from_str::&lt;serde_json::Value&gt;(<span class="string">&quot;&quot;</span>).unwrap_err())
+                <span class="string">"{}"</span>,
+                SeccompError::Json(serde_json::from_str::&lt;serde_json::Value&gt;(<span class="string">""</span>).unwrap_err())
             ),
             <span class="macro">format!</span>(
-                <span class="string">&quot;Error parsing JSON: {}&quot;</span>,
-                serde_json::from_str::&lt;serde_json::Value&gt;(<span class="string">&quot;&quot;</span>).unwrap_err()
+                <span class="string">"Error parsing JSON: {}"</span>,
+                serde_json::from_str::&lt;serde_json::Value&gt;(<span class="string">""</span>).unwrap_err()
             )
         );
         <span class="macro">assert_eq!</span>(
-            <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, SeccompError::MissingInputFile),
-            <span class="string">&quot;Missing input file.&quot;
+            <span class="macro">format!</span>(<span class="string">"{}"</span>, SeccompError::MissingInputFile),
+            <span class="string">"Missing input file."
         </span>);
         <span class="macro">assert_eq!</span>(
-            <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, SeccompError::MissingTargetArch),
-            <span class="string">&quot;Missing target arch.&quot;
+            <span class="macro">format!</span>(<span class="string">"{}"</span>, SeccompError::MissingTargetArch),
+            <span class="string">"Missing target arch."
         </span>);
         <span class="macro">assert_eq!</span>(
             <span class="macro">format!</span>(
-                <span class="string">&quot;{}&quot;</span>,
-                SeccompError::Arch(TargetArchError::InvalidString(<span class="string">&quot;lala&quot;</span>.to_string()))
+                <span class="string">"{}"</span>,
+                SeccompError::Arch(TargetArchError::InvalidString(<span class="string">"lala"</span>.to_string()))
             ),
-            <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, TargetArchError::InvalidString(<span class="string">&quot;lala&quot;</span>.to_string()))
+            <span class="macro">format!</span>(<span class="string">"{}"</span>, TargetArchError::InvalidString(<span class="string">"lala"</span>.to_string()))
         );
     }
 
@@ -972,11 +974,11 @@
         arguments
             .parse(
                 <span class="macro">vec!</span>[
-                    <span class="string">&quot;seccompiler-bin&quot;</span>,
-                    <span class="string">&quot;--input-file&quot;</span>,
-                    <span class="string">&quot;foo.txt&quot;</span>,
-                    <span class="string">&quot;--target-arch&quot;</span>,
-                    <span class="string">&quot;x86_64&quot;</span>,
+                    <span class="string">"seccompiler-bin"</span>,
+                    <span class="string">"--input-file"</span>,
+                    <span class="string">"foo.txt"</span>,
+                    <span class="string">"--target-arch"</span>,
+                    <span class="string">"x86_64"</span>,
                 ]
                 .into_iter()
                 .map(String::from)
@@ -987,7 +989,7 @@
         <span class="macro">assert_eq!</span>(
             get_argument_values(arguments).unwrap(),
             Arguments {
-                input_file: <span class="string">&quot;foo.txt&quot;</span>.to_string(),
+                input_file: <span class="string">"foo.txt"</span>.to_string(),
                 output_file: DEFAULT_OUTPUT_FILENAME.to_string(),
                 target_arch: TargetArch::x86_64,
                 is_basic: <span class="bool-val">false</span>,
@@ -998,14 +1000,14 @@
         arguments
             .parse(
                 <span class="macro">vec!</span>[
-                    <span class="string">&quot;seccompiler-bin&quot;</span>,
-                    <span class="string">&quot;--input-file&quot;</span>,
-                    <span class="string">&quot;foo.txt&quot;</span>,
-                    <span class="string">&quot;--target-arch&quot;</span>,
-                    <span class="string">&quot;x86_64&quot;</span>,
-                    <span class="string">&quot;--output-file&quot;</span>,
-                    <span class="string">&quot;/path.to/file.txt&quot;</span>,
-                    <span class="string">&quot;--basic&quot;</span>,
+                    <span class="string">"seccompiler-bin"</span>,
+                    <span class="string">"--input-file"</span>,
+                    <span class="string">"foo.txt"</span>,
+                    <span class="string">"--target-arch"</span>,
+                    <span class="string">"x86_64"</span>,
+                    <span class="string">"--output-file"</span>,
+                    <span class="string">"/path.to/file.txt"</span>,
+                    <span class="string">"--basic"</span>,
                 ]
                 .into_iter()
                 .map(String::from)
@@ -1016,8 +1018,8 @@
         <span class="macro">assert_eq!</span>(
             get_argument_values(arguments).unwrap(),
             Arguments {
-                input_file: <span class="string">&quot;foo.txt&quot;</span>.to_string(),
-                output_file: <span class="string">&quot;/path.to/file.txt&quot;</span>.to_string(),
+                input_file: <span class="string">"foo.txt"</span>.to_string(),
+                output_file: <span class="string">"/path.to/file.txt"</span>.to_string(),
                 target_arch: TargetArch::x86_64,
                 is_basic: <span class="bool-val">true
             </span>}
@@ -1027,7 +1029,7 @@
         </span><span class="kw">let </span>arguments = <span class="kw-2">&amp;mut </span>arg_parser.arguments().clone();
         <span class="macro">assert!</span>(arguments
             .parse(
-                <span class="macro">vec!</span>[<span class="string">&quot;seccompiler-bin&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"seccompiler-bin"</span>]
                     .into_iter()
                     .map(String::from)
                     .collect::&lt;Vec&lt;String&gt;&gt;()
@@ -1039,7 +1041,7 @@
         </span><span class="kw">let </span>arguments = <span class="kw-2">&amp;mut </span>arg_parser.arguments().clone();
         <span class="macro">assert!</span>(arguments
             .parse(
-                <span class="macro">vec!</span>[<span class="string">&quot;seccompiler-bin&quot;</span>, <span class="string">&quot;--input-file&quot;</span>, <span class="string">&quot;foo.txt&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"seccompiler-bin"</span>, <span class="string">"--input-file"</span>, <span class="string">"foo.txt"</span>]
                     .into_iter()
                     .map(String::from)
                     .collect::&lt;Vec&lt;String&gt;&gt;()
@@ -1051,7 +1053,7 @@
         </span><span class="kw">let </span>arguments = <span class="kw-2">&amp;mut </span>arg_parser.arguments().clone();
         <span class="macro">assert!</span>(arguments
             .parse(
-                <span class="macro">vec!</span>[<span class="string">&quot;seccompiler-bin&quot;</span>, <span class="string">&quot;--target-arch&quot;</span>, <span class="string">&quot;x86_64&quot;</span>]
+                <span class="macro">vec!</span>[<span class="string">"seccompiler-bin"</span>, <span class="string">"--target-arch"</span>, <span class="string">"x86_64"</span>]
                     .into_iter()
                     .map(String::from)
                     .collect::&lt;Vec&lt;String&gt;&gt;()
@@ -1064,13 +1066,13 @@
         arguments
             .parse(
                 <span class="macro">vec!</span>[
-                    <span class="string">&quot;seccompiler-bin&quot;</span>,
-                    <span class="string">&quot;--input-file&quot;</span>,
-                    <span class="string">&quot;foo.txt&quot;</span>,
-                    <span class="string">&quot;--target-arch&quot;</span>,
-                    <span class="string">&quot;x86_64das&quot;</span>,
-                    <span class="string">&quot;--output-file&quot;</span>,
-                    <span class="string">&quot;/path.to/file.txt&quot;</span>,
+                    <span class="string">"seccompiler-bin"</span>,
+                    <span class="string">"--input-file"</span>,
+                    <span class="string">"foo.txt"</span>,
+                    <span class="string">"--target-arch"</span>,
+                    <span class="string">"x86_64das"</span>,
+                    <span class="string">"--output-file"</span>,
+                    <span class="string">"/path.to/file.txt"</span>,
                 ]
                 .into_iter()
                 .map(String::from)
@@ -1085,13 +1087,13 @@
         <span class="macro">assert!</span>(arguments
             .parse(
                 <span class="macro">vec!</span>[
-                    <span class="string">&quot;seccompiler-bin&quot;</span>,
-                    <span class="string">&quot;--input-file&quot;</span>,
-                    <span class="string">&quot;foo.txt&quot;</span>,
-                    <span class="string">&quot;--target-arch&quot;</span>,
-                    <span class="string">&quot;x86_64&quot;</span>,
-                    <span class="string">&quot;--basic&quot;</span>,
-                    <span class="string">&quot;invalid&quot;</span>,
+                    <span class="string">"seccompiler-bin"</span>,
+                    <span class="string">"--input-file"</span>,
+                    <span class="string">"foo.txt"</span>,
+                    <span class="string">"--target-arch"</span>,
+                    <span class="string">"x86_64"</span>,
+                    <span class="string">"--basic"</span>,
+                    <span class="string">"invalid"</span>,
                 ]
                 .into_iter()
                 .map(String::from)
@@ -1111,13 +1113,13 @@
             <span class="kw">let </span>args = Arguments {
                 input_file: in_file.as_path().to_str().unwrap().to_string(),
                 target_arch: TargetArch::x86_64,
-                output_file: <span class="string">&quot;bpf.out&quot;</span>.to_string(),
+                output_file: <span class="string">"bpf.out"</span>.to_string(),
                 is_basic: <span class="bool-val">false</span>,
             };
 
             <span class="kw">match </span>compile(<span class="kw-2">&amp;</span>args).unwrap_err() {
                 SeccompError::FileOpen(buf, <span class="kw">_</span>) =&gt; <span class="macro">assert_eq!</span>(buf, PathBuf::from(in_file.as_path())),
-                <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;Expected FileOpen error.&quot;</span>),
+                <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">"Expected FileOpen error."</span>),
             }
         }
 

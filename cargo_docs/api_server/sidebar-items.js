@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["Method","RequestError","ServerError","StatusCode","Version"],"struct":["ApiServer","Body","HttpServer","Request","Response","ServerRequest","ServerResponse"]};
+window.SIDEBAR_ITEMS = {"enum":["Method","RequestError","ServerError","StatusCode","Version"],"mod":["parsed_request","request"],"struct":["ApiServer","Body","HttpServer","Request","Response","ServerRequest","ServerResponse"]};

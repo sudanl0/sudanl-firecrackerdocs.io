@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["MmdsConfigError"],"struct":["MmdsConfig"]};
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_MmdsConfigError"],"enum":["MmdsConfigError"],"struct":["MmdsConfig"]};

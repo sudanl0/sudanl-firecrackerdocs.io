@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/resources.rs`."><title>resources.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../vmm/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/resources.rs`."><title>resources.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1612,27 +1614,27 @@
 <span class="doccomment">/// Used for configuring a vmm from one single json passed to the Firecracker process.
 </span><span class="attr">#[derive(Debug, Default, PartialEq, Eq, Deserialize, Serialize)]
 </span><span class="kw">pub struct </span>VmmConfig {
-    <span class="attr">#[serde(rename = <span class="string">&quot;balloon&quot;</span>)]
+    <span class="attr">#[serde(rename = <span class="string">"balloon"</span>)]
     </span>balloon_device: <span class="prelude-ty">Option</span>&lt;BalloonDeviceConfig&gt;,
-    <span class="attr">#[serde(rename = <span class="string">&quot;drives&quot;</span>)]
+    <span class="attr">#[serde(rename = <span class="string">"drives"</span>)]
     </span>block_devices: Vec&lt;BlockDeviceConfig&gt;,
-    <span class="attr">#[serde(rename = <span class="string">&quot;boot-source&quot;</span>)]
+    <span class="attr">#[serde(rename = <span class="string">"boot-source"</span>)]
     </span>boot_source: BootSourceConfig,
-    <span class="attr">#[serde(rename = <span class="string">&quot;cpu-config&quot;</span>)]
+    <span class="attr">#[serde(rename = <span class="string">"cpu-config"</span>)]
     </span>cpu_config: <span class="prelude-ty">Option</span>&lt;PathBuf&gt;,
-    <span class="attr">#[serde(rename = <span class="string">&quot;logger&quot;</span>)]
+    <span class="attr">#[serde(rename = <span class="string">"logger"</span>)]
     </span>logger: <span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::logger::LoggerConfig&gt;,
-    <span class="attr">#[serde(rename = <span class="string">&quot;machine-config&quot;</span>)]
+    <span class="attr">#[serde(rename = <span class="string">"machine-config"</span>)]
     </span>machine_config: <span class="prelude-ty">Option</span>&lt;MachineConfig&gt;,
-    <span class="attr">#[serde(rename = <span class="string">&quot;metrics&quot;</span>)]
+    <span class="attr">#[serde(rename = <span class="string">"metrics"</span>)]
     </span>metrics: <span class="prelude-ty">Option</span>&lt;MetricsConfig&gt;,
-    <span class="attr">#[serde(rename = <span class="string">&quot;mmds-config&quot;</span>)]
+    <span class="attr">#[serde(rename = <span class="string">"mmds-config"</span>)]
     </span>mmds_config: <span class="prelude-ty">Option</span>&lt;MmdsConfig&gt;,
-    <span class="attr">#[serde(rename = <span class="string">&quot;network-interfaces&quot;</span>, default)]
+    <span class="attr">#[serde(rename = <span class="string">"network-interfaces"</span>, default)]
     </span>net_devices: Vec&lt;NetworkInterfaceConfig&gt;,
-    <span class="attr">#[serde(rename = <span class="string">&quot;vsock&quot;</span>)]
+    <span class="attr">#[serde(rename = <span class="string">"vsock"</span>)]
     </span>vsock_device: <span class="prelude-ty">Option</span>&lt;VsockDeviceConfig&gt;,
-    <span class="attr">#[serde(rename = <span class="string">&quot;entropy&quot;</span>)]
+    <span class="attr">#[serde(rename = <span class="string">"entropy"</span>)]
     </span>entropy_device: <span class="prelude-ty">Option</span>&lt;EntropyDeviceConfig&gt;,
 }
 
@@ -1655,7 +1657,7 @@
     <span class="doccomment">/// The entropy device builder.
     </span><span class="kw">pub </span>entropy: EntropyDeviceBuilder,
     <span class="doccomment">/// The optional Mmds data store.
-    </span><span class="comment">// This is initialised on demand (if ever used), so that we don&#39;t allocate it unless it&#39;s
+    </span><span class="comment">// This is initialised on demand (if ever used), so that we don't allocate it unless it's
     // actually used.
     </span><span class="kw">pub </span>mmds: <span class="prelude-ty">Option</span>&lt;Arc&lt;Mutex&lt;Mmds&gt;&gt;&gt;,
     <span class="doccomment">/// Data store limit for the mmds.
@@ -1719,9 +1721,9 @@
         <span class="comment">// Init the data store from file, if present.
         </span><span class="kw">if let </span><span class="prelude-val">Some</span>(data) = metadata_json {
             resources.locked_mmds_or_default().put_data(
-                serde_json::from_str(data).expect(<span class="string">&quot;MMDS error: metadata provided not valid json&quot;</span>),
+                serde_json::from_str(data).expect(<span class="string">"MMDS error: metadata provided not valid json"</span>),
             )<span class="question-mark">?</span>;
-            <span class="macro">info!</span>(<span class="string">&quot;Successfully added metadata to mmds from file&quot;</span>);
+            <span class="macro">info!</span>(<span class="string">"Successfully added metadata to mmds from file"</span>);
         }
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(mmds_config) = vmm_config.mmds_config {
@@ -1744,9 +1746,9 @@
     }
 
     <span class="doccomment">/// If not initialised, create the mmds data store with the default config.
-    </span><span class="kw">pub fn </span>locked_mmds_or_default(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; MutexGuard&lt;<span class="lifetime">&#39;_</span>, Mmds&gt; {
+    </span><span class="kw">pub fn </span>locked_mmds_or_default(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; MutexGuard&lt;<span class="lifetime">'_</span>, Mmds&gt; {
         <span class="kw">let </span>mmds = <span class="self">self</span>.mmds_or_default();
-        mmds.lock().expect(<span class="string">&quot;Poisoned lock&quot;</span>)
+        mmds.lock().expect(<span class="string">"Poisoned lock"</span>)
     }
 
     <span class="doccomment">/// Updates the resources from a restored device (used for configuring resources when
@@ -1825,12 +1827,12 @@
         <span class="kw">let </span>net_devs_with_mmds: Vec&lt;<span class="kw">_</span>&gt; = <span class="self">self
             </span>.net_builder
             .iter()
-            .filter(|net| net.lock().expect(<span class="string">&quot;Poisoned lock&quot;</span>).mmds_ns().is_some())
+            .filter(|net| net.lock().expect(<span class="string">"Poisoned lock"</span>).mmds_ns().is_some())
             .collect();
 
         <span class="kw">if </span>!net_devs_with_mmds.is_empty() {
             <span class="kw">let </span><span class="kw-2">mut </span>inner_mmds_config = MmdsConfig {
-                version: mmds.lock().expect(<span class="string">&quot;Poisoned lock&quot;</span>).version(),
+                version: mmds.lock().expect(<span class="string">"Poisoned lock"</span>).version(),
                 network_interfaces: <span class="macro">vec!</span>[],
                 ipv4_address: <span class="prelude-val">None</span>,
             };
@@ -1973,20 +1975,20 @@
         </span><span class="kw">if </span>!network_interfaces.iter().all(|id| {
             <span class="self">self</span>.net_builder
                 .iter()
-                .map(|device| device.lock().expect(<span class="string">&quot;Poisoned lock&quot;</span>).id().clone())
+                .map(|device| device.lock().expect(<span class="string">"Poisoned lock"</span>).id().clone())
                 .any(|x| <span class="kw-2">&amp;</span>x == id)
         }) {
             <span class="kw">return </span><span class="prelude-val">Err</span>(MmdsConfigError::InvalidNetworkInterfaceId);
         }
 
-        <span class="comment">// Safe to unwrap because we&#39;ve just made sure that it&#39;s initialised.
+        <span class="comment">// Safe to unwrap because we've just made sure that it's initialised.
         </span><span class="kw">let </span>mmds = <span class="self">self</span>.mmds_or_default().clone();
 
         <span class="comment">// Create `MmdsNetworkStack` and configure the IPv4 address for
         // existing built network devices whose names are defined in the
         // network interface ID list.
         </span><span class="kw">for </span>net_device <span class="kw">in </span><span class="self">self</span>.net_builder.iter_mut() {
-            <span class="kw">let </span><span class="kw-2">mut </span>net_device_lock = net_device.lock().expect(<span class="string">&quot;Poisoned lock&quot;</span>);
+            <span class="kw">let </span><span class="kw-2">mut </span>net_device_lock = net_device.lock().expect(<span class="string">"Poisoned lock"</span>);
             <span class="kw">if </span>network_interfaces.contains(net_device_lock.id()) {
                 net_device_lock.configure_mmds_network_stack(ipv4_addr, mmds.clone());
             } <span class="kw">else </span>{
@@ -2045,16 +2047,16 @@
 
     <span class="kw">fn </span>default_net_cfg() -&gt; NetworkInterfaceConfig {
         NetworkInterfaceConfig {
-            iface_id: <span class="string">&quot;net_if1&quot;</span>.to_string(),
-            <span class="comment">// TempFile::new_with_prefix(&quot;&quot;) generates a random file name used as random net_if
+            iface_id: <span class="string">"net_if1"</span>.to_string(),
+            <span class="comment">// TempFile::new_with_prefix("") generates a random file name used as random net_if
             // name.
-            </span>host_dev_name: TempFile::new_with_prefix(<span class="string">&quot;&quot;</span>)
+            </span>host_dev_name: TempFile::new_with_prefix(<span class="string">""</span>)
                 .unwrap()
                 .as_path()
                 .to_str()
                 .unwrap()
                 .to_string(),
-            guest_mac: <span class="prelude-val">Some</span>(MacAddr::from_str(<span class="string">&quot;01:23:45:67:89:0a&quot;</span>).unwrap()),
+            guest_mac: <span class="prelude-val">Some</span>(MacAddr::from_str(<span class="string">"01:23:45:67:89:0a"</span>).unwrap()),
             rx_rate_limiter: <span class="prelude-val">Some</span>(RateLimiterConfig::default()),
             tx_rate_limiter: <span class="prelude-val">Some</span>(RateLimiterConfig::default()),
         }
@@ -2071,8 +2073,8 @@
         <span class="kw">let </span>tmp_file = TempFile::new().unwrap();
         (
             BlockDeviceConfig {
-                drive_id: <span class="string">&quot;block1&quot;</span>.to_string(),
-                partuuid: <span class="prelude-val">Some</span>(<span class="string">&quot;0eaa91a0-01&quot;</span>.to_string()),
+                drive_id: <span class="string">"block1"</span>.to_string(),
+                partuuid: <span class="prelude-val">Some</span>(<span class="string">"0eaa91a0-01"</span>.to_string()),
                 is_root_device: <span class="bool-val">false</span>,
                 cache_type: CacheType::Unsafe,
 
@@ -2153,38 +2155,38 @@
 
         <span class="comment">// We will test different scenarios with invalid resources configuration and
         // check the expected errors. We include configuration for the kernel and rootfs
-        // in every json because they are mandatory fields. If we don&#39;t configure
+        // in every json because they are mandatory fields. If we don't configure
         // these resources, it is considered an invalid json and the test will crash.
 
         // Invalid JSON string must yield a `serde_json` error.
-        </span><span class="kw">match </span>VmResources::from_json(<span class="string">r#&quot;}&quot;#</span>, <span class="kw-2">&amp;</span>default_instance_info, HTTP_MAX_PAYLOAD_SIZE, <span class="prelude-val">None</span>) {
+        </span><span class="kw">match </span>VmResources::from_json(<span class="string">r#"}"#</span>, <span class="kw-2">&amp;</span>default_instance_info, HTTP_MAX_PAYLOAD_SIZE, <span class="prelude-val">None</span>) {
             <span class="prelude-val">Err</span>(ResourcesError::InvalidJson(<span class="kw">_</span>)) =&gt; (),
             <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
         }
 
         <span class="comment">// Valid JSON string without the configuration for kernel or rootfs
         // result in an invalid JSON error.
-        </span><span class="kw">match </span>VmResources::from_json(<span class="string">r#&quot;{}&quot;#</span>, <span class="kw-2">&amp;</span>default_instance_info, HTTP_MAX_PAYLOAD_SIZE, <span class="prelude-val">None</span>) {
+        </span><span class="kw">match </span>VmResources::from_json(<span class="string">r#"{}"#</span>, <span class="kw-2">&amp;</span>default_instance_info, HTTP_MAX_PAYLOAD_SIZE, <span class="prelude-val">None</span>) {
             <span class="prelude-val">Err</span>(ResourcesError::InvalidJson(<span class="kw">_</span>)) =&gt; (),
             <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
         }
 
         <span class="comment">// Invalid kernel path.
         </span><span class="kw">let </span><span class="kw-2">mut </span>json = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{
-                    &quot;boot-source&quot;: {{
-                        &quot;kernel_image_path&quot;: &quot;/invalid/path&quot;,
-                        &quot;boot_args&quot;: &quot;console=ttyS0 reboot=k panic=1 pci=off&quot;
+            <span class="string">r#"{{
+                    "boot-source": {{
+                        "kernel_image_path": "/invalid/path",
+                        "boot_args": "console=ttyS0 reboot=k panic=1 pci=off"
                     }},
-                    &quot;drives&quot;: [
+                    "drives": [
                         {{
-                            &quot;drive_id&quot;: &quot;rootfs&quot;,
-                            &quot;path_on_host&quot;: &quot;{}&quot;,
-                            &quot;is_root_device&quot;: true,
-                            &quot;is_read_only&quot;: false
+                            "drive_id": "rootfs",
+                            "path_on_host": "{}",
+                            "is_root_device": true,
+                            "is_read_only": false
                         }}
                     ]
-            }}&quot;#</span>,
+            }}"#</span>,
             rootfs_file.as_path().to_str().unwrap()
         );
 
@@ -2200,20 +2202,20 @@
 
         <span class="comment">// Invalid rootfs path.
         </span>json = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{
-                    &quot;boot-source&quot;: {{
-                        &quot;kernel_image_path&quot;: &quot;{}&quot;,
-                        &quot;boot_args&quot;: &quot;console=ttyS0 reboot=k panic=1 pci=off&quot;
+            <span class="string">r#"{{
+                    "boot-source": {{
+                        "kernel_image_path": "{}",
+                        "boot_args": "console=ttyS0 reboot=k panic=1 pci=off"
                     }},
-                    &quot;drives&quot;: [
+                    "drives": [
                         {{
-                            &quot;drive_id&quot;: &quot;rootfs&quot;,
-                            &quot;path_on_host&quot;: &quot;/invalid/path&quot;,
-                            &quot;is_root_device&quot;: true,
-                            &quot;is_read_only&quot;: false
+                            "drive_id": "rootfs",
+                            "path_on_host": "/invalid/path",
+                            "is_root_device": true,
+                            "is_read_only": false
                         }}
                     ]
-            }}&quot;#</span>,
+            }}"#</span>,
             kernel_file.as_path().to_str().unwrap()
         );
 
@@ -2231,24 +2233,24 @@
 
         <span class="comment">// Invalid vCPU number.
         </span>json = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{
-                    &quot;boot-source&quot;: {{
-                        &quot;kernel_image_path&quot;: &quot;{}&quot;,
-                        &quot;boot_args&quot;: &quot;console=ttyS0 reboot=k panic=1 pci=off&quot;
+            <span class="string">r#"{{
+                    "boot-source": {{
+                        "kernel_image_path": "{}",
+                        "boot_args": "console=ttyS0 reboot=k panic=1 pci=off"
                     }},
-                    &quot;drives&quot;: [
+                    "drives": [
                         {{
-                            &quot;drive_id&quot;: &quot;rootfs&quot;,
-                            &quot;path_on_host&quot;: &quot;{}&quot;,
-                            &quot;is_root_device&quot;: true,
-                            &quot;is_read_only&quot;: false
+                            "drive_id": "rootfs",
+                            "path_on_host": "{}",
+                            "is_root_device": true,
+                            "is_read_only": false
                         }}
                     ],
-                    &quot;machine-config&quot;: {{
-                        &quot;vcpu_count&quot;: 0,
-                        &quot;mem_size_mib&quot;: 1024
+                    "machine-config": {{
+                        "vcpu_count": 0,
+                        "mem_size_mib": 1024
                     }}
-            }}&quot;#</span>,
+            }}"#</span>,
             kernel_file.as_path().to_str().unwrap(),
             rootfs_file.as_path().to_str().unwrap()
         );
@@ -2265,30 +2267,30 @@
 
         <span class="comment">// Valid config for x86 but invalid on aarch64 because smt is not available.
         </span>json = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{
-                    &quot;boot-source&quot;: {{
-                        &quot;kernel_image_path&quot;: &quot;{}&quot;,
-                        &quot;boot_args&quot;: &quot;console=ttyS0 reboot=k panic=1 pci=off&quot;
+            <span class="string">r#"{{
+                    "boot-source": {{
+                        "kernel_image_path": "{}",
+                        "boot_args": "console=ttyS0 reboot=k panic=1 pci=off"
                     }},
-                    &quot;drives&quot;: [
+                    "drives": [
                         {{
-                            &quot;drive_id&quot;: &quot;rootfs&quot;,
-                            &quot;path_on_host&quot;: &quot;{}&quot;,
-                            &quot;is_root_device&quot;: true,
-                            &quot;is_read_only&quot;: false
+                            "drive_id": "rootfs",
+                            "path_on_host": "{}",
+                            "is_root_device": true,
+                            "is_read_only": false
                         }}
                     ],
-                    &quot;machine-config&quot;: {{
-                        &quot;vcpu_count&quot;: 2,
-                        &quot;mem_size_mib&quot;: 1024,
-                        &quot;smt&quot;: true
+                    "machine-config": {{
+                        "vcpu_count": 2,
+                        "mem_size_mib": 1024,
+                        "smt": true
                     }}
-            }}&quot;#</span>,
+            }}"#</span>,
             kernel_file.as_path().to_str().unwrap(),
             rootfs_file.as_path().to_str().unwrap()
         );
 
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
         </span>VmResources::from_json(
             json.as_str(),
             <span class="kw-2">&amp;</span>default_instance_info,
@@ -2296,7 +2298,7 @@
             <span class="prelude-val">None</span>,
         )
         .unwrap();
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
         </span>VmResources::from_json(
             json.as_str(),
             <span class="kw-2">&amp;</span>default_instance_info,
@@ -2307,29 +2309,29 @@
 
         <span class="comment">// Valid config for x86 but invalid on aarch64 since it uses cpu_template.
         </span>json = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{
-                    &quot;boot-source&quot;: {{
-                        &quot;kernel_image_path&quot;: &quot;{}&quot;,
-                        &quot;boot_args&quot;: &quot;console=ttyS0 reboot=k panic=1 pci=off&quot;
+            <span class="string">r#"{{
+                    "boot-source": {{
+                        "kernel_image_path": "{}",
+                        "boot_args": "console=ttyS0 reboot=k panic=1 pci=off"
                     }},
-                    &quot;drives&quot;: [
+                    "drives": [
                         {{
-                            &quot;drive_id&quot;: &quot;rootfs&quot;,
-                            &quot;path_on_host&quot;: &quot;{}&quot;,
-                            &quot;is_root_device&quot;: true,
-                            &quot;is_read_only&quot;: false
+                            "drive_id": "rootfs",
+                            "path_on_host": "{}",
+                            "is_root_device": true,
+                            "is_read_only": false
                         }}
                     ],
-                    &quot;machine-config&quot;: {{
-                        &quot;vcpu_count&quot;: 2,
-                        &quot;mem_size_mib&quot;: 1024,
-                        &quot;cpu_template&quot;: &quot;C3&quot;
+                    "machine-config": {{
+                        "vcpu_count": 2,
+                        "mem_size_mib": 1024,
+                        "cpu_template": "C3"
                     }}
-            }}&quot;#</span>,
+            }}"#</span>,
             kernel_file.as_path().to_str().unwrap(),
             rootfs_file.as_path().to_str().unwrap()
         );
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
         </span>VmResources::from_json(
             json.as_str(),
             <span class="kw-2">&amp;</span>default_instance_info,
@@ -2337,7 +2339,7 @@
             <span class="prelude-val">None</span>,
         )
         .unwrap();
-        <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+        <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
         </span>VmResources::from_json(
             json.as_str(),
             <span class="kw-2">&amp;</span>default_instance_info,
@@ -2348,24 +2350,24 @@
 
         <span class="comment">// Invalid memory size.
         </span>json = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{
-                    &quot;boot-source&quot;: {{
-                        &quot;kernel_image_path&quot;: &quot;{}&quot;,
-                        &quot;boot_args&quot;: &quot;console=ttyS0 reboot=k panic=1 pci=off&quot;
+            <span class="string">r#"{{
+                    "boot-source": {{
+                        "kernel_image_path": "{}",
+                        "boot_args": "console=ttyS0 reboot=k panic=1 pci=off"
                     }},
-                    &quot;drives&quot;: [
+                    "drives": [
                         {{
-                            &quot;drive_id&quot;: &quot;rootfs&quot;,
-                            &quot;path_on_host&quot;: &quot;{}&quot;,
-                            &quot;is_root_device&quot;: true,
-                            &quot;is_read_only&quot;: false
+                            "drive_id": "rootfs",
+                            "path_on_host": "{}",
+                            "is_root_device": true,
+                            "is_read_only": false
                         }}
                     ],
-                    &quot;machine-config&quot;: {{
-                        &quot;vcpu_count&quot;: 2,
-                        &quot;mem_size_mib&quot;: 0
+                    "machine-config": {{
+                        "vcpu_count": 2,
+                        "mem_size_mib": 0
                     }}
-            }}&quot;#</span>,
+            }}"#</span>,
             kernel_file.as_path().to_str().unwrap(),
             rootfs_file.as_path().to_str().unwrap()
         );
@@ -2382,23 +2384,23 @@
 
         <span class="comment">// Invalid path for logger pipe.
         </span>json = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{
-                    &quot;boot-source&quot;: {{
-                        &quot;kernel_image_path&quot;: &quot;{}&quot;,
-                        &quot;boot_args&quot;: &quot;console=ttyS0 reboot=k panic=1 pci=off&quot;
+            <span class="string">r#"{{
+                    "boot-source": {{
+                        "kernel_image_path": "{}",
+                        "boot_args": "console=ttyS0 reboot=k panic=1 pci=off"
                     }},
-                    &quot;drives&quot;: [
+                    "drives": [
                         {{
-                            &quot;drive_id&quot;: &quot;rootfs&quot;,
-                            &quot;path_on_host&quot;: &quot;{}&quot;,
-                            &quot;is_root_device&quot;: true,
-                            &quot;is_read_only&quot;: false
+                            "drive_id": "rootfs",
+                            "path_on_host": "{}",
+                            "is_root_device": true,
+                            "is_read_only": false
                         }}
                     ],
-                    &quot;logger&quot;: {{
-	                    &quot;log_path&quot;: &quot;/invalid/path&quot;
+                    "logger": {{
+	                    "log_path": "/invalid/path"
                     }}
-            }}&quot;#</span>,
+            }}"#</span>,
             kernel_file.as_path().to_str().unwrap(),
             rootfs_file.as_path().to_str().unwrap()
         );
@@ -2415,23 +2417,23 @@
 
         <span class="comment">// Invalid path for metrics pipe.
         </span>json = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{
-                    &quot;boot-source&quot;: {{
-                        &quot;kernel_image_path&quot;: &quot;{}&quot;,
-                        &quot;boot_args&quot;: &quot;console=ttyS0 reboot=k panic=1 pci=off&quot;
+            <span class="string">r#"{{
+                    "boot-source": {{
+                        "kernel_image_path": "{}",
+                        "boot_args": "console=ttyS0 reboot=k panic=1 pci=off"
                     }},
-                    &quot;drives&quot;: [
+                    "drives": [
                         {{
-                            &quot;drive_id&quot;: &quot;rootfs&quot;,
-                            &quot;path_on_host&quot;: &quot;{}&quot;,
-                            &quot;is_root_device&quot;: true,
-                            &quot;is_read_only&quot;: false
+                            "drive_id": "rootfs",
+                            "path_on_host": "{}",
+                            "is_root_device": true,
+                            "is_read_only": false
                         }}
                     ],
-                    &quot;metrics&quot;: {{
-	                    &quot;metrics_path&quot;: &quot;/invalid/path&quot;
+                    "metrics": {{
+	                    "metrics_path": "/invalid/path"
                     }}
-            }}&quot;#</span>,
+            }}"#</span>,
             kernel_file.as_path().to_str().unwrap(),
             rootfs_file.as_path().to_str().unwrap()
         );
@@ -2448,30 +2450,30 @@
 
         <span class="comment">// Reuse of a host name.
         </span>json = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{
-                    &quot;boot-source&quot;: {{
-                        &quot;kernel_image_path&quot;: &quot;{}&quot;,
-                        &quot;boot_args&quot;: &quot;console=ttyS0 reboot=k panic=1 pci=off&quot;
+            <span class="string">r#"{{
+                    "boot-source": {{
+                        "kernel_image_path": "{}",
+                        "boot_args": "console=ttyS0 reboot=k panic=1 pci=off"
                     }},
-                    &quot;drives&quot;: [
+                    "drives": [
                         {{
-                            &quot;drive_id&quot;: &quot;rootfs&quot;,
-                            &quot;path_on_host&quot;: &quot;{}&quot;,
-                            &quot;is_root_device&quot;: true,
-                            &quot;is_read_only&quot;: false
+                            "drive_id": "rootfs",
+                            "path_on_host": "{}",
+                            "is_root_device": true,
+                            "is_read_only": false
                         }}
                     ],
-                    &quot;network-interfaces&quot;: [
+                    "network-interfaces": [
                         {{
-                            &quot;iface_id&quot;: &quot;netif1&quot;,
-                            &quot;host_dev_name&quot;: &quot;hostname7&quot;
+                            "iface_id": "netif1",
+                            "host_dev_name": "hostname7"
                         }},
                         {{
-                            &quot;iface_id&quot;: &quot;netif2&quot;,
-                            &quot;host_dev_name&quot;: &quot;hostname7&quot;
+                            "iface_id": "netif2",
+                            "host_dev_name": "hostname7"
                         }}
                     ]
-            }}&quot;#</span>,
+            }}"#</span>,
             kernel_file.as_path().to_str().unwrap(),
             rootfs_file.as_path().to_str().unwrap()
         );
@@ -2488,40 +2490,40 @@
             <span class="kw">_ </span>=&gt; <span class="macro">unreachable!</span>(),
         }
 
-        <span class="comment">// Let&#39;s try now passing a valid configuration. We won&#39;t include any logger
+        <span class="comment">// Let's try now passing a valid configuration. We won't include any logger
         // or metrics configuration because these were already initialized in other
         // tests of this module and the reinitialization of them will cause crashing.
         </span>json = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{
-                    &quot;boot-source&quot;: {{
-                        &quot;kernel_image_path&quot;: &quot;{}&quot;,
-                        &quot;boot_args&quot;: &quot;console=ttyS0 reboot=k panic=1 pci=off&quot;
+            <span class="string">r#"{{
+                    "boot-source": {{
+                        "kernel_image_path": "{}",
+                        "boot_args": "console=ttyS0 reboot=k panic=1 pci=off"
                     }},
-                    &quot;drives&quot;: [
+                    "drives": [
                         {{
-                            &quot;drive_id&quot;: &quot;rootfs&quot;,
-                            &quot;path_on_host&quot;: &quot;{}&quot;,
-                            &quot;is_root_device&quot;: true,
-                            &quot;is_read_only&quot;: false
+                            "drive_id": "rootfs",
+                            "path_on_host": "{}",
+                            "is_root_device": true,
+                            "is_read_only": false
                         }}
                     ],
-                    &quot;network-interfaces&quot;: [
+                    "network-interfaces": [
                         {{
-                            &quot;iface_id&quot;: &quot;netif&quot;,
-                            &quot;host_dev_name&quot;: &quot;hostname8&quot;
+                            "iface_id": "netif",
+                            "host_dev_name": "hostname8"
                         }}
                     ],
-                    &quot;machine-config&quot;: {{
-                        &quot;vcpu_count&quot;: 2,
-                        &quot;mem_size_mib&quot;: 1024,
-                        &quot;smt&quot;: false
+                    "machine-config": {{
+                        "vcpu_count": 2,
+                        "mem_size_mib": 1024,
+                        "smt": false
                     }},
-                    &quot;mmds-config&quot;: {{
-                        &quot;version&quot;: &quot;V2&quot;,
-                        &quot;ipv4_address&quot;: &quot;169.254.170.2&quot;,
-                        &quot;network_interfaces&quot;: [&quot;netif&quot;]
+                    "mmds-config": {{
+                        "version": "V2",
+                        "ipv4_address": "169.254.170.2",
+                        "network_interfaces": ["netif"]
                     }}
-            }}&quot;#</span>,
+            }}"#</span>,
             kernel_file.as_path().to_str().unwrap(),
             rootfs_file.as_path().to_str().unwrap(),
         );
@@ -2537,40 +2539,40 @@
         // for version and IPv4 address.
         </span><span class="kw">let </span>kernel_file = TempFile::new().unwrap();
         json = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{
-                    &quot;balloon&quot;: {{
-                        &quot;amount_mib&quot;: 0,
-                        &quot;deflate_on_oom&quot;: false,
-                        &quot;stats_polling_interval_s&quot;: 0
+            <span class="string">r#"{{
+                    "balloon": {{
+                        "amount_mib": 0,
+                        "deflate_on_oom": false,
+                        "stats_polling_interval_s": 0
                     }},
-                    &quot;boot-source&quot;: {{
-                        &quot;kernel_image_path&quot;: &quot;{}&quot;,
-                        &quot;boot_args&quot;: &quot;console=ttyS0 reboot=k panic=1 pci=off&quot;
+                    "boot-source": {{
+                        "kernel_image_path": "{}",
+                        "boot_args": "console=ttyS0 reboot=k panic=1 pci=off"
                     }},
-                    &quot;drives&quot;: [
+                    "drives": [
                         {{
-                            &quot;drive_id&quot;: &quot;rootfs&quot;,
-                            &quot;path_on_host&quot;: &quot;{}&quot;,
-                            &quot;is_root_device&quot;: true,
-                            &quot;is_read_only&quot;: false
+                            "drive_id": "rootfs",
+                            "path_on_host": "{}",
+                            "is_root_device": true,
+                            "is_read_only": false
                         }}
                     ],
-                    &quot;network-interfaces&quot;: [
+                    "network-interfaces": [
                         {{
-                            &quot;iface_id&quot;: &quot;netif&quot;,
-                            &quot;host_dev_name&quot;: &quot;hostname9&quot;
+                            "iface_id": "netif",
+                            "host_dev_name": "hostname9"
                         }}
                     ],
-                    &quot;machine-config&quot;: {{
-                        &quot;vcpu_count&quot;: 2,
-                        &quot;mem_size_mib&quot;: 1024,
-                        &quot;smt&quot;: false
+                    "machine-config": {{
+                        "vcpu_count": 2,
+                        "mem_size_mib": 1024,
+                        "smt": false
                     }},
-                    &quot;mmds-config&quot;: {{
-                        &quot;network_interfaces&quot;: [&quot;netif&quot;],
-                        &quot;ipv4_address&quot;: &quot;169.254.1.1&quot;
+                    "mmds-config": {{
+                        "network_interfaces": ["netif"],
+                        "ipv4_address": "169.254.1.1"
                     }}
-            }}&quot;#</span>,
+            }}"#</span>,
             kernel_file.as_path().to_str().unwrap(),
             rootfs_file.as_path().to_str().unwrap(),
         );
@@ -2578,11 +2580,11 @@
             json.as_str(),
             <span class="kw-2">&amp;</span>default_instance_info,
             <span class="number">1200</span>,
-            <span class="prelude-val">Some</span>(<span class="string">r#&quot;{&quot;key&quot;: &quot;value&quot;}&quot;#</span>),
+            <span class="prelude-val">Some</span>(<span class="string">r#"{"key": "value"}"#</span>),
         )
         .unwrap();
         <span class="kw">let </span><span class="kw-2">mut </span>map = Map::new();
-        map.insert(<span class="string">&quot;key&quot;</span>.to_string(), Value::String(<span class="string">&quot;value&quot;</span>.to_string()));
+        map.insert(<span class="string">"key"</span>.to_string(), Value::String(<span class="string">"value"</span>.to_string()));
         <span class="macro">assert_eq!</span>(
             resources.mmds.unwrap().lock().unwrap().data_store_value(),
             Value::Object(map)
@@ -2598,21 +2600,21 @@
         <span class="kw">let </span>default_instance_info = InstanceInfo::default();
 
         <span class="kw">let </span>json = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{
-                    &quot;boot-source&quot;: {{
-                        &quot;kernel_image_path&quot;: &quot;{}&quot;,
-                        &quot;boot_args&quot;: &quot;console=ttyS0 reboot=k panic=1 pci=off&quot;
+            <span class="string">r#"{{
+                    "boot-source": {{
+                        "kernel_image_path": "{}",
+                        "boot_args": "console=ttyS0 reboot=k panic=1 pci=off"
                     }},
-                    &quot;cpu-config&quot;: &quot;/invalid/path&quot;,
-                    &quot;drives&quot;: [
+                    "cpu-config": "/invalid/path",
+                    "drives": [
                         {{
-                            &quot;drive_id&quot;: &quot;rootfs&quot;,
-                            &quot;path_on_host&quot;: &quot;{}&quot;,
-                            &quot;is_root_device&quot;: true,
-                            &quot;is_read_only&quot;: false
+                            "drive_id": "rootfs",
+                            "path_on_host": "{}",
+                            "is_root_device": true,
+                            "is_read_only": false
                         }}
                     ]
-            }}&quot;#</span>,
+            }}"#</span>,
             kernel_file.as_path().to_str().unwrap(),
             rootfs_file.as_path().to_str().unwrap(),
         );
@@ -2638,25 +2640,25 @@
         <span class="kw">let </span>cpu_config_file = TempFile::new().unwrap();
         cpu_config_file
             .as_file()
-            .write_all(<span class="string">&quot;{}&quot;</span>.as_bytes())
+            .write_all(<span class="string">"{}"</span>.as_bytes())
             .unwrap();
 
         <span class="kw">let </span>json = <span class="macro">format!</span>(
-            <span class="string">r#&quot;{{
-                    &quot;boot-source&quot;: {{
-                        &quot;kernel_image_path&quot;: &quot;{}&quot;,
-                        &quot;boot_args&quot;: &quot;console=ttyS0 reboot=k panic=1 pci=off&quot;
+            <span class="string">r#"{{
+                    "boot-source": {{
+                        "kernel_image_path": "{}",
+                        "boot_args": "console=ttyS0 reboot=k panic=1 pci=off"
                     }},
-                    &quot;cpu-config&quot;: &quot;{}&quot;,
-                    &quot;drives&quot;: [
+                    "cpu-config": "{}",
+                    "drives": [
                         {{
-                            &quot;drive_id&quot;: &quot;rootfs&quot;,
-                            &quot;path_on_host&quot;: &quot;{}&quot;,
-                            &quot;is_root_device&quot;: true,
-                            &quot;is_read_only&quot;: false
+                            "drive_id": "rootfs",
+                            "path_on_host": "{}",
+                            "is_root_device": true,
+                            "is_read_only": false
                         }}
                     ]
-            }}&quot;#</span>,
+            }}"#</span>,
             kernel_file.as_path().to_str().unwrap(),
             cpu_config_file.as_path().to_str().unwrap(),
             rootfs_file.as_path().to_str().unwrap(),
@@ -2682,42 +2684,42 @@
             <span class="kw">let </span>kernel_file = TempFile::new().unwrap();
             <span class="kw">let </span>rootfs_file = TempFile::new().unwrap();
             <span class="kw">let </span>json = <span class="macro">format!</span>(
-                <span class="string">r#&quot;{{
-                    &quot;balloon&quot;: {{
-                        &quot;amount_mib&quot;: 0,
-                        &quot;deflate_on_oom&quot;: false,
-                        &quot;stats_polling_interval_s&quot;: 0
+                <span class="string">r#"{{
+                    "balloon": {{
+                        "amount_mib": 0,
+                        "deflate_on_oom": false,
+                        "stats_polling_interval_s": 0
                     }},
-                    &quot;boot-source&quot;: {{
-                        &quot;kernel_image_path&quot;: &quot;{}&quot;,
-                        &quot;boot_args&quot;: &quot;console=ttyS0 reboot=k panic=1 pci=off&quot;
+                    "boot-source": {{
+                        "kernel_image_path": "{}",
+                        "boot_args": "console=ttyS0 reboot=k panic=1 pci=off"
                     }},
-                    &quot;drives&quot;: [
+                    "drives": [
                         {{
-                            &quot;drive_id&quot;: &quot;rootfs&quot;,
-                            &quot;path_on_host&quot;: &quot;{}&quot;,
-                            &quot;is_root_device&quot;: true,
-                            &quot;is_read_only&quot;: false,
-                            &quot;io_engine&quot;: &quot;Sync&quot;
+                            "drive_id": "rootfs",
+                            "path_on_host": "{}",
+                            "is_root_device": true,
+                            "is_read_only": false,
+                            "io_engine": "Sync"
                         }}
                     ],
-                    &quot;network-interfaces&quot;: [
+                    "network-interfaces": [
                         {{
-                            &quot;iface_id&quot;: &quot;netif1&quot;,
-                            &quot;host_dev_name&quot;: &quot;hostname9&quot;
+                            "iface_id": "netif1",
+                            "host_dev_name": "hostname9"
                         }},
                         {{
-                            &quot;iface_id&quot;: &quot;netif2&quot;,
-                            &quot;host_dev_name&quot;: &quot;hostname10&quot;
+                            "iface_id": "netif2",
+                            "host_dev_name": "hostname10"
                         }}
                     ],
-                    &quot;machine-config&quot;: {{
-                        &quot;vcpu_count&quot;: 2,
-                        &quot;mem_size_mib&quot;: 1024,
-                        &quot;smt&quot;: false
+                    "machine-config": {{
+                        "vcpu_count": 2,
+                        "mem_size_mib": 1024,
+                        "smt": false
                     }},
-                    &quot;entropy&quot;: {{}}
-            }}&quot;#</span>,
+                    "entropy": {{}}
+            }}"#</span>,
                 kernel_file.as_path().to_str().unwrap(),
                 rootfs_file.as_path().to_str().unwrap(),
             );
@@ -2742,7 +2744,7 @@
                     json.as_str(),
                     <span class="kw-2">&amp;</span>InstanceInfo::default(),
                     HTTP_MAX_PAYLOAD_SIZE,
-                    <span class="prelude-val">Some</span>(<span class="string">r#&quot;{&quot;key&quot;: &quot;value&quot;}&quot;#</span>),
+                    <span class="prelude-val">Some</span>(<span class="string">r#"{"key": "value"}"#</span>),
                 )
                 .unwrap();
 
@@ -2757,45 +2759,45 @@
             <span class="kw">let </span>kernel_file = TempFile::new().unwrap();
             <span class="kw">let </span>rootfs_file = TempFile::new().unwrap();
             <span class="kw">let </span>json = <span class="macro">format!</span>(
-                <span class="string">r#&quot;{{
-                    &quot;balloon&quot;: {{
-                        &quot;amount_mib&quot;: 0,
-                        &quot;deflate_on_oom&quot;: false,
-                        &quot;stats_polling_interval_s&quot;: 0
+                <span class="string">r#"{{
+                    "balloon": {{
+                        "amount_mib": 0,
+                        "deflate_on_oom": false,
+                        "stats_polling_interval_s": 0
                     }},
-                    &quot;boot-source&quot;: {{
-                        &quot;kernel_image_path&quot;: &quot;{}&quot;,
-                        &quot;boot_args&quot;: &quot;console=ttyS0 reboot=k panic=1 pci=off&quot;
+                    "boot-source": {{
+                        "kernel_image_path": "{}",
+                        "boot_args": "console=ttyS0 reboot=k panic=1 pci=off"
                     }},
-                    &quot;drives&quot;: [
+                    "drives": [
                         {{
-                            &quot;drive_id&quot;: &quot;rootfs&quot;,
-                            &quot;path_on_host&quot;: &quot;{}&quot;,
-                            &quot;is_root_device&quot;: true,
-                            &quot;is_read_only&quot;: false,
-                            &quot;io_engine&quot;: &quot;Sync&quot;
+                            "drive_id": "rootfs",
+                            "path_on_host": "{}",
+                            "is_root_device": true,
+                            "is_read_only": false,
+                            "io_engine": "Sync"
                         }}
                     ],
-                    &quot;network-interfaces&quot;: [
+                    "network-interfaces": [
                         {{
-                            &quot;iface_id&quot;: &quot;netif1&quot;,
-                            &quot;host_dev_name&quot;: &quot;hostname9&quot;
+                            "iface_id": "netif1",
+                            "host_dev_name": "hostname9"
                         }},
                         {{
-                            &quot;iface_id&quot;: &quot;netif2&quot;,
-                            &quot;host_dev_name&quot;: &quot;hostname10&quot;
+                            "iface_id": "netif2",
+                            "host_dev_name": "hostname10"
                         }}
                     ],
-                    &quot;machine-config&quot;: {{
-                        &quot;vcpu_count&quot;: 2,
-                        &quot;mem_size_mib&quot;: 1024,
-                        &quot;smt&quot;: false
+                    "machine-config": {{
+                        "vcpu_count": 2,
+                        "mem_size_mib": 1024,
+                        "smt": false
                     }},
-                    &quot;mmds-config&quot;: {{
-                        &quot;network_interfaces&quot;: [&quot;netif1&quot;],
-                        &quot;ipv4_address&quot;: &quot;169.254.1.1&quot;
+                    "mmds-config": {{
+                        "network_interfaces": ["netif1"],
+                        "ipv4_address": "169.254.1.1"
                     }}
-            }}&quot;#</span>,
+            }}"#</span>,
                 kernel_file.as_path().to_str().unwrap(),
                 rootfs_file.as_path().to_str().unwrap(),
             );
@@ -2817,45 +2819,45 @@
             <span class="kw">let </span>kernel_file = TempFile::new().unwrap();
             <span class="kw">let </span>rootfs_file = TempFile::new().unwrap();
             <span class="kw">let </span>json = <span class="macro">format!</span>(
-                <span class="string">r#&quot;{{
-                    &quot;balloon&quot;: {{
-                        &quot;amount_mib&quot;: 0,
-                        &quot;deflate_on_oom&quot;: false,
-                        &quot;stats_polling_interval_s&quot;: 0
+                <span class="string">r#"{{
+                    "balloon": {{
+                        "amount_mib": 0,
+                        "deflate_on_oom": false,
+                        "stats_polling_interval_s": 0
                     }},
-                    &quot;boot-source&quot;: {{
-                        &quot;kernel_image_path&quot;: &quot;{}&quot;,
-                        &quot;boot_args&quot;: &quot;console=ttyS0 reboot=k panic=1 pci=off&quot;
+                    "boot-source": {{
+                        "kernel_image_path": "{}",
+                        "boot_args": "console=ttyS0 reboot=k panic=1 pci=off"
                     }},
-                    &quot;drives&quot;: [
+                    "drives": [
                         {{
-                            &quot;drive_id&quot;: &quot;rootfs&quot;,
-                            &quot;path_on_host&quot;: &quot;{}&quot;,
-                            &quot;is_root_device&quot;: true,
-                            &quot;is_read_only&quot;: false,
-                            &quot;io_engine&quot;: &quot;Sync&quot;
+                            "drive_id": "rootfs",
+                            "path_on_host": "{}",
+                            "is_root_device": true,
+                            "is_read_only": false,
+                            "io_engine": "Sync"
                         }}
                     ],
-                    &quot;network-interfaces&quot;: [
+                    "network-interfaces": [
                         {{
-                            &quot;iface_id&quot;: &quot;netif1&quot;,
-                            &quot;host_dev_name&quot;: &quot;hostname9&quot;
+                            "iface_id": "netif1",
+                            "host_dev_name": "hostname9"
                         }},
                         {{
-                            &quot;iface_id&quot;: &quot;netif2&quot;,
-                            &quot;host_dev_name&quot;: &quot;hostname10&quot;
+                            "iface_id": "netif2",
+                            "host_dev_name": "hostname10"
                         }}
                     ],
-                    &quot;machine-config&quot;: {{
-                        &quot;vcpu_count&quot;: 2,
-                        &quot;mem_size_mib&quot;: 1024,
-                        &quot;smt&quot;: false
+                    "machine-config": {{
+                        "vcpu_count": 2,
+                        "mem_size_mib": 1024,
+                        "smt": false
                     }},
-                    &quot;mmds-config&quot;: {{
-                        &quot;network_interfaces&quot;: [&quot;netif1&quot;, &quot;netif2&quot;],
-                        &quot;ipv4_address&quot;: &quot;169.254.1.1&quot;
+                    "mmds-config": {{
+                        "network_interfaces": ["netif1", "netif2"],
+                        "ipv4_address": "169.254.1.1"
                     }}
-            }}&quot;#</span>,
+            }}"#</span>,
                 kernel_file.as_path().to_str().unwrap(),
                 rootfs_file.as_path().to_str().unwrap(),
             );
@@ -2880,9 +2882,9 @@
             vcpu_count: <span class="prelude-val">Some</span>(<span class="number">32</span>),
             mem_size_mib: <span class="prelude-val">Some</span>(<span class="number">512</span>),
             smt: <span class="prelude-val">Some</span>(<span class="bool-val">true</span>),
-            <span class="attr">#[cfg(target_arch = <span class="string">&quot;x86_64&quot;</span>)]
+            <span class="attr">#[cfg(target_arch = <span class="string">"x86_64"</span>)]
             </span>cpu_template: <span class="prelude-val">Some</span>(StaticCpuTemplate::T2),
-            <span class="attr">#[cfg(target_arch = <span class="string">&quot;aarch64&quot;</span>)]
+            <span class="attr">#[cfg(target_arch = <span class="string">"aarch64"</span>)]
             </span>cpu_template: <span class="prelude-val">Some</span>(StaticCpuTemplate::V1N1),
             track_dirty_pages: <span class="prelude-val">Some</span>(<span class="bool-val">false</span>),
         };
@@ -2997,7 +2999,7 @@
     <span class="attr">#[test]
     </span><span class="kw">fn </span>test_set_boot_source() {
         <span class="kw">let </span>tmp_file = TempFile::new().unwrap();
-        <span class="kw">let </span>cmdline = <span class="string">&quot;reboot=k panic=1 pci=off nomodule 8250.nr_uarts=0&quot;</span>;
+        <span class="kw">let </span>cmdline = <span class="string">"reboot=k panic=1 pci=off nomodule 8250.nr_uarts=0"</span>;
         <span class="kw">let </span>expected_boot_cfg = BootSourceConfig {
             kernel_image_path: String::from(tmp_file.as_path().to_str().unwrap()),
             initrd_path: <span class="prelude-val">Some</span>(String::from(tmp_file.as_path().to_str().unwrap())),
@@ -3014,7 +3016,7 @@
                 .as_cstring()
                 .unwrap()
                 .as_bytes_with_nul(),
-            [cmdline.as_bytes(), <span class="kw-2">&amp;</span>[<span class="string">b&#39;\0&#39;</span>]].concat()
+            [cmdline.as_bytes(), <span class="kw-2">&amp;</span>[<span class="string">b'\0'</span>]].concat()
         );
         <span class="macro">assert_ne!</span>(
             boot_builder.kernel_file.metadata().unwrap().st_ino(),
@@ -3039,7 +3041,7 @@
                 .as_cstring()
                 .unwrap()
                 .as_bytes_with_nul(),
-            [cmdline.as_bytes(), <span class="kw-2">&amp;</span>[<span class="string">b&#39;\0&#39;</span>]].concat()
+            [cmdline.as_bytes(), <span class="kw-2">&amp;</span>[<span class="string">b'\0'</span>]].concat()
         );
         <span class="macro">assert_eq!</span>(
             boot_source_builder.kernel_file.metadata().unwrap().st_ino(),
@@ -3062,7 +3064,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>vm_resources = default_vm_resources();
         <span class="kw">let </span>(<span class="kw-2">mut </span>new_block_device_cfg, _file) = default_block_cfg();
         <span class="kw">let </span>tmp_file = TempFile::new().unwrap();
-        new_block_device_cfg.drive_id = <span class="string">&quot;block2&quot;</span>.to_string();
+        new_block_device_cfg.drive_id = <span class="string">"block2"</span>.to_string();
         new_block_device_cfg.path_on_host = <span class="prelude-val">Some</span>(tmp_file.as_path().to_str().unwrap().to_string());
         <span class="macro">assert_eq!</span>(vm_resources.block.devices.len(), <span class="number">1</span>);
         vm_resources.set_block_device(new_block_device_cfg).unwrap();
@@ -3087,9 +3089,9 @@
 
         <span class="comment">// Clone the existing net config in order to obtain a new one.
         </span><span class="kw">let </span><span class="kw-2">mut </span>new_net_device_cfg = default_net_cfg();
-        new_net_device_cfg.iface_id = <span class="string">&quot;new_net_if&quot;</span>.to_string();
-        new_net_device_cfg.guest_mac = <span class="prelude-val">Some</span>(MacAddr::from_str(<span class="string">&quot;01:23:45:67:89:0c&quot;</span>).unwrap());
-        new_net_device_cfg.host_dev_name = <span class="string">&quot;dummy_path2&quot;</span>.to_string();
+        new_net_device_cfg.iface_id = <span class="string">"new_net_if"</span>.to_string();
+        new_net_device_cfg.guest_mac = <span class="prelude-val">Some</span>(MacAddr::from_str(<span class="string">"01:23:45:67:89:0c"</span>).unwrap());
+        new_net_device_cfg.host_dev_name = <span class="string">"dummy_path2"</span>.to_string();
         <span class="macro">assert_eq!</span>(vm_resources.net_builder.len(), <span class="number">1</span>);
 
         vm_resources.build_net_device(new_net_device_cfg).unwrap();

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["CompilationError"],"struct":["Compiler","Filter","JsonFile","SyscallRule"]};
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_CompilationError"],"enum":["CompilationError"],"struct":["Compiler","Filter","JsonFile","SyscallRule"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"fn":["flush_metrics"],"struct":["VhostUserDeviceMetrics","VhostUserMetricsPerDevice"]};
+window.SIDEBAR_ITEMS = {"fn":["flush_metrics"],"static":["METRICS"],"struct":["VhostUserDeviceMetrics","VhostUserMetricsPerDevice"]};

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["VsockConfigError"],"struct":["VsockBuilder","VsockDeviceConfig"]};
+window.SIDEBAR_ITEMS = {"constant":["_DERIVE_Display_FOR_VsockConfigError"],"enum":["VsockConfigError"],"struct":["VsockAndUnixPath","VsockBuilder","VsockDeviceConfig"],"type":["MutexVsockUnix"]};

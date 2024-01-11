@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"constant":["MAX_BUFFER_SIZE","NET_NUM_QUEUES","NET_QUEUE_SIZES","RX_INDEX","TX_INDEX"],"enum":["NetError","NetQueue","TapError"],"mod":["device","metrics","persist"],"struct":["Tap"]};
+window.SIDEBAR_ITEMS = {"constant":["MAX_BUFFER_SIZE","NET_NUM_QUEUES","NET_QUEUE_SIZES","RX_INDEX","TX_INDEX","_DERIVE_Display_FOR_NetError"],"enum":["NetError","NetQueue","TapError"],"mod":["device","event_handler","gen","metrics","persist","tap"],"struct":["Tap"]};

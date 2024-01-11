@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/rate_limiter/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../vmm/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/vmm/src/rate_limiter/mod.rs`."><title>mod.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="vmm" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../../vmm/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1212,7 +1214,7 @@
 </span><span class="doccomment">/// Describes the errors that may occur while handling rate limiter events.
 </span><span class="kw">pub enum </span>Error {
     <span class="doccomment">/// The event handler was called spuriously: {0}
-    </span>SpuriousRateLimiterEvent(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str),
+    </span>SpuriousRateLimiterEvent(<span class="kw-2">&amp;</span><span class="lifetime">'static </span>str),
 }
 
 <span class="comment">// Interval at which the refill timer will run when limiter is at capacity.
@@ -1222,7 +1224,7 @@
 
 <span class="kw">const </span>NANOSEC_IN_ONE_MILLISEC: u64 = <span class="number">1_000_000</span>;
 
-<span class="comment">// Euclid&#39;s two-thousand-year-old algorithm for finding the greatest common divisor.
+<span class="comment">// Euclid's two-thousand-year-old algorithm for finding the greatest common divisor.
 </span><span class="attr">#[cfg_attr(kani, kani::requires(x &gt; <span class="number">0 </span>&amp;&amp; y &gt; <span class="number">0</span>))]
 #[cfg_attr(kani, kani::ensures(
     result != <span class="number">0
@@ -1329,7 +1331,7 @@
             <span class="self">self</span>.budget = <span class="self">self</span>.size;
             <span class="self">self</span>.last_update = now;
         } <span class="kw">else </span>{
-            <span class="comment">// At each &#39;time_delta&#39; nanoseconds the bucket should refill with:
+            <span class="comment">// At each 'time_delta' nanoseconds the bucket should refill with:
             // refill_amount = (time_delta * size) / (complete_refill_time_ms * 1_000_000)
             // `processed_capacity` and `processed_refill_time` are the result of simplifying above
             // fraction formula with their greatest-common-factor.
@@ -1357,7 +1359,7 @@
                 time_adjustment += <span class="number">1</span>;
             }
 
-            <span class="comment">// Ensure that we always generate as many tokens as we can: assert that the &quot;unused&quot;
+            <span class="comment">// Ensure that we always generate as many tokens as we can: assert that the "unused"
             // part of time_delta is less than the time it would take to generate a
             // single token (= processed_refill_time / processed_capacity)
             </span><span class="macro">debug_assert!</span>(time_adjustment &lt;= time_delta);
@@ -1392,13 +1394,13 @@
         }
 
         <span class="kw">if </span>tokens &gt; <span class="self">self</span>.budget {
-            <span class="comment">// Hit the bucket bottom, let&#39;s auto-replenish and try again.
+            <span class="comment">// Hit the bucket bottom, let's auto-replenish and try again.
             </span><span class="self">self</span>.auto_replenish();
 
             <span class="comment">// This operation requests a bandwidth higher than the bucket size
             </span><span class="kw">if </span>tokens &gt; <span class="self">self</span>.size {
                 <span class="macro">crate::logger::error!</span>(
-                    <span class="string">&quot;Consumed {} tokens from bucket of size {}&quot;</span>,
+                    <span class="string">"Consumed {} tokens from bucket of size {}"</span>,
                     tokens,
                     <span class="self">self</span>.size
                 );
@@ -1419,12 +1421,12 @@
         BucketReduction::Success
     }
 
-    <span class="doccomment">/// &quot;Manually&quot; adds tokens to bucket.
+    <span class="doccomment">/// "Manually" adds tokens to bucket.
     </span><span class="kw">pub fn </span>force_replenish(<span class="kw-2">&amp;mut </span><span class="self">self</span>, tokens: u64) {
         <span class="comment">// This means we are still during the burst interval.
         // Of course there is a very small chance  that the last reduce() also used up burst
         // budget which should now be replenished, but for performance and code-complexity
-        // reasons we&#39;re just gonna let that slide since it&#39;s practically inconsequential.
+        // reasons we're just gonna let that slide since it's practically inconsequential.
         </span><span class="kw">if </span><span class="self">self</span>.one_time_burst &gt; <span class="number">0 </span>{
             <span class="self">self</span>.one_time_burst = std::cmp::min(
                 <span class="self">self</span>.one_time_burst.saturating_add(tokens),
@@ -1488,9 +1490,9 @@
 /// Implementation uses a single timer through TimerFd to refresh either or
 /// both token buckets.
 ///
-/// Its internal buckets are &#39;passively&#39; replenished as they&#39;re being used (as
+/// Its internal buckets are 'passively' replenished as they're being used (as
 /// part of `consume()` operations).
-/// A timer is enabled and used to &#39;actively&#39; replenish the token buckets when
+/// A timer is enabled and used to 'actively' replenish the token buckets when
 /// limiting is in effect and `consume()` operations are disabled.
 ///
 /// RateLimiters will generate events on the FDs provided by their `AsRawFd` trait
@@ -1515,7 +1517,7 @@
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
         <span class="macro">write!</span>(
             f,
-            <span class="string">&quot;RateLimiter {{ bandwidth: {:?}, ops: {:?} }}&quot;</span>,
+            <span class="string">"RateLimiter {{ bandwidth: {:?}, ops: {:?} }}"</span>,
             <span class="self">self</span>.bandwidth, <span class="self">self</span>.ops
         )
     }
@@ -1563,7 +1565,7 @@
             ops_complete_refill_time_ms,
         );
 
-        <span class="comment">// We&#39;ll need a timer_fd, even if our current config effectively disables rate limiting,
+        <span class="comment">// We'll need a timer_fd, even if our current config effectively disables rate limiting,
         // because `Self::update_buckets()` might re-enable it later, and we might be
         // seccomp-blocked from creating the timer_fd at that time.
         </span><span class="kw">let </span>timer_fd = TimerFd::new_custom(ClockId::Monotonic, <span class="bool-val">true</span>, <span class="bool-val">true</span>)<span class="question-mark">?</span>;
@@ -1578,7 +1580,7 @@
 
     <span class="comment">// Arm the timer of the rate limiter with the provided `TimerState`.
     </span><span class="kw">fn </span>activate_timer(<span class="kw-2">&amp;mut </span><span class="self">self</span>, timer_state: TimerState) {
-        <span class="comment">// Register the timer; don&#39;t care about its previous state
+        <span class="comment">// Register the timer; don't care about its previous state
         </span><span class="self">self</span>.timer_fd.set_state(timer_state, SetTimeFlags::Default);
         <span class="self">self</span>.timer_active = <span class="bool-val">true</span>;
     }
@@ -1587,7 +1589,7 @@
     ///
     /// If rate limiting is disabled on provided `token_type`, this function will always succeed.
     </span><span class="kw">pub fn </span>consume(<span class="kw-2">&amp;mut </span><span class="self">self</span>, tokens: u64, token_type: TokenType) -&gt; bool {
-        <span class="comment">// If the timer is active, we can&#39;t consume tokens from any bucket and the function fails.
+        <span class="comment">// If the timer is active, we can't consume tokens from any bucket and the function fails.
         </span><span class="kw">if </span><span class="self">self</span>.timer_active {
             <span class="kw">return </span><span class="bool-val">false</span>;
         }
@@ -1615,7 +1617,7 @@
                 <span class="comment">// The operation succeeded as the tokens have been consumed
                 // but the timer still needs to be armed.
                 </span>BucketReduction::OverConsumption(ratio) =&gt; {
-                    <span class="comment">// The operation &quot;borrowed&quot; a number of tokens `ratio` times
+                    <span class="comment">// The operation "borrowed" a number of tokens `ratio` times
                     // greater than the size of the bucket, and since it takes
                     // `refill_time` milliseconds to fill an empty bucket, in
                     // order to enforce the bandwidth limit we need to prevent
@@ -1654,15 +1656,15 @@
 
     <span class="doccomment">/// Returns whether this rate limiter is blocked.
     ///
-    /// The limiter &#39;blocks&#39; when a `consume()` operation fails because there was not enough
+    /// The limiter 'blocks' when a `consume()` operation fails because there was not enough
     /// budget for it.
-    /// An event will be generated on the exported FD when the limiter &#39;unblocks&#39;.
+    /// An event will be generated on the exported FD when the limiter 'unblocks'.
     </span><span class="kw">pub fn </span>is_blocked(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
         <span class="self">self</span>.timer_active
     }
 
     <span class="doccomment">/// This function needs to be called every time there is an event on the
-    /// FD provided by this object&#39;s `AsRawFd` trait implementation.
+    /// FD provided by this object's `AsRawFd` trait implementation.
     ///
     /// # Errors
     ///
@@ -1670,7 +1672,7 @@
     </span><span class="kw">pub fn </span>event_handler(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
         <span class="kw">match </span><span class="self">self</span>.timer_fd.read() {
             <span class="number">0 </span>=&gt; <span class="prelude-val">Err</span>(Error::SpuriousRateLimiterEvent(
-                <span class="string">&quot;Rate limiter event handler called without a present timer&quot;</span>,
+                <span class="string">"Rate limiter event handler called without a present timer"</span>,
             )),
             <span class="kw">_ </span>=&gt; {
                 <span class="self">self</span>.timer_active = <span class="bool-val">false</span>;
@@ -1708,7 +1710,7 @@
 <span class="kw">impl </span>AsRawFd <span class="kw">for </span>RateLimiter {
     <span class="doccomment">/// Provides a FD which needs to be monitored for POLLIN events.
     ///
-    /// This object&#39;s `event_handler()` method must be called on such events.
+    /// This object's `event_handler()` method must be called on such events.
     ///
     /// Will return a negative value if rate limiting is disabled on both
     /// token types.
@@ -1721,7 +1723,7 @@
     <span class="doccomment">/// Default RateLimiter is a no-op limiter with infinite budget.
     </span><span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         <span class="comment">// Safe to unwrap since this will not attempt to create timer_fd.
-        </span>RateLimiter::new(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>).expect(<span class="string">&quot;Failed to build default RateLimiter&quot;</span>)
+        </span>RateLimiter::new(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>).expect(<span class="string">"Failed to build default RateLimiter"</span>)
     }
 }
 
@@ -1756,7 +1758,7 @@
 
         <span class="comment">// The last value returned by this stub, in nano seconds. We keep these variables separately
         // for Kani performance reasons (just counting nanos and then doing division/modulo
-        // to get seconds/nanos is slow as those operations are very difficult for Kani&#39;s
+        // to get seconds/nanos is slow as those operations are very difficult for Kani's
         // underlying SAT solvers).
         </span><span class="kw">static </span><span class="kw-2">mut </span>LAST_SECONDS: i64 = <span class="number">0</span>;
         <span class="kw">static </span><span class="kw-2">mut </span>LAST_NANOS: u32 = <span class="number">0</span>;
@@ -1798,7 +1800,7 @@
 
             <span class="comment">// In normal rust code, this would not be safe, as the compiler can re-order the fields
             // However, kani will never run any transformations on the code, so this is safe. This
-            // is because kani doesn&#39;t use rustc/llvm to compile down to bytecode, but instead
+            // is because kani doesn't use rustc/llvm to compile down to bytecode, but instead
             // transpiles unoptimized rust MIR to goto-programs, which are then fed to CMBC.
             </span><span class="kw">unsafe </span>{ std::mem::transmute(stub) }
         }
@@ -1815,7 +1817,7 @@
         </span><span class="kw">fn </span>is_valid(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
             <span class="self">self</span>.size != <span class="number">0
                 </span>&amp;&amp; <span class="self">self</span>.refill_time != <span class="number">0
-                </span><span class="comment">// The token budget can never exceed the bucket&#39;s size
+                </span><span class="comment">// The token budget can never exceed the bucket's size
                 </span>&amp;&amp; <span class="self">self</span>.budget &lt;= <span class="self">self</span>.size
                 <span class="comment">// The burst budget never exceeds its initial value
                 </span>&amp;&amp; <span class="self">self</span>.one_time_burst &lt;= <span class="self">self</span>.initial_one_time_burst
@@ -1830,8 +1832,8 @@
             kani::assume(bucket.is_some());
             <span class="kw">let </span><span class="kw-2">mut </span>bucket = bucket.unwrap();
 
-            <span class="comment">// Adjust the budgets non-deterministically to simulate that the bucket has been &quot;in
-            // use&quot; already
+            <span class="comment">// Adjust the budgets non-deterministically to simulate that the bucket has been "in
+            // use" already
             </span>bucket.budget = kani::any();
             bucket.one_time_burst = kani::any();
 
@@ -1902,7 +1904,7 @@
         // calls. This speeds up the verification significantly.
         </span><span class="kw">let </span>size = kani::any_where(|n| <span class="kw-2">*</span>n &lt; MAX_BUCKET_SIZE &amp;&amp; <span class="kw-2">*</span>n != <span class="number">0</span>);
         <span class="kw">let </span>complete_refill_time_ms = kani::any_where(|n| <span class="kw-2">*</span>n &lt; MAX_REFILL_TIME &amp;&amp; <span class="kw-2">*</span>n != <span class="number">0</span>);
-        <span class="comment">// `auto_replenish` doesn&#39;t use `one_time_burst`
+        <span class="comment">// `auto_replenish` doesn't use `one_time_burst`
         </span><span class="kw">let </span><span class="kw-2">mut </span>bucket: TokenBucket = TokenBucket::new(size, <span class="number">0</span>, complete_refill_time_ms).unwrap();
 
         bucket.auto_replenish();
@@ -2144,9 +2146,9 @@
         <span class="comment">// calling the handler without there having been an event should error
         </span>l.event_handler().unwrap_err();
         <span class="macro">assert_eq!</span>(
-            <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, l.event_handler().err().unwrap()),
-            <span class="string">&quot;SpuriousRateLimiterEvent(\&quot;Rate limiter event handler called without a present \
-             timer\&quot;)&quot;
+            <span class="macro">format!</span>(<span class="string">"{:?}"</span>, l.event_handler().err().unwrap()),
+            <span class="string">"SpuriousRateLimiterEvent(\"Rate limiter event handler called without a present \
+             timer\")"
         </span>);
     }
 
@@ -2295,7 +2297,7 @@
         <span class="comment">// initialize the rate limiter
         </span><span class="kw">let </span><span class="kw-2">mut </span>l = RateLimiter::new(<span class="number">1000</span>, <span class="number">0</span>, <span class="number">1000</span>, <span class="number">1000</span>, <span class="number">0</span>, <span class="number">1000</span>).unwrap();
         <span class="comment">// try to consume 2.5x the bucket size
-        // we are &quot;borrowing&quot; 1.5x the bucket size in tokens since
+        // we are "borrowing" 1.5x the bucket size in tokens since
         // the bucket is full
         </span><span class="macro">assert!</span>(l.consume(<span class="number">2500</span>, TokenType::Bytes));
 
@@ -2314,7 +2316,7 @@
         <span class="comment">// reset the rate limiter
         </span><span class="kw">let </span><span class="kw-2">mut </span>l = RateLimiter::new(<span class="number">1000</span>, <span class="number">0</span>, <span class="number">1000</span>, <span class="number">1000</span>, <span class="number">0</span>, <span class="number">1000</span>).unwrap();
         <span class="comment">// try to consume 1.5x the bucket size
-        // we are &quot;borrowing&quot; 1.5x the bucket size in tokens since
+        // we are "borrowing" 1.5x the bucket size in tokens since
         // the bucket is full, should arm the timer to 0.5x replenish
         // time, which is 500 ms
         </span><span class="macro">assert!</span>(l.consume(<span class="number">1500</span>, TokenType::Bytes));
@@ -2383,9 +2385,9 @@
     </span><span class="kw">fn </span>test_rate_limiter_debug() {
         <span class="kw">let </span>l = RateLimiter::new(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>).unwrap();
         <span class="macro">assert_eq!</span>(
-            <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, l),
+            <span class="macro">format!</span>(<span class="string">"{:?}"</span>, l),
             <span class="macro">format!</span>(
-                <span class="string">&quot;RateLimiter {{ bandwidth: {:?}, ops: {:?} }}&quot;</span>,
+                <span class="string">"RateLimiter {{ bandwidth: {:?}, ops: {:?} }}"</span>,
                 l.bandwidth(),
                 l.ops()
             ),

@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"enum":["Error"],"struct":["Snapshot"],"trait":["Persist"]};
+window.SIDEBAR_ITEMS = {"constant":["BASE_MAGIC_ID","BASE_MAGIC_ID_MASK","_DERIVE_Display_FOR_Error"],"enum":["Error"],"fn":["build_magic_id","get_format_version"],"mod":["persist"],"struct":["Snapshot","SnapshotHdr"],"trait":["Persist"]};

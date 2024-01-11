@@ -1,4 +1,6 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/firecracker/src/api_server_adapter.rs`."><title>api_server_adapter.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="firecracker" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0 (cc66ad468 2023-10-03)" data-channel="1.73.0" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-1596385f77d47ef2.css" data-theme-dark-css="dark-0a43001d3fc2282c.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-1596385f77d47ef2.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-0a43001d3fc2282c.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../firecracker/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/firecracker/src/api_server_adapter.rs`."><title>api_server_adapter.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4e54bb2b497cc83f.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="firecracker" data-themes="" data-resource-suffix="" data-rustdoc-version="1.77.0-nightly (a2d9d73e6 2024-01-10)" data-channel="nightly" data-search-js="search-dd67cee4cfa65049.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../static.files/storage-f2adc0d6ca4d09fb.js"></script><script defer src="../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0b2e2def73e61cbe.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-04d5337699b92874.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title">
+            <h2>Files</h2></div></nav><div class="sidebar-resizer"></div>
+    <main><nav class="sub"><form class="search-form"><span></span><div id="sidebar-button" tabindex="-1"><a href="../../firecracker/all.html" title="show sidebar"></a></div><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" tabindex="-1"><a href="../../help.html" title="help">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -317,7 +319,7 @@
         <span class="kw">loop </span>{
             event_manager
                 .run()
-                .expect(<span class="string">&quot;EventManager events driver fatal error&quot;</span>);
+                .expect(<span class="string">"EventManager events driver fatal error"</span>);
 
             <span class="kw">match </span>vmm.lock().unwrap().shutdown_exit_code() {
                 <span class="prelude-val">Some</span>(FcExitCode::Ok) =&gt; <span class="kw">break</span>,
@@ -334,7 +336,7 @@
         </span><span class="self">self</span>.to_api
             .send(Box::new(response))
             .map_err(|<span class="kw">_</span>| ())
-            .expect(<span class="string">&quot;one-shot channel closed&quot;</span>);
+            .expect(<span class="string">"one-shot channel closed"</span>);
     }
 }
 <span class="kw">impl </span>MutEventSubscriber <span class="kw">for </span>ApiServerAdapter {
@@ -353,13 +355,13 @@
                     <span class="comment">// If the latest req is a pause request, temporarily switch to a mode where we
                     // do blocking `recv`s on the `from_api` receiver in a loop, until we get
                     // unpaused. The device emulation is implicitly paused since we do not
-                    // relinquish control to the event manager because we&#39;re not returning from
+                    // relinquish control to the event manager because we're not returning from
                     // `process`.
                     </span><span class="kw">if </span>request_is_pause {
                         <span class="comment">// This loop only attempts to process API requests, so things like the
                         // metric flush timerfd handling are frozen as well.
                         </span><span class="kw">loop </span>{
-                            <span class="kw">let </span>req = <span class="self">self</span>.from_api.recv().expect(<span class="string">&quot;Error receiving API request.&quot;</span>);
+                            <span class="kw">let </span>req = <span class="self">self</span>.from_api.recv().expect(<span class="string">"Error receiving API request."</span>);
                             <span class="kw">let </span>req_is_resume = <span class="kw-2">*</span>req == VmmAction::Resume;
                             <span class="self">self</span>.handle_request(<span class="kw-2">*</span>req);
                             <span class="kw">if </span>req_is_resume {
@@ -369,20 +371,20 @@
                     }
                 }
                 <span class="prelude-val">Err</span>(TryRecvError::Empty) =&gt; {
-                    <span class="macro">warn!</span>(<span class="string">&quot;Got a spurious notification from api thread&quot;</span>);
+                    <span class="macro">warn!</span>(<span class="string">"Got a spurious notification from api thread"</span>);
                 }
                 <span class="prelude-val">Err</span>(TryRecvError::Disconnected) =&gt; {
-                    <span class="macro">panic!</span>(<span class="string">&quot;The channel&#39;s sending half was disconnected. Cannot receive data.&quot;</span>);
+                    <span class="macro">panic!</span>(<span class="string">"The channel's sending half was disconnected. Cannot receive data."</span>);
                 }
             };
         } <span class="kw">else </span>{
-            <span class="macro">error!</span>(<span class="string">&quot;Spurious EventManager event for handler: ApiServerAdapter&quot;</span>);
+            <span class="macro">error!</span>(<span class="string">"Spurious EventManager event for handler: ApiServerAdapter"</span>);
         }
     }
 
     <span class="kw">fn </span>init(<span class="kw-2">&amp;mut </span><span class="self">self</span>, ops: <span class="kw-2">&amp;mut </span>EventOps) {
         <span class="kw">if let </span><span class="prelude-val">Err</span>(err) = ops.add(Events::new(<span class="kw-2">&amp;</span><span class="self">self</span>.api_event_fd, EventSet::IN)) {
-            <span class="macro">error!</span>(<span class="string">&quot;Failed to register activate event: {}&quot;</span>, err);
+            <span class="macro">error!</span>(<span class="string">"Failed to register activate event: {}"</span>, err);
         }
     }
 }
@@ -402,9 +404,9 @@
     <span class="comment">// FD to notify of API events. This is a blocking eventfd by design.
     // It is used in the config/pre-boot loop which is a simple blocking loop
     // which only consumes API events.
-    </span><span class="kw">let </span>api_event_fd = EventFd::new(libc::EFD_SEMAPHORE).expect(<span class="string">&quot;Cannot create API Eventfd.&quot;</span>);
+    </span><span class="kw">let </span>api_event_fd = EventFd::new(libc::EFD_SEMAPHORE).expect(<span class="string">"Cannot create API Eventfd."</span>);
     <span class="comment">// FD used to signal API thread to stop/shutdown.
-    </span><span class="kw">let </span>api_kill_switch = EventFd::new(libc::EFD_NONBLOCK).expect(<span class="string">&quot;Cannot create API kill switch.&quot;</span>);
+    </span><span class="kw">let </span>api_kill_switch = EventFd::new(libc::EFD_NONBLOCK).expect(<span class="string">"Cannot create API kill switch."</span>);
 
     <span class="comment">// Channels for both directions between Vmm and Api threads.
     </span><span class="kw">let </span>(to_vmm, from_api) = channel();
@@ -412,10 +414,10 @@
 
     <span class="kw">let </span>to_vmm_event_fd = api_event_fd
         .try_clone()
-        .expect(<span class="string">&quot;Failed to clone API event FD&quot;</span>);
+        .expect(<span class="string">"Failed to clone API event FD"</span>);
     <span class="kw">let </span>api_seccomp_filter = seccomp_filters
-        .remove(<span class="string">&quot;api&quot;</span>)
-        .expect(<span class="string">&quot;Missing seccomp filter for API thread.&quot;</span>);
+        .remove(<span class="string">"api"</span>)
+        .expect(<span class="string">"Missing seccomp filter for API thread."</span>);
 
     <span class="kw">let </span><span class="kw-2">mut </span>server = <span class="kw">match </span>HttpServer::new(<span class="kw-2">&amp;</span>bind_path) {
         <span class="prelude-val">Ok</span>(s) =&gt; s,
@@ -430,15 +432,15 @@
 
     <span class="kw">let </span>api_kill_switch_clone = api_kill_switch
         .try_clone()
-        .expect(<span class="string">&quot;Failed to clone API kill switch&quot;</span>);
+        .expect(<span class="string">"Failed to clone API kill switch"</span>);
 
     server
         .add_kill_switch(api_kill_switch_clone)
-        .expect(<span class="string">&quot;Cannot add HTTP server kill switch&quot;</span>);
+        .expect(<span class="string">"Cannot add HTTP server kill switch"</span>);
 
     <span class="comment">// Start the separate API thread.
     </span><span class="kw">let </span>api_thread = thread::Builder::new()
-        .name(<span class="string">&quot;fc_api&quot;</span>.to_owned())
+        .name(<span class="string">"fc_api"</span>.to_owned())
         .spawn(<span class="kw">move </span>|| {
             ApiServer::new(to_vmm, from_vmm, to_vmm_event_fd).run(
                 server,
@@ -447,9 +449,9 @@
                 api_payload_limit,
             );
         })
-        .expect(<span class="string">&quot;API thread spawn failed.&quot;</span>);
+        .expect(<span class="string">"API thread spawn failed."</span>);
 
-    <span class="kw">let </span><span class="kw-2">mut </span>event_manager = EventManager::new().expect(<span class="string">&quot;Unable to create EventManager&quot;</span>);
+    <span class="kw">let </span><span class="kw-2">mut </span>event_manager = EventManager::new().expect(<span class="string">"Unable to create EventManager"</span>);
 
     <span class="comment">// Create the firecracker metrics object responsible for periodically printing metrics.
     </span><span class="kw">let </span>firecracker_metrics = Arc::new(Mutex::new(<span class="kw">super</span>::metrics::PeriodicMetrics::new()));
@@ -484,7 +486,7 @@
     <span class="kw">let </span>result = build_result.and_then(|(vm_resources, vmm)| {
         firecracker_metrics
             .lock()
-            .expect(<span class="string">&quot;Poisoned lock&quot;</span>)
+            .expect(<span class="string">"Poisoned lock"</span>)
             .start(<span class="kw">super</span>::metrics::WRITE_METRICS_PERIOD_MS);
 
         ApiServerAdapter::run_microvm(
@@ -500,7 +502,7 @@
     api_kill_switch.write(<span class="number">1</span>).unwrap();
     <span class="comment">// This call to thread::join() should block until the API thread has processed the
     // shutdown-internal and returns from its function.
-    </span>api_thread.join().expect(<span class="string">&quot;Api thread should join&quot;</span>);
+    </span>api_thread.join().expect(<span class="string">"Api thread should join"</span>);
 
     result
 }
